@@ -1,9 +1,9 @@
-# PhenoML Python Library
+# Phenoml Python Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Ffern-demo%2Fphenoml-python-sdk)
 [![pypi](https://img.shields.io/pypi/v/phenoml)](https://pypi.python.org/pypi/phenoml)
 
-The PhenoML Python library provides convenient access to the PhenoML API from Python.
+The Phenoml Python library provides convenient access to the Phenoml API from Python.
 
 ## Installation
 
@@ -25,10 +25,10 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.create_fhir_resource_from_text(
-    version="R4",
-    resource="auto",
-    text="Patient has severe asthma with acute exacerbation",
+client.agent.create(
+    name="name",
+    prompts=["prompt_123", "prompt_456"],
+    is_active=True,
 )
 ```
 
@@ -47,10 +47,10 @@ client = Asyncphenoml(
 
 
 async def main() -> None:
-    await client.create_fhir_resource_from_text(
-        version="R4",
-        resource="auto",
-        text="Patient has severe asthma with acute exacerbation",
+    await client.agent.create(
+        name="name",
+        prompts=["prompt_123", "prompt_456"],
+        is_active=True,
     )
 
 
@@ -66,7 +66,7 @@ will be thrown.
 from phenoml.core.api_error import ApiError
 
 try:
-    client.create_fhir_resource_from_text(...)
+    client.agent.create(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -85,7 +85,7 @@ from phenoml import phenoml
 client = phenoml(
     ...,
 )
-response = client.with_raw_response.create_fhir_resource_from_text(...)
+response = client.agent.with_raw_response.create(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
 ```
@@ -105,7 +105,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.create_fhir_resource_from_text(..., request_options={
+client.agent.create(..., request_options={
     "max_retries": 1
 })
 ```
@@ -125,7 +125,7 @@ client = phenoml(
 
 
 # Override timeout for a specific method
-client.create_fhir_resource_from_text(..., request_options={
+client.agent.create(..., request_options={
     "timeout_in_seconds": 1
 })
 ```
