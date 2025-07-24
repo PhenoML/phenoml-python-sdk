@@ -2,33 +2,20 @@
 
 # isort: skip_file
 
-from .types import (
-    CreateRequestResource,
-    DocumentRequestFileType,
-    DocumentRequestResource,
-    FhirResource,
-    PostLang2FhirProfileUploadResponse,
-    SearchResponse,
-)
-from .errors import BadRequestError, FailedDependencyError, ForbiddenError, InternalServerError, UnauthorizedError
+from . import agent, authtoken, cohort, construe, lang2fhir, tools
 from .client import Asyncphenoml, phenoml
 from .environment import phenomlEnvironment
 from .version import __version__
 
 __all__ = [
     "Asyncphenoml",
-    "BadRequestError",
-    "CreateRequestResource",
-    "DocumentRequestFileType",
-    "DocumentRequestResource",
-    "FailedDependencyError",
-    "FhirResource",
-    "ForbiddenError",
-    "InternalServerError",
-    "PostLang2FhirProfileUploadResponse",
-    "SearchResponse",
-    "UnauthorizedError",
     "__version__",
+    "agent",
+    "authtoken",
+    "cohort",
+    "construe",
+    "lang2fhir",
     "phenoml",
     "phenomlEnvironment",
+    "tools",
 ]
