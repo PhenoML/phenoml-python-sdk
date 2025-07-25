@@ -8,6 +8,7 @@ from .authtoken.client import AsyncAuthtokenClient, AuthtokenClient
 from .cohort.client import AsyncCohortClient, CohortClient
 from .construe.client import AsyncConstrueClient, ConstrueClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from .core.oauth_token_provider import OAuthTokenProvider, AsyncOAuthTokenProvider
 from .environment import phenomlEnvironment
 from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
 from .tools.client import AsyncToolsClient, ToolsClient
@@ -58,7 +59,9 @@ class phenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        token: typing.Union[str, typing.Callable[[], str], None] = None,
+        username: typing.Optional[str] = None,
+        password: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -67,9 +70,10 @@ class phenoml:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        self._client_wrapper = SyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
+        _base_url = _get_base_url(base_url=base_url, environment=environment)
+        _client_wrapper = SyncClientWrapper(
+            base_url=_base_url,
+            token="" if token is None else token,  # placeholder, will be replaced below
             headers=headers,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -78,6 +82,20 @@ class phenoml:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        if token is not None:
+            access_token = token
+        elif username is not None and password is not None:
+            token_provider = OAuthTokenProvider(
+                username=username,
+                password=password,
+                authtoken_client=AuthtokenClient(client_wrapper=_client_wrapper),
+            )
+            access_token = token_provider()
+        else:
+            raise ValueError("You must provide either a token or both username and password.")
+        # Patch the token provider into the client wrapper
+        _client_wrapper._token = access_token
+        self._client_wrapper = _client_wrapper
         self.agent = AgentClient(client_wrapper=self._client_wrapper)
         self.authtoken = AuthtokenClient(client_wrapper=self._client_wrapper)
         self.cohort = CohortClient(client_wrapper=self._client_wrapper)
@@ -131,7 +149,9 @@ class Asyncphenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        token: typing.Union[str, typing.Callable[[], str], None] = None,
+        username: typing.Optional[str] = None,
+        password: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -140,9 +160,10 @@ class Asyncphenoml:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        self._client_wrapper = AsyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
+        _base_url = _get_base_url(base_url=base_url, environment=environment)
+        _client_wrapper = AsyncClientWrapper(
+            base_url=_base_url,
+            token="" if token is None else token,  # placeholder, will be replaced below
             headers=headers,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -151,6 +172,20 @@ class Asyncphenoml:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        if token is not None:
+            access_token = token
+        elif username is not None and password is not None:
+            token_provider = AsyncOAuthTokenProvider(
+                username=username,
+                password=password,
+                authtoken_client=AsyncAuthtokenClient(client_wrapper=_client_wrapper),
+            )
+            access_token = token_provider()
+        else:
+            raise ValueError("You must provide either a token or both username and password.")
+        # Patch the token provider into the client wrapper
+        _client_wrapper._token = access_token
+        self._client_wrapper = _client_wrapper
         self.agent = AsyncAgentClient(client_wrapper=self._client_wrapper)
         self.authtoken = AsyncAuthtokenClient(client_wrapper=self._client_wrapper)
         self.cohort = AsyncCohortClient(client_wrapper=self._client_wrapper)

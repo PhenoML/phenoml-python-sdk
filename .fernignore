@@ -1,1 +1,3 @@
 # Specify files that shouldn't be modified by Fern
+src/phenoml/client.py
+src/phenoml/core/oauth_token_provider.py
