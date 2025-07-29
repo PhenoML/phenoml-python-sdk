@@ -1246,8 +1246,8 @@ client.agent.prompts.load_defaults()
 </dl>
 </details>
 
-## Authtoken
-<details><summary><code>client.authtoken.<a href="src/phenoml/authtoken/client.py">generate_token</a>()</code></summary>
+## Authtoken Auth
+<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">generate_token</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -1259,7 +1259,7 @@ client.agent.prompts.load_defaults()
 <dl>
 <dd>
 
-Generates a JWT token using Basic Authentication with username or email and password.
+Obtain an access token using client credentials
 </dd>
 </dl>
 </dd>
@@ -1279,7 +1279,10 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.authtoken.generate_token()
+client.authtoken.auth.generate_token(
+    username="username",
+    password="password",
+)
 
 ```
 </dd>
@@ -1291,6 +1294,22 @@ client.authtoken.generate_token()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**username:** `str` — The user's username or email
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**password:** `str` — The user's password
+    
+</dd>
+</dl>
 
 <dl>
 <dd>

@@ -3,10 +3,10 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class AuthtokenGenerateTokenResponse(UniversalBaseModel):
+class AuthGenerateTokenResponse(UniversalBaseModel):
     token: str = pydantic.Field()
     """
     JWT token to be used for subsequent authenticated requests

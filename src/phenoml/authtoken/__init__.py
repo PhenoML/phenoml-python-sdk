@@ -2,13 +2,16 @@
 
 # isort: skip_file
 
-from .types import AuthtokenGenerateTokenResponse, BadRequestErrorBody, UnauthorizedErrorBody
+from .types import BadRequestErrorBody, UnauthorizedErrorBody
 from .errors import BadRequestError, UnauthorizedError
+from . import auth
+from .auth import AuthGenerateTokenResponse
 
 __all__ = [
-    "AuthtokenGenerateTokenResponse",
+    "AuthGenerateTokenResponse",
     "BadRequestError",
     "BadRequestErrorBody",
     "UnauthorizedError",
     "UnauthorizedErrorBody",
+    "auth",
 ]
