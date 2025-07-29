@@ -85,8 +85,7 @@ class phenoml:
         if token is not None:
             token_provider = token
         elif username is not None and password is not None:
-            authtoken_client = AuthtokenClient(client_wrapper=_client_wrapper)
-            token_provider = create_token_provider(username, password, authtoken_client)
+            token_provider = create_token_provider(username, password, _base_url)
         else:
             raise ValueError("You must provide either a token or both username and password.")
         # Patch the token provider into the client wrapper
@@ -171,8 +170,7 @@ class Asyncphenoml:
         if token is not None:
             token_provider = token
         elif username is not None and password is not None:
-            authtoken_client = AsyncAuthtokenClient(client_wrapper=_client_wrapper)
-            token_provider = create_token_provider(username, password, authtoken_client)
+            token_provider = create_token_provider(username, password, _base_url)
         else:
             raise ValueError("You must provide either a token or both username and password.")
         # Patch the token provider into the client wrapper

@@ -2,8 +2,7 @@
 
 # isort: skip_file
 
-from .authtoken_generate_token_response import AuthtokenGenerateTokenResponse
 from .bad_request_error_body import BadRequestErrorBody
 from .unauthorized_error_body import UnauthorizedErrorBody
 
-__all__ = ["AuthtokenGenerateTokenResponse", "BadRequestErrorBody", "UnauthorizedErrorBody"]
+__all__ = ["BadRequestErrorBody", "UnauthorizedErrorBody"]
