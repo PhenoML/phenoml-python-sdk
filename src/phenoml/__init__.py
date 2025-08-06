@@ -6,16 +6,25 @@ from . import agent, authtoken, cohort, construe, lang2fhir, tools
 from .client import Asyncphenoml, phenoml
 from .environment import phenomlEnvironment
 from .version import __version__
+from .wrapper_client import PhenoMLClient, AsyncPhenoMLClient
+
+# Primary client classes (recommended)
+Client = PhenoMLClient
+AsyncClient = AsyncPhenoMLClient
 
 __all__ = [
     "Asyncphenoml",
+    "AsyncPhenoMLClient", 
+    "AsyncClient",  # Primary async client
+    "PhenoMLClient",
+    "Client",  # Primary sync client
     "__version__",
     "agent",
     "authtoken",
     "cohort",
     "construe",
     "lang2fhir",
-    "phenoml",
+    "phenoml",  # Base client (for advanced users)
     "phenomlEnvironment",
     "tools",
 ]
