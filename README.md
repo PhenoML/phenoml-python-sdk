@@ -23,7 +23,7 @@ Instantiate and use the client with the following:
 from phenoml import Client
 
 client = Client(
-    username="your_identity",
+    username="your_username",
     password="your_password",
     base_url="https://your-phenoml-instance.com"
 )
@@ -45,7 +45,7 @@ import asyncio
 from phenoml import AsyncClient
 
 client = AsyncClient(
-    username="your_identity",
+    username="your_username",
     password="your_password",
     base_url="https://your-phenoml-instance.com"
 )
