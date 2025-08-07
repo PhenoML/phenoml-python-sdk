@@ -13,18 +13,21 @@ pip install phenoml
 
 ## Reference
 
-A full reference for this library is available [here](https://github.com/fern-demo/phenoml-python-sdk/blob/HEAD/./reference.md).
+A full reference for this library is available [here](https://github.com/phenoml/phenoml-python-sdk/blob/HEAD/./reference.md).
 
 ## Usage
 
 Instantiate and use the client with the following:
 
 ```python
-from phenoml import phenoml
+from phenoml import Client
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = Client(
+    username="your_username",
+    password="your_password",
+    base_url="https://your-phenoml-instance.com"
 )
+
 client.agent.create(
     name="name",
     prompts=["prompt_123", "prompt_456"],
@@ -39,14 +42,17 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from phenoml import Asyncphenoml
+from phenoml import AsyncClient
 
-client = Asyncphenoml(
-    token="YOUR_TOKEN",
+client = AsyncClient(
+    username="your_username",
+    password="your_password",
+    base_url="https://your-phenoml-instance.com"
 )
 
 
 async def main() -> None:
+    await client.initialize()  # Generate token from username/password
     await client.agent.create(
         name="name",
         prompts=["prompt_123", "prompt_456"],
