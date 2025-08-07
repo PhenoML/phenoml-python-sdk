@@ -89,7 +89,8 @@ class AsyncPhenoMLClient(Asyncphenoml):
             raise ValueError("Must provide 'base_url' when using username/password")
         
         # Create with temporary token if needed
-        super().__init__(token=token or (lambda: ""), **kwargs)
+        self._current_token = ""
+        super().__init__(token=token or (lambda: self._current_token), **kwargs)
     
     async def initialize(self) -> None:
         """Generate token if username/password was provided."""
@@ -97,7 +98,7 @@ class AsyncPhenoMLClient(Asyncphenoml):
             token = await self._generate_token()
             # Update the token on the existing instance instead of recreating
             # This is a workaround since we can't easily recreate the instance
-            self._token = token
+            self._current_token = token
     
     async def _generate_token(self) -> str:
         """Generate token using the auth client."""
