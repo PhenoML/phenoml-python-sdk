@@ -20,11 +20,14 @@ A full reference for this library is available [here](https://github.com/fern-de
 Instantiate and use the client with the following:
 
 ```python
-from phenoml import phenoml
+from phenoml import Client
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = Client(
+    identity="your_identity",
+    password="your_password",
+    base_url="https://your-phenoml-instance.com"
 )
+
 client.agent.create(
     name="name",
     prompts=["prompt_123", "prompt_456"],
@@ -39,14 +42,17 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from phenoml import Asyncphenoml
+from phenoml import AsyncClient
 
-client = Asyncphenoml(
-    token="YOUR_TOKEN",
+client = AsyncClient(
+    identity="your_identity",
+    password="your_password",
+    base_url="https://your-phenoml-instance.com"
 )
 
 
 async def main() -> None:
+    await client.initialize()  # Generate token from identity/password
     await client.agent.create(
         name="name",
         prompts=["prompt_123", "prompt_456"],
