@@ -23,7 +23,7 @@ Instantiate and use the client with the following:
 from phenoml import Client
 
 client = Client(
-    identity="your_identity",
+    username="your_identity",
     password="your_password",
     base_url="https://your-phenoml-instance.com"
 )
@@ -45,14 +45,14 @@ import asyncio
 from phenoml import AsyncClient
 
 client = AsyncClient(
-    identity="your_identity",
+    username="your_identity",
     password="your_password",
     base_url="https://your-phenoml-instance.com"
 )
 
 
 async def main() -> None:
-    await client.initialize()  # Generate token from identity/password
+    await client.initialize()  # Generate token from username/password
     await client.agent.create(
         name="name",
         prompts=["prompt_123", "prompt_456"],

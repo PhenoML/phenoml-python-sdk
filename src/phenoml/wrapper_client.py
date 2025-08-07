@@ -13,37 +13,37 @@ from .core.client_wrapper import SyncClientWrapper, AsyncClientWrapper
 
 class PhenoMLClient(phenoml):
     """
-    Extends the base client with automatic token generation from identity/password.
+    Extends the base client with automatic token generation from username/password.
     """
     
     def __init__(
         self,
         *,
         token: Optional[Union[str, Callable[[], str]]] = None,
-        identity: Optional[str] = None,
+        username: Optional[str] = None,
         password: Optional[str] = None,
         **kwargs
     ):
         # Validate authentication
-        if token is None and (identity is None or password is None):
-            raise ValueError("Must provide either 'token' or both 'identity' and 'password'")
+        if token is None and (username is None or password is None):
+            raise ValueError("Must provide either 'token' or both 'username' and 'password'")
         
-        if token is not None and (identity is not None or password is not None):
-            raise ValueError("Cannot provide both 'token' and 'identity'/'password'")
+        if token is not None and (username is not None or password is not None):
+            raise ValueError("Cannot provide both 'token' and 'username'/'password'")
         
         # Generate token if needed
         if token is None:
-            if identity is None or password is None:
-                raise ValueError("Must provide both 'identity' and 'password'")
+            if username is None or password is None:
+                raise ValueError("Must provide both 'username' and 'password'")
             base_url = kwargs.get('base_url')
             if base_url is None:
-                raise ValueError("Must provide 'base_url' when using identity/password")
-            token = self._generate_token(identity, password, base_url)
+                raise ValueError("Must provide 'base_url' when using username/password")
+            token = self._generate_token(username, password, base_url)
         
         # Call parent constructor with the resolved token and all kwargs
         super().__init__(token=token, **kwargs)
     
-    def _generate_token(self, identity: str, password: str, base_url: str) -> str:
+    def _generate_token(self, username: str, password: str, base_url: str) -> str:
         """Generate token using the auth client."""
         # Create a simple client wrapper without authentication
         client_wrapper = SyncClientWrapper(
@@ -55,8 +55,8 @@ class PhenoMLClient(phenoml):
         # Create the auth client using the existing SDK
         auth_client = AuthtokenClient(client_wrapper=client_wrapper)
         
-        print(f"Generating token for {identity} using auth client")
-        response = auth_client.auth.generate_token(identity=identity, password=password)
+        print(f"Generating token for {username} using auth client")
+        response = auth_client.auth.generate_token(username=username, password=password)
         print(f"Token response: {response}")
         return response.token
 
@@ -70,30 +70,30 @@ class AsyncPhenoMLClient(Asyncphenoml):
         self,
         *,
         token: Optional[Union[str, Callable[[], str]]] = None,
-        identity: Optional[str] = None,
+        username: Optional[str] = None,
         password: Optional[str] = None,
         **kwargs
     ):
         # Validate authentication
-        if token is None and (identity is None or password is None):
-            raise ValueError("Must provide either 'token' or both 'identity' and 'password'")
+        if token is None and (username is None or password is None):
+            raise ValueError("Must provide either 'token' or both 'username' and 'password'")
         
-        if token is not None and (identity is not None or password is not None):
-            raise ValueError("Cannot provide both 'token' and 'identity'/'password'")
+        if token is not None and (username is not None or password is not None):
+            raise ValueError("Cannot provide both 'token' and 'username'/'password'")
         
         # Store for async token generation (needed for initialize)
-        self._identity = identity
+        self._username = username
         self._password = password
         self._base_url = kwargs.get('base_url')
         if self._base_url is None:
-            raise ValueError("Must provide 'base_url' when using identity/password")
+            raise ValueError("Must provide 'base_url' when using username/password")
         
         # Create with temporary token if needed
         super().__init__(token=token or (lambda: ""), **kwargs)
     
     async def initialize(self) -> None:
-        """Generate token if identity/password was provided."""
-        if self._identity and self._password:
+        """Generate token if username/password was provided."""
+        if self._username and self._password:
             token = await self._generate_token()
             # Update the token on the existing instance instead of recreating
             # This is a workaround since we can't easily recreate the instance
@@ -115,8 +115,8 @@ class AsyncPhenoMLClient(Asyncphenoml):
         # Create the auth client using the existing SDK
         auth_client = AsyncAuthtokenClient(client_wrapper=client_wrapper)
         
-        if self._identity is None or self._password is None:
-            raise ValueError("Identity and password must be provided")
+        if self._username is None or self._password is None:
+            raise ValueError("Username and password must be provided")
         
-        response = await auth_client.auth.generate_token(identity=self._identity, password=self._password)
+        response = await auth_client.auth.generate_token(username=self._username, password=self._password)
         return response.token 
