@@ -13,7 +13,7 @@ pip install phenoml
 
 ## Reference
 
-A full reference for this library is available [here](https://github.com/fern-demo/phenoml-python-sdk/blob/HEAD/./reference.md).
+A full reference for this library is available [here](https://github.com/phenoml/phenoml-python-sdk/blob/HEAD/./reference.md).
 
 ## Usage
 
