@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from .mcp_server.client import AsyncMcpServerClient, McpServerClient
 from .raw_client import AsyncRawToolsClient, RawToolsClient
 from .types.cohort_request_provider import CohortRequestProvider
 from .types.cohort_response import CohortResponse
@@ -21,6 +22,7 @@ OMIT = typing.cast(typing.Any, ...)
 class ToolsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawToolsClient(client_wrapper=client_wrapper)
+        self.mcp_server = McpServerClient(client_wrapper=client_wrapper)
 
     @property
     def with_raw_response(self) -> RawToolsClient:
@@ -196,6 +198,7 @@ class ToolsClient:
 class AsyncToolsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawToolsClient(client_wrapper=client_wrapper)
+        self.mcp_server = AsyncMcpServerClient(client_wrapper=client_wrapper)
 
     @property
     def with_raw_response(self) -> AsyncRawToolsClient:

@@ -5,7 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .agent_fhir_config import AgentFhirConfig
-from .agent_template_provider import AgentTemplateProvider
+from .agent_provider import AgentProvider
 
 
 class AgentTemplate(UniversalBaseModel):
@@ -29,6 +29,11 @@ class AgentTemplate(UniversalBaseModel):
     Array of prompt IDs used by this agent
     """
 
+    tools: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Array of MCP server tool IDs used by this agent
+    """
+
     is_active: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether the agent is active
@@ -39,7 +44,7 @@ class AgentTemplate(UniversalBaseModel):
     Tags for categorizing the agent
     """
 
-    provider: typing.Optional[AgentTemplateProvider] = pydantic.Field(default=None)
+    provider: typing.Optional[AgentProvider] = pydantic.Field(default=None)
     """
     FHIR provider type - can be a single provider or array of providers
     """

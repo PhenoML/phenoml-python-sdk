@@ -84,6 +84,14 @@ client.agent.create(
 <dl>
 <dd>
 
+**tools:** `typing.Optional[typing.Sequence[str]]` — Array of MCP server tool IDs to use for this agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **tags:** `typing.Optional[typing.Sequence[str]]` — Tags for categorizing the agent
     
 </dd>
@@ -92,7 +100,7 @@ client.agent.create(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider type - can be a single provider or array of providers
+**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
     
 </dd>
 </dl>
@@ -348,6 +356,14 @@ client.agent.update(
 <dl>
 <dd>
 
+**tools:** `typing.Optional[typing.Sequence[str]]` — Array of MCP server tool IDs to use for this agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **is_active:** `typing.Optional[bool]` — Whether the agent is active
     
 </dd>
@@ -364,7 +380,7 @@ client.agent.update(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentUpdateRequestProvider]` — FHIR provider type - can be a single provider or array of providers
+**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
     
 </dd>
 </dl>
@@ -660,8 +676,7 @@ client.agent.chat(
 </dl>
 </details>
 
-## Agent Prompts
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>()</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -673,7 +688,7 @@ client.agent.chat(
 <dl>
 <dd>
 
-Retrieves a list of agent prompts belonging to the authenticated user
+Retrieves a list of chat messages for a given chat session
 </dd>
 </dl>
 </dd>
@@ -693,7 +708,9 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.agent.prompts.list()
+client.agent.get_chat_messages(
+    chat_session_id="chat_session_id",
+)
 
 ```
 </dd>
@@ -705,6 +722,38 @@ client.agent.prompts.list()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**chat_session_id:** `str` — Chat session ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**num_messages:** `typing.Optional[int]` — Number of messages to return
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `typing.Optional[str]` — Filter by role
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[AgentGetChatMessagesRequestOrder]` — Order of messages
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -721,6 +770,7 @@ client.agent.prompts.list()
 </dl>
 </details>
 
+## Agent Prompts
 <details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...)</code></summary>
 <dl>
 <dd>
@@ -817,6 +867,66 @@ client.agent.prompts.create(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of agent prompts belonging to the authenticated user
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.agent.prompts.list()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -2312,6 +2422,576 @@ client.tools.analyze_cohort(
 <dd>
 
 **meta:** `typing.Optional[FhirClientConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tools McpServer
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new MCP server
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.create(
+    name="My MCP Server",
+    mcp_server_url="https://mcp.example.com",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` — Name of the MCP server
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mcp_server_url:** `str` — URL of the MCP server
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists all MCP servers for a specific user
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.list()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a MCP server by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.get(
+    mcp_server_id="mcp_server_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_id:** `str` — ID of the MCP server to retrieve
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a MCP server by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.delete(
+    mcp_server_id="mcp_server_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_id:** `str` — ID of the MCP server to delete
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tools McpServer Tools
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists all MCP server tools for a specific MCP server
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.tools.list(
+    mcp_server_id="mcp_server_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_id:** `str` — ID of the MCP server to list tools for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a MCP server tool by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.tools.get(
+    mcp_server_tool_id="mcp_server_tool_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_tool_id:** `str` — ID of the MCP server tool to retrieve
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a MCP server tool by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.tools.delete(
+    mcp_server_tool_id="mcp_server_tool_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_tool_id:** `str` — ID of the MCP server tool to delete
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Calls a MCP server tool
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.tools.mcp_server.tools.call(
+    mcp_server_tool_id="mcp_server_tool_id",
+    arguments={"title": "PhenoML Agent API"},
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_tool_id:** `str` — ID of the MCP server tool to call
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**arguments:** `typing.Dict[str, typing.Optional[typing.Any]]` — Arguments to pass to the MCP server tool
     
 </dd>
 </dl>
