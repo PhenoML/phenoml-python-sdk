@@ -3,3 +3,4 @@ src/phenoml/authtoken/auth/raw_client.py
 src/phenoml/wrapper_client.py
 src/phenoml/__init__.py
 README.md
+LICENSE
