@@ -16,12 +16,13 @@ from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.agent_chat_response import AgentChatResponse
-from .types.agent_create_request_provider import AgentCreateRequestProvider
 from .types.agent_delete_response import AgentDeleteResponse
 from .types.agent_fhir_config import AgentFhirConfig
+from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
+from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
 from .types.agent_list_response import AgentListResponse
+from .types.agent_provider import AgentProvider
 from .types.agent_response import AgentResponse
-from .types.agent_update_request_provider import AgentUpdateRequestProvider
 from .types.chat_fhir_client_config import ChatFhirClientConfig
 from .types.json_patch import JsonPatch
 
@@ -40,8 +41,9 @@ class RawAgentClient:
         prompts: typing.Sequence[str],
         is_active: bool,
         description: typing.Optional[str] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
@@ -62,10 +64,13 @@ class RawAgentClient:
         description : typing.Optional[str]
             Agent description
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentCreateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -85,10 +90,11 @@ class RawAgentClient:
                 "name": name,
                 "description": description,
                 "prompts": prompts,
+                "tools": tools,
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
+                    object_=provider, annotation=AgentProvider, direction="write"
                 ),
                 "meta": convert_and_respect_annotation_metadata(
                     object_=meta, annotation=AgentFhirConfig, direction="write"
@@ -330,9 +336,10 @@ class RawAgentClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         prompts: typing.Optional[typing.Sequence[str]] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentUpdateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
@@ -353,13 +360,16 @@ class RawAgentClient:
         prompts : typing.Optional[typing.Sequence[str]]
             Array of prompt IDs to use for this agent
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         is_active : typing.Optional[bool]
             Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentUpdateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -379,10 +389,11 @@ class RawAgentClient:
                 "name": name,
                 "description": description,
                 "prompts": prompts,
+                "tools": tools,
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentUpdateRequestProvider, direction="write"
+                    object_=provider, annotation=AgentProvider, direction="write"
                 ),
                 "meta": convert_and_respect_annotation_metadata(
                     object_=meta, annotation=AgentFhirConfig, direction="write"
@@ -763,6 +774,99 @@ class RawAgentClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def get_chat_messages(
+        self,
+        *,
+        chat_session_id: str,
+        num_messages: typing.Optional[int] = None,
+        role: typing.Optional[str] = None,
+        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AgentGetChatMessagesResponse]:
+        """
+        Retrieves a list of chat messages for a given chat session
+
+        Parameters
+        ----------
+        chat_session_id : str
+            Chat session ID
+
+        num_messages : typing.Optional[int]
+            Number of messages to return
+
+        role : typing.Optional[str]
+            Filter by role
+
+        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+            Order of messages
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[AgentGetChatMessagesResponse]
+            Chat messages retrieved successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "agent/chat/messages",
+            method="GET",
+            params={
+                "chat_session_id": chat_session_id,
+                "num_messages": num_messages,
+                "role": role,
+                "order": order,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AgentGetChatMessagesResponse,
+                    parse_obj_as(
+                        type_=AgentGetChatMessagesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawAgentClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -775,8 +879,9 @@ class AsyncRawAgentClient:
         prompts: typing.Sequence[str],
         is_active: bool,
         description: typing.Optional[str] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
@@ -797,10 +902,13 @@ class AsyncRawAgentClient:
         description : typing.Optional[str]
             Agent description
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentCreateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -820,10 +928,11 @@ class AsyncRawAgentClient:
                 "name": name,
                 "description": description,
                 "prompts": prompts,
+                "tools": tools,
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
+                    object_=provider, annotation=AgentProvider, direction="write"
                 ),
                 "meta": convert_and_respect_annotation_metadata(
                     object_=meta, annotation=AgentFhirConfig, direction="write"
@@ -1067,9 +1176,10 @@ class AsyncRawAgentClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         prompts: typing.Optional[typing.Sequence[str]] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentUpdateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
@@ -1090,13 +1200,16 @@ class AsyncRawAgentClient:
         prompts : typing.Optional[typing.Sequence[str]]
             Array of prompt IDs to use for this agent
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         is_active : typing.Optional[bool]
             Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentUpdateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -1116,10 +1229,11 @@ class AsyncRawAgentClient:
                 "name": name,
                 "description": description,
                 "prompts": prompts,
+                "tools": tools,
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentUpdateRequestProvider, direction="write"
+                    object_=provider, annotation=AgentProvider, direction="write"
                 ),
                 "meta": convert_and_respect_annotation_metadata(
                     object_=meta, annotation=AgentFhirConfig, direction="write"
@@ -1462,6 +1576,99 @@ class AsyncRawAgentClient:
                         ),
                     ),
                 )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_chat_messages(
+        self,
+        *,
+        chat_session_id: str,
+        num_messages: typing.Optional[int] = None,
+        role: typing.Optional[str] = None,
+        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[AgentGetChatMessagesResponse]:
+        """
+        Retrieves a list of chat messages for a given chat session
+
+        Parameters
+        ----------
+        chat_session_id : str
+            Chat session ID
+
+        num_messages : typing.Optional[int]
+            Number of messages to return
+
+        role : typing.Optional[str]
+            Filter by role
+
+        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+            Order of messages
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[AgentGetChatMessagesResponse]
+            Chat messages retrieved successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "agent/chat/messages",
+            method="GET",
+            params={
+                "chat_session_id": chat_session_id,
+                "num_messages": num_messages,
+                "role": role,
+                "order": order,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AgentGetChatMessagesResponse,
+                    parse_obj_as(
+                        type_=AgentGetChatMessagesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),

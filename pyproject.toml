@@ -3,7 +3,7 @@ name = "phenoml"
 
 [tool.poetry]
 name = "phenoml"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 readme = "README.md"
 authors = []
@@ -31,7 +31,7 @@ packages = [
 ]
 
 [project.urls]
-Repository = 'https://github.com/fern-demo/phenoml-python-sdk'
+Repository = 'https://github.com/phenoml/phenoml-python-sdk'
 
 [tool.poetry.dependencies]
 python = "^3.8"

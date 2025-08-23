@@ -7,12 +7,13 @@ from ..core.request_options import RequestOptions
 from .prompts.client import AsyncPromptsClient, PromptsClient
 from .raw_client import AsyncRawAgentClient, RawAgentClient
 from .types.agent_chat_response import AgentChatResponse
-from .types.agent_create_request_provider import AgentCreateRequestProvider
 from .types.agent_delete_response import AgentDeleteResponse
 from .types.agent_fhir_config import AgentFhirConfig
+from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
+from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
 from .types.agent_list_response import AgentListResponse
+from .types.agent_provider import AgentProvider
 from .types.agent_response import AgentResponse
-from .types.agent_update_request_provider import AgentUpdateRequestProvider
 from .types.chat_fhir_client_config import ChatFhirClientConfig
 from .types.json_patch import JsonPatch
 
@@ -43,8 +44,9 @@ class AgentClient:
         prompts: typing.Sequence[str],
         is_active: bool,
         description: typing.Optional[str] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -65,10 +67,13 @@ class AgentClient:
         description : typing.Optional[str]
             Agent description
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentCreateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -99,6 +104,7 @@ class AgentClient:
             prompts=prompts,
             is_active=is_active,
             description=description,
+            tools=tools,
             tags=tags,
             provider=provider,
             meta=meta,
@@ -182,9 +188,10 @@ class AgentClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         prompts: typing.Optional[typing.Sequence[str]] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentUpdateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -205,13 +212,16 @@ class AgentClient:
         prompts : typing.Optional[typing.Sequence[str]]
             Array of prompt IDs to use for this agent
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         is_active : typing.Optional[bool]
             Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentUpdateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -240,6 +250,7 @@ class AgentClient:
             name=name,
             description=description,
             prompts=prompts,
+            tools=tools,
             is_active=is_active,
             tags=tags,
             provider=provider,
@@ -391,6 +402,60 @@ class AgentClient:
         )
         return _response.data
 
+    def get_chat_messages(
+        self,
+        *,
+        chat_session_id: str,
+        num_messages: typing.Optional[int] = None,
+        role: typing.Optional[str] = None,
+        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AgentGetChatMessagesResponse:
+        """
+        Retrieves a list of chat messages for a given chat session
+
+        Parameters
+        ----------
+        chat_session_id : str
+            Chat session ID
+
+        num_messages : typing.Optional[int]
+            Number of messages to return
+
+        role : typing.Optional[str]
+            Filter by role
+
+        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+            Order of messages
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AgentGetChatMessagesResponse
+            Chat messages retrieved successfully
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.agent.get_chat_messages(
+            chat_session_id="chat_session_id",
+        )
+        """
+        _response = self._raw_client.get_chat_messages(
+            chat_session_id=chat_session_id,
+            num_messages=num_messages,
+            role=role,
+            order=order,
+            request_options=request_options,
+        )
+        return _response.data
+
 
 class AsyncAgentClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -415,8 +480,9 @@ class AsyncAgentClient:
         prompts: typing.Sequence[str],
         is_active: bool,
         description: typing.Optional[str] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -437,10 +503,13 @@ class AsyncAgentClient:
         description : typing.Optional[str]
             Agent description
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentCreateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -479,6 +548,7 @@ class AsyncAgentClient:
             prompts=prompts,
             is_active=is_active,
             description=description,
+            tools=tools,
             tags=tags,
             provider=provider,
             meta=meta,
@@ -578,9 +648,10 @@ class AsyncAgentClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         prompts: typing.Optional[typing.Sequence[str]] = OMIT,
+        tools: typing.Optional[typing.Sequence[str]] = OMIT,
         is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentUpdateRequestProvider] = OMIT,
+        provider: typing.Optional[AgentProvider] = OMIT,
         meta: typing.Optional[AgentFhirConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -601,13 +672,16 @@ class AsyncAgentClient:
         prompts : typing.Optional[typing.Sequence[str]]
             Array of prompt IDs to use for this agent
 
+        tools : typing.Optional[typing.Sequence[str]]
+            Array of MCP server tool IDs to use for this agent
+
         is_active : typing.Optional[bool]
             Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentUpdateRequestProvider]
+        provider : typing.Optional[AgentProvider]
             FHIR provider type - can be a single provider or array of providers
 
         meta : typing.Optional[AgentFhirConfig]
@@ -644,6 +718,7 @@ class AsyncAgentClient:
             name=name,
             description=description,
             prompts=prompts,
+            tools=tools,
             is_active=is_active,
             tags=tags,
             provider=provider,
@@ -815,6 +890,68 @@ class AsyncAgentClient:
             context=context,
             session_id=session_id,
             meta=meta,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_chat_messages(
+        self,
+        *,
+        chat_session_id: str,
+        num_messages: typing.Optional[int] = None,
+        role: typing.Optional[str] = None,
+        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AgentGetChatMessagesResponse:
+        """
+        Retrieves a list of chat messages for a given chat session
+
+        Parameters
+        ----------
+        chat_session_id : str
+            Chat session ID
+
+        num_messages : typing.Optional[int]
+            Number of messages to return
+
+        role : typing.Optional[str]
+            Filter by role
+
+        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+            Order of messages
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AgentGetChatMessagesResponse
+            Chat messages retrieved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.agent.get_chat_messages(
+                chat_session_id="chat_session_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_chat_messages(
+            chat_session_id=chat_session_id,
+            num_messages=num_messages,
+            role=role,
+            order=order,
             request_options=request_options,
         )
         return _response.data

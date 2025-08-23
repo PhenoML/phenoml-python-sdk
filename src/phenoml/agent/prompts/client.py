@@ -30,32 +30,6 @@ class PromptsClient:
         """
         return self._raw_client
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
-        """
-        Retrieves a list of agent prompts belonging to the authenticated user
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PromptsListResponse
-            Prompts retrieved successfully
-
-        Examples
-        --------
-        from phenoml import phenoml
-
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
-        client.agent.prompts.list()
-        """
-        _response = self._raw_client.list(request_options=request_options)
-        return _response.data
-
     def create(
         self,
         *,
@@ -120,6 +94,32 @@ class PromptsClient:
             tags=tags,
             request_options=request_options,
         )
+        return _response.data
+
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
+        """
+        Retrieves a list of agent prompts belonging to the authenticated user
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PromptsListResponse
+            Prompts retrieved successfully
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.agent.prompts.list()
+        """
+        _response = self._raw_client.list(request_options=request_options)
         return _response.data
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentPromptsResponse:
@@ -347,40 +347,6 @@ class AsyncPromptsClient:
         """
         return self._raw_client
 
-    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
-        """
-        Retrieves a list of agent prompts belonging to the authenticated user
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        PromptsListResponse
-            Prompts retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import Asyncphenoml
-
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.agent.prompts.list()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.list(request_options=request_options)
-        return _response.data
-
     async def create(
         self,
         *,
@@ -453,6 +419,40 @@ class AsyncPromptsClient:
             tags=tags,
             request_options=request_options,
         )
+        return _response.data
+
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
+        """
+        Retrieves a list of agent prompts belonging to the authenticated user
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        PromptsListResponse
+            Prompts retrieved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.agent.prompts.list()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list(request_options=request_options)
         return _response.data
 
     async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentPromptsResponse:
