@@ -16,14 +16,12 @@ from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.agent_chat_response import AgentChatResponse
+from .types.agent_create_request_provider import AgentCreateRequestProvider
 from .types.agent_delete_response import AgentDeleteResponse
-from .types.agent_fhir_config import AgentFhirConfig
 from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
 from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
 from .types.agent_list_response import AgentListResponse
-from .types.agent_provider import AgentProvider
 from .types.agent_response import AgentResponse
-from .types.chat_fhir_client_config import ChatFhirClientConfig
 from .types.json_patch import JsonPatch
 
 # this is used as the default value for optional parameters
@@ -43,8 +41,7 @@ class RawAgentClient:
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentProvider] = OMIT,
-        meta: typing.Optional[AgentFhirConfig] = OMIT,
+        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
         """
@@ -70,10 +67,8 @@ class RawAgentClient:
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentProvider]
-            FHIR provider type - can be a single provider or array of providers
-
-        meta : typing.Optional[AgentFhirConfig]
+        provider : typing.Optional[AgentCreateRequestProvider]
+            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -94,10 +89,7 @@ class RawAgentClient:
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentProvider, direction="write"
-                ),
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=AgentFhirConfig, direction="write"
+                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
                 ),
             },
             headers={
@@ -333,14 +325,13 @@ class RawAgentClient:
         self,
         id: str,
         *,
-        name: typing.Optional[str] = OMIT,
+        name: str,
+        prompts: typing.Sequence[str],
+        is_active: bool,
         description: typing.Optional[str] = OMIT,
-        prompts: typing.Optional[typing.Sequence[str]] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentProvider] = OMIT,
-        meta: typing.Optional[AgentFhirConfig] = OMIT,
+        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
         """
@@ -351,28 +342,26 @@ class RawAgentClient:
         id : str
             Agent ID
 
-        name : typing.Optional[str]
+        name : str
             Agent name
+
+        prompts : typing.Sequence[str]
+            Array of prompt IDs to use for this agent
+
+        is_active : bool
+            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
 
-        prompts : typing.Optional[typing.Sequence[str]]
-            Array of prompt IDs to use for this agent
-
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
-
-        is_active : typing.Optional[bool]
-            Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentProvider]
-            FHIR provider type - can be a single provider or array of providers
-
-        meta : typing.Optional[AgentFhirConfig]
+        provider : typing.Optional[AgentCreateRequestProvider]
+            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -393,10 +382,7 @@ class RawAgentClient:
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentProvider, direction="write"
-                ),
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=AgentFhirConfig, direction="write"
+                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
                 ),
             },
             headers={
@@ -666,7 +652,6 @@ class RawAgentClient:
         agent_id: str,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[ChatFhirClientConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentChatResponse]:
         """
@@ -686,9 +671,6 @@ class RawAgentClient:
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
 
-        meta : typing.Optional[ChatFhirClientConfig]
-            Optional user-specific FHIR configuration overrides
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -705,9 +687,6 @@ class RawAgentClient:
                 "context": context,
                 "session_id": session_id,
                 "agent_id": agent_id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=ChatFhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -881,8 +860,7 @@ class AsyncRawAgentClient:
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentProvider] = OMIT,
-        meta: typing.Optional[AgentFhirConfig] = OMIT,
+        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
         """
@@ -908,10 +886,8 @@ class AsyncRawAgentClient:
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentProvider]
-            FHIR provider type - can be a single provider or array of providers
-
-        meta : typing.Optional[AgentFhirConfig]
+        provider : typing.Optional[AgentCreateRequestProvider]
+            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -932,10 +908,7 @@ class AsyncRawAgentClient:
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentProvider, direction="write"
-                ),
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=AgentFhirConfig, direction="write"
+                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
                 ),
             },
             headers={
@@ -1173,14 +1146,13 @@ class AsyncRawAgentClient:
         self,
         id: str,
         *,
-        name: typing.Optional[str] = OMIT,
+        name: str,
+        prompts: typing.Sequence[str],
+        is_active: bool,
         description: typing.Optional[str] = OMIT,
-        prompts: typing.Optional[typing.Sequence[str]] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentProvider] = OMIT,
-        meta: typing.Optional[AgentFhirConfig] = OMIT,
+        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
         """
@@ -1191,28 +1163,26 @@ class AsyncRawAgentClient:
         id : str
             Agent ID
 
-        name : typing.Optional[str]
+        name : str
             Agent name
+
+        prompts : typing.Sequence[str]
+            Array of prompt IDs to use for this agent
+
+        is_active : bool
+            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
 
-        prompts : typing.Optional[typing.Sequence[str]]
-            Array of prompt IDs to use for this agent
-
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
-
-        is_active : typing.Optional[bool]
-            Whether the agent is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
-        provider : typing.Optional[AgentProvider]
-            FHIR provider type - can be a single provider or array of providers
-
-        meta : typing.Optional[AgentFhirConfig]
+        provider : typing.Optional[AgentCreateRequestProvider]
+            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1233,10 +1203,7 @@ class AsyncRawAgentClient:
                 "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentProvider, direction="write"
-                ),
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=AgentFhirConfig, direction="write"
+                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
                 ),
             },
             headers={
@@ -1506,7 +1473,6 @@ class AsyncRawAgentClient:
         agent_id: str,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[ChatFhirClientConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentChatResponse]:
         """
@@ -1526,9 +1492,6 @@ class AsyncRawAgentClient:
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
 
-        meta : typing.Optional[ChatFhirClientConfig]
-            Optional user-specific FHIR configuration overrides
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1545,9 +1508,6 @@ class AsyncRawAgentClient:
                 "context": context,
                 "session_id": session_id,
                 "agent_id": agent_id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=ChatFhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",

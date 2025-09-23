@@ -4,16 +4,11 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .agent_template_provider import AgentTemplateProvider
+from .agent_create_request_provider import AgentCreateRequestProvider
 
 
-class AgentTemplate(UniversalBaseModel):
-    id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Agent ID
-    """
-
-    name: typing.Optional[str] = pydantic.Field(default=None)
+class AgentCreateRequest(UniversalBaseModel):
+    name: str = pydantic.Field()
     """
     Agent name
     """
@@ -23,17 +18,17 @@ class AgentTemplate(UniversalBaseModel):
     Agent description
     """
 
-    prompts: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    prompts: typing.List[str] = pydantic.Field()
     """
-    Array of prompt IDs used by this agent
+    Array of prompt IDs to use for this agent
     """
 
     tools: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Array of MCP server tool IDs used by this agent
+    Array of MCP server tool IDs to use for this agent
     """
 
-    is_active: typing.Optional[bool] = pydantic.Field(default=None)
+    is_active: bool = pydantic.Field()
     """
     Whether the agent is active
     """
@@ -43,7 +38,7 @@ class AgentTemplate(UniversalBaseModel):
     Tags for categorizing the agent
     """
 
-    provider: typing.Optional[AgentTemplateProvider] = pydantic.Field(default=None)
+    provider: typing.Optional[AgentCreateRequestProvider] = pydantic.Field(default=None)
     """
     FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     """
