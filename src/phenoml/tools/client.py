@@ -6,13 +6,9 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .mcp_server.client import AsyncMcpServerClient, McpServerClient
 from .raw_client import AsyncRawToolsClient, RawToolsClient
-from .types.cohort_request_provider import CohortRequestProvider
 from .types.cohort_response import CohortResponse
-from .types.fhir_client_config import FhirClientConfig
-from .types.lang2fhir_and_create_request_provider import Lang2FhirAndCreateRequestProvider
 from .types.lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
-from .types.lang2fhir_and_search_request_provider import Lang2FhirAndSearchRequestProvider
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
 
 # this is used as the default value for optional parameters
@@ -40,8 +36,7 @@ class ToolsClient:
         *,
         resource: Lang2FhirAndCreateRequestResource,
         text: str,
-        provider: typing.Optional[Lang2FhirAndCreateRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirAndCreateResponse:
         """
@@ -55,10 +50,8 @@ class ToolsClient:
         text : str
             Natural language text to convert to FHIR resource
 
-        provider : typing.Optional[Lang2FhirAndCreateRequestProvider]
-            FHIR provider to use for storing the resource
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -81,7 +74,7 @@ class ToolsClient:
         )
         """
         _response = self._raw_client.create_fhir_resource(
-            resource=resource, text=text, provider=provider, meta=meta, request_options=request_options
+            resource=resource, text=text, provider=provider, request_options=request_options
         )
         return _response.data
 
@@ -92,8 +85,7 @@ class ToolsClient:
         patient_id: typing.Optional[str] = OMIT,
         practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
-        provider: typing.Optional[Lang2FhirAndSearchRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirAndSearchResponse:
         """
@@ -113,10 +105,8 @@ class ToolsClient:
         count : typing.Optional[int]
             Maximum number of results to return
 
-        provider : typing.Optional[Lang2FhirAndSearchRequestProvider]
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -143,18 +133,12 @@ class ToolsClient:
             practitioner_id=practitioner_id,
             count=count,
             provider=provider,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
 
     def analyze_cohort(
-        self,
-        *,
-        text: str,
-        provider: CohortRequestProvider,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, text: str, provider: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CohortResponse:
         """
         Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria
@@ -164,10 +148,8 @@ class ToolsClient:
         text : str
             Natural language text describing the patient cohort criteria
 
-        provider : CohortRequestProvider
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : str
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -186,12 +168,10 @@ class ToolsClient:
         )
         client.tools.analyze_cohort(
             text="female patients over 20 with diabetes but not hypertension",
-            provider="medplum",
+            provider="550e8400-e29b-41d4-a716-446655440000",
         )
         """
-        _response = self._raw_client.analyze_cohort(
-            text=text, provider=provider, meta=meta, request_options=request_options
-        )
+        _response = self._raw_client.analyze_cohort(text=text, provider=provider, request_options=request_options)
         return _response.data
 
 
@@ -216,8 +196,7 @@ class AsyncToolsClient:
         *,
         resource: Lang2FhirAndCreateRequestResource,
         text: str,
-        provider: typing.Optional[Lang2FhirAndCreateRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirAndCreateResponse:
         """
@@ -231,10 +210,8 @@ class AsyncToolsClient:
         text : str
             Natural language text to convert to FHIR resource
 
-        provider : typing.Optional[Lang2FhirAndCreateRequestProvider]
-            FHIR provider to use for storing the resource
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -265,7 +242,7 @@ class AsyncToolsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_fhir_resource(
-            resource=resource, text=text, provider=provider, meta=meta, request_options=request_options
+            resource=resource, text=text, provider=provider, request_options=request_options
         )
         return _response.data
 
@@ -276,8 +253,7 @@ class AsyncToolsClient:
         patient_id: typing.Optional[str] = OMIT,
         practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
-        provider: typing.Optional[Lang2FhirAndSearchRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirAndSearchResponse:
         """
@@ -297,10 +273,8 @@ class AsyncToolsClient:
         count : typing.Optional[int]
             Maximum number of results to return
 
-        provider : typing.Optional[Lang2FhirAndSearchRequestProvider]
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -335,18 +309,12 @@ class AsyncToolsClient:
             practitioner_id=practitioner_id,
             count=count,
             provider=provider,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
 
     async def analyze_cohort(
-        self,
-        *,
-        text: str,
-        provider: CohortRequestProvider,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, text: str, provider: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CohortResponse:
         """
         Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria
@@ -356,10 +324,8 @@ class AsyncToolsClient:
         text : str
             Natural language text describing the patient cohort criteria
 
-        provider : CohortRequestProvider
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : str
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -383,13 +349,11 @@ class AsyncToolsClient:
         async def main() -> None:
             await client.tools.analyze_cohort(
                 text="female patients over 20 with diabetes but not hypertension",
-                provider="medplum",
+                provider="550e8400-e29b-41d4-a716-446655440000",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.analyze_cohort(
-            text=text, provider=provider, meta=meta, request_options=request_options
-        )
+        _response = await self._raw_client.analyze_cohort(text=text, provider=provider, request_options=request_options)
         return _response.data

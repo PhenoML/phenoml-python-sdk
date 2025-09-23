@@ -100,15 +100,7 @@ client.agent.create(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[AgentFhirConfig]` 
+**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>
@@ -308,6 +300,9 @@ client = phenoml(
 )
 client.agent.update(
     id="id",
+    name="name",
+    prompts=["prompt_123", "prompt_456"],
+    is_active=True,
 )
 
 ```
@@ -332,7 +327,23 @@ client.agent.update(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Agent name
+**name:** `str` — Agent name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prompts:** `typing.Sequence[str]` — Array of prompt IDs to use for this agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `bool` — Whether the agent is active
     
 </dd>
 </dl>
@@ -348,23 +359,7 @@ client.agent.update(
 <dl>
 <dd>
 
-**prompts:** `typing.Optional[typing.Sequence[str]]` — Array of prompt IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **tools:** `typing.Optional[typing.Sequence[str]]` — Array of MCP server tool IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `typing.Optional[bool]` — Whether the agent is active
     
 </dd>
 </dl>
@@ -380,15 +375,7 @@ client.agent.update(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[AgentFhirConfig]` 
+**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>
@@ -649,14 +636,6 @@ client.agent.chat(
 <dd>
 
 **session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[ChatFhirClientConfig]` — Optional user-specific FHIR configuration overrides
     
 </dd>
 </dl>
@@ -2216,15 +2195,7 @@ client.tools.create_fhir_resource(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[Lang2FhirAndCreateRequestProvider]` — FHIR provider to use for storing the resource
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>
@@ -2326,15 +2297,7 @@ client.tools.search_fhir_resources(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[Lang2FhirAndSearchRequestProvider]` — FHIR provider to use for searching
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>
@@ -2388,7 +2351,7 @@ client = phenoml(
 )
 client.tools.analyze_cohort(
     text="female patients over 20 with diabetes but not hypertension",
-    provider="medplum",
+    provider="550e8400-e29b-41d4-a716-446655440000",
 )
 
 ```
@@ -2413,15 +2376,7 @@ client.tools.analyze_cohort(
 <dl>
 <dd>
 
-**provider:** `CohortRequestProvider` — FHIR provider to use for searching
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `str` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>
