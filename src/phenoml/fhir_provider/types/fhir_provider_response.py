@@ -4,22 +4,13 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .fhir_provider_template import FhirProviderTemplate
 
 
-class AgentFhirConfig(UniversalBaseModel):
-    """
-    Agent-specific FHIR configuration (excludes user-specific fields)
-    """
-
-    fhir_store_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    FHIR store ID for Google Healthcare provider
-    """
-
-    instance_name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Instance name for multi-instance providers
-    """
+class FhirProviderResponse(UniversalBaseModel):
+    success: typing.Optional[bool] = None
+    message: typing.Optional[str] = None
+    data: typing.Optional[FhirProviderTemplate] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

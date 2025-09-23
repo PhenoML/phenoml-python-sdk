@@ -6,19 +6,24 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class FhirClientConfig(UniversalBaseModel):
+class ErrorResponse(UniversalBaseModel):
     """
-    Provider-specific configuration and metadata
-    """
-
-    fhir_store_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    FHIR store ID for Google Healthcare provider
+    Standard error response structure
     """
 
-    on_behalf_of_email: typing.Optional[str] = pydantic.Field(default=None)
+    message: str = pydantic.Field()
     """
-    Email address to use for On-Behalf-Of requests (Medplum only). If provided, the request will be made on behalf of the Patient or Practitioner with this email address.
+    Human-readable error message
+    """
+
+    code: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    HTTP status code
+    """
+
+    data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    Additional error details
     """
 
     if IS_PYDANTIC_V2:

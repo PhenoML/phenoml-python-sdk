@@ -9,6 +9,8 @@ from .cohort.client import AsyncCohortClient, CohortClient
 from .construe.client import AsyncConstrueClient, ConstrueClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import phenomlEnvironment
+from .fhir.client import AsyncFhirClient, FhirClient
+from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
 from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
 from .tools.client import AsyncToolsClient, ToolsClient
 
@@ -82,6 +84,8 @@ class phenoml:
         self.authtoken = AuthtokenClient(client_wrapper=self._client_wrapper)
         self.cohort = CohortClient(client_wrapper=self._client_wrapper)
         self.construe = ConstrueClient(client_wrapper=self._client_wrapper)
+        self.fhir = FhirClient(client_wrapper=self._client_wrapper)
+        self.fhir_provider = FhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = Lang2FhirClient(client_wrapper=self._client_wrapper)
         self.tools = ToolsClient(client_wrapper=self._client_wrapper)
 
@@ -155,6 +159,8 @@ class Asyncphenoml:
         self.authtoken = AsyncAuthtokenClient(client_wrapper=self._client_wrapper)
         self.cohort = AsyncCohortClient(client_wrapper=self._client_wrapper)
         self.construe = AsyncConstrueClient(client_wrapper=self._client_wrapper)
+        self.fhir = AsyncFhirClient(client_wrapper=self._client_wrapper)
+        self.fhir_provider = AsyncFhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = AsyncLang2FhirClient(client_wrapper=self._client_wrapper)
         self.tools = AsyncToolsClient(client_wrapper=self._client_wrapper)
 

@@ -3,13 +3,9 @@
 # isort: skip_file
 
 from .types import (
-    CohortRequestProvider,
     CohortResponse,
-    FhirClientConfig,
-    Lang2FhirAndCreateRequestProvider,
     Lang2FhirAndCreateRequestResource,
     Lang2FhirAndCreateResponse,
-    Lang2FhirAndSearchRequestProvider,
     Lang2FhirAndSearchResponse,
     McpServerResponse,
     McpServerResponseData,
@@ -23,16 +19,12 @@ from . import mcp_server
 
 __all__ = [
     "BadRequestError",
-    "CohortRequestProvider",
     "CohortResponse",
     "FailedDependencyError",
-    "FhirClientConfig",
     "ForbiddenError",
     "InternalServerError",
-    "Lang2FhirAndCreateRequestProvider",
     "Lang2FhirAndCreateRequestResource",
     "Lang2FhirAndCreateResponse",
-    "Lang2FhirAndSearchRequestProvider",
     "Lang2FhirAndSearchResponse",
     "McpServerResponse",
     "McpServerResponseData",

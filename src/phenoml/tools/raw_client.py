@@ -8,19 +8,14 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
 from .errors.failed_dependency_error import FailedDependencyError
 from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
-from .types.cohort_request_provider import CohortRequestProvider
 from .types.cohort_response import CohortResponse
-from .types.fhir_client_config import FhirClientConfig
-from .types.lang2fhir_and_create_request_provider import Lang2FhirAndCreateRequestProvider
 from .types.lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
-from .types.lang2fhir_and_search_request_provider import Lang2FhirAndSearchRequestProvider
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
 
 # this is used as the default value for optional parameters
@@ -36,8 +31,7 @@ class RawToolsClient:
         *,
         resource: Lang2FhirAndCreateRequestResource,
         text: str,
-        provider: typing.Optional[Lang2FhirAndCreateRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Lang2FhirAndCreateResponse]:
         """
@@ -51,10 +45,8 @@ class RawToolsClient:
         text : str
             Natural language text to convert to FHIR resource
 
-        provider : typing.Optional[Lang2FhirAndCreateRequestProvider]
-            FHIR provider to use for storing the resource
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -71,9 +63,6 @@ class RawToolsClient:
                 "resource": resource,
                 "text": text,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -158,8 +147,7 @@ class RawToolsClient:
         patient_id: typing.Optional[str] = OMIT,
         practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
-        provider: typing.Optional[Lang2FhirAndSearchRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Lang2FhirAndSearchResponse]:
         """
@@ -179,10 +167,8 @@ class RawToolsClient:
         count : typing.Optional[int]
             Maximum number of results to return
 
-        provider : typing.Optional[Lang2FhirAndSearchRequestProvider]
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -201,9 +187,6 @@ class RawToolsClient:
                 "practitioner_id": practitioner_id,
                 "count": count,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -282,12 +265,7 @@ class RawToolsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def analyze_cohort(
-        self,
-        *,
-        text: str,
-        provider: CohortRequestProvider,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, text: str, provider: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[CohortResponse]:
         """
         Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria
@@ -297,10 +275,8 @@ class RawToolsClient:
         text : str
             Natural language text describing the patient cohort criteria
 
-        provider : CohortRequestProvider
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : str
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -316,9 +292,6 @@ class RawToolsClient:
             json={
                 "text": text,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -395,8 +368,7 @@ class AsyncRawToolsClient:
         *,
         resource: Lang2FhirAndCreateRequestResource,
         text: str,
-        provider: typing.Optional[Lang2FhirAndCreateRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Lang2FhirAndCreateResponse]:
         """
@@ -410,10 +382,8 @@ class AsyncRawToolsClient:
         text : str
             Natural language text to convert to FHIR resource
 
-        provider : typing.Optional[Lang2FhirAndCreateRequestProvider]
-            FHIR provider to use for storing the resource
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -430,9 +400,6 @@ class AsyncRawToolsClient:
                 "resource": resource,
                 "text": text,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -517,8 +484,7 @@ class AsyncRawToolsClient:
         patient_id: typing.Optional[str] = OMIT,
         practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
-        provider: typing.Optional[Lang2FhirAndSearchRequestProvider] = OMIT,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
+        provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Lang2FhirAndSearchResponse]:
         """
@@ -538,10 +504,8 @@ class AsyncRawToolsClient:
         count : typing.Optional[int]
             Maximum number of results to return
 
-        provider : typing.Optional[Lang2FhirAndSearchRequestProvider]
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : typing.Optional[str]
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -560,9 +524,6 @@ class AsyncRawToolsClient:
                 "practitioner_id": practitioner_id,
                 "count": count,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
@@ -641,12 +602,7 @@ class AsyncRawToolsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def analyze_cohort(
-        self,
-        *,
-        text: str,
-        provider: CohortRequestProvider,
-        meta: typing.Optional[FhirClientConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, text: str, provider: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[CohortResponse]:
         """
         Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria
@@ -656,10 +612,8 @@ class AsyncRawToolsClient:
         text : str
             Natural language text describing the patient cohort criteria
 
-        provider : CohortRequestProvider
-            FHIR provider to use for searching
-
-        meta : typing.Optional[FhirClientConfig]
+        provider : str
+            FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -675,9 +629,6 @@ class AsyncRawToolsClient:
             json={
                 "text": text,
                 "provider": provider,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirClientConfig, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
