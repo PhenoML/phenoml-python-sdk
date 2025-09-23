@@ -11,392 +11,87 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
-from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.unauthorized_error import UnauthorizedError
-from .types.agent_chat_response import AgentChatResponse
-from .types.agent_create_request_provider import AgentCreateRequestProvider
-from .types.agent_delete_response import AgentDeleteResponse
-from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
-from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
-from .types.agent_list_response import AgentListResponse
-from .types.agent_response import AgentResponse
-from .types.json_patch import JsonPatch
+from .types.fhir_bundle import FhirBundle
+from .types.fhir_bundle_entry_item import FhirBundleEntryItem
+from .types.fhir_patch_request_body_item import FhirPatchRequestBodyItem
+from .types.fhir_resource import FhirResource
+from .types.fhir_resource_meta import FhirResourceMeta
+from .types.fhir_search_response import FhirSearchResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class RawAgentClient:
+class RawFhirClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def create(
+    def search(
         self,
+        fhir_provider_id: str,
+        fhir_path: str,
         *,
-        name: str,
-        prompts: typing.Sequence[str],
-        is_active: bool,
-        description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentResponse]:
+    ) -> HttpResponse[FhirSearchResponse]:
         """
-        Creates a new PhenoAgent with specified configuration
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        name : str
-            Agent name
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
 
-        is_active : bool
-            Whether the agent is active
+        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
+            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
+            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
+            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
+            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
+            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
 
-        description : typing.Optional[str]
-            Agent description
-
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[AgentResponse]
-            Agent created successfully
+        HttpResponse[FhirSearchResponse]
+            Successfully retrieved FHIR resource(s)
         """
         _response = self._client_wrapper.httpx_client.request(
-            "agent/create",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "prompts": prompts,
-                "tools": tools,
-                "is_active": is_active,
-                "tags": tags,
-                "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentResponse,
-                    parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentListResponse]:
-        """
-        Retrieves a list of PhenoAgents belonging to the authenticated user
-
-        Parameters
-        ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
-        tags : typing.Optional[str]
-            Filter by tags
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[AgentListResponse]
-            Agents retrieved successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "agent/list",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="GET",
             params={
-                "is_active": is_active,
-                "tags": tags,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentListResponse,
-                    parse_obj_as(
-                        type_=AgentListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AgentResponse]:
-        """
-        Retrieves a specific agent by its ID
-
-        Parameters
-        ----------
-        id : str
-            Agent ID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[AgentResponse]
-            Agent retrieved successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentResponse,
-                    parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def update(
-        self,
-        id: str,
-        *,
-        name: str,
-        prompts: typing.Sequence[str],
-        is_active: bool,
-        description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentResponse]:
-        """
-        Updates an existing agent's configuration
-
-        Parameters
-        ----------
-        id : str
-            Agent ID
-
-        name : str
-            Agent name
-
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
-
-        description : typing.Optional[str]
-            Agent description
-
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[AgentResponse]
-            Agent updated successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
-            method="PUT",
-            json={
-                "name": name,
-                "description": description,
-                "prompts": prompts,
-                "tools": tools,
-                "is_active": is_active,
-                "tags": tags,
-                "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
-                ),
+                "query_parameters": query_parameters,
             },
             headers={
-                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentResponse,
+                    FhirSearchResponse,
                     parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
+                        type_=FhirSearchResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -423,8 +118,8 @@ class RawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -434,8 +129,227 @@ class RawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 404:
-                raise NotFoundError(
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create(
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        resource_type: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        id: typing.Optional[str] = OMIT,
+        meta: typing.Optional[FhirResourceMeta] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[FhirResource]:
+        """
+        Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
+
+        Parameters
+        ----------
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        resource_type : str
+            The type of FHIR resource (e.g., Patient, Observation, etc.)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+
+        id : typing.Optional[str]
+            Logical ID of the resource
+
+        meta : typing.Optional[FhirResourceMeta]
+            Metadata about the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[FhirResource]
+            Resource created successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            method="POST",
+            json={
+                "resourceType": resource_type,
+                "id": id,
+                "meta": convert_and_respect_annotation_metadata(
+                    object_=meta, annotation=FhirResourceMeta, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FhirResource,
+                    parse_obj_as(
+                        type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def upsert(
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        resource_type: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        id: typing.Optional[str] = OMIT,
+        meta: typing.Optional[FhirResourceMeta] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[FhirResource]:
+        """
+        Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
+
+        Parameters
+        ----------
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        resource_type : str
+            The type of FHIR resource (e.g., Patient, Observation, etc.)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+
+        id : typing.Optional[str]
+            Logical ID of the resource
+
+        meta : typing.Optional[FhirResourceMeta]
+            Metadata about the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[FhirResource]
+            Resource upserted successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            method="PUT",
+            json={
+                "resourceType": resource_type,
+                "id": id,
+                "meta": convert_and_respect_annotation_metadata(
+                    object_=meta, annotation=FhirResourceMeta, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FhirResource,
+                    parse_obj_as(
+                        type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -462,41 +376,63 @@ class RawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AgentDeleteResponse]:
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
         """
-        Deletes an existing agent
+        Deletes a FHIR resource from the specified provider.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        id : str
-            Agent ID
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[AgentDeleteResponse]
-            Agent deleted successfully
+        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+            Resource deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="DELETE",
+            headers={
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentDeleteResponse,
+                    typing.Dict[str, typing.Optional[typing.Any]],
                     parse_obj_as(
-                        type_=AgentDeleteResponse,  # type: ignore
+                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -506,8 +442,8 @@ class RawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -545,32 +481,60 @@ class RawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def patch(
-        self, id: str, *, request: JsonPatch, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AgentResponse]:
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        request: typing.Sequence[FhirPatchRequestBodyItem],
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[FhirResource]:
         """
-        Patches an existing agent's configuration
+        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+
+        The request body should contain an array of JSON Patch operations. Each operation specifies:
+        - `op`: The operation type (add, remove, replace, move, copy, test)
+        - `path`: JSON Pointer to the target location in the resource
+        - `value`: The value to use (required for add, replace, and test operations)
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        id : str
-            Agent ID
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        request : JsonPatch
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        request : typing.Sequence[FhirPatchRequestBodyItem]
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[AgentResponse]
-            Agent patched successfully
+        HttpResponse[FhirResource]
+            Resource patched successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="PATCH",
-            json=convert_and_respect_annotation_metadata(object_=request, annotation=JsonPatch, direction="write"),
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
+            ),
             headers={
-                "content-type": "application/json+patch",
+                "content-type": "application/json-patch+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -578,9 +542,9 @@ class RawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentResponse,
+                    FhirResource,
                     parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
+                        type_=FhirResource,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -598,17 +562,6 @@ class RawAgentClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -645,51 +598,60 @@ class RawAgentClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def chat(
+    def execute_bundle(
         self,
+        fhir_provider_id: str,
         *,
-        message: str,
-        agent_id: str,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
+        entry: typing.Sequence[FhirBundleEntryItem],
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentChatResponse]:
+    ) -> HttpResponse[FhirBundle]:
         """
-        Send a message to an agent and receive a response
+        Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
+
+        The request body should contain a valid FHIR Bundle resource with transaction or batch type.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        message : str
-            The message to send to the agent
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        agent_id : str
-            The ID of the agent to chat with
+        entry : typing.Sequence[FhirBundleEntryItem]
+            Array of bundle entries containing resources or operation results
 
-        context : typing.Optional[str]
-            Optional context for the conversation
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+        total : typing.Optional[int]
+            Total number of resources that match the search criteria.
+            Optional field as not all FHIR servers include it (e.g., Medplum).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[AgentChatResponse]
-            Chat response received successfully
+        HttpResponse[FhirBundle]
+            Bundle executed successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            "agent/chat",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir",
             method="POST",
             json={
-                "message": message,
-                "context": context,
-                "session_id": session_id,
-                "agent_id": agent_id,
+                "total": total,
+                "entry": convert_and_respect_annotation_metadata(
+                    object_=entry, annotation=typing.Sequence[FhirBundleEntryItem], direction="write"
+                ),
+                "resourceType": "Bundle",
             },
             headers={
-                "content-type": "application/json",
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -697,9 +659,9 @@ class RawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentChatResponse,
+                    FhirBundle,
                     parse_obj_as(
-                        type_=AgentChatResponse,  # type: ignore
+                        type_=FhirBundle,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -726,110 +688,6 @@ class RawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[str] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentGetChatMessagesResponse]:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[str]
-            Filter by role
-
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[AgentGetChatMessagesResponse]
-            Chat messages retrieved successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "agent/chat/messages",
-            method="GET",
-            params={
-                "chat_session_id": chat_session_id,
-                "num_messages": num_messages,
-                "role": role,
-                "order": order,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentGetChatMessagesResponse,
-                    parse_obj_as(
-                        type_=AgentGetChatMessagesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -847,377 +705,73 @@ class RawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
-class AsyncRawAgentClient:
+class AsyncRawFhirClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def create(
+    async def search(
         self,
+        fhir_provider_id: str,
+        fhir_path: str,
         *,
-        name: str,
-        prompts: typing.Sequence[str],
-        is_active: bool,
-        description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
+        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentResponse]:
+    ) -> AsyncHttpResponse[FhirSearchResponse]:
         """
-        Creates a new PhenoAgent with specified configuration
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        name : str
-            Agent name
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
 
-        is_active : bool
-            Whether the agent is active
+        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
+            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
+            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
+            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
+            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
+            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
 
-        description : typing.Optional[str]
-            Agent description
-
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[AgentResponse]
-            Agent created successfully
+        AsyncHttpResponse[FhirSearchResponse]
+            Successfully retrieved FHIR resource(s)
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "agent/create",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "prompts": prompts,
-                "tools": tools,
-                "is_active": is_active,
-                "tags": tags,
-                "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
-                ),
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentResponse,
-                    parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentListResponse]:
-        """
-        Retrieves a list of PhenoAgents belonging to the authenticated user
-
-        Parameters
-        ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
-        tags : typing.Optional[str]
-            Filter by tags
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[AgentListResponse]
-            Agents retrieved successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "agent/list",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="GET",
             params={
-                "is_active": is_active,
-                "tags": tags,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentListResponse,
-                    parse_obj_as(
-                        type_=AgentListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AgentResponse]:
-        """
-        Retrieves a specific agent by its ID
-
-        Parameters
-        ----------
-        id : str
-            Agent ID
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[AgentResponse]
-            Agent retrieved successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentResponse,
-                    parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def update(
-        self,
-        id: str,
-        *,
-        name: str,
-        prompts: typing.Sequence[str],
-        is_active: bool,
-        description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentResponse]:
-        """
-        Updates an existing agent's configuration
-
-        Parameters
-        ----------
-        id : str
-            Agent ID
-
-        name : str
-            Agent name
-
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
-
-        description : typing.Optional[str]
-            Agent description
-
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[AgentResponse]
-            Agent updated successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
-            method="PUT",
-            json={
-                "name": name,
-                "description": description,
-                "prompts": prompts,
-                "tools": tools,
-                "is_active": is_active,
-                "tags": tags,
-                "provider": convert_and_respect_annotation_metadata(
-                    object_=provider, annotation=AgentCreateRequestProvider, direction="write"
-                ),
+                "query_parameters": query_parameters,
             },
             headers={
-                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentResponse,
+                    FhirSearchResponse,
                     parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
+                        type_=FhirSearchResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1244,8 +798,8 @@ class AsyncRawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1255,8 +809,227 @@ class AsyncRawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 404:
-                raise NotFoundError(
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create(
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        resource_type: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        id: typing.Optional[str] = OMIT,
+        meta: typing.Optional[FhirResourceMeta] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[FhirResource]:
+        """
+        Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
+
+        Parameters
+        ----------
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        resource_type : str
+            The type of FHIR resource (e.g., Patient, Observation, etc.)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+
+        id : typing.Optional[str]
+            Logical ID of the resource
+
+        meta : typing.Optional[FhirResourceMeta]
+            Metadata about the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[FhirResource]
+            Resource created successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            method="POST",
+            json={
+                "resourceType": resource_type,
+                "id": id,
+                "meta": convert_and_respect_annotation_metadata(
+                    object_=meta, annotation=FhirResourceMeta, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FhirResource,
+                    parse_obj_as(
+                        type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def upsert(
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        resource_type: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        id: typing.Optional[str] = OMIT,
+        meta: typing.Optional[FhirResourceMeta] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[FhirResource]:
+        """
+        Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
+
+        Parameters
+        ----------
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        resource_type : str
+            The type of FHIR resource (e.g., Patient, Observation, etc.)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+
+        id : typing.Optional[str]
+            Logical ID of the resource
+
+        meta : typing.Optional[FhirResourceMeta]
+            Metadata about the resource
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[FhirResource]
+            Resource upserted successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            method="PUT",
+            json={
+                "resourceType": resource_type,
+                "id": id,
+                "meta": convert_and_respect_annotation_metadata(
+                    object_=meta, annotation=FhirResourceMeta, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FhirResource,
+                    parse_obj_as(
+                        type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1283,41 +1056,63 @@ class AsyncRawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AgentDeleteResponse]:
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
         """
-        Deletes an existing agent
+        Deletes a FHIR resource from the specified provider.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        id : str
-            Agent ID
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
+
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[AgentDeleteResponse]
-            Agent deleted successfully
+        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+            Resource deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="DELETE",
+            headers={
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentDeleteResponse,
+                    typing.Dict[str, typing.Optional[typing.Any]],
                     parse_obj_as(
-                        type_=AgentDeleteResponse,  # type: ignore
+                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1327,8 +1122,8 @@ class AsyncRawAgentClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1366,32 +1161,60 @@ class AsyncRawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def patch(
-        self, id: str, *, request: JsonPatch, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AgentResponse]:
+        self,
+        fhir_provider_id: str,
+        fhir_path: str,
+        *,
+        request: typing.Sequence[FhirPatchRequestBodyItem],
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[FhirResource]:
         """
-        Patches an existing agent's configuration
+        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+
+        The request body should contain an array of JSON Patch operations. Each operation specifies:
+        - `op`: The operation type (add, remove, replace, move, copy, test)
+        - `path`: JSON Pointer to the target location in the resource
+        - `value`: The value to use (required for add, replace, and test operations)
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        id : str
-            Agent ID
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        request : JsonPatch
+        fhir_path : str
+            The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+            Examples:
+            - "Patient" (for resource type operations)
+            - "Patient/123" (for specific resource operations)
+            - "Patient/123/_history" (for history operations)
+
+        request : typing.Sequence[FhirPatchRequestBodyItem]
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[AgentResponse]
-            Agent patched successfully
+        AsyncHttpResponse[FhirResource]
+            Resource patched successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/{jsonable_encoder(id)}",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
             method="PATCH",
-            json=convert_and_respect_annotation_metadata(object_=request, annotation=JsonPatch, direction="write"),
+            json=convert_and_respect_annotation_metadata(
+                object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
+            ),
             headers={
-                "content-type": "application/json+patch",
+                "content-type": "application/json-patch+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1399,9 +1222,9 @@ class AsyncRawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentResponse,
+                    FhirResource,
                     parse_obj_as(
-                        type_=AgentResponse,  # type: ignore
+                        type_=FhirResource,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1419,17 +1242,6 @@ class AsyncRawAgentClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1466,51 +1278,60 @@ class AsyncRawAgentClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def chat(
+    async def execute_bundle(
         self,
+        fhir_provider_id: str,
         *,
-        message: str,
-        agent_id: str,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
+        entry: typing.Sequence[FhirBundleEntryItem],
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentChatResponse]:
+    ) -> AsyncHttpResponse[FhirBundle]:
         """
-        Send a message to an agent and receive a response
+        Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
+
+        The request body should contain a valid FHIR Bundle resource with transaction or batch type.
+
+        The request is proxied to the configured FHIR server with appropriate authentication headers.
 
         Parameters
         ----------
-        message : str
-            The message to send to the agent
+        fhir_provider_id : str
+            The ID of the FHIR provider to use. Can be either:
+            - A UUID representing the provider ID
+            - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        agent_id : str
-            The ID of the agent to chat with
+        entry : typing.Sequence[FhirBundleEntryItem]
+            Array of bundle entries containing resources or operation results
 
-        context : typing.Optional[str]
-            Optional context for the conversation
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+        total : typing.Optional[int]
+            Total number of resources that match the search criteria.
+            Optional field as not all FHIR servers include it (e.g., Medplum).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[AgentChatResponse]
-            Chat response received successfully
+        AsyncHttpResponse[FhirBundle]
+            Bundle executed successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "agent/chat",
+            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir",
             method="POST",
             json={
-                "message": message,
-                "context": context,
-                "session_id": session_id,
-                "agent_id": agent_id,
+                "total": total,
+                "entry": convert_and_respect_annotation_metadata(
+                    object_=entry, annotation=typing.Sequence[FhirBundleEntryItem], direction="write"
+                ),
+                "resourceType": "Bundle",
             },
             headers={
-                "content-type": "application/json",
+                "content-type": "application/fhir+json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1518,9 +1339,9 @@ class AsyncRawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentChatResponse,
+                    FhirBundle,
                     parse_obj_as(
-                        type_=AgentChatResponse,  # type: ignore
+                        type_=FhirBundle,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1538,110 +1359,6 @@ class AsyncRawAgentClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[str] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentGetChatMessagesResponse]:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[str]
-            Filter by role
-
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[AgentGetChatMessagesResponse]
-            Chat messages retrieved successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "agent/chat/messages",
-            method="GET",
-            params={
-                "chat_session_id": chat_session_id,
-                "num_messages": num_messages,
-                "role": role,
-                "order": order,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    AgentGetChatMessagesResponse,
-                    parse_obj_as(
-                        type_=AgentGetChatMessagesResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

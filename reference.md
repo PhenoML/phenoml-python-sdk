@@ -100,15 +100,7 @@ client.agent.create(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[AgentFhirConfig]` 
+**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>
@@ -308,6 +300,9 @@ client = phenoml(
 )
 client.agent.update(
     id="id",
+    name="name",
+    prompts=["prompt_123", "prompt_456"],
+    is_active=True,
 )
 
 ```
@@ -332,7 +327,23 @@ client.agent.update(
 <dl>
 <dd>
 
-**name:** `typing.Optional[str]` — Agent name
+**name:** `str` — Agent name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prompts:** `typing.Sequence[str]` — Array of prompt IDs to use for this agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**is_active:** `bool` — Whether the agent is active
     
 </dd>
 </dl>
@@ -348,23 +359,7 @@ client.agent.update(
 <dl>
 <dd>
 
-**prompts:** `typing.Optional[typing.Sequence[str]]` — Array of prompt IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **tools:** `typing.Optional[typing.Sequence[str]]` — Array of MCP server tool IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `typing.Optional[bool]` — Whether the agent is active
     
 </dd>
 </dl>
@@ -380,15 +375,7 @@ client.agent.update(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[AgentProvider]` — FHIR provider type - can be a single provider or array of providers
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[AgentFhirConfig]` 
+**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>
@@ -649,14 +636,6 @@ client.agent.chat(
 <dd>
 
 **session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[ChatFhirClientConfig]` — Optional user-specific FHIR configuration overrides
     
 </dd>
 </dl>
@@ -1804,6 +1783,1335 @@ client.construe.cohort(
 </dl>
 </details>
 
+## Fhir
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.search(
+    fhir_provider_id="fhir_provider_id",
+    fhir_path="fhir_path",
+    phenoml_on_behalf_of="user@example.com",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fhir_path:** `str` 
+
+The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+Examples:
+- "Patient" (for resource type operations)
+- "Patient/123" (for specific resource operations)
+- "Patient/123/_history" (for history operations)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**query_parameters:** `typing.Optional[typing.Dict[str, typing.Optional[str]]]` 
+
+FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
+- Resource-specific search parameters (e.g., name for Patient, status for Observation)
+- Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
+- Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
+- Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.create(
+    fhir_provider_id="fhir_provider_id",
+    fhir_path="fhir_path",
+    phenoml_on_behalf_of="user@example.com",
+    resource_type="Patient",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fhir_path:** `str` 
+
+The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+Examples:
+- "Patient" (for resource type operations)
+- "Patient/123" (for specific resource operations)
+- "Patient/123/_history" (for history operations)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resource_type:** `str` — The type of FHIR resource (e.g., Patient, Observation, etc.)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `typing.Optional[str]` — Logical ID of the resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**meta:** `typing.Optional[FhirResourceMeta]` — Metadata about the resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.upsert(
+    fhir_provider_id="fhir_provider_id",
+    fhir_path="fhir_path",
+    phenoml_on_behalf_of="user@example.com",
+    resource_type="Patient",
+    id="123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fhir_path:** `str` 
+
+The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+Examples:
+- "Patient" (for resource type operations)
+- "Patient/123" (for specific resource operations)
+- "Patient/123/_history" (for history operations)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**resource_type:** `str` — The type of FHIR resource (e.g., Patient, Observation, etc.)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**id:** `typing.Optional[str]` — Logical ID of the resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**meta:** `typing.Optional[FhirResourceMeta]` — Metadata about the resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a FHIR resource from the specified provider.
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.delete(
+    fhir_provider_id="fhir_provider_id",
+    fhir_path="fhir_path",
+    phenoml_on_behalf_of="user@example.com",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fhir_path:** `str` 
+
+The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+Examples:
+- "Patient" (for resource type operations)
+- "Patient/123" (for specific resource operations)
+- "Patient/123/_history" (for history operations)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+
+The request body should contain an array of JSON Patch operations. Each operation specifies:
+- `op`: The operation type (add, remove, replace, move, copy, test)
+- `path`: JSON Pointer to the target location in the resource
+- `value`: The value to use (required for add, replace, and test operations)
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+from phenoml.fhir import FhirPatchRequestBodyItem
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.patch(
+    fhir_provider_id="fhir_provider_id",
+    fhir_path="fhir_path",
+    phenoml_on_behalf_of="user@example.com",
+    request=[
+        FhirPatchRequestBodyItem(
+            op="test",
+            path="/gender",
+            value="male",
+        ),
+        FhirPatchRequestBodyItem(
+            op="replace",
+            path="/gender",
+            value="female",
+        ),
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fhir_path:** `str` 
+
+The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
+Examples:
+- "Patient" (for resource type operations)
+- "Patient/123" (for specific resource operations)
+- "Patient/123/_history" (for history operations)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `typing.Sequence[FhirPatchRequestBodyItem]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
+
+The request body should contain a valid FHIR Bundle resource with transaction or batch type.
+
+The request is proxied to the configured FHIR server with appropriate authentication headers.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir.execute_bundle(
+    fhir_provider_id="fhir_provider_id",
+    phenoml_on_behalf_of="user@example.com",
+    entry=[
+        FhirBundleEntryItem(
+            resource={
+                "resourceType": "Patient",
+                "name": [{"family": "Doe", "given": ["John"]}],
+            },
+            request=FhirBundleEntryItemRequest(
+                method="POST",
+                url="Patient",
+            ),
+        ),
+        FhirBundleEntryItem(
+            resource={
+                "resourceType": "Observation",
+                "status": "final",
+                "subject": {"reference": "Patient/123"},
+            },
+            request=FhirBundleEntryItemRequest(
+                method="POST",
+                url="Observation",
+            ),
+        ),
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` 
+
+The ID of the FHIR provider to use. Can be either:
+- A UUID representing the provider ID
+- A provider name (legacy support - will just use the most recently updated provider with this name)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**entry:** `typing.Sequence[FhirBundleEntryItem]` — Array of bundle entries containing resources or operation results
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**total:** `typing.Optional[int]` 
+
+Total number of resources that match the search criteria.
+Optional field as not all FHIR servers include it (e.g., Medplum).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## FhirProvider
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a new FHIR provider configuration with authentication credentials
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.create(
+    name="Epic Sandbox",
+    provider="athenahealth",
+    auth_method="client_secret",
+    base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` — Display name for the FHIR provider
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider:** `Provider` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auth_method:** `AuthMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**base_url:** `str` — Base URL of the FHIR server
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` — Optional description of the FHIR provider
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_id:** `typing.Optional[str]` — OAuth client ID (required for most auth methods)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_secret:** `typing.Optional[str]` — OAuth client secret (required for client_secret and on_behalf_of auth methods)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**service_account_key:** `typing.Optional[ServiceAccountKey]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `typing.Optional[str]` — OAuth scopes to request
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">list</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of all active FHIR providers for the authenticated user
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.list()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a specific FHIR provider configuration by its ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.get(
+    fhir_provider_id="fhir_provider_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` — ID of the FHIR provider to retrieve
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft deletes a FHIR provider by setting is_active to false
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.delete(
+    fhir_provider_id="fhir_provider_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` — ID of the FHIR provider to delete
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds a new authentication configuration to an existing FHIR provider. This enables key rotation and multiple auth configurations per provider.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.add_auth_config(
+    fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
+    auth_method="client_secret",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` — ID of the FHIR provider to add auth config to
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auth_method:** `AuthMethod` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_secret:** `typing.Optional[str]` — OAuth client secret (required for client_secret and on_behalf_of auth methods)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**service_account_key:** `typing.Optional[ServiceAccountKey]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `typing.Optional[str]` — OAuth scopes to request
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sets which authentication configuration should be active for a FHIR provider. Only one auth config can be active at a time.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.set_active_auth_config(
+    fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
+    auth_config_id="auth-config-123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` — ID of the FHIR provider
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auth_config_id:** `str` — ID of the auth configuration to set as active
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes an authentication configuration from a FHIR provider. Cannot remove the currently active auth configuration.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.fhir_provider.remove_auth_config(
+    fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
+    auth_config_id="auth-config-123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_provider_id:** `str` — ID of the FHIR provider
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auth_config_id:** `str` — ID of the auth configuration to remove
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Lang2Fhir
 <details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...)</code></summary>
 <dl>
@@ -2216,15 +3524,7 @@ client.tools.create_fhir_resource(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[Lang2FhirAndCreateRequestProvider]` — FHIR provider to use for storing the resource
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>
@@ -2326,15 +3626,7 @@ client.tools.search_fhir_resources(
 <dl>
 <dd>
 
-**provider:** `typing.Optional[Lang2FhirAndSearchRequestProvider]` — FHIR provider to use for searching
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>
@@ -2388,7 +3680,7 @@ client = phenoml(
 )
 client.tools.analyze_cohort(
     text="female patients over 20 with diabetes but not hypertension",
-    provider="medplum",
+    provider="550e8400-e29b-41d4-a716-446655440000",
 )
 
 ```
@@ -2413,15 +3705,7 @@ client.tools.analyze_cohort(
 <dl>
 <dd>
 
-**provider:** `CohortRequestProvider` — FHIR provider to use for searching
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**meta:** `typing.Optional[FhirClientConfig]` 
+**provider:** `str` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
     
 </dd>
 </dl>

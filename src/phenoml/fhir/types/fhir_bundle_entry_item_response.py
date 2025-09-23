@@ -6,20 +6,13 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ChatFhirClientConfig(UniversalBaseModel):
+class FhirBundleEntryItemResponse(UniversalBaseModel):
     """
-    User-specific FHIR configuration overrides for chat requests
-    """
-
-    on_behalf_of_email: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Override email for On-Behalf-Of requests (Medplum only)
+    Response information for transaction/batch bundle responses
     """
 
-    instance_name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Override instance name for multi-instance providers
-    """
+    status: typing.Optional[str] = None
+    location: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
