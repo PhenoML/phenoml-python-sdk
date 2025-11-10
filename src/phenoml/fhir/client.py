@@ -85,8 +85,8 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.search(
-            fhir_provider_id="fhir_provider_id",
-            fhir_path="fhir_path",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+            fhir_path="Patient",
             phenoml_on_behalf_of="user@example.com",
         )
         """
@@ -157,8 +157,8 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.create(
-            fhir_provider_id="fhir_provider_id",
-            fhir_path="fhir_path",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+            fhir_path="Patient",
             phenoml_on_behalf_of="user@example.com",
             resource_type="Patient",
         )
@@ -232,8 +232,8 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.upsert(
-            fhir_provider_id="fhir_provider_id",
-            fhir_path="fhir_path",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+            fhir_path="Patient",
             phenoml_on_behalf_of="user@example.com",
             resource_type="Patient",
             id="123",
@@ -296,8 +296,8 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.delete(
-            fhir_provider_id="fhir_provider_id",
-            fhir_path="fhir_path",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+            fhir_path="Patient",
             phenoml_on_behalf_of="user@example.com",
         )
         """
@@ -361,8 +361,8 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.patch(
-            fhir_provider_id="fhir_provider_id",
-            fhir_path="fhir_path",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+            fhir_path="Patient",
             phenoml_on_behalf_of="user@example.com",
             request=[
                 FhirPatchRequestBodyItem(
@@ -432,7 +432,7 @@ class FhirClient:
             token="YOUR_TOKEN",
         )
         client.fhir.execute_bundle(
-            fhir_provider_id="fhir_provider_id",
+            fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
             phenoml_on_behalf_of="user@example.com",
             entry=[
                 FhirBundleEntryItem(
@@ -543,8 +543,8 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.search(
-                fhir_provider_id="fhir_provider_id",
-                fhir_path="fhir_path",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+                fhir_path="Patient",
                 phenoml_on_behalf_of="user@example.com",
             )
 
@@ -623,8 +623,8 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.create(
-                fhir_provider_id="fhir_provider_id",
-                fhir_path="fhir_path",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+                fhir_path="Patient",
                 phenoml_on_behalf_of="user@example.com",
                 resource_type="Patient",
             )
@@ -706,8 +706,8 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.upsert(
-                fhir_provider_id="fhir_provider_id",
-                fhir_path="fhir_path",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+                fhir_path="Patient",
                 phenoml_on_behalf_of="user@example.com",
                 resource_type="Patient",
                 id="123",
@@ -778,8 +778,8 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.delete(
-                fhir_provider_id="fhir_provider_id",
-                fhir_path="fhir_path",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+                fhir_path="Patient",
                 phenoml_on_behalf_of="user@example.com",
             )
 
@@ -851,8 +851,8 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.patch(
-                fhir_provider_id="fhir_provider_id",
-                fhir_path="fhir_path",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+                fhir_path="Patient",
                 phenoml_on_behalf_of="user@example.com",
                 request=[
                     FhirPatchRequestBodyItem(
@@ -930,7 +930,7 @@ class AsyncFhirClient:
 
         async def main() -> None:
             await client.fhir.execute_bundle(
-                fhir_provider_id="fhir_provider_id",
+                fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
                 phenoml_on_behalf_of="user@example.com",
                 entry=[
                     FhirBundleEntryItem(

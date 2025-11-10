@@ -13,6 +13,7 @@ from .fhir.client import AsyncFhirClient, FhirClient
 from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
 from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
 from .tools.client import AsyncToolsClient, ToolsClient
+from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
 
 class phenoml:
@@ -33,7 +34,7 @@ class phenoml:
 
 
 
-    token : typing.Union[str, typing.Callable[[], str]]
+    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -60,7 +61,7 @@ class phenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -88,6 +89,7 @@ class phenoml:
         self.fhir_provider = FhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = Lang2FhirClient(client_wrapper=self._client_wrapper)
         self.tools = ToolsClient(client_wrapper=self._client_wrapper)
+        self.workflows = WorkflowsClient(client_wrapper=self._client_wrapper)
 
 
 class Asyncphenoml:
@@ -108,7 +110,7 @@ class Asyncphenoml:
 
 
 
-    token : typing.Union[str, typing.Callable[[], str]]
+    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -135,7 +137,7 @@ class Asyncphenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -163,6 +165,7 @@ class Asyncphenoml:
         self.fhir_provider = AsyncFhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = AsyncLang2FhirClient(client_wrapper=self._client_wrapper)
         self.tools = AsyncToolsClient(client_wrapper=self._client_wrapper)
+        self.workflows = AsyncWorkflowsClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: phenomlEnvironment) -> str:
