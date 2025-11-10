@@ -6,80 +6,641 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
+from ..core.jsonable_encoder import jsonable_encoder
+from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
+from .errors.bad_request_error import BadRequestError
+from .errors.forbidden_error import ForbiddenError
+from .errors.internal_server_error import InternalServerError
+from .errors.not_found_error import NotFoundError
+from .errors.unauthorized_error import UnauthorizedError
+from .types.create_workflow_request_fhir_provider_id import CreateWorkflowRequestFhirProviderId
+from .types.create_workflow_response import CreateWorkflowResponse
+from .types.execute_workflow_response import ExecuteWorkflowResponse
+from .types.list_workflows_response import ListWorkflowsResponse
+from .types.update_workflow_request_fhir_provider_id import UpdateWorkflowRequestFhirProviderId
+from .types.workflows_delete_response import WorkflowsDeleteResponse
+from .types.workflows_get_response import WorkflowsGetResponse
+from .types.workflows_update_response import WorkflowsUpdateResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class RawWorkflowsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def create_fhir_resource(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+    def list(
+        self, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ListWorkflowsResponse]:
         """
+        Retrieves all workflow definitions for the authenticated user
+
         Parameters
         ----------
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[None]
+        HttpResponse[ListWorkflowsResponse]
+            Successfully retrieved workflows
         """
         _response = self._client_wrapper.httpx_client.request(
-            "tools/lang2fhir-and-create",
-            method="POST",
+            "workflows",
+            method="GET",
+            params={
+                "verbose": verbose,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    ListWorkflowsResponse,
+                    parse_obj_as(
+                        type_=ListWorkflowsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def search_fhir_resources(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+    def create(
+        self,
+        *,
+        name: str,
+        workflow_instructions: str,
+        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        fhir_provider_id: CreateWorkflowRequestFhirProviderId,
+        verbose: typing.Optional[bool] = None,
+        dynamic_generation: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CreateWorkflowResponse]:
         """
+        Creates a new workflow definition with graph generation from workflow instructions
+
         Parameters
         ----------
+        name : str
+            Human-readable name for the workflow
+
+        workflow_instructions : str
+            Natural language instructions that define the workflow logic
+
+        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Sample data to use for workflow graph generation
+
+        fhir_provider_id : CreateWorkflowRequestFhirProviderId
+            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
+        dynamic_generation : typing.Optional[bool]
+            Enable dynamic lang2fhir calls instead of pre-populated templates
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[None]
+        HttpResponse[CreateWorkflowResponse]
+            Successfully created workflow
         """
         _response = self._client_wrapper.httpx_client.request(
-            "tools/lang2fhir-and-search",
+            "workflows",
             method="POST",
+            params={
+                "verbose": verbose,
+            },
+            json={
+                "name": name,
+                "workflow_instructions": workflow_instructions,
+                "sample_data": sample_data,
+                "fhir_provider_id": convert_and_respect_annotation_metadata(
+                    object_=fhir_provider_id, annotation=CreateWorkflowRequestFhirProviderId, direction="write"
+                ),
+                "dynamic_generation": dynamic_generation,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    CreateWorkflowResponse,
+                    parse_obj_as(
+                        type_=CreateWorkflowResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def analyze_cohort(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+    def get(
+        self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[WorkflowsGetResponse]:
         """
+        Retrieves a workflow definition by its ID
+
         Parameters
         ----------
+        id : str
+            ID of the workflow to retrieve
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[None]
+        HttpResponse[WorkflowsGetResponse]
+            Successfully retrieved workflow
         """
         _response = self._client_wrapper.httpx_client.request(
-            "tools/cohort",
-            method="POST",
+            f"workflows/{jsonable_encoder(id)}",
+            method="GET",
+            params={
+                "verbose": verbose,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    WorkflowsGetResponse,
+                    parse_obj_as(
+                        type_=WorkflowsGetResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update(
+        self,
+        id: str,
+        *,
+        name: str,
+        workflow_instructions: str,
+        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
+        verbose: typing.Optional[bool] = None,
+        dynamic_generation: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[WorkflowsUpdateResponse]:
+        """
+        Updates an existing workflow definition
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to update
+
+        name : str
+            Human-readable name for the workflow
+
+        workflow_instructions : str
+            Natural language instructions that define the workflow logic
+
+        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Sample data to use for workflow graph generation
+
+        fhir_provider_id : UpdateWorkflowRequestFhirProviderId
+            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
+        dynamic_generation : typing.Optional[bool]
+            Enable dynamic lang2fhir calls instead of pre-populated templates
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[WorkflowsUpdateResponse]
+            Successfully updated workflow
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}",
+            method="PUT",
+            params={
+                "verbose": verbose,
+            },
+            json={
+                "name": name,
+                "workflow_instructions": workflow_instructions,
+                "sample_data": sample_data,
+                "fhir_provider_id": convert_and_respect_annotation_metadata(
+                    object_=fhir_provider_id, annotation=UpdateWorkflowRequestFhirProviderId, direction="write"
+                ),
+                "dynamic_generation": dynamic_generation,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    WorkflowsUpdateResponse,
+                    parse_obj_as(
+                        type_=WorkflowsUpdateResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[WorkflowsDeleteResponse]:
+        """
+        Deletes a workflow definition by its ID
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[WorkflowsDeleteResponse]
+            Successfully deleted workflow
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    WorkflowsDeleteResponse,
+                    parse_obj_as(
+                        type_=WorkflowsDeleteResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def execute(
+        self,
+        id: str,
+        *,
+        input_data: typing.Dict[str, typing.Optional[typing.Any]],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ExecuteWorkflowResponse]:
+        """
+        Executes a workflow with provided input data and returns results
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to execute
+
+        input_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Input data for workflow execution
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ExecuteWorkflowResponse]
+            Successfully executed workflow
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}/execute",
+            method="POST",
+            json={
+                "input_data": input_data,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExecuteWorkflowResponse,
+                    parse_obj_as(
+                        type_=ExecuteWorkflowResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -90,79 +651,615 @@ class AsyncRawWorkflowsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def create_fhir_resource(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
+    async def list(
+        self, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ListWorkflowsResponse]:
         """
+        Retrieves all workflow definitions for the authenticated user
+
         Parameters
         ----------
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[None]
+        AsyncHttpResponse[ListWorkflowsResponse]
+            Successfully retrieved workflows
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "tools/lang2fhir-and-create",
-            method="POST",
+            "workflows",
+            method="GET",
+            params={
+                "verbose": verbose,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    ListWorkflowsResponse,
+                    parse_obj_as(
+                        type_=ListWorkflowsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def search_fhir_resources(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
+    async def create(
+        self,
+        *,
+        name: str,
+        workflow_instructions: str,
+        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        fhir_provider_id: CreateWorkflowRequestFhirProviderId,
+        verbose: typing.Optional[bool] = None,
+        dynamic_generation: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CreateWorkflowResponse]:
         """
+        Creates a new workflow definition with graph generation from workflow instructions
+
         Parameters
         ----------
+        name : str
+            Human-readable name for the workflow
+
+        workflow_instructions : str
+            Natural language instructions that define the workflow logic
+
+        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Sample data to use for workflow graph generation
+
+        fhir_provider_id : CreateWorkflowRequestFhirProviderId
+            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
+        dynamic_generation : typing.Optional[bool]
+            Enable dynamic lang2fhir calls instead of pre-populated templates
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[None]
+        AsyncHttpResponse[CreateWorkflowResponse]
+            Successfully created workflow
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "tools/lang2fhir-and-search",
+            "workflows",
             method="POST",
+            params={
+                "verbose": verbose,
+            },
+            json={
+                "name": name,
+                "workflow_instructions": workflow_instructions,
+                "sample_data": sample_data,
+                "fhir_provider_id": convert_and_respect_annotation_metadata(
+                    object_=fhir_provider_id, annotation=CreateWorkflowRequestFhirProviderId, direction="write"
+                ),
+                "dynamic_generation": dynamic_generation,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    CreateWorkflowResponse,
+                    parse_obj_as(
+                        type_=CreateWorkflowResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def analyze_cohort(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
+    async def get(
+        self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[WorkflowsGetResponse]:
         """
+        Retrieves a workflow definition by its ID
+
         Parameters
         ----------
+        id : str
+            ID of the workflow to retrieve
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[None]
+        AsyncHttpResponse[WorkflowsGetResponse]
+            Successfully retrieved workflow
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "tools/cohort",
-            method="POST",
+            f"workflows/{jsonable_encoder(id)}",
+            method="GET",
+            params={
+                "verbose": verbose,
+            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
+                _data = typing.cast(
+                    WorkflowsGetResponse,
+                    parse_obj_as(
+                        type_=WorkflowsGetResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update(
+        self,
+        id: str,
+        *,
+        name: str,
+        workflow_instructions: str,
+        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
+        verbose: typing.Optional[bool] = None,
+        dynamic_generation: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[WorkflowsUpdateResponse]:
+        """
+        Updates an existing workflow definition
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to update
+
+        name : str
+            Human-readable name for the workflow
+
+        workflow_instructions : str
+            Natural language instructions that define the workflow logic
+
+        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Sample data to use for workflow graph generation
+
+        fhir_provider_id : UpdateWorkflowRequestFhirProviderId
+            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+
+        verbose : typing.Optional[bool]
+            If true, includes full workflow implementation details in workflow_details field
+
+        dynamic_generation : typing.Optional[bool]
+            Enable dynamic lang2fhir calls instead of pre-populated templates
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[WorkflowsUpdateResponse]
+            Successfully updated workflow
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}",
+            method="PUT",
+            params={
+                "verbose": verbose,
+            },
+            json={
+                "name": name,
+                "workflow_instructions": workflow_instructions,
+                "sample_data": sample_data,
+                "fhir_provider_id": convert_and_respect_annotation_metadata(
+                    object_=fhir_provider_id, annotation=UpdateWorkflowRequestFhirProviderId, direction="write"
+                ),
+                "dynamic_generation": dynamic_generation,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    WorkflowsUpdateResponse,
+                    parse_obj_as(
+                        type_=WorkflowsUpdateResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[WorkflowsDeleteResponse]:
+        """
+        Deletes a workflow definition by its ID
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[WorkflowsDeleteResponse]
+            Successfully deleted workflow
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    WorkflowsDeleteResponse,
+                    parse_obj_as(
+                        type_=WorkflowsDeleteResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def execute(
+        self,
+        id: str,
+        *,
+        input_data: typing.Dict[str, typing.Optional[typing.Any]],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ExecuteWorkflowResponse]:
+        """
+        Executes a workflow with provided input data and returns results
+
+        Parameters
+        ----------
+        id : str
+            ID of the workflow to execute
+
+        input_data : typing.Dict[str, typing.Optional[typing.Any]]
+            Input data for workflow execution
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ExecuteWorkflowResponse]
+            Successfully executed workflow
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"workflows/{jsonable_encoder(id)}/execute",
+            method="POST",
+            json={
+                "input_data": input_data,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExecuteWorkflowResponse,
+                    parse_obj_as(
+                        type_=ExecuteWorkflowResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
