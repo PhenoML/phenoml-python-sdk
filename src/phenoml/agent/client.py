@@ -139,7 +139,10 @@ class AgentClient:
         client = phenoml(
             token="YOUR_TOKEN",
         )
-        client.agent.list()
+        client.agent.list(
+            is_active=True,
+            tags="tags",
+        )
         """
         _response = self._raw_client.list(is_active=is_active, tags=tags, request_options=request_options)
         return _response.data
@@ -429,6 +432,9 @@ class AgentClient:
         )
         client.agent.get_chat_messages(
             chat_session_id="chat_session_id",
+            num_messages=1,
+            role="role",
+            order="asc",
         )
         """
         _response = self._raw_client.get_chat_messages(
@@ -574,7 +580,10 @@ class AsyncAgentClient:
 
 
         async def main() -> None:
-            await client.agent.list()
+            await client.agent.list(
+                is_active=True,
+                tags="tags",
+            )
 
 
         asyncio.run(main())
@@ -912,6 +921,9 @@ class AsyncAgentClient:
         async def main() -> None:
             await client.agent.get_chat_messages(
                 chat_session_id="chat_session_id",
+                num_messages=1,
+                role="role",
+                order="asc",
             )
 
 

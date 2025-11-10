@@ -20,7 +20,11 @@ class JsonPatchOperation(UniversalBaseModel):
     A JSON Pointer string specifying a location within the target document
     """
 
-    value: typing.Optional[typing.Optional[typing.Any]] = None
+    value: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    """
+    The value to be used within the operations
+    """
+
     from_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="from")] = pydantic.Field(default=None)
     """
     A JSON Pointer string specifying the location in the target document to move the value from (used with move and copy operations)
