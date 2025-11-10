@@ -3,14 +3,19 @@
 import typing
 
 import pydantic
-from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...types.workflow_definition import WorkflowDefinition
-from ...types.workflow_response import WorkflowResponse
+from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .workflow_definition import WorkflowDefinition
+from .workflow_response import WorkflowResponse
 
 
-class WorkflowsGetResponse(UniversalBaseModel):
+class WorkflowsUpdateResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
-    workflow: typing.Optional[WorkflowResponse] = None
+    message: typing.Optional[str] = None
+    workflow: typing.Optional[WorkflowResponse] = pydantic.Field(default=None)
+    """
+    Simplified workflow response with only essential step information
+    """
+
     workflow_details: typing.Optional[WorkflowDefinition] = pydantic.Field(default=None)
     """
     Only included when verbose=true - contains full implementation details

@@ -4302,146 +4302,7 @@ client.tools.mcp_server.tools.call(
 </details>
 
 ## Workflows
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create_fhir_resource</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.create_fhir_resource()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">search_fhir_resources</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.search_fhir_resources()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">analyze_cohort</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.analyze_cohort()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Workflows Workflows
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4473,7 +4334,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.list(
+client.workflows.list(
     verbose=True,
 )
 
@@ -4511,7 +4372,7 @@ client.workflows.workflows.list(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4543,7 +4404,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.create(
+client.workflows.create(
     verbose=True,
     name="Patient Data Mapping Workflow",
     workflow_instructions="Given diagnosis data, find the patient and create condition record",
@@ -4629,7 +4490,7 @@ client.workflows.workflows.create(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4661,7 +4522,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.get(
+client.workflows.get(
     id="id",
     verbose=True,
 )
@@ -4708,7 +4569,7 @@ client.workflows.workflows.get(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4740,7 +4601,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.update(
+client.workflows.update(
     id="id",
     verbose=True,
     name="Updated Patient Data Mapping Workflow",
@@ -4835,7 +4696,7 @@ client.workflows.workflows.update(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4867,7 +4728,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.delete(
+client.workflows.delete(
     id="id",
 )
 
@@ -4905,7 +4766,7 @@ client.workflows.workflows.delete(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.workflows.<a href="src/phenoml/workflows/workflows/client.py">execute</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">execute</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -4937,7 +4798,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.workflows.workflows.execute(
+client.workflows.execute(
     id="id",
     input_data={
         "patient_last_name": "Johnson",
@@ -4970,436 +4831,6 @@ client.workflows.workflows.execute(
 <dd>
 
 **input_data:** `typing.Dict[str, typing.Optional[typing.Any]]` — Input data for workflow execution
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Workflows McpServer
-<details><summary><code>client.workflows.mcp_server.<a href="src/phenoml/workflows/mcp_server/client.py">create</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.create()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.<a href="src/phenoml/workflows/mcp_server/client.py">list</a>()</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.list()
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.<a href="src/phenoml/workflows/mcp_server/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.get(
-    mcp_server_id="mcp_server_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.<a href="src/phenoml/workflows/mcp_server/client.py">delete</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.delete(
-    mcp_server_id="mcp_server_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Workflows McpServer Tools
-<details><summary><code>client.workflows.mcp_server.tools.<a href="src/phenoml/workflows/mcp_server/tools/client.py">list</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.tools.list(
-    mcp_server_id="mcp_server_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.tools.<a href="src/phenoml/workflows/mcp_server/tools/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.tools.get(
-    mcp_server_tool_id="mcp_server_tool_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.tools.<a href="src/phenoml/workflows/mcp_server/tools/client.py">delete</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.tools.delete(
-    mcp_server_tool_id="mcp_server_tool_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.mcp_server.tools.<a href="src/phenoml/workflows/mcp_server/tools/client.py">call</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.workflows.mcp_server.tools.call(
-    mcp_server_tool_id="mcp_server_tool_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` 
     
 </dd>
 </dl>
