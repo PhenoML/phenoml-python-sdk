@@ -12,6 +12,7 @@ from .environment import phenomlEnvironment
 from .fhir.client import AsyncFhirClient, FhirClient
 from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
 from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
+from .summary.client import AsyncSummaryClient, SummaryClient
 from .tools.client import AsyncToolsClient, ToolsClient
 from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
@@ -88,6 +89,7 @@ class phenoml:
         self.fhir = FhirClient(client_wrapper=self._client_wrapper)
         self.fhir_provider = FhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = Lang2FhirClient(client_wrapper=self._client_wrapper)
+        self.summary = SummaryClient(client_wrapper=self._client_wrapper)
         self.tools = ToolsClient(client_wrapper=self._client_wrapper)
         self.workflows = WorkflowsClient(client_wrapper=self._client_wrapper)
 
@@ -164,6 +166,7 @@ class Asyncphenoml:
         self.fhir = AsyncFhirClient(client_wrapper=self._client_wrapper)
         self.fhir_provider = AsyncFhirProviderClient(client_wrapper=self._client_wrapper)
         self.lang2fhir = AsyncLang2FhirClient(client_wrapper=self._client_wrapper)
+        self.summary = AsyncSummaryClient(client_wrapper=self._client_wrapper)
         self.tools = AsyncToolsClient(client_wrapper=self._client_wrapper)
         self.workflows = AsyncWorkflowsClient(client_wrapper=self._client_wrapper)
 

@@ -3462,6 +3462,529 @@ client.lang2fhir.document(
 </dl>
 </details>
 
+## Summary
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves all summary templates for the authenticated user
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.list_templates()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a summary template from an example using LLM function calling
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.create_template(
+    name="name",
+    example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
+    target_resources=["Patient", "Condition", "Observation"],
+    mode="mode",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` — Name of the template
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**example_summary:** `str` — Example summary note to generate template from
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_resources:** `typing.Sequence[str]` — List of target FHIR resources
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mode:** `str` — Template mode (stored with the template)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` — Description of the template
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**example_fhir_data:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Optional example FHIR data that corresponds to the example summary
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a specific summary template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.get_template(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates an existing summary template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.update_template(
+    id="id",
+    name="name",
+    template="template",
+    target_resources=["target_resources"],
+    mode="mode",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**template:** `str` — Updated template with placeholders
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**target_resources:** `typing.Sequence[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mode:** `str` — Template mode
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a summary template
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.delete_template(
+    id="id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` — Template ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Creates a summary from FHIR resources using one of two modes:
+- **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)
+- **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+from phenoml.summary import FhirResource
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.summary.create(
+    fhir_resources=FhirResource(
+        resource_type="resourceType",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_resources:** `CreateSummaryRequestFhirResources` — FHIR resources (single resource or Bundle)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mode:** `typing.Optional[CreateSummaryRequestMode]` 
+
+Summary generation mode:
+- narrative: Substitute FHIR data into a template (requires template_id)
+- flatten: Flatten FHIR resources for RAG/search (no template needed)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**template_id:** `typing.Optional[str]` — ID of the template to use (required for narrative mode)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Tools
 <details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...)</code></summary>
 <dl>
