@@ -343,6 +343,8 @@ class AgentClient:
         *,
         message: str,
         agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -357,6 +359,14 @@ class AgentClient:
 
         agent_id : str
             The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         context : typing.Optional[str]
             Optional context for the conversation
@@ -380,12 +390,20 @@ class AgentClient:
             token="YOUR_TOKEN",
         )
         client.agent.chat(
+            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
             message="What is the patient's current condition?",
             agent_id="agent-123",
         )
         """
         _response = self._raw_client.chat(
-            message=message, agent_id=agent_id, context=context, session_id=session_id, request_options=request_options
+            message=message,
+            agent_id=agent_id,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            context=context,
+            session_id=session_id,
+            request_options=request_options,
         )
         return _response.data
 
@@ -819,6 +837,8 @@ class AsyncAgentClient:
         *,
         message: str,
         agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -833,6 +853,14 @@ class AsyncAgentClient:
 
         agent_id : str
             The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         context : typing.Optional[str]
             Optional context for the conversation
@@ -861,6 +889,8 @@ class AsyncAgentClient:
 
         async def main() -> None:
             await client.agent.chat(
+                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
                 message="What is the patient's current condition?",
                 agent_id="agent-123",
             )
@@ -869,7 +899,13 @@ class AsyncAgentClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.chat(
-            message=message, agent_id=agent_id, context=context, session_id=session_id, request_options=request_options
+            message=message,
+            agent_id=agent_id,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            context=context,
+            session_id=session_id,
+            request_options=request_options,
         )
         return _response.data
 

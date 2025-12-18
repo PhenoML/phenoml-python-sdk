@@ -15,6 +15,7 @@ from .types import (
     FhirQueryResponseData,
     JsonWebKey,
     Provider,
+    Role,
     ServiceAccountKey,
     SmartConfiguration,
 )
@@ -37,6 +38,7 @@ __all__ = [
     "JsonWebKey",
     "NotFoundError",
     "Provider",
+    "Role",
     "ServiceAccountKey",
     "SmartConfiguration",
     "UnauthorizedError",

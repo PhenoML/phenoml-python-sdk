@@ -36,6 +36,7 @@ class RawFhirClient:
         *,
         query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirSearchResponse]:
         """
@@ -66,6 +67,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -83,6 +89,7 @@ class RawFhirClient:
             },
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
         )
@@ -152,6 +159,7 @@ class RawFhirClient:
         *,
         resource_type: str,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         id: typing.Optional[str] = OMIT,
         meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -180,6 +188,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         id : typing.Optional[str]
             Logical ID of the resource
@@ -208,6 +221,7 @@ class RawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -267,6 +281,7 @@ class RawFhirClient:
         *,
         resource_type: str,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         id: typing.Optional[str] = OMIT,
         meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -295,6 +310,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         id : typing.Optional[str]
             Logical ID of the resource
@@ -323,6 +343,7 @@ class RawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -381,6 +402,7 @@ class RawFhirClient:
         fhir_path: str,
         *,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
         """
@@ -404,6 +426,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -418,6 +445,7 @@ class RawFhirClient:
             method="DELETE",
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
         )
@@ -487,6 +515,7 @@ class RawFhirClient:
         *,
         request: typing.Sequence[FhirPatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirResource]:
         """
@@ -517,6 +546,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -535,6 +569,7 @@ class RawFhirClient:
             headers={
                 "content-type": "application/json-patch+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -604,6 +639,7 @@ class RawFhirClient:
         *,
         entry: typing.Sequence[FhirBundleEntryItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirBundle]:
@@ -626,6 +662,11 @@ class RawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         total : typing.Optional[int]
             Total number of resources that match the search criteria.
@@ -652,6 +693,7 @@ class RawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -716,6 +758,7 @@ class AsyncRawFhirClient:
         *,
         query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirSearchResponse]:
         """
@@ -746,6 +789,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -763,6 +811,7 @@ class AsyncRawFhirClient:
             },
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
         )
@@ -832,6 +881,7 @@ class AsyncRawFhirClient:
         *,
         resource_type: str,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         id: typing.Optional[str] = OMIT,
         meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -860,6 +910,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         id : typing.Optional[str]
             Logical ID of the resource
@@ -888,6 +943,7 @@ class AsyncRawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -947,6 +1003,7 @@ class AsyncRawFhirClient:
         *,
         resource_type: str,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         id: typing.Optional[str] = OMIT,
         meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -975,6 +1032,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         id : typing.Optional[str]
             Logical ID of the resource
@@ -1003,6 +1065,7 @@ class AsyncRawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1061,6 +1124,7 @@ class AsyncRawFhirClient:
         fhir_path: str,
         *,
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
         """
@@ -1084,6 +1148,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1098,6 +1167,7 @@ class AsyncRawFhirClient:
             method="DELETE",
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
         )
@@ -1167,6 +1237,7 @@ class AsyncRawFhirClient:
         *,
         request: typing.Sequence[FhirPatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirResource]:
         """
@@ -1197,6 +1268,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1215,6 +1291,7 @@ class AsyncRawFhirClient:
             headers={
                 "content-type": "application/json-patch+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -1284,6 +1361,7 @@ class AsyncRawFhirClient:
         *,
         entry: typing.Sequence[FhirBundleEntryItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
         total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirBundle]:
@@ -1306,6 +1384,11 @@ class AsyncRawFhirClient:
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
 
         total : typing.Optional[int]
             Total number of resources that match the search criteria.
@@ -1332,6 +1415,7 @@ class AsyncRawFhirClient:
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
             },
             request_options=request_options,
             omit=OMIT,

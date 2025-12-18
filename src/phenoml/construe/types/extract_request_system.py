@@ -17,6 +17,8 @@ class ExtractRequestSystem(UniversalBaseModel):
     * ICD-10-CM - version 2025
     * ICD-10-PCS - version 2025
     * LOINC - version 2.78
+    * HPO - version 2025
+    * CPT - version 2025
     
     Custom systems:
     * Any valid system name configured in your environment. Must have self-hosted construe module.

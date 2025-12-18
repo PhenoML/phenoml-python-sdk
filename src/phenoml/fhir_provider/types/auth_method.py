@@ -3,5 +3,5 @@
 import typing
 
 AuthMethod = typing.Union[
-    typing.Literal["client_secret", "google_healthcare", "jwt", "on_behalf_of", "none"], typing.Any
+    typing.Literal["client_secret", "google_healthcare", "jwt", "on_behalf_of", "token_passthrough", "none"], typing.Any
 ]

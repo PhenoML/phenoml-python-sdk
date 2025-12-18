@@ -5,8 +5,6 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawConstrueClient, RawConstrueClient
-from .types.construe_cohort_request_config import ConstrueCohortRequestConfig
-from .types.construe_cohort_response import ConstrueCohortResponse
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
@@ -153,46 +151,6 @@ class ConstrueClient:
         _response = self._raw_client.extract_codes(
             text=text, system=system, config=config, request_options=request_options
         )
-        return _response.data
-
-    def cohort(
-        self,
-        *,
-        text: str,
-        config: typing.Optional[ConstrueCohortRequestConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConstrueCohortResponse:
-        """
-        Creates a patient cohort based on a natural language description.
-        Translates the description into FHIR search queries and optional SQL queries.
-
-        Parameters
-        ----------
-        text : str
-            Natural language description of the desired patient cohort.
-
-        config : typing.Optional[ConstrueCohortRequestConfig]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ConstrueCohortResponse
-            Cohort creation successful
-
-        Examples
-        --------
-        from phenoml import phenoml
-
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
-        client.construe.cohort(
-            text="Between 20 and 40 years old with hyperlipidemia",
-        )
-        """
-        _response = self._raw_client.cohort(text=text, config=config, request_options=request_options)
         return _response.data
 
 
@@ -348,52 +306,4 @@ class AsyncConstrueClient:
         _response = await self._raw_client.extract_codes(
             text=text, system=system, config=config, request_options=request_options
         )
-        return _response.data
-
-    async def cohort(
-        self,
-        *,
-        text: str,
-        config: typing.Optional[ConstrueCohortRequestConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConstrueCohortResponse:
-        """
-        Creates a patient cohort based on a natural language description.
-        Translates the description into FHIR search queries and optional SQL queries.
-
-        Parameters
-        ----------
-        text : str
-            Natural language description of the desired patient cohort.
-
-        config : typing.Optional[ConstrueCohortRequestConfig]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ConstrueCohortResponse
-            Cohort creation successful
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import Asyncphenoml
-
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.construe.cohort(
-                text="Between 20 and 40 years old with hyperlipidemia",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.cohort(text=text, config=config, request_options=request_options)
         return _response.data

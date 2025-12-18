@@ -35,7 +35,7 @@ class phenoml:
 
 
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -62,7 +62,7 @@ class phenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -112,7 +112,7 @@ class Asyncphenoml:
 
 
 
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -139,7 +139,7 @@ class Asyncphenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,

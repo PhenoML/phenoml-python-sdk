@@ -14,6 +14,7 @@ from .fhir_query_response import FhirQueryResponse
 from .fhir_query_response_data import FhirQueryResponseData
 from .json_web_key import JsonWebKey
 from .provider import Provider
+from .role import Role
 from .service_account_key import ServiceAccountKey
 from .smart_configuration import SmartConfiguration
 
@@ -30,6 +31,7 @@ __all__ = [
     "FhirQueryResponseData",
     "JsonWebKey",
     "Provider",
+    "Role",
     "ServiceAccountKey",
     "SmartConfiguration",
 ]

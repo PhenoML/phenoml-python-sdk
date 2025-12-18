@@ -13,6 +13,7 @@ from .types.fhir_provider_remove_auth_config_response import FhirProviderRemoveA
 from .types.fhir_provider_response import FhirProviderResponse
 from .types.fhir_provider_set_active_auth_config_response import FhirProviderSetActiveAuthConfigResponse
 from .types.provider import Provider
+from .types.role import Role
 from .types.service_account_key import ServiceAccountKey
 
 # this is used as the default value for optional parameters
@@ -45,6 +46,7 @@ class FhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
@@ -74,8 +76,10 @@ class FhirProviderClient:
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -108,6 +112,7 @@ class FhirProviderClient:
             client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
+            role=role,
             scopes=scopes,
             request_options=request_options,
         )
@@ -213,6 +218,7 @@ class FhirProviderClient:
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
@@ -234,8 +240,10 @@ class FhirProviderClient:
         credential_expiry : typing.Optional[dt.datetime]
             Expiry time for JWT credentials (only applicable for JWT auth method)
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -263,6 +271,7 @@ class FhirProviderClient:
             client_secret=client_secret,
             service_account_key=service_account_key,
             credential_expiry=credential_expiry,
+            role=role,
             scopes=scopes,
             request_options=request_options,
         )
@@ -373,6 +382,7 @@ class AsyncFhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
@@ -402,8 +412,10 @@ class AsyncFhirProviderClient:
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -444,6 +456,7 @@ class AsyncFhirProviderClient:
             client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
+            role=role,
             scopes=scopes,
             request_options=request_options,
         )
@@ -573,6 +586,7 @@ class AsyncFhirProviderClient:
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
@@ -594,8 +608,10 @@ class AsyncFhirProviderClient:
         credential_expiry : typing.Optional[dt.datetime]
             Expiry time for JWT credentials (only applicable for JWT auth method)
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -631,6 +647,7 @@ class AsyncFhirProviderClient:
             client_secret=client_secret,
             service_account_key=service_account_key,
             credential_expiry=credential_expiry,
+            role=role,
             scopes=scopes,
             request_options=request_options,
         )

@@ -596,6 +596,8 @@ client = phenoml(
     token="YOUR_TOKEN",
 )
 client.agent.chat(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     message="What is the patient's current condition?",
     agent_id="agent-123",
 )
@@ -623,6 +625,28 @@ client.agent.chat(
 <dd>
 
 **agent_id:** `str` — The ID of the agent to chat with
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -1710,85 +1734,6 @@ client.construe.extract_codes(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">cohort</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a patient cohort based on a natural language description.
-Translates the description into FHIR search queries and optional SQL queries.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import phenoml
-
-client = phenoml(
-    token="YOUR_TOKEN",
-)
-client.construe.cohort(
-    text="Between 20 and 40 years old with hyperlipidemia",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**text:** `str` — Natural language description of the desired patient cohort.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**config:** `typing.Optional[ConstrueCohortRequestConfig]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Fhir
 <details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...)</code></summary>
 <dl>
@@ -1827,7 +1772,8 @@ client = phenoml(
 client.fhir.search(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
 )
 
 ```
@@ -1884,7 +1830,21 @@ FHIR-compliant query parameters for search operations. Supports standard FHIR se
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -1941,7 +1901,8 @@ client = phenoml(
 client.fhir.create(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     resource_type="Patient",
 )
 
@@ -1993,7 +1954,21 @@ Examples:
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -2066,7 +2041,8 @@ client = phenoml(
 client.fhir.upsert(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     resource_type="Patient",
     id="123",
 )
@@ -2119,7 +2095,21 @@ Examples:
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -2192,7 +2182,8 @@ client = phenoml(
 client.fhir.delete(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
 )
 
 ```
@@ -2235,7 +2226,21 @@ Examples:
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -2298,7 +2303,8 @@ client = phenoml(
 client.fhir.patch(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     request=[
         FhirPatchRequestBodyItem(
             op="test",
@@ -2361,7 +2367,21 @@ Examples:
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -2420,7 +2440,8 @@ client = phenoml(
 )
 client.fhir.execute_bundle(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
-    phenoml_on_behalf_of="user@example.com",
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     entry=[
         FhirBundleEntryItem(
             resource={
@@ -2480,7 +2501,21 @@ The ID of the FHIR provider to use. Can be either:
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` — Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -2629,7 +2664,15 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
-**scopes:** `typing.Optional[str]` — OAuth scopes to request
+**role:** `typing.Optional[Role]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
     
 </dd>
 </dl>
@@ -2940,7 +2983,15 @@ client.fhir_provider.add_auth_config(
 <dl>
 <dd>
 
-**scopes:** `typing.Optional[str]` — OAuth scopes to request
+**role:** `typing.Optional[Role]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
     
 </dd>
 </dl>
@@ -4019,6 +4070,8 @@ client = phenoml(
     token="YOUR_TOKEN",
 )
 client.tools.create_fhir_resource(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     resource="auto",
     text="Patient John Doe has severe asthma with acute exacerbation",
 )
@@ -4046,6 +4099,28 @@ client.tools.create_fhir_resource(
 <dd>
 
 **text:** `str` — Natural language text to convert to FHIR resource
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -4106,6 +4181,8 @@ client = phenoml(
     token="YOUR_TOKEN",
 )
 client.tools.search_fhir_resources(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     text="Find all appointments for patient John Doe next week",
 )
 
@@ -4124,6 +4201,28 @@ client.tools.search_fhir_resources(
 <dd>
 
 **text:** `str` — Natural language text to convert to FHIR search parameters
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>
@@ -4208,6 +4307,8 @@ client = phenoml(
     token="YOUR_TOKEN",
 )
 client.tools.analyze_cohort(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     text="female patients over 20 with diabetes but not hypertension",
     provider="550e8400-e29b-41d4-a716-446655440000",
 )
@@ -4235,6 +4336,28 @@ client.tools.analyze_cohort(
 <dd>
 
 **provider:** `str` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
     
 </dd>
 </dl>

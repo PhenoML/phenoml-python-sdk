@@ -14,8 +14,6 @@ from .errors.conflict_error import ConflictError
 from .errors.failed_dependency_error import FailedDependencyError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
-from .types.construe_cohort_request_config import ConstrueCohortRequestConfig
-from .types.construe_cohort_response import ConstrueCohortResponse
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
@@ -276,95 +274,6 @@ class RawConstrueClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def cohort(
-        self,
-        *,
-        text: str,
-        config: typing.Optional[ConstrueCohortRequestConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ConstrueCohortResponse]:
-        """
-        Creates a patient cohort based on a natural language description.
-        Translates the description into FHIR search queries and optional SQL queries.
-
-        Parameters
-        ----------
-        text : str
-            Natural language description of the desired patient cohort.
-
-        config : typing.Optional[ConstrueCohortRequestConfig]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ConstrueCohortResponse]
-            Cohort creation successful
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "construe/cohort",
-            method="POST",
-            json={
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=ConstrueCohortRequestConfig, direction="write"
-                ),
-                "text": text,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ConstrueCohortResponse,
-                    parse_obj_as(
-                        type_=ConstrueCohortResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
 
 class AsyncRawConstrueClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -591,95 +500,6 @@ class AsyncRawConstrueClient:
                 )
             if _response.status_code == 424:
                 raise FailedDependencyError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def cohort(
-        self,
-        *,
-        text: str,
-        config: typing.Optional[ConstrueCohortRequestConfig] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ConstrueCohortResponse]:
-        """
-        Creates a patient cohort based on a natural language description.
-        Translates the description into FHIR search queries and optional SQL queries.
-
-        Parameters
-        ----------
-        text : str
-            Natural language description of the desired patient cohort.
-
-        config : typing.Optional[ConstrueCohortRequestConfig]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ConstrueCohortResponse]
-            Cohort creation successful
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "construe/cohort",
-            method="POST",
-            json={
-                "config": convert_and_respect_annotation_metadata(
-                    object_=config, annotation=ConstrueCohortRequestConfig, direction="write"
-                ),
-                "text": text,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ConstrueCohortResponse,
-                    parse_obj_as(
-                        type_=ConstrueCohortResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Optional[typing.Any],
-                        parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],

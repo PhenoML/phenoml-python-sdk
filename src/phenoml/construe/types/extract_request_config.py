@@ -5,13 +5,42 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .extract_request_config_chunking_method import ExtractRequestConfigChunkingMethod
+from .extract_request_config_validation_method import ExtractRequestConfigValidationMethod
 
 
 class ExtractRequestConfig(UniversalBaseModel):
-    chunking_method: typing.Optional[ExtractRequestConfigChunkingMethod] = None
-    max_codes_per_chunk: typing.Optional[int] = None
-    code_similarity_filter: typing.Optional[float] = None
-    include_rationale: typing.Optional[bool] = None
+    chunking_method: typing.Optional[ExtractRequestConfigChunkingMethod] = pydantic.Field(default=None)
+    """
+    Method for splitting input text into chunks before code extraction
+    """
+
+    max_codes_per_chunk: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Maximum number of codes to extract per chunk
+    """
+
+    code_similarity_filter: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Threshold for filtering similar codes (0.0-1.0)
+    """
+
+    validation_method: typing.Optional[ExtractRequestConfigValidationMethod] = pydantic.Field(default=None)
+    """
+    Method for validating extracted codes:
+    * none - No validation, returns all candidate codes
+    * simple - LLM-based validation
+    * medication_search - LLM-based validation tailored for medication concepts
+    """
+
+    include_rationale: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether to include explanations for why each code was extracted
+    """
+
+    include_ancestors: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether to include ancestor/parent codes in the results
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

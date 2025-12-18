@@ -23,6 +23,7 @@ from .types.fhir_provider_remove_auth_config_response import FhirProviderRemoveA
 from .types.fhir_provider_response import FhirProviderResponse
 from .types.fhir_provider_set_active_auth_config_response import FhirProviderSetActiveAuthConfigResponse
 from .types.provider import Provider
+from .types.role import Role
 from .types.service_account_key import ServiceAccountKey
 
 # this is used as the default value for optional parameters
@@ -44,6 +45,7 @@ class RawFhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirProviderResponse]:
@@ -73,8 +75,10 @@ class RawFhirProviderClient:
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -85,7 +89,7 @@ class RawFhirProviderClient:
             FHIR provider created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            "fhir-provider/create",
+            "fhir-provider",
             method="POST",
             json={
                 "name": name,
@@ -98,6 +102,7 @@ class RawFhirProviderClient:
                 "service_account_key": convert_and_respect_annotation_metadata(
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"
                 ),
+                "role": role,
                 "scopes": scopes,
             },
             headers={
@@ -408,6 +413,7 @@ class RawFhirProviderClient:
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirProviderResponse]:
@@ -429,8 +435,10 @@ class RawFhirProviderClient:
         credential_expiry : typing.Optional[dt.datetime]
             Expiry time for JWT credentials (only applicable for JWT auth method)
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -450,6 +458,7 @@ class RawFhirProviderClient:
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"
                 ),
                 "credential_expiry": credential_expiry,
+                "role": role,
                 "scopes": scopes,
             },
             headers={
@@ -752,6 +761,7 @@ class AsyncRawFhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirProviderResponse]:
@@ -781,8 +791,10 @@ class AsyncRawFhirProviderClient:
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -793,7 +805,7 @@ class AsyncRawFhirProviderClient:
             FHIR provider created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "fhir-provider/create",
+            "fhir-provider",
             method="POST",
             json={
                 "name": name,
@@ -806,6 +818,7 @@ class AsyncRawFhirProviderClient:
                 "service_account_key": convert_and_respect_annotation_metadata(
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"
                 ),
+                "role": role,
                 "scopes": scopes,
             },
             headers={
@@ -1116,6 +1129,7 @@ class AsyncRawFhirProviderClient:
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
+        role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirProviderResponse]:
@@ -1137,8 +1151,10 @@ class AsyncRawFhirProviderClient:
         credential_expiry : typing.Optional[dt.datetime]
             Expiry time for JWT credentials (only applicable for JWT auth method)
 
+        role : typing.Optional[Role]
+
         scopes : typing.Optional[str]
-            OAuth scopes to request
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1158,6 +1174,7 @@ class AsyncRawFhirProviderClient:
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"
                 ),
                 "credential_expiry": credential_expiry,
+                "role": role,
                 "scopes": scopes,
             },
             headers={
