@@ -25,7 +25,7 @@ class BaseClientWrapper:
             "User-Agent": "phenoml/AUTO",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "phenoml",
-            "X-Fern-SDK-Version": "v0.0.10",
+            "X-Fern-SDK-Version": "v0.0.11",
             **(self.get_custom_headers() or {}),
         }
         headers["Authorization"] = f"Bearer {self._get_token()}"
