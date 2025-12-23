@@ -6,6 +6,7 @@ from .create_summary_request_fhir_resources import CreateSummaryRequestFhirResou
 from .create_summary_request_mode import CreateSummaryRequestMode
 from .create_summary_response import CreateSummaryResponse
 from .create_summary_template_response import CreateSummaryTemplateResponse
+from .error_response import ErrorResponse
 from .fhir_bundle import FhirBundle
 from .fhir_bundle_entry_item import FhirBundleEntryItem
 from .fhir_resource import FhirResource
@@ -20,6 +21,7 @@ __all__ = [
     "CreateSummaryRequestMode",
     "CreateSummaryResponse",
     "CreateSummaryTemplateResponse",
+    "ErrorResponse",
     "FhirBundle",
     "FhirBundleEntryItem",
     "FhirResource",

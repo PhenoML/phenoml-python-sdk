@@ -143,9 +143,9 @@ class Lang2FhirClient:
             token="YOUR_TOKEN",
         )
         client.lang2fhir.upload_profile(
-            version="version",
-            resource="custom-patient",
-            profile="profile",
+            version="R4",
+            resource="condition-encounter-diagnosis",
+            profile="(base64 encoded JSON string of the FHIR profile)",
         )
         """
         _response = self._raw_client.upload_profile(
@@ -355,9 +355,9 @@ class AsyncLang2FhirClient:
 
         async def main() -> None:
             await client.lang2fhir.upload_profile(
-                version="version",
-                resource="custom-patient",
-                profile="profile",
+                version="R4",
+                resource="condition-encounter-diagnosis",
+                profile="(base64 encoded JSON string of the FHIR profile)",
             )
 
 

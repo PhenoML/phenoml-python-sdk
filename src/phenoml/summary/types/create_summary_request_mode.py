@@ -2,4 +2,4 @@
 
 import typing
 
-CreateSummaryRequestMode = typing.Union[typing.Literal["narrative", "flatten"], typing.Any]
+CreateSummaryRequestMode = typing.Union[typing.Literal["narrative", "flatten", "ips"], typing.Any]

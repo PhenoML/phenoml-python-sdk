@@ -268,19 +268,25 @@ class SummaryClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateSummaryResponse:
         """
-        Creates a summary from FHIR resources using one of two modes:
+        Creates a summary from FHIR resources using one of three modes:
         - **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)
         - **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)
+        - **ips**: Generates an International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG. Requires a Bundle with exactly one Patient resource (returns 400 error if no Patient or multiple Patients are present). Automatically filters resources to those referencing the patient and generates sections for allergies, medications, problems, immunizations, procedures, and vital signs.
 
         Parameters
         ----------
         fhir_resources : CreateSummaryRequestFhirResources
-            FHIR resources (single resource or Bundle)
+            FHIR resources (single resource or Bundle).
+            For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
+            identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
+            if multiple Patients are present, or if the Patient has no identifiers. Resources are
+            automatically filtered to only include those referencing the patient.
 
         mode : typing.Optional[CreateSummaryRequestMode]
             Summary generation mode:
             - narrative: Substitute FHIR data into a template (requires template_id)
             - flatten: Flatten FHIR resources for RAG/search (no template needed)
+            - ips: Generate International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG
 
         template_id : typing.Optional[str]
             ID of the template to use (required for narrative mode)
@@ -603,19 +609,25 @@ class AsyncSummaryClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateSummaryResponse:
         """
-        Creates a summary from FHIR resources using one of two modes:
+        Creates a summary from FHIR resources using one of three modes:
         - **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)
         - **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)
+        - **ips**: Generates an International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG. Requires a Bundle with exactly one Patient resource (returns 400 error if no Patient or multiple Patients are present). Automatically filters resources to those referencing the patient and generates sections for allergies, medications, problems, immunizations, procedures, and vital signs.
 
         Parameters
         ----------
         fhir_resources : CreateSummaryRequestFhirResources
-            FHIR resources (single resource or Bundle)
+            FHIR resources (single resource or Bundle).
+            For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
+            identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
+            if multiple Patients are present, or if the Patient has no identifiers. Resources are
+            automatically filtered to only include those referencing the patient.
 
         mode : typing.Optional[CreateSummaryRequestMode]
             Summary generation mode:
             - narrative: Substitute FHIR data into a template (requires template_id)
             - flatten: Flatten FHIR resources for RAG/search (no template needed)
+            - ips: Generate International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG
 
         template_id : typing.Optional[str]
             ID of the template to use (required for narrative mode)
