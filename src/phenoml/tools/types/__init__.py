@@ -3,6 +3,9 @@
 # isort: skip_file
 
 from .cohort_response import CohortResponse
+from .lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiResponse
+from .lang2fhir_and_create_multi_response_resource_info_item import Lang2FhirAndCreateMultiResponseResourceInfoItem
+from .lang2fhir_and_create_multi_response_response_bundle import Lang2FhirAndCreateMultiResponseResponseBundle
 from .lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .lang2fhir_and_create_response import Lang2FhirAndCreateResponse
 from .lang2fhir_and_search_response import Lang2FhirAndSearchResponse
@@ -15,6 +18,9 @@ from .search_concept import SearchConcept
 
 __all__ = [
     "CohortResponse",
+    "Lang2FhirAndCreateMultiResponse",
+    "Lang2FhirAndCreateMultiResponseResourceInfoItem",
+    "Lang2FhirAndCreateMultiResponseResponseBundle",
     "Lang2FhirAndCreateRequestResource",
     "Lang2FhirAndCreateResponse",
     "Lang2FhirAndSearchResponse",

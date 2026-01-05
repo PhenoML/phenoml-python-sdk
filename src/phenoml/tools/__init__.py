@@ -4,6 +4,9 @@
 
 from .types import (
     CohortResponse,
+    Lang2FhirAndCreateMultiResponse,
+    Lang2FhirAndCreateMultiResponseResourceInfoItem,
+    Lang2FhirAndCreateMultiResponseResponseBundle,
     Lang2FhirAndCreateRequestResource,
     Lang2FhirAndCreateResponse,
     Lang2FhirAndSearchResponse,
@@ -23,6 +26,9 @@ __all__ = [
     "FailedDependencyError",
     "ForbiddenError",
     "InternalServerError",
+    "Lang2FhirAndCreateMultiResponse",
+    "Lang2FhirAndCreateMultiResponseResourceInfoItem",
+    "Lang2FhirAndCreateMultiResponseResponseBundle",
     "Lang2FhirAndCreateRequestResource",
     "Lang2FhirAndCreateResponse",
     "Lang2FhirAndSearchResponse",

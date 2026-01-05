@@ -13,6 +13,7 @@ from .errors.failed_dependency_error import FailedDependencyError
 from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
+from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
 from .types.document_request_file_type import DocumentRequestFileType
 from .types.document_request_resource import DocumentRequestResource
@@ -78,6 +79,100 @@ class RawLang2FhirClient:
                     FhirResource,
                     parse_obj_as(
                         type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create_multi(
+        self,
+        *,
+        text: str,
+        version: typing.Optional[str] = OMIT,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CreateMultiResponse]:
+        """
+        Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CreateMultiResponse]
+            Successfully extracted FHIR resources
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "lang2fhir/create/multi",
+            method="POST",
+            json={
+                "text": text,
+                "version": version,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateMultiResponse,
+                    parse_obj_as(
+                        type_=CreateMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -460,6 +555,100 @@ class AsyncRawLang2FhirClient:
                     FhirResource,
                     parse_obj_as(
                         type_=FhirResource,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create_multi(
+        self,
+        *,
+        text: str,
+        version: typing.Optional[str] = OMIT,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CreateMultiResponse]:
+        """
+        Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CreateMultiResponse]
+            Successfully extracted FHIR resources
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "lang2fhir/create/multi",
+            method="POST",
+            json={
+                "text": text,
+                "version": version,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateMultiResponse,
+                    parse_obj_as(
+                        type_=CreateMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

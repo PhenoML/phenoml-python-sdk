@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawLang2FhirClient, RawLang2FhirClient
+from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
 from .types.document_request_file_type import DocumentRequestFileType
 from .types.document_request_resource import DocumentRequestResource
@@ -76,6 +77,54 @@ class Lang2FhirClient:
         """
         _response = self._raw_client.create(
             version=version, resource=resource, text=text, request_options=request_options
+        )
+        return _response.data
+
+    def create_multi(
+        self,
+        *,
+        text: str,
+        version: typing.Optional[str] = OMIT,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMultiResponse:
+        """
+        Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMultiResponse
+            Successfully extracted FHIR resources
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.lang2fhir.create_multi(
+            text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+        )
+        """
+        _response = self._raw_client.create_multi(
+            text=text, version=version, provider=provider, request_options=request_options
         )
         return _response.data
 
@@ -275,6 +324,62 @@ class AsyncLang2FhirClient:
         """
         _response = await self._raw_client.create(
             version=version, resource=resource, text=text, request_options=request_options
+        )
+        return _response.data
+
+    async def create_multi(
+        self,
+        *,
+        text: str,
+        version: typing.Optional[str] = OMIT,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMultiResponse:
+        """
+        Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMultiResponse
+            Successfully extracted FHIR resources
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.lang2fhir.create_multi(
+                text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_multi(
+            text=text, version=version, provider=provider, request_options=request_options
         )
         return _response.data
 

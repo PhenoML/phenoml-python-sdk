@@ -14,6 +14,7 @@ from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.cohort_response import CohortResponse
+from .types.lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiResponse
 from .types.lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
@@ -88,6 +89,136 @@ class RawToolsClient:
                     Lang2FhirAndCreateResponse,
                     parse_obj_as(
                         type_=Lang2FhirAndCreateResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 424:
+                raise FailedDependencyError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create_fhir_resources_multi(
+        self,
+        *,
+        text: str,
+        provider: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[Lang2FhirAndCreateMultiResponse]:
+        """
+        Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references and submitted as a transaction bundle.
+        For FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically
+        resolve them via PUT requests after the initial bundle creation.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        provider : str
+            FHIR provider ID or name
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[Lang2FhirAndCreateMultiResponse]
+            Successfully created FHIR resources
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "tools/lang2fhir-and-create-multi",
+            method="POST",
+            json={
+                "text": text,
+                "version": version,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Lang2FhirAndCreateMultiResponse,
+                    parse_obj_as(
+                        type_=Lang2FhirAndCreateMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -465,6 +596,136 @@ class AsyncRawToolsClient:
                     Lang2FhirAndCreateResponse,
                     parse_obj_as(
                         type_=Lang2FhirAndCreateResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 424:
+                raise FailedDependencyError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create_fhir_resources_multi(
+        self,
+        *,
+        text: str,
+        provider: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[Lang2FhirAndCreateMultiResponse]:
+        """
+        Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references and submitted as a transaction bundle.
+        For FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically
+        resolve them via PUT requests after the initial bundle creation.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        provider : str
+            FHIR provider ID or name
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[Lang2FhirAndCreateMultiResponse]
+            Successfully created FHIR resources
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "tools/lang2fhir-and-create-multi",
+            method="POST",
+            json={
+                "text": text,
+                "version": version,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Lang2FhirAndCreateMultiResponse,
+                    parse_obj_as(
+                        type_=Lang2FhirAndCreateMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

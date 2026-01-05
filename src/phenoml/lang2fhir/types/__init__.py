@@ -2,6 +2,11 @@
 
 # isort: skip_file
 
+from .create_multi_response import CreateMultiResponse
+from .create_multi_response_bundle import CreateMultiResponseBundle
+from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEntryItem
+from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
+from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
 from .create_request_resource import CreateRequestResource
 from .document_request_file_type import DocumentRequestFileType
 from .document_request_resource import DocumentRequestResource
@@ -10,6 +15,11 @@ from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .search_response import SearchResponse
 
 __all__ = [
+    "CreateMultiResponse",
+    "CreateMultiResponseBundle",
+    "CreateMultiResponseBundleEntryItem",
+    "CreateMultiResponseBundleEntryItemRequest",
+    "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
     "DocumentRequestFileType",
     "DocumentRequestResource",

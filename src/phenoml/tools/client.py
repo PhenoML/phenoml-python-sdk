@@ -7,6 +7,7 @@ from ..core.request_options import RequestOptions
 from .mcp_server.client import AsyncMcpServerClient, McpServerClient
 from .raw_client import AsyncRawToolsClient, RawToolsClient
 from .types.cohort_response import CohortResponse
+from .types.lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiResponse
 from .types.lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
@@ -91,6 +92,74 @@ class ToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             provider=provider,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def create_fhir_resources_multi(
+        self,
+        *,
+        text: str,
+        provider: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Lang2FhirAndCreateMultiResponse:
+        """
+        Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references and submitted as a transaction bundle.
+        For FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically
+        resolve them via PUT requests after the initial bundle creation.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        provider : str
+            FHIR provider ID or name
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Lang2FhirAndCreateMultiResponse
+            Successfully created FHIR resources
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.tools.create_fhir_resources_multi(
+            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+            text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+            provider="medplum",
+        )
+        """
+        _response = self._raw_client.create_fhir_resources_multi(
+            text=text,
+            provider=provider,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            version=version,
             request_options=request_options,
         )
         return _response.data
@@ -312,6 +381,82 @@ class AsyncToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             provider=provider,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def create_fhir_resources_multi(
+        self,
+        *,
+        text: str,
+        provider: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Lang2FhirAndCreateMultiResponse:
+        """
+        Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references and submitted as a transaction bundle.
+        For FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically
+        resolve them via PUT requests after the initial bundle creation.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text containing multiple clinical concepts to extract
+
+        provider : str
+            FHIR provider ID or name
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        version : typing.Optional[str]
+            FHIR version to use
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Lang2FhirAndCreateMultiResponse
+            Successfully created FHIR resources
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.tools.create_fhir_resources_multi(
+                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+                text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+                provider="medplum",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_fhir_resources_multi(
+            text=text,
+            provider=provider,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            version=version,
             request_options=request_options,
         )
         return _response.data

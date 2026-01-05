@@ -3,6 +3,11 @@
 # isort: skip_file
 
 from .types import (
+    CreateMultiResponse,
+    CreateMultiResponseBundle,
+    CreateMultiResponseBundleEntryItem,
+    CreateMultiResponseBundleEntryItemRequest,
+    CreateMultiResponseResourcesItem,
     CreateRequestResource,
     DocumentRequestFileType,
     DocumentRequestResource,
@@ -14,6 +19,11 @@ from .errors import BadRequestError, FailedDependencyError, ForbiddenError, Inte
 
 __all__ = [
     "BadRequestError",
+    "CreateMultiResponse",
+    "CreateMultiResponseBundle",
+    "CreateMultiResponseBundleEntryItem",
+    "CreateMultiResponseBundleEntryItemRequest",
+    "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
     "DocumentRequestFileType",
     "DocumentRequestResource",
