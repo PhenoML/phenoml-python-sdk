@@ -16,7 +16,10 @@ class ExtractRequestConfig(UniversalBaseModel):
 
     max_codes_per_chunk: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Maximum number of codes to extract per chunk
+    Maximum number of codes to extract per chunk. If not specified, uses system-specific defaults:
+    * SNOMED: 10
+    * LOINC, HPO, RXNORM: 20
+    * All other systems: 5
     """
 
     code_similarity_filter: typing.Optional[float] = pydantic.Field(default=None)
@@ -40,6 +43,11 @@ class ExtractRequestConfig(UniversalBaseModel):
     include_ancestors: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether to include ancestor/parent codes in the results
+    """
+
+    include_invalid: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether to include codes that failed validation in the results
     """
 
     if IS_PYDANTIC_V2:

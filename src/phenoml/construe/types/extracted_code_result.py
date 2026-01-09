@@ -19,6 +19,11 @@ class ExtractedCodeResult(UniversalBaseModel):
     Short description of the code
     """
 
+    valid: bool = pydantic.Field()
+    """
+    Whether the code passed validation. Always true unless include_invalid is set to true, in which case invalid codes will have this set to false.
+    """
+
     long_description: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="longDescription")] = (
         pydantic.Field(default=None)
     )

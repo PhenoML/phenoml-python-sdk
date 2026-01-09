@@ -22,10 +22,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "phenoml/v0.0.17",
+            "User-Agent": "phenoml/v0.0.18",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "phenoml",
-            "X-Fern-SDK-Version": "v0.0.17",
+            "X-Fern-SDK-Version": "v0.0.18",
             **(self.get_custom_headers() or {}),
         }
         headers["Authorization"] = f"Bearer {self._get_token()}"
