@@ -38,7 +38,6 @@ class RawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -55,9 +54,6 @@ class RawAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -87,7 +83,6 @@ class RawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
-                "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -159,20 +154,13 @@ class RawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[AgentListResponse]:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
         Parameters
         ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
         tags : typing.Optional[str]
             Filter by tags
 
@@ -188,7 +176,6 @@ class RawAgentClient:
             "agent/list",
             method="GET",
             params={
-                "is_active": is_active,
                 "tags": tags,
             },
             request_options=request_options,
@@ -328,7 +315,6 @@ class RawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -348,9 +334,6 @@ class RawAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -380,7 +363,6 @@ class RawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
-                "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -876,7 +858,6 @@ class AsyncRawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -893,9 +874,6 @@ class AsyncRawAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -925,7 +903,6 @@ class AsyncRawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
-                "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -997,20 +974,13 @@ class AsyncRawAgentClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[AgentListResponse]:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
         Parameters
         ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
         tags : typing.Optional[str]
             Filter by tags
 
@@ -1026,7 +996,6 @@ class AsyncRawAgentClient:
             "agent/list",
             method="GET",
             params={
-                "is_active": is_active,
                 "tags": tags,
             },
             request_options=request_options,
@@ -1168,7 +1137,6 @@ class AsyncRawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -1188,9 +1156,6 @@ class AsyncRawAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -1220,7 +1185,6 @@ class AsyncRawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
-                "is_active": is_active,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"

@@ -41,7 +41,6 @@ class AgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -58,9 +57,6 @@ class AgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -92,13 +88,11 @@ class AgentClient:
         client.agent.create(
             name="name",
             prompts=["prompt_123", "prompt_456"],
-            is_active=True,
         )
         """
         _response = self._raw_client.create(
             name=name,
             prompts=prompts,
-            is_active=is_active,
             description=description,
             tools=tools,
             tags=tags,
@@ -108,20 +102,13 @@ class AgentClient:
         return _response.data
 
     def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AgentListResponse:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
         Parameters
         ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
         tags : typing.Optional[str]
             Filter by tags
 
@@ -141,11 +128,10 @@ class AgentClient:
             token="YOUR_TOKEN",
         )
         client.agent.list(
-            is_active=True,
             tags="tags",
         )
         """
-        _response = self._raw_client.list(is_active=is_active, tags=tags, request_options=request_options)
+        _response = self._raw_client.list(tags=tags, request_options=request_options)
         return _response.data
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentResponse:
@@ -185,7 +171,6 @@ class AgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -205,9 +190,6 @@ class AgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -240,14 +222,12 @@ class AgentClient:
             id="id",
             name="name",
             prompts=["prompt_123", "prompt_456"],
-            is_active=True,
         )
         """
         _response = self._raw_client.update(
             id,
             name=name,
             prompts=prompts,
-            is_active=is_active,
             description=description,
             tools=tools,
             tags=tags,
@@ -494,7 +474,6 @@ class AsyncAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -511,9 +490,6 @@ class AsyncAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -550,7 +526,6 @@ class AsyncAgentClient:
             await client.agent.create(
                 name="name",
                 prompts=["prompt_123", "prompt_456"],
-                is_active=True,
             )
 
 
@@ -559,7 +534,6 @@ class AsyncAgentClient:
         _response = await self._raw_client.create(
             name=name,
             prompts=prompts,
-            is_active=is_active,
             description=description,
             tools=tools,
             tags=tags,
@@ -569,20 +543,13 @@ class AsyncAgentClient:
         return _response.data
 
     async def list(
-        self,
-        *,
-        is_active: typing.Optional[bool] = None,
-        tags: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AgentListResponse:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
         Parameters
         ----------
-        is_active : typing.Optional[bool]
-            Filter by active status
-
         tags : typing.Optional[str]
             Filter by tags
 
@@ -607,14 +574,13 @@ class AsyncAgentClient:
 
         async def main() -> None:
             await client.agent.list(
-                is_active=True,
                 tags="tags",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(is_active=is_active, tags=tags, request_options=request_options)
+        _response = await self._raw_client.list(tags=tags, request_options=request_options)
         return _response.data
 
     async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentResponse:
@@ -662,7 +628,6 @@ class AsyncAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -682,9 +647,6 @@ class AsyncAgentClient:
 
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
-
-        is_active : bool
-            Whether the agent is active
 
         description : typing.Optional[str]
             Agent description
@@ -722,7 +684,6 @@ class AsyncAgentClient:
                 id="id",
                 name="name",
                 prompts=["prompt_123", "prompt_456"],
-                is_active=True,
             )
 
 
@@ -732,7 +693,6 @@ class AsyncAgentClient:
             id,
             name=name,
             prompts=prompts,
-            is_active=is_active,
             description=description,
             tools=tools,
             tags=tags,

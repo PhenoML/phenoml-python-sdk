@@ -28,11 +28,6 @@ class AgentCreateRequest(UniversalBaseModel):
     Array of MCP server tool IDs to use for this agent
     """
 
-    is_active: bool = pydantic.Field()
-    """
-    Whether the agent is active
-    """
-
     tags: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Tags for categorizing the agent

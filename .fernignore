@@ -4,3 +4,4 @@ src/phenoml/wrapper_client.py
 src/phenoml/__init__.py
 README.md
 LICENSE
+changelog.md

@@ -35,7 +35,6 @@ client = phenoml(
 client.agent.create(
     name="name",
     prompts=["prompt_123", "prompt_456"],
-    is_active=True,
 )
 
 ```
@@ -61,14 +60,6 @@ client.agent.create(
 <dd>
 
 **prompts:** `typing.Sequence[str]` — Array of prompt IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `bool` — Whether the agent is active
     
 </dd>
 </dl>
@@ -153,7 +144,6 @@ client = phenoml(
     token="YOUR_TOKEN",
 )
 client.agent.list(
-    is_active=True,
     tags="tags",
 )
 
@@ -167,14 +157,6 @@ client.agent.list(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**is_active:** `typing.Optional[bool]` — Filter by active status
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -305,7 +287,6 @@ client.agent.update(
     id="id",
     name="name",
     prompts=["prompt_123", "prompt_456"],
-    is_active=True,
 )
 
 ```
@@ -339,14 +320,6 @@ client.agent.update(
 <dd>
 
 **prompts:** `typing.Sequence[str]` — Array of prompt IDs to use for this agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `bool` — Whether the agent is active
     
 </dd>
 </dl>
