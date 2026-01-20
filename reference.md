@@ -717,7 +717,7 @@ client = phenoml(
 client.agent.get_chat_messages(
     chat_session_id="chat_session_id",
     num_messages=1,
-    role="role",
+    role="user",
     order="asc",
 )
 
@@ -751,7 +751,16 @@ client.agent.get_chat_messages(
 <dl>
 <dd>
 
-**role:** `typing.Optional[str]` — Filter by role
+**role:** `typing.Optional[AgentGetChatMessagesRequestRole]` 
+
+Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
+If not specified, messages with all roles are returned.
+
+**Available roles:**
+- `user` - Messages from the user
+- `assistant` - Text responses from the AI assistant
+- `model` - Function/tool call requests from the model
+- `function` - Function/tool call results
     
 </dd>
 </dl>
@@ -2559,7 +2568,9 @@ Optional field as not all FHIR servers include it (e.g., Medplum).
 <dl>
 <dd>
 
-Creates a new FHIR provider configuration with authentication credentials
+Creates a new FHIR provider configuration with authentication credentials.
+
+Note: The "sandbox" provider type cannot be created via this API - it is managed internally.
 </dd>
 </dl>
 </dd>
@@ -2704,7 +2715,10 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
-Retrieves a list of all active FHIR providers for the authenticated user
+Retrieves a list of all active FHIR providers for the authenticated user.
+
+On shared instances, only sandbox providers are returned.
+Sandbox providers return FhirProviderSandboxInfo.
 </dd>
 </dl>
 </dd>
@@ -2764,7 +2778,10 @@ client.fhir_provider.list()
 <dl>
 <dd>
 
-Retrieves a specific FHIR provider configuration by its ID
+Retrieves a specific FHIR provider configuration by its ID.
+
+Sandbox providers return FhirProviderSandboxInfo.
+On shared instances, only sandbox providers can be accessed.
 </dd>
 </dl>
 </dd>
@@ -2834,7 +2851,9 @@ client.fhir_provider.get(
 <dl>
 <dd>
 
-Soft deletes a FHIR provider by setting is_active to false
+Soft deletes a FHIR provider by setting is_active to false.
+
+Note: Sandbox providers cannot be deleted.
 </dd>
 </dl>
 </dd>
@@ -2904,7 +2923,10 @@ client.fhir_provider.delete(
 <dl>
 <dd>
 
-Adds a new authentication configuration to an existing FHIR provider. This enables key rotation and multiple auth configurations per provider.
+Adds a new authentication configuration to an existing FHIR provider.
+This enables key rotation and multiple auth configurations per provider.
+
+Note: Sandbox providers cannot be modified.
 </dd>
 </dl>
 </dd>
@@ -3023,7 +3045,13 @@ client.fhir_provider.add_auth_config(
 <dl>
 <dd>
 
-Sets which authentication configuration should be active for a FHIR provider. Only one auth config can be active at a time.
+Sets which authentication configuration should be active for a FHIR provider.
+Only one auth config can be active at a time.
+
+If the specified auth config is already active, the request succeeds without
+making any changes and returns a message indicating the config is already active.
+
+Note: Sandbox providers cannot be modified.
 </dd>
 </dl>
 </dd>
@@ -3102,7 +3130,10 @@ client.fhir_provider.set_active_auth_config(
 <dl>
 <dd>
 
-Removes an authentication configuration from a FHIR provider. Cannot remove the currently active auth configuration.
+Removes an authentication configuration from a FHIR provider.
+Cannot remove the currently active auth configuration.
+
+Note: Sandbox providers cannot be modified.
 </dd>
 </dl>
 </dd>
@@ -3358,7 +3389,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
-Converts natural language text into FHIR search parameters
+Converts natural language text into FHIR search parameters.
+Automatically identifies the appropriate FHIR resource type and generates valid search query parameters.
+
+Supported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,
+Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,
+Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
+PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
+Schedule, ServiceRequest, Slot, and Specimen.
 </dd>
 </dl>
 </dd>
@@ -3396,7 +3434,17 @@ client.lang2fhir.search(
 <dl>
 <dd>
 
-**text:** `str` — Natural language text to convert into FHIR search parameters
+**text:** `str` 
+
+Natural language text to convert into FHIR search parameters.
+The system will automatically identify the appropriate resource type and generate valid search parameters.
+
+Examples:
+- "Appointments between March 2-9, 2025" → Appointment search with date range
+- "Patients with diabetes" → Condition search with code parameter
+- "Active medication requests for metformin" → MedicationRequest search
+- "Lab results for creatinine" → DiagnosticReport search
+- "Dr. Smith's schedule" → Practitioner or Schedule search
     
 </dd>
 </dl>

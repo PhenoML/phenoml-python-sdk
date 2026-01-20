@@ -7,6 +7,7 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .auth_method import AuthMethod
 from .json_web_key import JsonWebKey
+from .service_account_metadata import ServiceAccountMetadata
 from .smart_configuration import SmartConfiguration
 
 
@@ -26,6 +27,16 @@ class FhirProviderAuthConfig(UniversalBaseModel):
     Whether this auth configuration is currently active
     """
 
+    created_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Timestamp when this auth configuration was created
+    """
+
+    updated_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    Timestamp when this auth configuration was last updated
+    """
+
     public_key_cert_pem: typing.Optional[str] = pydantic.Field(default=None)
     """
     Public key certificate in PEM format (visible for JWT auth)
@@ -38,6 +49,7 @@ class FhirProviderAuthConfig(UniversalBaseModel):
     """
 
     smart_configuration: typing.Optional[SmartConfiguration] = None
+    service_account_metadata: typing.Optional[ServiceAccountMetadata] = None
     scopes: typing.Optional[str] = pydantic.Field(default=None)
     """
     OAuth scopes

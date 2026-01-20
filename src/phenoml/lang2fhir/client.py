@@ -130,12 +130,27 @@ class Lang2FhirClient:
 
     def search(self, *, text: str, request_options: typing.Optional[RequestOptions] = None) -> SearchResponse:
         """
-        Converts natural language text into FHIR search parameters
+        Converts natural language text into FHIR search parameters.
+        Automatically identifies the appropriate FHIR resource type and generates valid search query parameters.
+
+        Supported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,
+        Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,
+        Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
+        PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
+        Schedule, ServiceRequest, Slot, and Specimen.
 
         Parameters
         ----------
         text : str
-            Natural language text to convert into FHIR search parameters
+            Natural language text to convert into FHIR search parameters.
+            The system will automatically identify the appropriate resource type and generate valid search parameters.
+
+            Examples:
+            - "Appointments between March 2-9, 2025" → Appointment search with date range
+            - "Patients with diabetes" → Condition search with code parameter
+            - "Active medication requests for metformin" → MedicationRequest search
+            - "Lab results for creatinine" → DiagnosticReport search
+            - "Dr. Smith's schedule" → Practitioner or Schedule search
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -385,12 +400,27 @@ class AsyncLang2FhirClient:
 
     async def search(self, *, text: str, request_options: typing.Optional[RequestOptions] = None) -> SearchResponse:
         """
-        Converts natural language text into FHIR search parameters
+        Converts natural language text into FHIR search parameters.
+        Automatically identifies the appropriate FHIR resource type and generates valid search query parameters.
+
+        Supported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,
+        Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,
+        Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
+        PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
+        Schedule, ServiceRequest, Slot, and Specimen.
 
         Parameters
         ----------
         text : str
-            Natural language text to convert into FHIR search parameters
+            Natural language text to convert into FHIR search parameters.
+            The system will automatically identify the appropriate resource type and generate valid search parameters.
+
+            Examples:
+            - "Appointments between March 2-9, 2025" → Appointment search with date range
+            - "Patients with diabetes" → Condition search with code parameter
+            - "Active medication requests for metformin" → MedicationRequest search
+            - "Lab results for creatinine" → DiagnosticReport search
+            - "Dr. Smith's schedule" → Practitioner or Schedule search
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

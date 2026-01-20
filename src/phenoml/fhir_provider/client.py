@@ -11,7 +11,6 @@ from .types.fhir_provider_delete_response import FhirProviderDeleteResponse
 from .types.fhir_provider_list_response import FhirProviderListResponse
 from .types.fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
 from .types.fhir_provider_response import FhirProviderResponse
-from .types.fhir_provider_set_active_auth_config_response import FhirProviderSetActiveAuthConfigResponse
 from .types.provider import Provider
 from .types.role import Role
 from .types.service_account_key import ServiceAccountKey
@@ -51,7 +50,9 @@ class FhirProviderClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
         """
-        Creates a new FHIR provider configuration with authentication credentials
+        Creates a new FHIR provider configuration with authentication credentials.
+
+        Note: The "sandbox" provider type cannot be created via this API - it is managed internally.
 
         Parameters
         ----------
@@ -120,7 +121,10 @@ class FhirProviderClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> FhirProviderListResponse:
         """
-        Retrieves a list of all active FHIR providers for the authenticated user
+        Retrieves a list of all active FHIR providers for the authenticated user.
+
+        On shared instances, only sandbox providers are returned.
+        Sandbox providers return FhirProviderSandboxInfo.
 
         Parameters
         ----------
@@ -148,7 +152,10 @@ class FhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderResponse:
         """
-        Retrieves a specific FHIR provider configuration by its ID
+        Retrieves a specific FHIR provider configuration by its ID.
+
+        Sandbox providers return FhirProviderSandboxInfo.
+        On shared instances, only sandbox providers can be accessed.
 
         Parameters
         ----------
@@ -181,7 +188,9 @@ class FhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderDeleteResponse:
         """
-        Soft deletes a FHIR provider by setting is_active to false
+        Soft deletes a FHIR provider by setting is_active to false.
+
+        Note: Sandbox providers cannot be deleted.
 
         Parameters
         ----------
@@ -223,7 +232,10 @@ class FhirProviderClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
         """
-        Adds a new authentication configuration to an existing FHIR provider. This enables key rotation and multiple auth configurations per provider.
+        Adds a new authentication configuration to an existing FHIR provider.
+        This enables key rotation and multiple auth configurations per provider.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------
@@ -279,9 +291,15 @@ class FhirProviderClient:
 
     def set_active_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderSetActiveAuthConfigResponse:
+    ) -> FhirProviderResponse:
         """
-        Sets which authentication configuration should be active for a FHIR provider. Only one auth config can be active at a time.
+        Sets which authentication configuration should be active for a FHIR provider.
+        Only one auth config can be active at a time.
+
+        If the specified auth config is already active, the request succeeds without
+        making any changes and returns a message indicating the config is already active.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------
@@ -296,8 +314,9 @@ class FhirProviderClient:
 
         Returns
         -------
-        FhirProviderSetActiveAuthConfigResponse
-            Active auth configuration set successfully
+        FhirProviderResponse
+            Active auth configuration set successfully, or the config was already active.
+            Check the message field to determine which case occurred.
 
         Examples
         --------
@@ -320,7 +339,10 @@ class FhirProviderClient:
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderRemoveAuthConfigResponse:
         """
-        Removes an authentication configuration from a FHIR provider. Cannot remove the currently active auth configuration.
+        Removes an authentication configuration from a FHIR provider.
+        Cannot remove the currently active auth configuration.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------
@@ -387,7 +409,9 @@ class AsyncFhirProviderClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
         """
-        Creates a new FHIR provider configuration with authentication credentials
+        Creates a new FHIR provider configuration with authentication credentials.
+
+        Note: The "sandbox" provider type cannot be created via this API - it is managed internally.
 
         Parameters
         ----------
@@ -464,7 +488,10 @@ class AsyncFhirProviderClient:
 
     async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> FhirProviderListResponse:
         """
-        Retrieves a list of all active FHIR providers for the authenticated user
+        Retrieves a list of all active FHIR providers for the authenticated user.
+
+        On shared instances, only sandbox providers are returned.
+        Sandbox providers return FhirProviderSandboxInfo.
 
         Parameters
         ----------
@@ -500,7 +527,10 @@ class AsyncFhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderResponse:
         """
-        Retrieves a specific FHIR provider configuration by its ID
+        Retrieves a specific FHIR provider configuration by its ID.
+
+        Sandbox providers return FhirProviderSandboxInfo.
+        On shared instances, only sandbox providers can be accessed.
 
         Parameters
         ----------
@@ -541,7 +571,9 @@ class AsyncFhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderDeleteResponse:
         """
-        Soft deletes a FHIR provider by setting is_active to false
+        Soft deletes a FHIR provider by setting is_active to false.
+
+        Note: Sandbox providers cannot be deleted.
 
         Parameters
         ----------
@@ -591,7 +623,10 @@ class AsyncFhirProviderClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirProviderResponse:
         """
-        Adds a new authentication configuration to an existing FHIR provider. This enables key rotation and multiple auth configurations per provider.
+        Adds a new authentication configuration to an existing FHIR provider.
+        This enables key rotation and multiple auth configurations per provider.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------
@@ -655,9 +690,15 @@ class AsyncFhirProviderClient:
 
     async def set_active_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderSetActiveAuthConfigResponse:
+    ) -> FhirProviderResponse:
         """
-        Sets which authentication configuration should be active for a FHIR provider. Only one auth config can be active at a time.
+        Sets which authentication configuration should be active for a FHIR provider.
+        Only one auth config can be active at a time.
+
+        If the specified auth config is already active, the request succeeds without
+        making any changes and returns a message indicating the config is already active.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------
@@ -672,8 +713,9 @@ class AsyncFhirProviderClient:
 
         Returns
         -------
-        FhirProviderSetActiveAuthConfigResponse
-            Active auth configuration set successfully
+        FhirProviderResponse
+            Active auth configuration set successfully, or the config was already active.
+            Check the message field to determine which case occurred.
 
         Examples
         --------
@@ -704,7 +746,10 @@ class AsyncFhirProviderClient:
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderRemoveAuthConfigResponse:
         """
-        Removes an authentication configuration from a FHIR provider. Cannot remove the currently active auth configuration.
+        Removes an authentication configuration from a FHIR provider.
+        Cannot remove the currently active auth configuration.
+
+        Note: Sandbox providers cannot be modified.
 
         Parameters
         ----------

@@ -4,13 +4,25 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .fhir_provider_template import FhirProviderTemplate
+from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
 
 
 class FhirProviderListResponse(UniversalBaseModel):
+    """
+    Response payload for listing FHIR Providers.
+    On shared instances, only sandbox providers are returned (as FhirProviderSandboxInfo).
+    On dedicated instances, full provider details are returned (as FhirProviderTemplate).
+    """
+
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
-    fhir_providers: typing.Optional[typing.List[FhirProviderTemplate]] = None
+    fhir_providers: typing.Optional[typing.List[FhirProviderListResponseFhirProvidersItem]] = pydantic.Field(
+        default=None
+    )
+    """
+    List of FHIR providers. Sandbox providers return FhirProviderSandboxInfo,
+    other providers return FhirProviderTemplate.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

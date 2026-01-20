@@ -3,6 +3,8 @@
 import typing
 
 Provider = typing.Union[
-    typing.Literal["athenahealth", "canvas", "cerner", "elation", "epic", "google_healthcare", "hapi", "medplum"],
+    typing.Literal[
+        "athenahealth", "canvas", "cerner", "elation", "epic", "google_healthcare", "hapi", "medplum", "sandbox"
+    ],
     typing.Any,
 ]

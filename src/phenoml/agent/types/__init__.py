@@ -7,6 +7,7 @@ from .agent_create_request import AgentCreateRequest
 from .agent_create_request_provider import AgentCreateRequestProvider
 from .agent_delete_response import AgentDeleteResponse
 from .agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
+from .agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
 from .agent_get_chat_messages_response import AgentGetChatMessagesResponse
 from .agent_list_response import AgentListResponse
 from .agent_prompts_response import AgentPromptsResponse
@@ -14,6 +15,7 @@ from .agent_response import AgentResponse
 from .agent_template import AgentTemplate
 from .agent_template_provider import AgentTemplateProvider
 from .chat_message_template import ChatMessageTemplate
+from .chat_message_template_role import ChatMessageTemplateRole
 from .chat_session_template import ChatSessionTemplate
 from .json_patch import JsonPatch
 from .json_patch_operation import JsonPatchOperation
@@ -27,6 +29,7 @@ __all__ = [
     "AgentCreateRequestProvider",
     "AgentDeleteResponse",
     "AgentGetChatMessagesRequestOrder",
+    "AgentGetChatMessagesRequestRole",
     "AgentGetChatMessagesResponse",
     "AgentListResponse",
     "AgentPromptsResponse",
@@ -34,6 +37,7 @@ __all__ = [
     "AgentTemplate",
     "AgentTemplateProvider",
     "ChatMessageTemplate",
+    "ChatMessageTemplateRole",
     "ChatSessionTemplate",
     "JsonPatch",
     "JsonPatchOperation",

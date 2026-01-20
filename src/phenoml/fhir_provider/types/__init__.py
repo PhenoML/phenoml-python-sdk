@@ -6,9 +6,11 @@ from .auth_method import AuthMethod
 from .fhir_provider_auth_config import FhirProviderAuthConfig
 from .fhir_provider_delete_response import FhirProviderDeleteResponse
 from .fhir_provider_list_response import FhirProviderListResponse
+from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
 from .fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
 from .fhir_provider_response import FhirProviderResponse
-from .fhir_provider_set_active_auth_config_response import FhirProviderSetActiveAuthConfigResponse
+from .fhir_provider_response_data import FhirProviderResponseData
+from .fhir_provider_sandbox_info import FhirProviderSandboxInfo
 from .fhir_provider_template import FhirProviderTemplate
 from .fhir_query_response import FhirQueryResponse
 from .fhir_query_response_data import FhirQueryResponseData
@@ -16,6 +18,7 @@ from .json_web_key import JsonWebKey
 from .provider import Provider
 from .role import Role
 from .service_account_key import ServiceAccountKey
+from .service_account_metadata import ServiceAccountMetadata
 from .smart_configuration import SmartConfiguration
 
 __all__ = [
@@ -23,9 +26,11 @@ __all__ = [
     "FhirProviderAuthConfig",
     "FhirProviderDeleteResponse",
     "FhirProviderListResponse",
+    "FhirProviderListResponseFhirProvidersItem",
     "FhirProviderRemoveAuthConfigResponse",
     "FhirProviderResponse",
-    "FhirProviderSetActiveAuthConfigResponse",
+    "FhirProviderResponseData",
+    "FhirProviderSandboxInfo",
     "FhirProviderTemplate",
     "FhirQueryResponse",
     "FhirQueryResponseData",
@@ -33,5 +38,6 @@ __all__ = [
     "Provider",
     "Role",
     "ServiceAccountKey",
+    "ServiceAccountMetadata",
     "SmartConfiguration",
 ]

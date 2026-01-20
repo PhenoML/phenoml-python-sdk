@@ -13,6 +13,7 @@ from .document_request_resource import DocumentRequestResource
 from .fhir_resource import FhirResource
 from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .search_response import SearchResponse
+from .search_response_resource_type import SearchResponseResourceType
 
 __all__ = [
     "CreateMultiResponse",
@@ -26,4 +27,5 @@ __all__ = [
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
     "SearchResponse",
+    "SearchResponseResourceType",
 ]

@@ -4,13 +4,20 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .fhir_provider_template import FhirProviderTemplate
+from .fhir_provider_response_data import FhirProviderResponseData
 
 
 class FhirProviderResponse(UniversalBaseModel):
+    """
+    Response payload for a single FHIR Provider operation.
+    """
+
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
-    data: typing.Optional[FhirProviderTemplate] = None
+    data: typing.Optional[FhirProviderResponseData] = pydantic.Field(default=None)
+    """
+    Provider details. Sandbox providers return FhirProviderSandboxInfo.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .chat_message_template_role import ChatMessageTemplateRole
 
 
 class ChatMessageTemplate(UniversalBaseModel):
@@ -17,9 +18,13 @@ class ChatMessageTemplate(UniversalBaseModel):
     Chat session ID
     """
 
-    role: typing.Optional[str] = pydantic.Field(default=None)
+    role: typing.Optional[ChatMessageTemplateRole] = pydantic.Field(default=None)
     """
-    Message role
+    Message role indicating the source/type of the message:
+    - `user` - Messages from the user
+    - `assistant` - Text responses from the AI assistant
+    - `model` - Function/tool call requests to the model
+    - `function` - Function/tool call results
     """
 
     content: typing.Optional[str] = pydantic.Field(default=None)

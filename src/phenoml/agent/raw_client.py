@@ -19,6 +19,7 @@ from .types.agent_chat_response import AgentChatResponse
 from .types.agent_create_request_provider import AgentCreateRequestProvider
 from .types.agent_delete_response import AgentDeleteResponse
 from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
+from .types.agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
 from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
 from .types.agent_list_response import AgentListResponse
 from .types.agent_response import AgentResponse
@@ -770,7 +771,7 @@ class RawAgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[str] = None,
+        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
         order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentGetChatMessagesResponse]:
@@ -785,8 +786,15 @@ class RawAgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[str]
-            Filter by role
+        role : typing.Optional[AgentGetChatMessagesRequestRole]
+            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
+            If not specified, messages with all roles are returned.
+
+            **Available roles:**
+            - `user` - Messages from the user
+            - `assistant` - Text responses from the AI assistant
+            - `model` - Function/tool call requests from the model
+            - `function` - Function/tool call results
 
         order : typing.Optional[AgentGetChatMessagesRequestOrder]
             Order of messages
@@ -1603,7 +1611,7 @@ class AsyncRawAgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[str] = None,
+        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
         order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentGetChatMessagesResponse]:
@@ -1618,8 +1626,15 @@ class AsyncRawAgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[str]
-            Filter by role
+        role : typing.Optional[AgentGetChatMessagesRequestRole]
+            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
+            If not specified, messages with all roles are returned.
+
+            **Available roles:**
+            - `user` - Messages from the user
+            - `assistant` - Text responses from the AI assistant
+            - `model` - Function/tool call requests from the model
+            - `function` - Function/tool call results
 
         order : typing.Optional[AgentGetChatMessagesRequestOrder]
             Order of messages

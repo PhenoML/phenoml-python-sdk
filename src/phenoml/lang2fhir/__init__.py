@@ -14,6 +14,7 @@ from .types import (
     FhirResource,
     Lang2FhirUploadProfileResponse,
     SearchResponse,
+    SearchResponseResourceType,
 )
 from .errors import BadRequestError, FailedDependencyError, ForbiddenError, InternalServerError, UnauthorizedError
 
@@ -33,5 +34,6 @@ __all__ = [
     "InternalServerError",
     "Lang2FhirUploadProfileResponse",
     "SearchResponse",
+    "SearchResponseResourceType",
     "UnauthorizedError",
 ]
