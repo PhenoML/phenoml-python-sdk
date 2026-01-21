@@ -9,6 +9,11 @@ from .types.construe_upload_code_system_response import ConstrueUploadCodeSystem
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
+from .types.get_code_response import GetCodeResponse
+from .types.list_code_systems_response import ListCodeSystemsResponse
+from .types.list_codes_response import ListCodesResponse
+from .types.semantic_search_response import SemanticSearchResponse
+from .types.text_search_response import TextSearchResponse
 from .types.upload_request_format import UploadRequestFormat
 
 # this is used as the default value for optional parameters
@@ -150,6 +155,272 @@ class ConstrueClient:
         """
         _response = self._raw_client.extract_codes(
             text=text, system=system, config=config, request_options=request_options
+        )
+        return _response.data
+
+    def list_available_code_systems(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCodeSystemsResponse:
+        """
+        Returns metadata about all available code systems including built-in and custom systems.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCodeSystemsResponse
+            List of available code systems
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.list_available_code_systems()
+        """
+        _response = self._raw_client.list_available_code_systems(request_options=request_options)
+        return _response.data
+
+    def list_codes_in_a_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        cursor: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCodesResponse:
+        """
+        Returns a paginated list of all codes in the specified code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        cursor : typing.Optional[str]
+            Pagination cursor from previous response
+
+        limit : typing.Optional[int]
+            Maximum number of codes to return (default 20)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCodesResponse
+            Paginated list of codes
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.list_codes_in_a_code_system(
+            codesystem="ICD-10-CM",
+            version="2025",
+            cursor="cursor",
+            limit=1,
+        )
+        """
+        _response = self._raw_client.list_codes_in_a_code_system(
+            codesystem, version=version, cursor=cursor, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    def get_a_specific_code(
+        self,
+        codesystem: str,
+        code_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCodeResponse:
+        """
+        Returns details for a specific code within a code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        code_id : str
+            The code identifier
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCodeResponse
+            Code details
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.get_a_specific_code(
+            codesystem="ICD-10-CM",
+            code_id="E11.65",
+            version="version",
+        )
+        """
+        _response = self._raw_client.get_a_specific_code(
+            codesystem, code_id, version=version, request_options=request_options
+        )
+        return _response.data
+
+    def semantic_search_embedding_based(
+        self,
+        codesystem: str,
+        *,
+        text: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SemanticSearchResponse:
+        """
+        Performs semantic similarity search using vector embeddings.
+
+        **When to use**: Best for natural language queries where you want to find conceptually
+        related codes, even when different terminology is used. The search understands meaning,
+        not just keywords.
+
+        **Examples**:
+        - Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+          "Nocturnal dyspnea" — semantically related but no exact keyword matches
+        - Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+        **Trade-offs**: Slower than text search (requires embedding generation), but finds
+        conceptually similar results that keyword search would miss.
+
+        See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        text : str
+            Natural language text to find semantically similar codes for
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 10, max 50)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SemanticSearchResponse
+            Semantic search results ordered by similarity
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.semantic_search_embedding_based(
+            codesystem="ICD-10-CM",
+            text="patient has trouble breathing at night and wakes up gasping",
+            version="version",
+            limit=1,
+        )
+        """
+        _response = self._raw_client.semantic_search_embedding_based(
+            codesystem, text=text, version=version, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    def text_search_keyword_based(
+        self,
+        codesystem: str,
+        *,
+        q: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> TextSearchResponse:
+        """
+        Performs fast full-text search over code IDs and descriptions.
+
+        **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
+        the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
+
+        **Features**:
+        - Substring matching on code IDs (e.g., "11.65" finds "E11.65")
+        - Typo tolerance on descriptions (not on code IDs)
+        - Fast response times (~10-50ms)
+
+        **Examples**:
+        - Query "E11" finds all codes starting with E11 (diabetes codes)
+        - Query "diabtes" (typo) still finds "diabetes" codes
+
+        **Trade-offs**: Faster than semantic search, but only matches keywords/substrings.
+        Won't find conceptually related codes with different terminology.
+
+        See also: `/search/semantic` for finding conceptually similar codes.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        q : str
+            Search query (searches code IDs and descriptions)
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 20, max 100)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TextSearchResponse
+            Text search results
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.text_search_keyword_based(
+            codesystem="ICD-10-CM",
+            q="E11.65",
+            version="version",
+            limit=1,
+        )
+        """
+        _response = self._raw_client.text_search_keyword_based(
+            codesystem, q=q, version=version, limit=limit, request_options=request_options
         )
         return _response.data
 
@@ -305,5 +576,311 @@ class AsyncConstrueClient:
         """
         _response = await self._raw_client.extract_codes(
             text=text, system=system, config=config, request_options=request_options
+        )
+        return _response.data
+
+    async def list_available_code_systems(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ListCodeSystemsResponse:
+        """
+        Returns metadata about all available code systems including built-in and custom systems.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCodeSystemsResponse
+            List of available code systems
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.list_available_code_systems()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_available_code_systems(request_options=request_options)
+        return _response.data
+
+    async def list_codes_in_a_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        cursor: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ListCodesResponse:
+        """
+        Returns a paginated list of all codes in the specified code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        cursor : typing.Optional[str]
+            Pagination cursor from previous response
+
+        limit : typing.Optional[int]
+            Maximum number of codes to return (default 20)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ListCodesResponse
+            Paginated list of codes
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.list_codes_in_a_code_system(
+                codesystem="ICD-10-CM",
+                version="2025",
+                cursor="cursor",
+                limit=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_codes_in_a_code_system(
+            codesystem, version=version, cursor=cursor, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    async def get_a_specific_code(
+        self,
+        codesystem: str,
+        code_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCodeResponse:
+        """
+        Returns details for a specific code within a code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        code_id : str
+            The code identifier
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCodeResponse
+            Code details
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.get_a_specific_code(
+                codesystem="ICD-10-CM",
+                code_id="E11.65",
+                version="version",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_a_specific_code(
+            codesystem, code_id, version=version, request_options=request_options
+        )
+        return _response.data
+
+    async def semantic_search_embedding_based(
+        self,
+        codesystem: str,
+        *,
+        text: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SemanticSearchResponse:
+        """
+        Performs semantic similarity search using vector embeddings.
+
+        **When to use**: Best for natural language queries where you want to find conceptually
+        related codes, even when different terminology is used. The search understands meaning,
+        not just keywords.
+
+        **Examples**:
+        - Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+          "Nocturnal dyspnea" — semantically related but no exact keyword matches
+        - Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+        **Trade-offs**: Slower than text search (requires embedding generation), but finds
+        conceptually similar results that keyword search would miss.
+
+        See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        text : str
+            Natural language text to find semantically similar codes for
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 10, max 50)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SemanticSearchResponse
+            Semantic search results ordered by similarity
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.semantic_search_embedding_based(
+                codesystem="ICD-10-CM",
+                text="patient has trouble breathing at night and wakes up gasping",
+                version="version",
+                limit=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.semantic_search_embedding_based(
+            codesystem, text=text, version=version, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    async def text_search_keyword_based(
+        self,
+        codesystem: str,
+        *,
+        q: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> TextSearchResponse:
+        """
+        Performs fast full-text search over code IDs and descriptions.
+
+        **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
+        the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
+
+        **Features**:
+        - Substring matching on code IDs (e.g., "11.65" finds "E11.65")
+        - Typo tolerance on descriptions (not on code IDs)
+        - Fast response times (~10-50ms)
+
+        **Examples**:
+        - Query "E11" finds all codes starting with E11 (diabetes codes)
+        - Query "diabtes" (typo) still finds "diabetes" codes
+
+        **Trade-offs**: Faster than semantic search, but only matches keywords/substrings.
+        Won't find conceptually related codes with different terminology.
+
+        See also: `/search/semantic` for finding conceptually similar codes.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        q : str
+            Search query (searches code IDs and descriptions)
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 20, max 100)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TextSearchResponse
+            Text search results
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.text_search_keyword_based(
+                codesystem="ICD-10-CM",
+                q="E11.65",
+                version="version",
+                limit=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.text_search_keyword_based(
+            codesystem, q=q, version=version, limit=limit, request_options=request_options
         )
         return _response.data

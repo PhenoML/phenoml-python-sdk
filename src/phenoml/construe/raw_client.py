@@ -6,6 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
+from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -13,11 +14,19 @@ from .errors.bad_request_error import BadRequestError
 from .errors.conflict_error import ConflictError
 from .errors.failed_dependency_error import FailedDependencyError
 from .errors.internal_server_error import InternalServerError
+from .errors.not_found_error import NotFoundError
+from .errors.not_implemented_error import NotImplementedError
+from .errors.service_unavailable_error import ServiceUnavailableError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
+from .types.get_code_response import GetCodeResponse
+from .types.list_code_systems_response import ListCodeSystemsResponse
+from .types.list_codes_response import ListCodesResponse
+from .types.semantic_search_response import SemanticSearchResponse
+from .types.text_search_response import TextSearchResponse
 from .types.upload_request_format import UploadRequestFormat
 
 # this is used as the default value for optional parameters
@@ -274,6 +283,523 @@ class RawConstrueClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def list_available_code_systems(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ListCodeSystemsResponse]:
+        """
+        Returns metadata about all available code systems including built-in and custom systems.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListCodeSystemsResponse]
+            List of available code systems
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "construe/codes/systems",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCodeSystemsResponse,
+                    parse_obj_as(
+                        type_=ListCodeSystemsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def list_codes_in_a_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        cursor: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ListCodesResponse]:
+        """
+        Returns a paginated list of all codes in the specified code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        cursor : typing.Optional[str]
+            Pagination cursor from previous response
+
+        limit : typing.Optional[int]
+            Maximum number of codes to return (default 20)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ListCodesResponse]
+            Paginated list of codes
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}",
+            method="GET",
+            params={
+                "version": version,
+                "cursor": cursor,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCodesResponse,
+                    parse_obj_as(
+                        type_=ListCodesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get_a_specific_code(
+        self,
+        codesystem: str,
+        code_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetCodeResponse]:
+        """
+        Returns details for a specific code within a code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        code_id : str
+            The code identifier
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCodeResponse]
+            Code details
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/{jsonable_encoder(code_id)}",
+            method="GET",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCodeResponse,
+                    parse_obj_as(
+                        type_=GetCodeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def semantic_search_embedding_based(
+        self,
+        codesystem: str,
+        *,
+        text: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[SemanticSearchResponse]:
+        """
+        Performs semantic similarity search using vector embeddings.
+
+        **When to use**: Best for natural language queries where you want to find conceptually
+        related codes, even when different terminology is used. The search understands meaning,
+        not just keywords.
+
+        **Examples**:
+        - Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+          "Nocturnal dyspnea" — semantically related but no exact keyword matches
+        - Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+        **Trade-offs**: Slower than text search (requires embedding generation), but finds
+        conceptually similar results that keyword search would miss.
+
+        See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        text : str
+            Natural language text to find semantically similar codes for
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 10, max 50)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[SemanticSearchResponse]
+            Semantic search results ordered by similarity
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/search/semantic",
+            method="GET",
+            params={
+                "text": text,
+                "version": version,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    SemanticSearchResponse,
+                    parse_obj_as(
+                        type_=SemanticSearchResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def text_search_keyword_based(
+        self,
+        codesystem: str,
+        *,
+        q: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[TextSearchResponse]:
+        """
+        Performs fast full-text search over code IDs and descriptions.
+
+        **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
+        the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
+
+        **Features**:
+        - Substring matching on code IDs (e.g., "11.65" finds "E11.65")
+        - Typo tolerance on descriptions (not on code IDs)
+        - Fast response times (~10-50ms)
+
+        **Examples**:
+        - Query "E11" finds all codes starting with E11 (diabetes codes)
+        - Query "diabtes" (typo) still finds "diabetes" codes
+
+        **Trade-offs**: Faster than semantic search, but only matches keywords/substrings.
+        Won't find conceptually related codes with different terminology.
+
+        See also: `/search/semantic` for finding conceptually similar codes.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        q : str
+            Search query (searches code IDs and descriptions)
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 20, max 100)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[TextSearchResponse]
+            Text search results
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/search/text",
+            method="GET",
+            params={
+                "q": q,
+                "version": version,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TextSearchResponse,
+                    parse_obj_as(
+                        type_=TextSearchResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 501:
+                raise NotImplementedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawConstrueClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -511,6 +1037,523 @@ class AsyncRawConstrueClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list_available_code_systems(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ListCodeSystemsResponse]:
+        """
+        Returns metadata about all available code systems including built-in and custom systems.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListCodeSystemsResponse]
+            List of available code systems
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "construe/codes/systems",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCodeSystemsResponse,
+                    parse_obj_as(
+                        type_=ListCodeSystemsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list_codes_in_a_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        cursor: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ListCodesResponse]:
+        """
+        Returns a paginated list of all codes in the specified code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        cursor : typing.Optional[str]
+            Pagination cursor from previous response
+
+        limit : typing.Optional[int]
+            Maximum number of codes to return (default 20)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ListCodesResponse]
+            Paginated list of codes
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}",
+            method="GET",
+            params={
+                "version": version,
+                "cursor": cursor,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ListCodesResponse,
+                    parse_obj_as(
+                        type_=ListCodesResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_a_specific_code(
+        self,
+        codesystem: str,
+        code_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetCodeResponse]:
+        """
+        Returns details for a specific code within a code system.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        code_id : str
+            The code identifier
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCodeResponse]
+            Code details
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/{jsonable_encoder(code_id)}",
+            method="GET",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCodeResponse,
+                    parse_obj_as(
+                        type_=GetCodeResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def semantic_search_embedding_based(
+        self,
+        codesystem: str,
+        *,
+        text: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[SemanticSearchResponse]:
+        """
+        Performs semantic similarity search using vector embeddings.
+
+        **When to use**: Best for natural language queries where you want to find conceptually
+        related codes, even when different terminology is used. The search understands meaning,
+        not just keywords.
+
+        **Examples**:
+        - Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+          "Nocturnal dyspnea" — semantically related but no exact keyword matches
+        - Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+        **Trade-offs**: Slower than text search (requires embedding generation), but finds
+        conceptually similar results that keyword search would miss.
+
+        See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        text : str
+            Natural language text to find semantically similar codes for
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 10, max 50)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[SemanticSearchResponse]
+            Semantic search results ordered by similarity
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/search/semantic",
+            method="GET",
+            params={
+                "text": text,
+                "version": version,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    SemanticSearchResponse,
+                    parse_obj_as(
+                        type_=SemanticSearchResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def text_search_keyword_based(
+        self,
+        codesystem: str,
+        *,
+        q: str,
+        version: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[TextSearchResponse]:
+        """
+        Performs fast full-text search over code IDs and descriptions.
+
+        **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
+        the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
+
+        **Features**:
+        - Substring matching on code IDs (e.g., "11.65" finds "E11.65")
+        - Typo tolerance on descriptions (not on code IDs)
+        - Fast response times (~10-50ms)
+
+        **Examples**:
+        - Query "E11" finds all codes starting with E11 (diabetes codes)
+        - Query "diabtes" (typo) still finds "diabetes" codes
+
+        **Trade-offs**: Faster than semantic search, but only matches keywords/substrings.
+        Won't find conceptually related codes with different terminology.
+
+        See also: `/search/semantic` for finding conceptually similar codes.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        q : str
+            Search query (searches code IDs and descriptions)
+
+        version : typing.Optional[str]
+            Specific version of the code system
+
+        limit : typing.Optional[int]
+            Maximum number of results (default 20, max 100)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[TextSearchResponse]
+            Text search results
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/{jsonable_encoder(codesystem)}/search/text",
+            method="GET",
+            params={
+                "q": q,
+                "version": version,
+                "limit": limit,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TextSearchResponse,
+                    parse_obj_as(
+                        type_=TextSearchResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 501:
+                raise NotImplementedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
