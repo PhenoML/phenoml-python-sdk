@@ -1716,6 +1716,476 @@ client.construe.extract_codes(
 </dl>
 </details>
 
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns metadata about all available code systems including built-in and custom systems.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.list_available_code_systems()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns a paginated list of all codes in the specified code system.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.list_codes_in_a_code_system(
+    codesystem="ICD-10-CM",
+    version="2025",
+    cursor="cursor",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system. Required if multiple versions exist.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `typing.Optional[str]` — Pagination cursor from previous response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of codes to return (default 20)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns details for a specific code within a code system.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.get_a_specific_code(
+    codesystem="ICD-10-CM",
+    code_id="E11.65",
+    version="version",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**code_id:** `str` — The code identifier
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Performs semantic similarity search using vector embeddings.
+
+**When to use**: Best for natural language queries where you want to find conceptually
+related codes, even when different terminology is used. The search understands meaning,
+not just keywords.
+
+**Examples**:
+- Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+  "Nocturnal dyspnea" — semantically related but no exact keyword matches
+- Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+**Trade-offs**: Slower than text search (requires embedding generation), but finds
+conceptually similar results that keyword search would miss.
+
+See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.semantic_search_embedding_based(
+    codesystem="ICD-10-CM",
+    text="patient has trouble breathing at night and wakes up gasping",
+    version="version",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**text:** `str` — Natural language text to find semantically similar codes for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of results (default 10, max 50)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">text_search_keyword_based</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Performs fast full-text search over code IDs and descriptions.
+
+**When to use**: Best for autocomplete UIs, code lookup, or when users know part of
+the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
+
+**Features**:
+- Substring matching on code IDs (e.g., "11.65" finds "E11.65")
+- Typo tolerance on descriptions (not on code IDs)
+- Fast response times (~10-50ms)
+
+**Examples**:
+- Query "E11" finds all codes starting with E11 (diabetes codes)
+- Query "diabtes" (typo) still finds "diabetes" codes
+
+**Trade-offs**: Faster than semantic search, but only matches keywords/substrings.
+Won't find conceptually related codes with different terminology.
+
+See also: `/search/semantic` for finding conceptually similar codes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.text_search_keyword_based(
+    codesystem="ICD-10-CM",
+    q="E11.65",
+    version="version",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**q:** `str` — Search query (searches code IDs and descriptions)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of results (default 20, max 100)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Fhir
 <details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...)</code></summary>
 <dl>

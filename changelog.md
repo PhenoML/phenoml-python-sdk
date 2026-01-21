@@ -1,3 +1,17 @@
+## 0.1.0 - 2026-01-21
+* feat: add code system management and search capabilities to construe
+* Expand the construe API with comprehensive code system management and search functionality, enabling users to discover available code systems, browse codes, and perform both keyword and semantic searches.
+* Key changes:
+* Add list_available_code_systems() to retrieve all available code systems with metadata
+* Add list_codes_in_a_code_system() for paginated browsing of codes within a system
+* Add get_a_specific_code() to fetch detailed information for individual codes
+* Add semantic_search_embedding_based() for natural language similarity search using vector embeddings
+* Add text_search_keyword_based() for fast keyword-based search with typo tolerance
+* Add comprehensive error handling for NotFound, NotImplemented, and ServiceUnavailable errors
+* Add new response types: CodeResponse, CodeSystemDetails, ListCodesResponse, SemanticSearchResponse, TextSearchResponse
+* Update documentation with detailed usage examples and search method comparisons
+* 🌿 Generated with Fern
+
 ## 1.0.0 - 2026-01-20
 * refactor: remove is_active parameter from agent operations
 * Remove the is_active parameter from agent create, list, and update operations

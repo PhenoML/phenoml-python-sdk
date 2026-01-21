@@ -6,6 +6,18 @@ from .bad_request_error import BadRequestError
 from .conflict_error import ConflictError
 from .failed_dependency_error import FailedDependencyError
 from .internal_server_error import InternalServerError
+from .not_found_error import NotFoundError
+from .not_implemented_error import NotImplementedError
+from .service_unavailable_error import ServiceUnavailableError
 from .unauthorized_error import UnauthorizedError
 
-__all__ = ["BadRequestError", "ConflictError", "FailedDependencyError", "InternalServerError", "UnauthorizedError"]
+__all__ = [
+    "BadRequestError",
+    "ConflictError",
+    "FailedDependencyError",
+    "InternalServerError",
+    "NotFoundError",
+    "NotImplementedError",
+    "ServiceUnavailableError",
+    "UnauthorizedError",
+]
