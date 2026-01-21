@@ -33,9 +33,10 @@ class AgentCreateRequest(UniversalBaseModel):
     Tags for categorizing the agent
     """
 
-    provider: typing.Optional[AgentCreateRequestProvider] = pydantic.Field(default=None)
+    provider: AgentCreateRequestProvider = pydantic.Field()
     """
-    FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
+    FHIR provider ID(s) for this agent. Required.
+    In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
     """
 
     if IS_PYDANTIC_V2:

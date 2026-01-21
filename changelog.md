@@ -1,3 +1,14 @@
+## 2.0.0 - 2026-01-21
+* feat: make provider field required in agent create/update API
+* This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
+* Key changes:
+* Make provider parameter required in AgentCreateRequest type definition
+* Update method signatures in AgentClient, AsyncAgentClient, and RawAgentClient classes
+* Reorder parameters to place required provider field before optional parameters
+* Update documentation to clarify provider requirement and sandbox behavior
+* Upgrade packaging dependency from version 25.0 to 26.0
+* 🌿 Generated with Fern
+
 ## 1.0.0 - 2026-01-21
 * refactor: remove is_active field from prompts API
 * Remove the is_active field from prompt creation, update, and type definitions. Simplify the API by removing prompt activation state management and update the delete operation description to reflect actual deletion rather than soft deletion.
