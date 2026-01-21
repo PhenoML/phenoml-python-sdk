@@ -1,3 +1,13 @@
+## 1.0.0 - 2026-01-21
+* refactor: remove is_active field from agent prompts API
+* This change simplifies the prompts API by removing the is_active field from both the AgentTemplate and PromptTemplate data models, along with associated client methods and documentation.
+* Key changes:
+* Remove is_active parameter from prompt create and update methods in sync and async clients
+* Remove is_active field from AgentTemplate and PromptTemplate data models
+* Update delete method description from "soft delete" to "delete" functionality
+* Remove is_active documentation and examples from reference documentation
+* 🌿 Generated with Fern
+
 ## 0.1.0 - 2026-01-21
 * feat: add code system management and search capabilities to construe
 * Expand the construe API with comprehensive code system management and search functionality, enabling users to discover available code systems, browse codes, and perform both keyword and semantic searches.
