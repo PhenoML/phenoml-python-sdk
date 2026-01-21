@@ -32,11 +32,6 @@ class PromptTemplate(UniversalBaseModel):
     Whether this is a default prompt
     """
 
-    is_active: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Whether the prompt is active
-    """
-
     tags: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Tags for categorizing the prompt

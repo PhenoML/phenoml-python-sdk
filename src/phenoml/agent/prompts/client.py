@@ -35,7 +35,6 @@ class PromptsClient:
         *,
         name: str,
         content: str,
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -51,9 +50,6 @@ class PromptsClient:
 
         content : str
             Prompt content
-
-        is_active : bool
-            Whether the prompt is active
 
         description : typing.Optional[str]
             Prompt description
@@ -82,13 +78,11 @@ class PromptsClient:
         client.agent.prompts.create(
             name="Medical Assistant System Prompt",
             content="You are a helpful medical assistant specialized in FHIR data processing...",
-            is_active=True,
         )
         """
         _response = self._raw_client.create(
             name=name,
             content=content,
-            is_active=is_active,
             description=description,
             is_default=is_default,
             tags=tags,
@@ -161,7 +155,6 @@ class PromptsClient:
         description: typing.Optional[str] = OMIT,
         content: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentPromptsResponse:
@@ -184,9 +177,6 @@ class PromptsClient:
 
         is_default : typing.Optional[bool]
             Whether this is a default prompt
-
-        is_active : typing.Optional[bool]
-            Whether the prompt is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the prompt
@@ -216,7 +206,6 @@ class PromptsClient:
             description=description,
             content=content,
             is_default=is_default,
-            is_active=is_active,
             tags=tags,
             request_options=request_options,
         )
@@ -224,7 +213,7 @@ class PromptsClient:
 
     def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsDeleteResponse:
         """
-        Soft deletes a prompt by setting is_active to false
+        Deletes a prompt
 
         Parameters
         ----------
@@ -352,7 +341,6 @@ class AsyncPromptsClient:
         *,
         name: str,
         content: str,
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -368,9 +356,6 @@ class AsyncPromptsClient:
 
         content : str
             Prompt content
-
-        is_active : bool
-            Whether the prompt is active
 
         description : typing.Optional[str]
             Prompt description
@@ -404,7 +389,6 @@ class AsyncPromptsClient:
             await client.agent.prompts.create(
                 name="Medical Assistant System Prompt",
                 content="You are a helpful medical assistant specialized in FHIR data processing...",
-                is_active=True,
             )
 
 
@@ -413,7 +397,6 @@ class AsyncPromptsClient:
         _response = await self._raw_client.create(
             name=name,
             content=content,
-            is_active=is_active,
             description=description,
             is_default=is_default,
             tags=tags,
@@ -502,7 +485,6 @@ class AsyncPromptsClient:
         description: typing.Optional[str] = OMIT,
         content: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentPromptsResponse:
@@ -525,9 +507,6 @@ class AsyncPromptsClient:
 
         is_default : typing.Optional[bool]
             Whether this is a default prompt
-
-        is_active : typing.Optional[bool]
-            Whether the prompt is active
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the prompt
@@ -565,7 +544,6 @@ class AsyncPromptsClient:
             description=description,
             content=content,
             is_default=is_default,
-            is_active=is_active,
             tags=tags,
             request_options=request_options,
         )
@@ -575,7 +553,7 @@ class AsyncPromptsClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> PromptsDeleteResponse:
         """
-        Soft deletes a prompt by setting is_active to false
+        Deletes a prompt
 
         Parameters
         ----------
