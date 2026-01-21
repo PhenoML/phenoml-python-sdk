@@ -797,7 +797,6 @@ client = phenoml(
 client.agent.prompts.create(
     name="Medical Assistant System Prompt",
     content="You are a helpful medical assistant specialized in FHIR data processing...",
-    is_active=True,
 )
 
 ```
@@ -823,14 +822,6 @@ client.agent.prompts.create(
 <dd>
 
 **content:** `str` — Prompt content
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**is_active:** `bool` — Whether the prompt is active
     
 </dd>
 </dl>
@@ -1094,14 +1085,6 @@ client.agent.prompts.update(
 <dl>
 <dd>
 
-**is_active:** `typing.Optional[bool]` — Whether the prompt is active
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **tags:** `typing.Optional[typing.Sequence[str]]` — Tags for categorizing the prompt
     
 </dd>
@@ -1134,7 +1117,7 @@ client.agent.prompts.update(
 <dl>
 <dd>
 
-Soft deletes a prompt by setting is_active to false
+Deletes a prompt
 </dd>
 </dl>
 </dd>

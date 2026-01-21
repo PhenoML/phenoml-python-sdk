@@ -1,3 +1,14 @@
+## 1.0.0 - 2026-01-21
+* refactor: remove is_active field from prompts API
+* Remove the is_active field from prompt creation, update, and type definitions. Simplify the API by removing prompt activation state management and update the delete operation description to reflect actual deletion rather than soft deletion.
+* Key changes:
+* Remove is_active parameter from prompt create and update operations
+* Update delete operation description from "soft deletes" to "deletes a prompt"
+* Remove is_active field from PromptTemplate and AgentTemplate types
+* Update documentation examples to remove is_active usage
+* Simplify API interface by removing prompt state management
+* 🌿 Generated with Fern
+
 ## 0.1.0 - 2026-01-21
 * feat: add code system management and search capabilities to construe
 * Expand the construe API with comprehensive code system management and search functionality, enabling users to discover available code systems, browse codes, and perform both keyword and semantic searches.

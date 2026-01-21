@@ -34,7 +34,6 @@ class RawPromptsClient:
         *,
         name: str,
         content: str,
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -50,9 +49,6 @@ class RawPromptsClient:
 
         content : str
             Prompt content
-
-        is_active : bool
-            Whether the prompt is active
 
         description : typing.Optional[str]
             Prompt description
@@ -79,7 +75,6 @@ class RawPromptsClient:
                 "description": description,
                 "content": content,
                 "is_default": is_default,
-                "is_active": is_active,
                 "tags": tags,
             },
             headers={
@@ -305,7 +300,6 @@ class RawPromptsClient:
         description: typing.Optional[str] = OMIT,
         content: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentPromptsResponse]:
@@ -329,9 +323,6 @@ class RawPromptsClient:
         is_default : typing.Optional[bool]
             Whether this is a default prompt
 
-        is_active : typing.Optional[bool]
-            Whether the prompt is active
-
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the prompt
 
@@ -351,7 +342,6 @@ class RawPromptsClient:
                 "description": description,
                 "content": content,
                 "is_default": is_default,
-                "is_active": is_active,
                 "tags": tags,
             },
             headers={
@@ -434,7 +424,7 @@ class RawPromptsClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[PromptsDeleteResponse]:
         """
-        Soft deletes a prompt by setting is_active to false
+        Deletes a prompt
 
         Parameters
         ----------
@@ -693,7 +683,6 @@ class AsyncRawPromptsClient:
         *,
         name: str,
         content: str,
-        is_active: bool,
         description: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -709,9 +698,6 @@ class AsyncRawPromptsClient:
 
         content : str
             Prompt content
-
-        is_active : bool
-            Whether the prompt is active
 
         description : typing.Optional[str]
             Prompt description
@@ -738,7 +724,6 @@ class AsyncRawPromptsClient:
                 "description": description,
                 "content": content,
                 "is_default": is_default,
-                "is_active": is_active,
                 "tags": tags,
             },
             headers={
@@ -966,7 +951,6 @@ class AsyncRawPromptsClient:
         description: typing.Optional[str] = OMIT,
         content: typing.Optional[str] = OMIT,
         is_default: typing.Optional[bool] = OMIT,
-        is_active: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentPromptsResponse]:
@@ -990,9 +974,6 @@ class AsyncRawPromptsClient:
         is_default : typing.Optional[bool]
             Whether this is a default prompt
 
-        is_active : typing.Optional[bool]
-            Whether the prompt is active
-
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the prompt
 
@@ -1012,7 +993,6 @@ class AsyncRawPromptsClient:
                 "description": description,
                 "content": content,
                 "is_default": is_default,
-                "is_active": is_active,
                 "tags": tags,
             },
             headers={
@@ -1095,7 +1075,7 @@ class AsyncRawPromptsClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[PromptsDeleteResponse]:
         """
-        Soft deletes a prompt by setting is_active to false
+        Deletes a prompt
 
         Parameters
         ----------
