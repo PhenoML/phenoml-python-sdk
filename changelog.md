@@ -1,3 +1,14 @@
+## 2.0.1 - 2026-01-22
+* docs: update documentation with AMA requirements and paid plan notices
+* This update adds important legal and commercial notices to the PhenoML SDK documentation for medical code handling.
+* Key changes:
+* Add "Requires a paid plan" notice to custom code system upload functionality
+* Include AMA requirements disclaimer for CPT code usage across all relevant endpoints
+* Update custom system documentation to clarify upload requirements
+* Improve clarity of extract endpoint description with proper punctuation
+* Ensure compliance notices appear in both reference documentation and code docstrings
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
