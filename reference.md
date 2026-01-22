@@ -35,6 +35,7 @@ client = phenoml(
 client.agent.create(
     name="name",
     prompts=["prompt_123", "prompt_456"],
+    provider="provider",
 )
 
 ```
@@ -67,6 +68,17 @@ client.agent.create(
 <dl>
 <dd>
 
+**provider:** `AgentCreateRequestProvider` 
+
+FHIR provider ID(s) for this agent. Required.
+In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **description:** `typing.Optional[str]` — Agent description
     
 </dd>
@@ -84,14 +96,6 @@ client.agent.create(
 <dd>
 
 **tags:** `typing.Optional[typing.Sequence[str]]` — Tags for categorizing the agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>
@@ -287,6 +291,7 @@ client.agent.update(
     id="id",
     name="name",
     prompts=["prompt_123", "prompt_456"],
+    provider="provider",
 )
 
 ```
@@ -327,6 +332,17 @@ client.agent.update(
 <dl>
 <dd>
 
+**provider:** `AgentCreateRequestProvider` 
+
+FHIR provider ID(s) for this agent. Required.
+In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **description:** `typing.Optional[str]` — Agent description
     
 </dd>
@@ -344,14 +360,6 @@ client.agent.update(
 <dd>
 
 **tags:** `typing.Optional[typing.Sequence[str]]` — Tags for categorizing the agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**provider:** `typing.Optional[AgentCreateRequestProvider]` — FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
     
 </dd>
 </dl>

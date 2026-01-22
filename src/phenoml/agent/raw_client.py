@@ -38,10 +38,10 @@ class RawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
         """
@@ -55,6 +55,10 @@ class RawAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -63,9 +67,6 @@ class RawAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -315,10 +316,10 @@ class RawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
         """
@@ -335,6 +336,10 @@ class RawAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -343,9 +348,6 @@ class RawAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -858,10 +860,10 @@ class AsyncRawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
         """
@@ -875,6 +877,10 @@ class AsyncRawAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -883,9 +889,6 @@ class AsyncRawAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1137,10 +1140,10 @@ class AsyncRawAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
         """
@@ -1157,6 +1160,10 @@ class AsyncRawAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -1165,9 +1172,6 @@ class AsyncRawAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

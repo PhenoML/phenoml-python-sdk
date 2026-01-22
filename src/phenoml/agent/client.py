@@ -41,10 +41,10 @@ class AgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
         """
@@ -58,6 +58,10 @@ class AgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -66,9 +70,6 @@ class AgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -88,15 +89,16 @@ class AgentClient:
         client.agent.create(
             name="name",
             prompts=["prompt_123", "prompt_456"],
+            provider="provider",
         )
         """
         _response = self._raw_client.create(
             name=name,
             prompts=prompts,
+            provider=provider,
             description=description,
             tools=tools,
             tags=tags,
-            provider=provider,
             request_options=request_options,
         )
         return _response.data
@@ -171,10 +173,10 @@ class AgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
         """
@@ -191,6 +193,10 @@ class AgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -199,9 +205,6 @@ class AgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -222,16 +225,17 @@ class AgentClient:
             id="id",
             name="name",
             prompts=["prompt_123", "prompt_456"],
+            provider="provider",
         )
         """
         _response = self._raw_client.update(
             id,
             name=name,
             prompts=prompts,
+            provider=provider,
             description=description,
             tools=tools,
             tags=tags,
-            provider=provider,
             request_options=request_options,
         )
         return _response.data
@@ -474,10 +478,10 @@ class AsyncAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
         """
@@ -491,6 +495,10 @@ class AsyncAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -499,9 +507,6 @@ class AsyncAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -526,6 +531,7 @@ class AsyncAgentClient:
             await client.agent.create(
                 name="name",
                 prompts=["prompt_123", "prompt_456"],
+                provider="provider",
             )
 
 
@@ -534,10 +540,10 @@ class AsyncAgentClient:
         _response = await self._raw_client.create(
             name=name,
             prompts=prompts,
+            provider=provider,
             description=description,
             tools=tools,
             tags=tags,
-            provider=provider,
             request_options=request_options,
         )
         return _response.data
@@ -628,10 +634,10 @@ class AsyncAgentClient:
         *,
         name: str,
         prompts: typing.Sequence[str],
+        provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
-        provider: typing.Optional[AgentCreateRequestProvider] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
         """
@@ -648,6 +654,10 @@ class AsyncAgentClient:
         prompts : typing.Sequence[str]
             Array of prompt IDs to use for this agent
 
+        provider : AgentCreateRequestProvider
+            FHIR provider ID(s) for this agent. Required.
+            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+
         description : typing.Optional[str]
             Agent description
 
@@ -656,9 +666,6 @@ class AsyncAgentClient:
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
-
-        provider : typing.Optional[AgentCreateRequestProvider]
-            FHIR provider ID(s) - must be valid UUIDs from existing FHIR providers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -684,6 +691,7 @@ class AsyncAgentClient:
                 id="id",
                 name="name",
                 prompts=["prompt_123", "prompt_456"],
+                provider="provider",
             )
 
 
@@ -693,10 +701,10 @@ class AsyncAgentClient:
             id,
             name=name,
             prompts=prompts,
+            provider=provider,
             description=description,
             tools=tools,
             tags=tags,
-            provider=provider,
             request_options=request_options,
         )
         return _response.data
