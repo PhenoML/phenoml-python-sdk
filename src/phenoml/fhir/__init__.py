@@ -15,9 +15,10 @@ from .types import (
     FhirResourceMeta,
     FhirSearchResponse,
 )
-from .errors import BadRequestError, InternalServerError, NotFoundError, UnauthorizedError
+from .errors import BadGatewayError, BadRequestError, InternalServerError, NotFoundError, UnauthorizedError
 
 __all__ = [
+    "BadGatewayError",
     "BadRequestError",
     "ErrorResponse",
     "FhirBundle",

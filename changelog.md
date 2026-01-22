@@ -1,3 +1,13 @@
+## 2.0.1 - 2026-01-22
+* docs: add CPT usage disclaimers and paid plan requirements
+* Update API documentation and client code to clarify usage requirements and legal obligations for CPT code system functionality.
+* Key changes:
+* Add AMA CPT usage disclaimer to all CPT-related endpoints and documentation
+* Update upload code system documentation to require paid plan
+* Add BadGatewayError (502) exception handling to FHIR client methods
+* Standardize documentation language for code extraction endpoints
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
