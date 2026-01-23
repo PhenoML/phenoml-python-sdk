@@ -1,3 +1,15 @@
+## 2.1.0 - 2026-01-23
+* docs: improve construe API documentation and rename method
+* This update enhances the construe API with better documentation, clearer method naming, and additional error handling to improve the developer experience.
+* Key changes:
+* Rename text_search_keyword_based to terminology_server_text_search for clarity
+* Add "Requires a paid plan" notice to upload_code_system method
+* Include AMA requirements notice for CPT usage across all relevant methods
+* Improve method descriptions to mention terminology server explicitly
+* Add BadGatewayError (502) handling to FHIR client for better error coverage
+* Update ExtractRequestSystem documentation with paid plan requirements
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
