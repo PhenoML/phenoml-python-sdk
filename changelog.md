@@ -1,3 +1,15 @@
+## 2.0.1 - 2026-01-23
+* docs: improve API documentation and add error handling
+* Update PhenoML SDK with enhanced documentation and improved error handling. This update adds clearer descriptions for medical code system operations, includes important compliance notices, and improves error handling for FHIR operations.
+* Key changes:
+* Rename text_search_keyword_based method to terminology_server_text_search for clarity
+* Add CPT usage compliance notices throughout construe module documentation
+* Update method descriptions to be more specific about terminology server operations
+* Add BadGatewayError (502) exception handling to all FHIR client methods
+* Clarify that custom code system uploads require a paid plan
+* Improve function documentation with more precise terminology
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
