@@ -21,7 +21,9 @@ class ExtractRequestSystem(UniversalBaseModel):
     * CPT - version 2025
     
     Custom systems:
-    * Any valid system name configured in your environment. Must have self-hosted construe module.
+    * Any valid system name uploaded via /construe/upload. Requires a paid plan.
+    
+    Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
     """
 
     version: typing.Optional[str] = pydantic.Field(default=None)
