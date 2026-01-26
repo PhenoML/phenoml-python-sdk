@@ -1,3 +1,17 @@
+## 2.1.0 - 2026-01-26
+* feat: rename API method and add CPT usage disclaimers
+* Update terminology server endpoints with clearer naming and add required
+* CPT usage disclaimers throughout documentation and code. Enhance method
+* descriptions to reflect terminology server architecture.
+* Key changes:
+* Rename text_search_keyword_based to terminology_server_text_search
+* Add "Requires a paid plan" note to upload_code_system method
+* Add CPT usage disclaimer to all relevant endpoints per AMA requirements
+* Update method descriptions to reference "terminology server" terminology
+* Add BadGatewayError handling for FHIR endpoints
+* Improve documentation clarity for code system operations
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
