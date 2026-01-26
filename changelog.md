@@ -1,3 +1,14 @@
+## 2.1.0 - 2026-01-26
+* docs: enhance API documentation and error handling
+* Update API documentation across construe methods with more detailed descriptions and usage requirements. Add CPT usage compliance notices and clarify terminology server functionality. Rename text search method for better clarity and add 502 error handling for FHIR operations.
+* Key changes:
+* Rename text_search_keyword_based to terminology_server_text_search for clearer method naming
+* Add paid plan requirements and CPT usage compliance notices to relevant methods
+* Enhance method descriptions to specify terminology server operations
+* Add BadGatewayError (502) handling for all FHIR client operations
+* Update extract request documentation with custom system upload requirements
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
