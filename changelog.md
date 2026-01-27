@@ -1,3 +1,16 @@
+## 2.1.0 - 2026-01-27
+* refactor: rename method and enhance documentation with legal requirements
+* Rename text_search_keyword_based to terminology_server_text_search for better clarity
+* and add comprehensive legal disclaimers for CPT usage compliance throughout the API.
+* Key changes:
+* Rename text_search_keyword_based method to terminology_server_text_search across all client classes
+* Add "Requires a paid plan" notice to upload_code_system method documentation
+* Add CPT usage disclaimer: "Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service" to all relevant methods
+* Update method descriptions to be more descriptive (e.g., "terminology server's catalog", "looks up a specific code")
+* Add BadGatewayError exception handling to FHIR client for 502 status codes
+* Update type documentation to reference uploaded systems requiring paid plans
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
