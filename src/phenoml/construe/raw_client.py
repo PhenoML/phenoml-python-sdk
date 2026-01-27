@@ -51,7 +51,7 @@ class RawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConstrueUploadCodeSystemResponse]:
         """
-        Upload a custom medical code system with codes and descriptions for use in code extraction.
+        Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Upon upload, construe generates embeddings for all of the codes in the code system and stores them in the vector database so you can
         subsequently use the code system for construe/extract and lang2fhir/create (coming soon!)
 
@@ -187,7 +187,9 @@ class RawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ExtractCodesResult]:
         """
-        Converts natural language text into structured medical codes
+        Converts natural language text into structured medical codes.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -287,7 +289,7 @@ class RawConstrueClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ListCodeSystemsResponse]:
         """
-        Returns metadata about all available code systems including built-in and custom systems.
+        Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 
         Parameters
         ----------
@@ -351,7 +353,9 @@ class RawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ListCodesResponse]:
         """
-        Returns a paginated list of all codes in the specified code system.
+        Returns a paginated list of all codes in the specified code system from the terminology server.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -453,7 +457,9 @@ class RawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetCodeResponse]:
         """
-        Returns details for a specific code within a code system.
+        Looks up a specific code in the terminology server and returns its details.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -567,6 +573,8 @@ class RawConstrueClient:
 
         See also: `/search/text` for faster keyword-based lookup with typo tolerance.
 
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
         Parameters
         ----------
         codesystem : str
@@ -658,7 +666,7 @@ class RawConstrueClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def text_search_keyword_based(
+    def terminology_server_text_search(
         self,
         codesystem: str,
         *,
@@ -686,6 +694,8 @@ class RawConstrueClient:
         Won't find conceptually related codes with different terminology.
 
         See also: `/search/semantic` for finding conceptually similar codes.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -819,7 +829,7 @@ class AsyncRawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConstrueUploadCodeSystemResponse]:
         """
-        Upload a custom medical code system with codes and descriptions for use in code extraction.
+        Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Upon upload, construe generates embeddings for all of the codes in the code system and stores them in the vector database so you can
         subsequently use the code system for construe/extract and lang2fhir/create (coming soon!)
 
@@ -955,7 +965,9 @@ class AsyncRawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ExtractCodesResult]:
         """
-        Converts natural language text into structured medical codes
+        Converts natural language text into structured medical codes.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -1055,7 +1067,7 @@ class AsyncRawConstrueClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ListCodeSystemsResponse]:
         """
-        Returns metadata about all available code systems including built-in and custom systems.
+        Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 
         Parameters
         ----------
@@ -1119,7 +1131,9 @@ class AsyncRawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ListCodesResponse]:
         """
-        Returns a paginated list of all codes in the specified code system.
+        Returns a paginated list of all codes in the specified code system from the terminology server.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -1221,7 +1235,9 @@ class AsyncRawConstrueClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetCodeResponse]:
         """
-        Returns details for a specific code within a code system.
+        Looks up a specific code in the terminology server and returns its details.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------
@@ -1335,6 +1351,8 @@ class AsyncRawConstrueClient:
 
         See also: `/search/text` for faster keyword-based lookup with typo tolerance.
 
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
         Parameters
         ----------
         codesystem : str
@@ -1426,7 +1444,7 @@ class AsyncRawConstrueClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def text_search_keyword_based(
+    async def terminology_server_text_search(
         self,
         codesystem: str,
         *,
@@ -1454,6 +1472,8 @@ class AsyncRawConstrueClient:
         Won't find conceptually related codes with different terminology.
 
         See also: `/search/semantic` for finding conceptually similar codes.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
         ----------

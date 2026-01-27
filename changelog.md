@@ -1,3 +1,17 @@
+## 3.0.0 - 2026-01-27
+* feat: improve error handling and method naming
+* Enhance the SDK with better error handling, clearer method names, and comprehensive documentation
+* updates. Add new error types for better exception handling and clarify usage requirements
+* for CPT terminology access.
+* Key changes:
+* Add BadGatewayError (502) exception handling across all FHIR endpoints for better error handling
+* Rename text_search_keyword_based to terminology_server_text_search for clarity
+* Update method docstrings to clarify terminology server functionality
+* Add AMA CPT usage requirements notice to all relevant code extraction methods
+* Clarify paid plan requirement for custom code system upload
+* Improve API documentation with clearer descriptions of functionality
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
