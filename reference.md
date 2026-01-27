@@ -1502,7 +1502,7 @@ client.cohort.analyze(
 <dl>
 <dd>
 
-Upload a custom medical code system with codes and descriptions for use in code extraction.
+Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
 Upon upload, construe generates embeddings for all of the codes in the code system and stores them in the vector database so you can
 subsequently use the code system for construe/extract and lang2fhir/create (coming soon!)
 </dd>
@@ -1633,7 +1633,9 @@ client.construe.upload_code_system(
 <dl>
 <dd>
 
-Converts natural language text into structured medical codes
+Converts natural language text into structured medical codes.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 </dd>
 </dl>
 </dd>
@@ -1719,7 +1721,7 @@ client.construe.extract_codes(
 <dl>
 <dd>
 
-Returns metadata about all available code systems including built-in and custom systems.
+Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 </dd>
 </dl>
 </dd>
@@ -1779,7 +1781,9 @@ client.construe.list_available_code_systems()
 <dl>
 <dd>
 
-Returns a paginated list of all codes in the specified code system.
+Returns a paginated list of all codes in the specified code system from the terminology server.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 </dd>
 </dl>
 </dd>
@@ -1876,7 +1880,9 @@ client.construe.list_codes_in_a_code_system(
 <dl>
 <dd>
 
-Returns details for a specific code within a code system.
+Looks up a specific code in the terminology server and returns its details.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 </dd>
 </dl>
 </dd>
@@ -1979,6 +1985,8 @@ not just keywords.
 conceptually similar results that keyword search would miss.
 
 See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 </dd>
 </dl>
 </dd>
@@ -2063,7 +2071,7 @@ client.construe.semantic_search_embedding_based(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">text_search_keyword_based</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -2093,6 +2101,8 @@ the code ID or specific keywords. Fast response times suitable for typeahead int
 Won't find conceptually related codes with different terminology.
 
 See also: `/search/semantic` for finding conceptually similar codes.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 </dd>
 </dl>
 </dd>
@@ -2112,7 +2122,7 @@ from phenoml import phenoml
 client = phenoml(
     token="YOUR_TOKEN",
 )
-client.construe.text_search_keyword_based(
+client.construe.terminology_server_text_search(
     codesystem="ICD-10-CM",
     q="E11.65",
     version="version",
