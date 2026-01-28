@@ -1,3 +1,15 @@
+## 3.0.0 - 2026-01-28
+* refactor: rename method and update API documentation
+* Rename text_search_keyword_based to terminology_server_text_search and enhance API documentation with compliance information, plan requirements, and more descriptive terminology.
+* Key changes:
+* Rename text_search_keyword_based to terminology_server_text_search for better clarity
+* Add "Requires a paid plan" notice to code system upload functionality
+* Add CPT usage compliance warnings referencing AMA requirements in Terms of Service
+* Update method descriptions to use "terminology server" terminology for consistency
+* Add BadGatewayError (502) exception handling to FHIR client error handling
+* Improve documentation clarity across construe API methods
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
