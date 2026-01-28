@@ -1,3 +1,14 @@
+## 2.1.0 - 2026-01-28
+* docs: update medical code API documentation and error handling
+* Update API documentation for medical code terminology services to clarify pricing, licensing, and functionality. Rename text search method for consistency and add comprehensive error handling for gateway failures.
+* Key changes:
+* Add paid plan requirements and CPT usage terms to medical code APIs
+* Rename text_search_keyword_based method to terminology_server_text_search for clarity
+* Improve method descriptions to emphasize terminology server integration
+* Add BadGatewayError (502) exception handling across all FHIR endpoints
+* Update extract request documentation with clearer custom system requirements
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
