@@ -2,6 +2,7 @@
 
 # isort: skip_file
 
+from .citation import Citation
 from .code_response import CodeResponse
 from .code_system_details import CodeSystemDetails
 from .code_system_info import CodeSystemInfo
@@ -22,6 +23,7 @@ from .text_search_result import TextSearchResult
 from .upload_request_format import UploadRequestFormat
 
 __all__ = [
+    "Citation",
     "CodeResponse",
     "CodeSystemDetails",
     "CodeSystemInfo",

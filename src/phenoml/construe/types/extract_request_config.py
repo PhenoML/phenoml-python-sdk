@@ -50,6 +50,15 @@ class ExtractRequestConfig(UniversalBaseModel):
     Whether to include codes that failed validation in the results
     """
 
+    include_citations: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether to include source text citations for each extracted code.
+    Citations show the exact text spans (with character offsets) that led to each code.
+    Only available when using chunking_method: "sentences".
+    The "none" method returns full text as one chunk (not useful for citations).
+    LLM-based chunking (paragraphs, topics) does not support citations.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

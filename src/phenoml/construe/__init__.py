@@ -3,6 +3,7 @@
 # isort: skip_file
 
 from .types import (
+    Citation,
     CodeResponse,
     CodeSystemDetails,
     CodeSystemInfo,
@@ -35,6 +36,7 @@ from .errors import (
 
 __all__ = [
     "BadRequestError",
+    "Citation",
     "CodeResponse",
     "CodeSystemDetails",
     "CodeSystemInfo",

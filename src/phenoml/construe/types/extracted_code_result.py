@@ -6,6 +6,7 @@ import pydantic
 import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
+from .citation import Citation
 
 
 class ExtractedCodeResult(UniversalBaseModel):
@@ -34,6 +35,19 @@ class ExtractedCodeResult(UniversalBaseModel):
     rationale: typing.Optional[str] = pydantic.Field(default=None)
     """
     Explanation for why this code was extracted (if include_rationale is true)
+    """
+
+    is_ancestor: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether this code is an ancestor (parent) of an extracted code rather than directly extracted.
+    Only present when include_ancestors is true.
+    """
+
+    citations: typing.Optional[typing.List[Citation]] = pydantic.Field(default=None)
+    """
+    Source text references showing where this code was found in the input.
+    Only present when include_citations is true and chunking method supports it.
+    Ancestor codes do not receive citations.
     """
 
     if IS_PYDANTIC_V2:
