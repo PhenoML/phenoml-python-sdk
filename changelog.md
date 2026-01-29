@@ -1,3 +1,16 @@
+## 2.1.0 - 2026-01-29
+* feat: improve API documentation and add citation support to code extraction
+* This update enhances the PhenoML SDK with better API documentation and introduces citation functionality for code extraction. The changes clarify terminology server operations, add CPT usage compliance notices, and provide new source text citation capabilities.
+* Key changes:
+* Rename text_search_keyword_based to terminology_server_text_search for clarity
+* Add Citation type for tracking source text references in extracted codes
+* Include CPT usage compliance notices across relevant API endpoints
+* Add include_citations configuration option for extract operations
+* Improve method descriptions to clarify terminology server operations
+* Add BadGatewayError handling for FHIR operations
+* Add is_ancestor field to distinguish parent codes from direct extractions
+* 🌿 Generated with Fern
+
 ## 2.0.0 - 2026-01-21
 * feat: make provider field required in agent create/update API
 * This change updates the agent creation and update endpoints to require the provider parameter instead of making it optional. The provider field now mandates FHIR provider ID(s) for agent configuration, improving API consistency and ensuring proper provider specification.
