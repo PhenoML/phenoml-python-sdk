@@ -7,7 +7,6 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawLang2FhirClient, RawLang2FhirClient
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
-from .types.document_request_file_type import DocumentRequestFileType
 from .types.document_request_resource import DocumentRequestResource
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
@@ -223,7 +222,6 @@ class Lang2FhirClient:
         version: str,
         resource: DocumentRequestResource,
         content: str,
-        file_type: DocumentRequestFileType,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
@@ -238,10 +236,9 @@ class Lang2FhirClient:
             Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
 
         content : str
-            Base64 encoded file content
-
-        file_type : DocumentRequestFileType
-            MIME type of the file
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -262,11 +259,10 @@ class Lang2FhirClient:
             version="R4",
             resource="questionnaire",
             content="content",
-            file_type="application/pdf",
         )
         """
         _response = self._raw_client.document(
-            version=version, resource=resource, content=content, file_type=file_type, request_options=request_options
+            version=version, resource=resource, content=content, request_options=request_options
         )
         return _response.data
 
@@ -509,7 +505,6 @@ class AsyncLang2FhirClient:
         version: str,
         resource: DocumentRequestResource,
         content: str,
-        file_type: DocumentRequestFileType,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
@@ -524,10 +519,9 @@ class AsyncLang2FhirClient:
             Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
 
         content : str
-            Base64 encoded file content
-
-        file_type : DocumentRequestFileType
-            MIME type of the file
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -553,13 +547,12 @@ class AsyncLang2FhirClient:
                 version="R4",
                 resource="questionnaire",
                 content="content",
-                file_type="application/pdf",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.document(
-            version=version, resource=resource, content=content, file_type=file_type, request_options=request_options
+            version=version, resource=resource, content=content, request_options=request_options
         )
         return _response.data
