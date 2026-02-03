@@ -8,7 +8,6 @@ from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEn
 from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
 from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
 from .create_request_resource import CreateRequestResource
-from .document_request_file_type import DocumentRequestFileType
 from .document_request_resource import DocumentRequestResource
 from .fhir_resource import FhirResource
 from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
@@ -22,7 +21,6 @@ __all__ = [
     "CreateMultiResponseBundleEntryItemRequest",
     "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
-    "DocumentRequestFileType",
     "DocumentRequestResource",
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
