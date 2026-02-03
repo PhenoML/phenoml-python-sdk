@@ -15,7 +15,6 @@ from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
-from .types.document_request_file_type import DocumentRequestFileType
 from .types.document_request_resource import DocumentRequestResource
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
@@ -424,7 +423,6 @@ class RawLang2FhirClient:
         version: str,
         resource: DocumentRequestResource,
         content: str,
-        file_type: DocumentRequestFileType,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirResource]:
         """
@@ -439,10 +437,9 @@ class RawLang2FhirClient:
             Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
 
         content : str
-            Base64 encoded file content
-
-        file_type : DocumentRequestFileType
-            MIME type of the file
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -459,7 +456,6 @@ class RawLang2FhirClient:
                 "version": version,
                 "resource": resource,
                 "content": content,
-                "fileType": file_type,
             },
             headers={
                 "content-type": "application/json",
@@ -915,7 +911,6 @@ class AsyncRawLang2FhirClient:
         version: str,
         resource: DocumentRequestResource,
         content: str,
-        file_type: DocumentRequestFileType,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirResource]:
         """
@@ -930,10 +925,9 @@ class AsyncRawLang2FhirClient:
             Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
 
         content : str
-            Base64 encoded file content
-
-        file_type : DocumentRequestFileType
-            MIME type of the file
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -950,7 +944,6 @@ class AsyncRawLang2FhirClient:
                 "version": version,
                 "resource": resource,
                 "content": content,
-                "fileType": file_type,
             },
             headers={
                 "content-type": "application/json",

@@ -1,3 +1,13 @@
+## 3.0.0 - 2026-02-03
+* feat: auto-detect file type from content magic bytes
+* Removed the file_type parameter from document API methods and implemented automatic file type detection from content magic bytes. The API now supports PDF, PNG, and JPEG formats without requiring users to explicitly specify the MIME type.
+* Key changes:
+* Remove file_type parameter from document() method signatures
+* Delete DocumentRequestFileType enum type
+* Update documentation to reflect auto-detection capability
+* Simplify API usage by eliminating manual file type specification
+* 🌿 Generated with Fern
+
 ## 2.1.0 - 2026-01-29
 * feat: improve API documentation and add citation support to code extraction
 * This update enhances the PhenoML SDK with better API documentation and introduces citation functionality for code extraction. The changes clarify terminology server operations, add CPT usage compliance notices, and provide new source text citation capabilities.
