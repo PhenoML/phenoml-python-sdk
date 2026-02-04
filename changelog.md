@@ -1,3 +1,15 @@
+## 3.0.0 - 2026-02-03
+* refactor: remove explicit file_type parameter from document API
+* Simplify the document API by removing the required file_type parameter and implement
+* automatic file type detection from content magic bytes. This change reduces API complexity
+* while maintaining the same functionality through intelligent content inspection.
+* Key changes:
+* Remove DocumentRequestFileType enum and related imports
+* Remove file_type parameter from document() method signatures
+* Update documentation to clarify auto-detection behavior
+* Simplify API calls by eliminating redundant MIME type specification
+* 🌿 Generated with Fern
+
 ## 2.1.0 - 2026-01-29
 * feat: improve API documentation and add citation support to code extraction
 * This update enhances the PhenoML SDK with better API documentation and introduces citation functionality for code extraction. The changes clarify terminology server operations, add CPT usage compliance notices, and provide new source text citation capabilities.
