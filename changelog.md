@@ -1,3 +1,14 @@
+## 4.0.0 - 2026-02-06
+* feat: simplify FHIR profile upload API with automatic metadata extraction
+* Refactor the lang2fhir upload_profile method to automatically derive all metadata from the StructureDefinition JSON itself, eliminating the need for manual version and resource parameters. This streamlines the API while making profile uploads more robust and consistent.
+* Key changes:
+* Remove version and resource parameters from upload_profile method
+* Extract metadata automatically from StructureDefinition id, url, and type fields
+* Update response model to include type field alongside id and url
+* Add comprehensive validation rules and rejection criteria in documentation
+* Improve parameter descriptions with detailed usage instructions
+* 🌿 Generated with Fern
+
 ## 3.0.0 - 2026-02-03
 * refactor: remove explicit file_type parameter from document API
 * Simplify the document API by removing the required file_type parameter and implement
