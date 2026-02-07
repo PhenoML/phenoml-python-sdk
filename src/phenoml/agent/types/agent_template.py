@@ -33,6 +33,11 @@ class AgentTemplate(UniversalBaseModel):
     Array of MCP server tool IDs used by this agent
     """
 
+    workflows: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Array of workflow IDs exposed as tools by this agent
+    """
+
     tags: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Tags for categorizing the agent

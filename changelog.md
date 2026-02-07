@@ -1,3 +1,15 @@
+## 3.1.0 - 2026-02-07
+* feat: add workflow support to agent API and simplify FHIR profile upload
+* Added workflow integration to agent creation and simplified the FHIR profile upload process
+* by deriving metadata automatically from StructureDefinition JSON.
+* Key changes:
+* Add workflows parameter to agent creation API for exposing workflow IDs as tools
+* Simplify lang2fhir profile upload by removing version and resource parameters
+* Auto-derive profile metadata from StructureDefinition JSON (id, type, url)
+* Update response types to include canonical URL and resource type fields
+* Enhance documentation with validation rules and usage examples
+* 🌿 Generated with Fern
+
 ## 3.0.0 - 2026-02-03
 * refactor: remove explicit file_type parameter from document API
 * Simplify the document API by removing the required file_type parameter and implement

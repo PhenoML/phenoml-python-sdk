@@ -44,6 +44,7 @@ class AgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -67,6 +68,9 @@ class AgentClient:
 
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
+
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
@@ -98,6 +102,7 @@ class AgentClient:
             provider=provider,
             description=description,
             tools=tools,
+            workflows=workflows,
             tags=tags,
             request_options=request_options,
         )
@@ -176,6 +181,7 @@ class AgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -202,6 +208,9 @@ class AgentClient:
 
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
+
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
@@ -235,6 +244,7 @@ class AgentClient:
             provider=provider,
             description=description,
             tools=tools,
+            workflows=workflows,
             tags=tags,
             request_options=request_options,
         )
@@ -481,6 +491,7 @@ class AsyncAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -504,6 +515,9 @@ class AsyncAgentClient:
 
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
+
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
@@ -543,6 +557,7 @@ class AsyncAgentClient:
             provider=provider,
             description=description,
             tools=tools,
+            workflows=workflows,
             tags=tags,
             request_options=request_options,
         )
@@ -637,6 +652,7 @@ class AsyncAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentResponse:
@@ -663,6 +679,9 @@ class AsyncAgentClient:
 
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
+
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
 
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
@@ -704,6 +723,7 @@ class AsyncAgentClient:
             provider=provider,
             description=description,
             tools=tools,
+            workflows=workflows,
             tags=tags,
             request_options=request_options,
         )
