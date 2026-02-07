@@ -320,21 +320,24 @@ class RawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def upload_profile(
-        self, *, version: str, resource: str, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Lang2FhirUploadProfileResponse]:
         """
-        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service
+        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
+
+        All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
+        from the StructureDefinition is used as the profile's unique identifier and lookup key.
+        To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
+
+        Uploads will be rejected if:
+        - A built-in US Core or R4 base profile already exists with the same id
+        - A custom profile with the same id has already been uploaded
+        - A custom profile with the same url has already been uploaded
 
         Parameters
         ----------
-        version : str
-            FHIR version that this profile implements
-
-        resource : str
-            Name for the custom resource profile (will be converted to lowercase)
-
         profile : str
-            Base64 encoded JSON string of the FHIR StructureDefinition profile
+            Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -348,8 +351,6 @@ class RawLang2FhirClient:
             "lang2fhir/profile/upload",
             method="POST",
             json={
-                "version": version,
-                "resource": resource,
                 "profile": profile,
             },
             headers={
@@ -808,21 +809,24 @@ class AsyncRawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def upload_profile(
-        self, *, version: str, resource: str, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Lang2FhirUploadProfileResponse]:
         """
-        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service
+        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
+
+        All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
+        from the StructureDefinition is used as the profile's unique identifier and lookup key.
+        To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
+
+        Uploads will be rejected if:
+        - A built-in US Core or R4 base profile already exists with the same id
+        - A custom profile with the same id has already been uploaded
+        - A custom profile with the same url has already been uploaded
 
         Parameters
         ----------
-        version : str
-            FHIR version that this profile implements
-
-        resource : str
-            Name for the custom resource profile (will be converted to lowercase)
-
         profile : str
-            Base64 encoded JSON string of the FHIR StructureDefinition profile
+            Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -836,8 +840,6 @@ class AsyncRawLang2FhirClient:
             "lang2fhir/profile/upload",
             method="POST",
             json={
-                "version": version,
-                "resource": resource,
                 "profile": profile,
             },
             headers={

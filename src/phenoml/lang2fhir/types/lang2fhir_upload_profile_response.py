@@ -8,10 +8,20 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class Lang2FhirUploadProfileResponse(UniversalBaseModel):
     message: typing.Optional[str] = None
-    id: typing.Optional[str] = None
-    resource: typing.Optional[str] = None
-    version: typing.Optional[str] = None
-    url: typing.Optional[str] = None
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The lowercase StructureDefinition id, used as the profile's unique identifier and lookup key. Pass this value as the `resource` parameter to `/lang2fhir/create` or `/lang2fhir/profile/json/:version/:resource` to use this profile.
+    """
+
+    type: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The FHIR resource type from the StructureDefinition
+    """
+
+    url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The canonical URL from the StructureDefinition
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

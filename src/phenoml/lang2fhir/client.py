@@ -174,21 +174,24 @@ class Lang2FhirClient:
         return _response.data
 
     def upload_profile(
-        self, *, version: str, resource: str, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
     ) -> Lang2FhirUploadProfileResponse:
         """
-        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service
+        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
+
+        All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
+        from the StructureDefinition is used as the profile's unique identifier and lookup key.
+        To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
+
+        Uploads will be rejected if:
+        - A built-in US Core or R4 base profile already exists with the same id
+        - A custom profile with the same id has already been uploaded
+        - A custom profile with the same url has already been uploaded
 
         Parameters
         ----------
-        version : str
-            FHIR version that this profile implements
-
-        resource : str
-            Name for the custom resource profile (will be converted to lowercase)
-
         profile : str
-            Base64 encoded JSON string of the FHIR StructureDefinition profile
+            Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -206,14 +209,10 @@ class Lang2FhirClient:
             token="YOUR_TOKEN",
         )
         client.lang2fhir.upload_profile(
-            version="R4",
-            resource="condition-encounter-diagnosis",
-            profile="(base64 encoded JSON string of the FHIR profile)",
+            profile="(base64 encoded FHIR StructureDefinition JSON)",
         )
         """
-        _response = self._raw_client.upload_profile(
-            version=version, resource=resource, profile=profile, request_options=request_options
-        )
+        _response = self._raw_client.upload_profile(profile=profile, request_options=request_options)
         return _response.data
 
     def document(
@@ -449,21 +448,24 @@ class AsyncLang2FhirClient:
         return _response.data
 
     async def upload_profile(
-        self, *, version: str, resource: str, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
     ) -> Lang2FhirUploadProfileResponse:
         """
-        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service
+        Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
+
+        All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
+        from the StructureDefinition is used as the profile's unique identifier and lookup key.
+        To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
+
+        Uploads will be rejected if:
+        - A built-in US Core or R4 base profile already exists with the same id
+        - A custom profile with the same id has already been uploaded
+        - A custom profile with the same url has already been uploaded
 
         Parameters
         ----------
-        version : str
-            FHIR version that this profile implements
-
-        resource : str
-            Name for the custom resource profile (will be converted to lowercase)
-
         profile : str
-            Base64 encoded JSON string of the FHIR StructureDefinition profile
+            Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -486,17 +488,13 @@ class AsyncLang2FhirClient:
 
         async def main() -> None:
             await client.lang2fhir.upload_profile(
-                version="R4",
-                resource="condition-encounter-diagnosis",
-                profile="(base64 encoded JSON string of the FHIR profile)",
+                profile="(base64 encoded FHIR StructureDefinition JSON)",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.upload_profile(
-            version=version, resource=resource, profile=profile, request_options=request_options
-        )
+        _response = await self._raw_client.upload_profile(profile=profile, request_options=request_options)
         return _response.data
 
     async def document(

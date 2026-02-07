@@ -41,6 +41,7 @@ class RawAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
@@ -65,6 +66,9 @@ class RawAgentClient:
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
 
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
@@ -84,6 +88,7 @@ class RawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
+                "workflows": workflows,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -319,6 +324,7 @@ class RawAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentResponse]:
@@ -346,6 +352,9 @@ class RawAgentClient:
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
 
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
@@ -365,6 +374,7 @@ class RawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
+                "workflows": workflows,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -863,6 +873,7 @@ class AsyncRawAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
@@ -887,6 +898,9 @@ class AsyncRawAgentClient:
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
 
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
@@ -906,6 +920,7 @@ class AsyncRawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
+                "workflows": workflows,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"
@@ -1143,6 +1158,7 @@ class AsyncRawAgentClient:
         provider: AgentCreateRequestProvider,
         description: typing.Optional[str] = OMIT,
         tools: typing.Optional[typing.Sequence[str]] = OMIT,
+        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentResponse]:
@@ -1170,6 +1186,9 @@ class AsyncRawAgentClient:
         tools : typing.Optional[typing.Sequence[str]]
             Array of MCP server tool IDs to use for this agent
 
+        workflows : typing.Optional[typing.Sequence[str]]
+            Array of workflow IDs to expose as tools for this agent
+
         tags : typing.Optional[typing.Sequence[str]]
             Tags for categorizing the agent
 
@@ -1189,6 +1208,7 @@ class AsyncRawAgentClient:
                 "description": description,
                 "prompts": prompts,
                 "tools": tools,
+                "workflows": workflows,
                 "tags": tags,
                 "provider": convert_and_respect_annotation_metadata(
                     object_=provider, annotation=AgentCreateRequestProvider, direction="write"

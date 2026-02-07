@@ -28,6 +28,11 @@ class AgentCreateRequest(UniversalBaseModel):
     Array of MCP server tool IDs to use for this agent
     """
 
+    workflows: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Array of workflow IDs to expose as tools for this agent
+    """
+
     tags: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Tags for categorizing the agent
