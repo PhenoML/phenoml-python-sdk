@@ -1,3 +1,17 @@
+## 3.3.0 - 2026-02-08
+* refactor: simplify upload_code_system API with union types
+* Refactored the upload_code_system method to use union types for request handling,
+* improving type safety and reducing parameter complexity. This change consolidates
+* multiple optional parameters into structured request objects while maintaining
+* backward compatibility through discriminated unions.
+* Key changes:
+* Replace multiple function parameters with single request parameter
+* Introduce UploadRequest union type with CSV and JSON variants
+* Add UploadRequestCsv class for CSV-specific parameters
+* Update documentation and examples to use new request structure
+* Remove deprecated UploadRequestFormat in favor of discriminated unions
+* 🌿 Generated with Fern
+
 ## 3.2.0 - 2026-02-08
 * feat: add code system detail and deletion endpoints with enhanced upload
 * Enhance the construe API with new code system management capabilities,
