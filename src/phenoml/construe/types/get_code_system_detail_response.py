@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .get_code_system_detail_response_status import GetCodeSystemDetailResponseStatus
 
 
 class GetCodeSystemDetailResponse(UniversalBaseModel):
@@ -28,9 +29,12 @@ class GetCodeSystemDetailResponse(UniversalBaseModel):
     Whether this is a built-in system (vs custom uploaded)
     """
 
-    status: typing.Literal["ready"] = pydantic.Field(default="ready")
+    status: GetCodeSystemDetailResponseStatus = pydantic.Field()
     """
-    Processing status of the code system. Currently always "ready".
+    Processing status of the code system.
+    - "processing": embeddings are being generated (async upload in progress)
+    - "ready": code system is ready for use
+    - "failed": async processing failed (re-upload with replace=true to retry)
     """
 
     created_at: dt.datetime = pydantic.Field()

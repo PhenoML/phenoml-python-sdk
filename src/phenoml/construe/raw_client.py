@@ -30,7 +30,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
-from .types.upload_request_format import UploadRequestFormat
+from .types.upload_request import UploadRequest
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -41,18 +41,7 @@ class RawConstrueClient:
         self._client_wrapper = client_wrapper
 
     def upload_code_system(
-        self,
-        *,
-        name: str,
-        version: str,
-        format: UploadRequestFormat,
-        file: str,
-        revision: typing.Optional[float] = OMIT,
-        code_col: typing.Optional[str] = OMIT,
-        desc_col: typing.Optional[str] = OMIT,
-        defn_col: typing.Optional[str] = OMIT,
-        replace: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ConstrueUploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -61,36 +50,7 @@ class RawConstrueClient:
 
         Parameters
         ----------
-        name : str
-            Name of the code system. Names are case-insensitive and stored uppercase.
-            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
-            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-
-        version : str
-            Version of the code system
-
-        format : UploadRequestFormat
-            Format of the uploaded file
-
-        file : str
-            The file contents as a base64-encoded string
-
-        revision : typing.Optional[float]
-            Optional revision number
-
-        code_col : typing.Optional[str]
-            Column name containing codes (required for CSV format)
-
-        desc_col : typing.Optional[str]
-            Column name containing descriptions (required for CSV format)
-
-        defn_col : typing.Optional[str]
-            Optional column name containing long definitions (for CSV format)
-
-        replace : typing.Optional[bool]
-            If true, replaces an existing code system with the same name and version.
-            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
-            When false (default), uploading a duplicate returns 409 Conflict.
+        request : UploadRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -98,22 +58,12 @@ class RawConstrueClient:
         Returns
         -------
         HttpResponse[ConstrueUploadCodeSystemResponse]
-            Successfully uploaded code system
+            Successfully uploaded code system (synchronous)
         """
         _response = self._client_wrapper.httpx_client.request(
             "construe/upload",
             method="POST",
-            json={
-                "name": name,
-                "version": version,
-                "revision": revision,
-                "format": format,
-                "file": file,
-                "code_col": code_col,
-                "desc_col": desc_col,
-                "defn_col": defn_col,
-                "replace": replace,
-            },
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=UploadRequest, direction="write"),
             headers={
                 "content-type": "application/json",
             },
@@ -1043,18 +993,7 @@ class AsyncRawConstrueClient:
         self._client_wrapper = client_wrapper
 
     async def upload_code_system(
-        self,
-        *,
-        name: str,
-        version: str,
-        format: UploadRequestFormat,
-        file: str,
-        revision: typing.Optional[float] = OMIT,
-        code_col: typing.Optional[str] = OMIT,
-        desc_col: typing.Optional[str] = OMIT,
-        defn_col: typing.Optional[str] = OMIT,
-        replace: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ConstrueUploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -1063,36 +1002,7 @@ class AsyncRawConstrueClient:
 
         Parameters
         ----------
-        name : str
-            Name of the code system. Names are case-insensitive and stored uppercase.
-            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
-            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-
-        version : str
-            Version of the code system
-
-        format : UploadRequestFormat
-            Format of the uploaded file
-
-        file : str
-            The file contents as a base64-encoded string
-
-        revision : typing.Optional[float]
-            Optional revision number
-
-        code_col : typing.Optional[str]
-            Column name containing codes (required for CSV format)
-
-        desc_col : typing.Optional[str]
-            Column name containing descriptions (required for CSV format)
-
-        defn_col : typing.Optional[str]
-            Optional column name containing long definitions (for CSV format)
-
-        replace : typing.Optional[bool]
-            If true, replaces an existing code system with the same name and version.
-            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
-            When false (default), uploading a duplicate returns 409 Conflict.
+        request : UploadRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1100,22 +1010,12 @@ class AsyncRawConstrueClient:
         Returns
         -------
         AsyncHttpResponse[ConstrueUploadCodeSystemResponse]
-            Successfully uploaded code system
+            Successfully uploaded code system (synchronous)
         """
         _response = await self._client_wrapper.httpx_client.request(
             "construe/upload",
             method="POST",
-            json={
-                "name": name,
-                "version": version,
-                "revision": revision,
-                "format": format,
-                "file": file,
-                "code_col": code_col,
-                "desc_col": desc_col,
-                "defn_col": defn_col,
-                "replace": replace,
-            },
+            json=convert_and_respect_annotation_metadata(object_=request, annotation=UploadRequest, direction="write"),
             headers={
                 "content-type": "application/json",
             },
