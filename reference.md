@@ -1561,7 +1561,11 @@ client.construe.upload_code_system(
 <dl>
 <dd>
 
-**name:** `str` — Name of the code system
+**name:** `str` 
+
+Name of the code system. Names are case-insensitive and stored uppercase.
+Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
     
 </dd>
 </dl>
@@ -1618,6 +1622,18 @@ client.construe.upload_code_system(
 <dd>
 
 **defn_col:** `typing.Optional[str]` — Optional column name containing long definitions (for CSV format)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**replace:** `typing.Optional[bool]` 
+
+If true, replaces an existing code system with the same name and version.
+Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+When false (default), uploading a duplicate returns 409 Conflict.
     
 </dd>
 </dl>
@@ -1769,6 +1785,165 @@ client.construe.list_available_code_systems()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns full metadata for a single code system, including timestamps and builtin status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.get_code_system_detail(
+    codesystem="ICD-10-CM",
+    version="2025",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system. Required if multiple versions exist.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
+Only available on dedicated instances. Large systems may take up to a minute to delete.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.delete_custom_code_system(
+    codesystem="CUSTOM_CODES",
+    version="version",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system. Required if multiple versions exist.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1988,6 +2163,8 @@ client.construe.get_a_specific_code(
 
 Performs semantic similarity search using vector embeddings.
 
+**Availability**: This endpoint works for both **built-in and custom** code systems.
+
 **When to use**: Best for natural language queries where you want to find conceptually
 related codes, even when different terminology is used. The search understands meaning,
 not just keywords.
@@ -2100,6 +2277,10 @@ client.construe.semantic_search_embedding_based(
 <dd>
 
 Performs fast full-text search over code IDs and descriptions.
+
+**Availability**: This endpoint is only available for **built-in code systems**.
+Custom code systems uploaded via `/construe/upload` are not indexed for full-text search
+and will return empty results. Use `/search/semantic` to search custom code systems.
 
 **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
 the code ID or specific keywords. Fast response times suitable for typeahead interfaces.

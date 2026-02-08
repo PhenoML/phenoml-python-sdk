@@ -6,10 +6,12 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawConstrueClient, RawConstrueClient
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
+from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
 from .types.get_code_response import GetCodeResponse
+from .types.get_code_system_detail_response import GetCodeSystemDetailResponse
 from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
@@ -46,6 +48,7 @@ class ConstrueClient:
         code_col: typing.Optional[str] = OMIT,
         desc_col: typing.Optional[str] = OMIT,
         defn_col: typing.Optional[str] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConstrueUploadCodeSystemResponse:
         """
@@ -56,7 +59,9 @@ class ConstrueClient:
         Parameters
         ----------
         name : str
-            Name of the code system
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
 
         version : str
             Version of the code system
@@ -78,6 +83,11 @@ class ConstrueClient:
 
         defn_col : typing.Optional[str]
             Optional column name containing long definitions (for CSV format)
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -110,6 +120,7 @@ class ConstrueClient:
             code_col=code_col,
             desc_col=desc_col,
             defn_col=defn_col,
+            replace=replace,
             request_options=request_options,
         )
         return _response.data
@@ -186,6 +197,93 @@ class ConstrueClient:
         client.construe.list_available_code_systems()
         """
         _response = self._raw_client.list_available_code_systems(request_options=request_options)
+        return _response.data
+
+    def get_code_system_detail(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCodeSystemDetailResponse:
+        """
+        Returns full metadata for a single code system, including timestamps and builtin status.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCodeSystemDetailResponse
+            Code system detail
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.get_code_system_detail(
+            codesystem="ICD-10-CM",
+            version="2025",
+        )
+        """
+        _response = self._raw_client.get_code_system_detail(
+            codesystem, version=version, request_options=request_options
+        )
+        return _response.data
+
+    def delete_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> DeleteCodeSystemResponse:
+        """
+        Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
+        Only available on dedicated instances. Large systems may take up to a minute to delete.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCodeSystemResponse
+            Code system deleted successfully
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.delete_custom_code_system(
+            codesystem="CUSTOM_CODES",
+            version="version",
+        )
+        """
+        _response = self._raw_client.delete_custom_code_system(
+            codesystem, version=version, request_options=request_options
+        )
         return _response.data
 
     def list_codes_in_a_code_system(
@@ -305,6 +403,8 @@ class ConstrueClient:
         """
         Performs semantic similarity search using vector embeddings.
 
+        **Availability**: This endpoint works for both **built-in and custom** code systems.
+
         **When to use**: Best for natural language queries where you want to find conceptually
         related codes, even when different terminology is used. The search understands meaning,
         not just keywords.
@@ -373,6 +473,10 @@ class ConstrueClient:
     ) -> TextSearchResponse:
         """
         Performs fast full-text search over code IDs and descriptions.
+
+        **Availability**: This endpoint is only available for **built-in code systems**.
+        Custom code systems uploaded via `/construe/upload` are not indexed for full-text search
+        and will return empty results. Use `/search/semantic` to search custom code systems.
 
         **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
         the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
@@ -461,6 +565,7 @@ class AsyncConstrueClient:
         code_col: typing.Optional[str] = OMIT,
         desc_col: typing.Optional[str] = OMIT,
         defn_col: typing.Optional[str] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConstrueUploadCodeSystemResponse:
         """
@@ -471,7 +576,9 @@ class AsyncConstrueClient:
         Parameters
         ----------
         name : str
-            Name of the code system
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
 
         version : str
             Version of the code system
@@ -493,6 +600,11 @@ class AsyncConstrueClient:
 
         defn_col : typing.Optional[str]
             Optional column name containing long definitions (for CSV format)
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -533,6 +645,7 @@ class AsyncConstrueClient:
             code_col=code_col,
             desc_col=desc_col,
             defn_col=defn_col,
+            replace=replace,
             request_options=request_options,
         )
         return _response.data
@@ -625,6 +738,109 @@ class AsyncConstrueClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_available_code_systems(request_options=request_options)
+        return _response.data
+
+    async def get_code_system_detail(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetCodeSystemDetailResponse:
+        """
+        Returns full metadata for a single code system, including timestamps and builtin status.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetCodeSystemDetailResponse
+            Code system detail
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.get_code_system_detail(
+                codesystem="ICD-10-CM",
+                version="2025",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_code_system_detail(
+            codesystem, version=version, request_options=request_options
+        )
+        return _response.data
+
+    async def delete_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> DeleteCodeSystemResponse:
+        """
+        Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
+        Only available on dedicated instances. Large systems may take up to a minute to delete.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        DeleteCodeSystemResponse
+            Code system deleted successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.delete_custom_code_system(
+                codesystem="CUSTOM_CODES",
+                version="version",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete_custom_code_system(
+            codesystem, version=version, request_options=request_options
+        )
         return _response.data
 
     async def list_codes_in_a_code_system(
@@ -760,6 +976,8 @@ class AsyncConstrueClient:
         """
         Performs semantic similarity search using vector embeddings.
 
+        **Availability**: This endpoint works for both **built-in and custom** code systems.
+
         **When to use**: Best for natural language queries where you want to find conceptually
         related codes, even when different terminology is used. The search understands meaning,
         not just keywords.
@@ -836,6 +1054,10 @@ class AsyncConstrueClient:
     ) -> TextSearchResponse:
         """
         Performs fast full-text search over code IDs and descriptions.
+
+        **Availability**: This endpoint is only available for **built-in code systems**.
+        Custom code systems uploaded via `/construe/upload` are not indexed for full-text search
+        and will return empty results. Use `/search/semantic` to search custom code systems.
 
         **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
         the code ID or specific keywords. Fast response times suitable for typeahead interfaces.

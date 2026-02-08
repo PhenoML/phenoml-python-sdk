@@ -1,3 +1,17 @@
+## 3.2.0 - 2026-02-08
+* feat: add code system detail and deletion endpoints with enhanced upload
+* Enhance the construe API with new code system management capabilities,
+* including detailed system metadata retrieval and custom system deletion,
+* plus improvements to the upload functionality with replace parameter.
+* Key changes:
+* Add get_code_system_detail endpoint returning full metadata including timestamps
+* Add delete_custom_code_system endpoint for removing custom code systems
+* Add replace parameter to upload_code_system for overwriting existing systems
+* Add ForbiddenError for HTTP 403 responses from protected operations
+* Clarify availability restrictions for semantic vs full-text search endpoints
+* Improve parameter documentation with case-insensitive name handling
+* 🌿 Generated with Fern
+
 ## 3.1.0 - 2026-02-07
 * feat: add workflow support to agent API and simplify FHIR profile upload
 * Added workflow integration to agent creation and simplified the FHIR profile upload process
