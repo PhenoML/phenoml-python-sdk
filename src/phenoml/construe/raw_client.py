@@ -13,16 +13,19 @@ from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
 from .errors.conflict_error import ConflictError
 from .errors.failed_dependency_error import FailedDependencyError
+from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.not_implemented_error import NotImplementedError
 from .errors.service_unavailable_error import ServiceUnavailableError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
+from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
 from .types.get_code_response import GetCodeResponse
+from .types.get_code_system_detail_response import GetCodeSystemDetailResponse
 from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
@@ -48,6 +51,7 @@ class RawConstrueClient:
         code_col: typing.Optional[str] = OMIT,
         desc_col: typing.Optional[str] = OMIT,
         defn_col: typing.Optional[str] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConstrueUploadCodeSystemResponse]:
         """
@@ -58,7 +62,9 @@ class RawConstrueClient:
         Parameters
         ----------
         name : str
-            Name of the code system
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
 
         version : str
             Version of the code system
@@ -81,6 +87,11 @@ class RawConstrueClient:
         defn_col : typing.Optional[str]
             Optional column name containing long definitions (for CSV format)
 
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -101,6 +112,7 @@ class RawConstrueClient:
                 "code_col": code_col,
                 "desc_col": desc_col,
                 "defn_col": defn_col,
+                "replace": replace,
             },
             headers={
                 "content-type": "application/json",
@@ -131,6 +143,17 @@ class RawConstrueClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -318,6 +341,204 @@ class RawConstrueClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get_code_system_detail(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetCodeSystemDetailResponse]:
+        """
+        Returns full metadata for a single code system, including timestamps and builtin status.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetCodeSystemDetailResponse]
+            Code system detail
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            method="GET",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCodeSystemDetailResponse,
+                    parse_obj_as(
+                        type_=GetCodeSystemDetailResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[DeleteCodeSystemResponse]:
+        """
+        Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
+        Only available on dedicated instances. Large systems may take up to a minute to delete.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[DeleteCodeSystemResponse]
+            Code system deleted successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            method="DELETE",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteCodeSystemResponse,
+                    parse_obj_as(
+                        type_=DeleteCodeSystemResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -559,6 +780,8 @@ class RawConstrueClient:
         """
         Performs semantic similarity search using vector embeddings.
 
+        **Availability**: This endpoint works for both **built-in and custom** code systems.
+
         **When to use**: Best for natural language queries where you want to find conceptually
         related codes, even when different terminology is used. The search understands meaning,
         not just keywords.
@@ -677,6 +900,10 @@ class RawConstrueClient:
     ) -> HttpResponse[TextSearchResponse]:
         """
         Performs fast full-text search over code IDs and descriptions.
+
+        **Availability**: This endpoint is only available for **built-in code systems**.
+        Custom code systems uploaded via `/construe/upload` are not indexed for full-text search
+        and will return empty results. Use `/search/semantic` to search custom code systems.
 
         **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
         the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
@@ -826,6 +1053,7 @@ class AsyncRawConstrueClient:
         code_col: typing.Optional[str] = OMIT,
         desc_col: typing.Optional[str] = OMIT,
         defn_col: typing.Optional[str] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConstrueUploadCodeSystemResponse]:
         """
@@ -836,7 +1064,9 @@ class AsyncRawConstrueClient:
         Parameters
         ----------
         name : str
-            Name of the code system
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
 
         version : str
             Version of the code system
@@ -859,6 +1089,11 @@ class AsyncRawConstrueClient:
         defn_col : typing.Optional[str]
             Optional column name containing long definitions (for CSV format)
 
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -879,6 +1114,7 @@ class AsyncRawConstrueClient:
                 "code_col": code_col,
                 "desc_col": desc_col,
                 "defn_col": defn_col,
+                "replace": replace,
             },
             headers={
                 "content-type": "application/json",
@@ -909,6 +1145,17 @@ class AsyncRawConstrueClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1096,6 +1343,204 @@ class AsyncRawConstrueClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_code_system_detail(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetCodeSystemDetailResponse]:
+        """
+        Returns full metadata for a single code system, including timestamps and builtin status.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetCodeSystemDetailResponse]
+            Code system detail
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            method="GET",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetCodeSystemDetailResponse,
+                    parse_obj_as(
+                        type_=GetCodeSystemDetailResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[DeleteCodeSystemResponse]:
+        """
+        Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
+        Only available on dedicated instances. Large systems may take up to a minute to delete.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[DeleteCodeSystemResponse]
+            Code system deleted successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            method="DELETE",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    DeleteCodeSystemResponse,
+                    parse_obj_as(
+                        type_=DeleteCodeSystemResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -1337,6 +1782,8 @@ class AsyncRawConstrueClient:
         """
         Performs semantic similarity search using vector embeddings.
 
+        **Availability**: This endpoint works for both **built-in and custom** code systems.
+
         **When to use**: Best for natural language queries where you want to find conceptually
         related codes, even when different terminology is used. The search understands meaning,
         not just keywords.
@@ -1455,6 +1902,10 @@ class AsyncRawConstrueClient:
     ) -> AsyncHttpResponse[TextSearchResponse]:
         """
         Performs fast full-text search over code IDs and descriptions.
+
+        **Availability**: This endpoint is only available for **built-in code systems**.
+        Custom code systems uploaded via `/construe/upload` are not indexed for full-text search
+        and will return empty results. Use `/search/semantic` to search custom code systems.
 
         **When to use**: Best for autocomplete UIs, code lookup, or when users know part of
         the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
