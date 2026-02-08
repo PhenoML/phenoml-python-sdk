@@ -1,3 +1,18 @@
+## 4.0.0 - 2026-02-08
+* refactor: restructure upload_code_system API to use request objects
+* This refactor simplifies the upload_code_system API by consolidating parameters
+* into structured request objects. The changes improve type safety and API ergonomics
+* by replacing numerous individual parameters with union types that enforce
+* format-specific requirements.
+* Key changes:
+* Replace individual parameters with UploadRequest union type (CSV/JSON variants)
+* Add new UploadRequest_Csv and UploadRequest_Json discriminated union types
+* Introduce UploadRequestCsv standalone type with comprehensive field validation
+* Add GetCodeSystemDetailResponseStatus enum for processing states
+* Update documentation and examples to use new request object pattern
+* Remove deprecated UploadRequestFormat enum in favor of discriminated unions
+* 🌿 Generated with Fern
+
 ## 3.2.0 - 2026-02-08
 * feat: add code system detail and deletion endpoints with enhanced upload
 * Enhance the construe API with new code system management capabilities,

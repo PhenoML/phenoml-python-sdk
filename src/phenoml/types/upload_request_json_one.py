@@ -2,4 +2,4 @@
 
 import typing
 
-UploadRequestFormat = typing.Union[typing.Literal["json", "csv"], typing.Any]
+UploadRequestJsonOne = typing.Optional[typing.Any]

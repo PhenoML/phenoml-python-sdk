@@ -1536,15 +1536,19 @@ subsequently use the code system for construe/extract and lang2fhir/create (comi
 
 ```python
 from phenoml import phenoml
+from phenoml.construe import UploadRequest_Csv
 
 client = phenoml(
     token="YOUR_TOKEN",
 )
 client.construe.upload_code_system(
-    name="CUSTOM_CODES",
-    version="1.0",
-    format="json",
-    file="file",
+    request=UploadRequest_Csv(
+        name="CUSTOM_CODES",
+        version="1.0",
+        file="file",
+        code_col="code",
+        desc_col="description",
+    ),
 )
 
 ```
@@ -1561,79 +1565,7 @@ client.construe.upload_code_system(
 <dl>
 <dd>
 
-**name:** `str` 
-
-Name of the code system. Names are case-insensitive and stored uppercase.
-Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
-reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `str` — Version of the code system
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**format:** `UploadRequestFormat` — Format of the uploaded file
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**file:** `str` — The file contents as a base64-encoded string
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**revision:** `typing.Optional[float]` — Optional revision number
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**code_col:** `typing.Optional[str]` — Column name containing codes (required for CSV format)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**desc_col:** `typing.Optional[str]` — Column name containing descriptions (required for CSV format)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**defn_col:** `typing.Optional[str]` — Optional column name containing long definitions (for CSV format)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**replace:** `typing.Optional[bool]` 
-
-If true, replaces an existing code system with the same name and version.
-Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
-When false (default), uploading a duplicate returns 409 Conflict.
+**request:** `UploadRequest` 
     
 </dd>
 </dl>
