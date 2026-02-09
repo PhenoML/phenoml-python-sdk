@@ -19,6 +19,7 @@ from .errors.not_found_error import NotFoundError
 from .errors.not_implemented_error import NotImplementedError
 from .errors.service_unavailable_error import ServiceUnavailableError
 from .errors.unauthorized_error import UnauthorizedError
+from .types.code_response import CodeResponse
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.export_code_system_response import ExportCodeSystemResponse
@@ -31,7 +32,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
-from .types.upload_request import UploadRequest
+from .types.upload_request_format import UploadRequestFormat
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -42,7 +43,20 @@ class RawConstrueClient:
         self._client_wrapper = client_wrapper
 
     def upload_code_system(
-        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: str,
+        version: str,
+        format: UploadRequestFormat,
+        revision: typing.Optional[float] = OMIT,
+        file: typing.Optional[str] = OMIT,
+        code_col: typing.Optional[str] = OMIT,
+        desc_col: typing.Optional[str] = OMIT,
+        defn_col: typing.Optional[str] = OMIT,
+        codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
+        async_: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConstrueUploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -51,7 +65,48 @@ class RawConstrueClient:
 
         Parameters
         ----------
-        request : UploadRequest
+        name : str
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
+
+        version : str
+            Version of the code system
+
+        format : UploadRequestFormat
+            Upload format
+
+        revision : typing.Optional[float]
+            Optional revision number
+
+        file : typing.Optional[str]
+            The file contents as a base64-encoded string.
+            For CSV format, this is the CSV file contents.
+            For JSON format, this is a base64-encoded JSON array; prefer using 'codes' instead.
+
+        code_col : typing.Optional[str]
+            Column name containing codes (required for CSV format)
+
+        desc_col : typing.Optional[str]
+            Column name containing descriptions (required for CSV format)
+
+        defn_col : typing.Optional[str]
+            Optional column name containing long definitions (for CSV format)
+
+        codes : typing.Optional[typing.Sequence[CodeResponse]]
+            The codes to upload as a JSON array (JSON format only).
+            This is the preferred way to upload JSON codes, as it avoids unnecessary base64 encoding.
+            If both 'codes' and 'file' are provided, 'codes' takes precedence.
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
+
+        async_ : typing.Optional[bool]
+            If true, returns 202 Accepted immediately after validation and starts processing
+            in the background. Poll GET /construe/codes/systems/{name}?version={version} to
+            check when status transitions from "processing" to "ready" or "failed".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -64,7 +119,21 @@ class RawConstrueClient:
         _response = self._client_wrapper.httpx_client.request(
             "construe/upload",
             method="POST",
-            json=convert_and_respect_annotation_metadata(object_=request, annotation=UploadRequest, direction="write"),
+            json={
+                "name": name,
+                "version": version,
+                "revision": revision,
+                "format": format,
+                "file": file,
+                "code_col": code_col,
+                "desc_col": desc_col,
+                "defn_col": defn_col,
+                "codes": convert_and_respect_annotation_metadata(
+                    object_=codes, annotation=typing.Sequence[CodeResponse], direction="write"
+                ),
+                "replace": replace,
+                "async": async_,
+            },
             headers={
                 "content-type": "application/json",
             },
@@ -85,9 +154,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -96,9 +165,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -107,9 +176,9 @@ class RawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -118,9 +187,9 @@ class RawConstrueClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -129,9 +198,9 @@ class RawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -140,9 +209,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -214,9 +283,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -225,9 +294,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -236,9 +305,9 @@ class RawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -247,9 +316,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -294,9 +363,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -305,9 +374,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -365,9 +434,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -376,9 +445,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -387,9 +456,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -398,9 +467,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -459,9 +528,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -470,9 +539,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -481,9 +550,9 @@ class RawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -492,9 +561,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -503,9 +572,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -565,9 +634,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -576,9 +645,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -587,9 +656,9 @@ class RawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -598,9 +667,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -609,9 +678,9 @@ class RawConstrueClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -620,9 +689,9 @@ class RawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -631,9 +700,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -703,9 +772,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -714,9 +783,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -725,9 +794,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -736,9 +805,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -802,9 +871,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -813,9 +882,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -824,9 +893,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -835,9 +904,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -923,9 +992,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -934,9 +1003,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -945,9 +1014,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -956,9 +1025,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1049,9 +1118,9 @@ class RawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1060,9 +1129,9 @@ class RawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1071,9 +1140,9 @@ class RawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1082,9 +1151,9 @@ class RawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1093,9 +1162,9 @@ class RawConstrueClient:
                 raise NotImplementedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1104,9 +1173,9 @@ class RawConstrueClient:
                 raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1122,7 +1191,20 @@ class AsyncRawConstrueClient:
         self._client_wrapper = client_wrapper
 
     async def upload_code_system(
-        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: str,
+        version: str,
+        format: UploadRequestFormat,
+        revision: typing.Optional[float] = OMIT,
+        file: typing.Optional[str] = OMIT,
+        code_col: typing.Optional[str] = OMIT,
+        desc_col: typing.Optional[str] = OMIT,
+        defn_col: typing.Optional[str] = OMIT,
+        codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
+        async_: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConstrueUploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -1131,7 +1213,48 @@ class AsyncRawConstrueClient:
 
         Parameters
         ----------
-        request : UploadRequest
+        name : str
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
+
+        version : str
+            Version of the code system
+
+        format : UploadRequestFormat
+            Upload format
+
+        revision : typing.Optional[float]
+            Optional revision number
+
+        file : typing.Optional[str]
+            The file contents as a base64-encoded string.
+            For CSV format, this is the CSV file contents.
+            For JSON format, this is a base64-encoded JSON array; prefer using 'codes' instead.
+
+        code_col : typing.Optional[str]
+            Column name containing codes (required for CSV format)
+
+        desc_col : typing.Optional[str]
+            Column name containing descriptions (required for CSV format)
+
+        defn_col : typing.Optional[str]
+            Optional column name containing long definitions (for CSV format)
+
+        codes : typing.Optional[typing.Sequence[CodeResponse]]
+            The codes to upload as a JSON array (JSON format only).
+            This is the preferred way to upload JSON codes, as it avoids unnecessary base64 encoding.
+            If both 'codes' and 'file' are provided, 'codes' takes precedence.
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
+
+        async_ : typing.Optional[bool]
+            If true, returns 202 Accepted immediately after validation and starts processing
+            in the background. Poll GET /construe/codes/systems/{name}?version={version} to
+            check when status transitions from "processing" to "ready" or "failed".
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1144,7 +1267,21 @@ class AsyncRawConstrueClient:
         _response = await self._client_wrapper.httpx_client.request(
             "construe/upload",
             method="POST",
-            json=convert_and_respect_annotation_metadata(object_=request, annotation=UploadRequest, direction="write"),
+            json={
+                "name": name,
+                "version": version,
+                "revision": revision,
+                "format": format,
+                "file": file,
+                "code_col": code_col,
+                "desc_col": desc_col,
+                "defn_col": defn_col,
+                "codes": convert_and_respect_annotation_metadata(
+                    object_=codes, annotation=typing.Sequence[CodeResponse], direction="write"
+                ),
+                "replace": replace,
+                "async": async_,
+            },
             headers={
                 "content-type": "application/json",
             },
@@ -1165,9 +1302,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1176,9 +1313,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1187,9 +1324,9 @@ class AsyncRawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1198,9 +1335,9 @@ class AsyncRawConstrueClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1209,9 +1346,9 @@ class AsyncRawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1220,9 +1357,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1294,9 +1431,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1305,9 +1442,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1316,9 +1453,9 @@ class AsyncRawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1327,9 +1464,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1374,9 +1511,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1385,9 +1522,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1445,9 +1582,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1456,9 +1593,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1467,9 +1604,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1478,9 +1615,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1539,9 +1676,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1550,9 +1687,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1561,9 +1698,9 @@ class AsyncRawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1572,9 +1709,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1583,9 +1720,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1645,9 +1782,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1656,9 +1793,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1667,9 +1804,9 @@ class AsyncRawConstrueClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1678,9 +1815,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1689,9 +1826,9 @@ class AsyncRawConstrueClient:
                 raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1700,9 +1837,9 @@ class AsyncRawConstrueClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1711,9 +1848,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1783,9 +1920,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1794,9 +1931,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1805,9 +1942,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1816,9 +1953,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1882,9 +2019,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1893,9 +2030,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1904,9 +2041,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -1915,9 +2052,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2003,9 +2140,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2014,9 +2151,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2025,9 +2162,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2036,9 +2173,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2129,9 +2266,9 @@ class AsyncRawConstrueClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2140,9 +2277,9 @@ class AsyncRawConstrueClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2151,9 +2288,9 @@ class AsyncRawConstrueClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2162,9 +2299,9 @@ class AsyncRawConstrueClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2173,9 +2310,9 @@ class AsyncRawConstrueClient:
                 raise NotImplementedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -2184,9 +2321,9 @@ class AsyncRawConstrueClient:
                 raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

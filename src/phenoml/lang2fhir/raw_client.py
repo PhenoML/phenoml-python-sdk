@@ -86,9 +86,9 @@ class RawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -97,9 +97,9 @@ class RawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -108,9 +108,9 @@ class RawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -180,9 +180,9 @@ class RawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -191,9 +191,9 @@ class RawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -202,9 +202,9 @@ class RawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -274,9 +274,9 @@ class RawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -285,9 +285,9 @@ class RawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -296,9 +296,9 @@ class RawLang2FhirClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -307,9 +307,9 @@ class RawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -373,9 +373,9 @@ class RawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -384,9 +384,9 @@ class RawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -395,9 +395,9 @@ class RawLang2FhirClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -406,9 +406,9 @@ class RawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -478,9 +478,9 @@ class RawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -489,9 +489,9 @@ class RawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -500,9 +500,9 @@ class RawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -575,9 +575,9 @@ class AsyncRawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -586,9 +586,9 @@ class AsyncRawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -597,9 +597,9 @@ class AsyncRawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -669,9 +669,9 @@ class AsyncRawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -680,9 +680,9 @@ class AsyncRawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -691,9 +691,9 @@ class AsyncRawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -763,9 +763,9 @@ class AsyncRawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -774,9 +774,9 @@ class AsyncRawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -785,9 +785,9 @@ class AsyncRawLang2FhirClient:
                 raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -796,9 +796,9 @@ class AsyncRawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -862,9 +862,9 @@ class AsyncRawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -873,9 +873,9 @@ class AsyncRawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -884,9 +884,9 @@ class AsyncRawLang2FhirClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -895,9 +895,9 @@ class AsyncRawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -967,9 +967,9 @@ class AsyncRawLang2FhirClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -978,9 +978,9 @@ class AsyncRawLang2FhirClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -989,9 +989,9 @@ class AsyncRawLang2FhirClient:
                 raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

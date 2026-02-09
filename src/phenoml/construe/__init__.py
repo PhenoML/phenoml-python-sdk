@@ -2,46 +2,102 @@
 
 # isort: skip_file
 
-from .types import (
-    Citation,
-    CodeResponse,
-    CodeSystemDetails,
-    CodeSystemInfo,
-    ConstrueUploadCodeSystemResponse,
-    DeleteCodeSystemResponse,
-    ExportCodeSystemResponse,
-    ExtractCodesResult,
-    ExtractRequestConfig,
-    ExtractRequestConfigChunkingMethod,
-    ExtractRequestConfigValidationMethod,
-    ExtractRequestSystem,
-    ExtractedCodeResult,
-    GetCodeResponse,
-    GetCodeSystemDetailResponse,
-    GetCodeSystemDetailResponseStatus,
-    ListCodeSystemsResponse,
-    ListCodesResponse,
-    SemanticSearchResponse,
-    SemanticSearchResult,
-    TextSearchResponse,
-    TextSearchResult,
-    UploadRequest,
-    UploadRequestCsv,
-    UploadRequestJson,
-    UploadRequest_Csv,
-    UploadRequest_Json,
-)
-from .errors import (
-    BadRequestError,
-    ConflictError,
-    FailedDependencyError,
-    ForbiddenError,
-    InternalServerError,
-    NotFoundError,
-    NotImplementedError,
-    ServiceUnavailableError,
-    UnauthorizedError,
-)
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .types import (
+        Citation,
+        CodeResponse,
+        CodeSystemDetails,
+        CodeSystemInfo,
+        ConstrueUploadCodeSystemResponse,
+        DeleteCodeSystemResponse,
+        ExportCodeSystemResponse,
+        ExtractCodesResult,
+        ExtractRequestConfig,
+        ExtractRequestConfigChunkingMethod,
+        ExtractRequestConfigValidationMethod,
+        ExtractRequestSystem,
+        ExtractedCodeResult,
+        GetCodeResponse,
+        GetCodeSystemDetailResponse,
+        GetCodeSystemDetailResponseStatus,
+        ListCodeSystemsResponse,
+        ListCodesResponse,
+        SemanticSearchResponse,
+        SemanticSearchResult,
+        TextSearchResponse,
+        TextSearchResult,
+        UploadRequestFormat,
+    )
+    from .errors import (
+        BadRequestError,
+        ConflictError,
+        FailedDependencyError,
+        ForbiddenError,
+        InternalServerError,
+        NotFoundError,
+        NotImplementedError,
+        ServiceUnavailableError,
+        UnauthorizedError,
+    )
+_dynamic_imports: typing.Dict[str, str] = {
+    "BadRequestError": ".errors",
+    "Citation": ".types",
+    "CodeResponse": ".types",
+    "CodeSystemDetails": ".types",
+    "CodeSystemInfo": ".types",
+    "ConflictError": ".errors",
+    "ConstrueUploadCodeSystemResponse": ".types",
+    "DeleteCodeSystemResponse": ".types",
+    "ExportCodeSystemResponse": ".types",
+    "ExtractCodesResult": ".types",
+    "ExtractRequestConfig": ".types",
+    "ExtractRequestConfigChunkingMethod": ".types",
+    "ExtractRequestConfigValidationMethod": ".types",
+    "ExtractRequestSystem": ".types",
+    "ExtractedCodeResult": ".types",
+    "FailedDependencyError": ".errors",
+    "ForbiddenError": ".errors",
+    "GetCodeResponse": ".types",
+    "GetCodeSystemDetailResponse": ".types",
+    "GetCodeSystemDetailResponseStatus": ".types",
+    "InternalServerError": ".errors",
+    "ListCodeSystemsResponse": ".types",
+    "ListCodesResponse": ".types",
+    "NotFoundError": ".errors",
+    "NotImplementedError": ".errors",
+    "SemanticSearchResponse": ".types",
+    "SemanticSearchResult": ".types",
+    "ServiceUnavailableError": ".errors",
+    "TextSearchResponse": ".types",
+    "TextSearchResult": ".types",
+    "UnauthorizedError": ".errors",
+    "UploadRequestFormat": ".types",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "BadRequestError",
@@ -75,9 +131,5 @@ __all__ = [
     "TextSearchResponse",
     "TextSearchResult",
     "UnauthorizedError",
-    "UploadRequest",
-    "UploadRequestCsv",
-    "UploadRequestJson",
-    "UploadRequest_Csv",
-    "UploadRequest_Json",
+    "UploadRequestFormat",
 ]

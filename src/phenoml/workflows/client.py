@@ -71,7 +71,7 @@ class WorkflowsClient:
         *,
         name: str,
         workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        sample_data: typing.Dict[str, typing.Any],
         fhir_provider_id: CreateWorkflowRequestFhirProviderId,
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
@@ -88,7 +88,7 @@ class WorkflowsClient:
         workflow_instructions : str
             Natural language instructions that define the workflow logic
 
-        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+        sample_data : typing.Dict[str, typing.Any]
             Sample data to use for workflow graph generation
 
         fhir_provider_id : CreateWorkflowRequestFhirProviderId
@@ -181,7 +181,7 @@ class WorkflowsClient:
         *,
         name: str,
         workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        sample_data: typing.Dict[str, typing.Any],
         fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
@@ -201,7 +201,7 @@ class WorkflowsClient:
         workflow_instructions : str
             Natural language instructions that define the workflow logic
 
-        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+        sample_data : typing.Dict[str, typing.Any]
             Sample data to use for workflow graph generation
 
         fhir_provider_id : UpdateWorkflowRequestFhirProviderId
@@ -288,7 +288,7 @@ class WorkflowsClient:
         self,
         id: str,
         *,
-        input_data: typing.Dict[str, typing.Optional[typing.Any]],
+        input_data: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExecuteWorkflowResponse:
         """
@@ -299,7 +299,7 @@ class WorkflowsClient:
         id : str
             ID of the workflow to execute
 
-        input_data : typing.Dict[str, typing.Optional[typing.Any]]
+        input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
 
         request_options : typing.Optional[RequestOptions]
@@ -392,7 +392,7 @@ class AsyncWorkflowsClient:
         *,
         name: str,
         workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        sample_data: typing.Dict[str, typing.Any],
         fhir_provider_id: CreateWorkflowRequestFhirProviderId,
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
@@ -409,7 +409,7 @@ class AsyncWorkflowsClient:
         workflow_instructions : str
             Natural language instructions that define the workflow logic
 
-        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+        sample_data : typing.Dict[str, typing.Any]
             Sample data to use for workflow graph generation
 
         fhir_provider_id : CreateWorkflowRequestFhirProviderId
@@ -518,7 +518,7 @@ class AsyncWorkflowsClient:
         *,
         name: str,
         workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Optional[typing.Any]],
+        sample_data: typing.Dict[str, typing.Any],
         fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
@@ -538,7 +538,7 @@ class AsyncWorkflowsClient:
         workflow_instructions : str
             Natural language instructions that define the workflow logic
 
-        sample_data : typing.Dict[str, typing.Optional[typing.Any]]
+        sample_data : typing.Dict[str, typing.Any]
             Sample data to use for workflow graph generation
 
         fhir_provider_id : UpdateWorkflowRequestFhirProviderId
@@ -643,7 +643,7 @@ class AsyncWorkflowsClient:
         self,
         id: str,
         *,
-        input_data: typing.Dict[str, typing.Optional[typing.Any]],
+        input_data: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExecuteWorkflowResponse:
         """
@@ -654,7 +654,7 @@ class AsyncWorkflowsClient:
         id : str
             ID of the workflow to execute
 
-        input_data : typing.Dict[str, typing.Optional[typing.Any]]
+        input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
 
         request_options : typing.Optional[RequestOptions]

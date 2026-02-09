@@ -9,7 +9,7 @@ from .fhir_bundle_entry_item_response import FhirBundleEntryItemResponse
 
 
 class FhirBundleEntryItem(UniversalBaseModel):
-    resource: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    resource: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     The FHIR resource contained in this entry
     """

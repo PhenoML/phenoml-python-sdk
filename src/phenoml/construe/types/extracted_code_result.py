@@ -25,13 +25,11 @@ class ExtractedCodeResult(UniversalBaseModel):
     Whether the code passed validation. Always true unless include_invalid is set to true, in which case invalid codes will have this set to false.
     """
 
-    long_description: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="longDescription")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Long description of the code
-    """
-
+    long_description: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="longDescription"),
+        pydantic.Field(alias="longDescription", description="Long description of the code"),
+    ] = None
     rationale: typing.Optional[str] = pydantic.Field(default=None)
     """
     Explanation for why this code was extracted (if include_rationale is true)

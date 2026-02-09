@@ -1,3 +1,7 @@
+## 4.1.1 - 2026-02-09
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
