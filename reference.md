@@ -1892,6 +1892,87 @@ client.construe.delete_custom_code_system(
 </dl>
 </details>
 
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.
+The exported file can be re-uploaded directly via POST /construe/upload with format "json".
+Only available on dedicated instances. Builtin systems cannot be exported.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.export_custom_code_system(
+    codesystem="CUSTOM_CODES",
+    version="version",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system. Required if multiple versions exist.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...)</code></summary>
 <dl>
 <dd>
