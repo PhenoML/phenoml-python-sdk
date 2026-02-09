@@ -16,7 +16,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
-from .types.upload_request_format import UploadRequestFormat
+from .types.upload_request import UploadRequest
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -38,18 +38,7 @@ class ConstrueClient:
         return self._raw_client
 
     def upload_code_system(
-        self,
-        *,
-        name: str,
-        version: str,
-        format: UploadRequestFormat,
-        file: str,
-        revision: typing.Optional[float] = OMIT,
-        code_col: typing.Optional[str] = OMIT,
-        desc_col: typing.Optional[str] = OMIT,
-        defn_col: typing.Optional[str] = OMIT,
-        replace: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> ConstrueUploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -58,36 +47,7 @@ class ConstrueClient:
 
         Parameters
         ----------
-        name : str
-            Name of the code system. Names are case-insensitive and stored uppercase.
-            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
-            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-
-        version : str
-            Version of the code system
-
-        format : UploadRequestFormat
-            Format of the uploaded file
-
-        file : str
-            The file contents as a base64-encoded string
-
-        revision : typing.Optional[float]
-            Optional revision number
-
-        code_col : typing.Optional[str]
-            Column name containing codes (required for CSV format)
-
-        desc_col : typing.Optional[str]
-            Column name containing descriptions (required for CSV format)
-
-        defn_col : typing.Optional[str]
-            Optional column name containing long definitions (for CSV format)
-
-        replace : typing.Optional[bool]
-            If true, replaces an existing code system with the same name and version.
-            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
-            When false (default), uploading a duplicate returns 409 Conflict.
+        request : UploadRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -95,34 +55,27 @@ class ConstrueClient:
         Returns
         -------
         ConstrueUploadCodeSystemResponse
-            Successfully uploaded code system
+            Successfully uploaded code system (synchronous)
 
         Examples
         --------
         from phenoml import phenoml
+        from phenoml.construe import UploadRequest_Csv
 
         client = phenoml(
             token="YOUR_TOKEN",
         )
         client.construe.upload_code_system(
-            name="CUSTOM_CODES",
-            version="1.0",
-            format="json",
-            file="file",
+            request=UploadRequest_Csv(
+                name="CUSTOM_CODES",
+                version="1.0",
+                file="file",
+                code_col="code",
+                desc_col="description",
+            ),
         )
         """
-        _response = self._raw_client.upload_code_system(
-            name=name,
-            version=version,
-            format=format,
-            file=file,
-            revision=revision,
-            code_col=code_col,
-            desc_col=desc_col,
-            defn_col=defn_col,
-            replace=replace,
-            request_options=request_options,
-        )
+        _response = self._raw_client.upload_code_system(request=request, request_options=request_options)
         return _response.data
 
     def extract_codes(
@@ -555,18 +508,7 @@ class AsyncConstrueClient:
         return self._raw_client
 
     async def upload_code_system(
-        self,
-        *,
-        name: str,
-        version: str,
-        format: UploadRequestFormat,
-        file: str,
-        revision: typing.Optional[float] = OMIT,
-        code_col: typing.Optional[str] = OMIT,
-        desc_col: typing.Optional[str] = OMIT,
-        defn_col: typing.Optional[str] = OMIT,
-        replace: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> ConstrueUploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
@@ -575,36 +517,7 @@ class AsyncConstrueClient:
 
         Parameters
         ----------
-        name : str
-            Name of the code system. Names are case-insensitive and stored uppercase.
-            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
-            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-
-        version : str
-            Version of the code system
-
-        format : UploadRequestFormat
-            Format of the uploaded file
-
-        file : str
-            The file contents as a base64-encoded string
-
-        revision : typing.Optional[float]
-            Optional revision number
-
-        code_col : typing.Optional[str]
-            Column name containing codes (required for CSV format)
-
-        desc_col : typing.Optional[str]
-            Column name containing descriptions (required for CSV format)
-
-        defn_col : typing.Optional[str]
-            Optional column name containing long definitions (for CSV format)
-
-        replace : typing.Optional[bool]
-            If true, replaces an existing code system with the same name and version.
-            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
-            When false (default), uploading a duplicate returns 409 Conflict.
+        request : UploadRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -612,13 +525,14 @@ class AsyncConstrueClient:
         Returns
         -------
         ConstrueUploadCodeSystemResponse
-            Successfully uploaded code system
+            Successfully uploaded code system (synchronous)
 
         Examples
         --------
         import asyncio
 
         from phenoml import Asyncphenoml
+        from phenoml.construe import UploadRequest_Csv
 
         client = Asyncphenoml(
             token="YOUR_TOKEN",
@@ -627,27 +541,19 @@ class AsyncConstrueClient:
 
         async def main() -> None:
             await client.construe.upload_code_system(
-                name="CUSTOM_CODES",
-                version="1.0",
-                format="json",
-                file="file",
+                request=UploadRequest_Csv(
+                    name="CUSTOM_CODES",
+                    version="1.0",
+                    file="file",
+                    code_col="code",
+                    desc_col="description",
+                ),
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.upload_code_system(
-            name=name,
-            version=version,
-            format=format,
-            file=file,
-            revision=revision,
-            code_col=code_col,
-            desc_col=desc_col,
-            defn_col=defn_col,
-            replace=replace,
-            request_options=request_options,
-        )
+        _response = await self._raw_client.upload_code_system(request=request, request_options=request_options)
         return _response.data
 
     async def extract_codes(

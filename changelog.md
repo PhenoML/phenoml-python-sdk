@@ -1,3 +1,15 @@
+## 4.0.0 - 2026-02-08
+* feat: refactor upload_code_system API to use request objects
+* Modernize the upload_code_system API by replacing individual parameters with structured request objects, improving type safety and API usability.
+* Key changes:
+* Replace multiple parameters with single `request` parameter accepting UploadRequest union type
+* Add new request types: UploadRequestCsv, UploadRequestJson with format-specific validation
+* Add async upload support with new async parameter and status tracking
+* Extend GetCodeSystemDetailResponse with processing status enum (processing/ready/failed)
+* Update documentation and examples to use new request object pattern
+* Remove deprecated UploadRequestFormat enum in favor of discriminated union types
+* 🌿 Generated with Fern
+
 ## 3.2.0 - 2026-02-08
 * feat: add code system detail and deletion endpoints with enhanced upload
 * Enhance the construe API with new code system management capabilities,
