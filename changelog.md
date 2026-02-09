@@ -1,3 +1,14 @@
+## 5.0.0 - 2026-02-09
+* refactor: remove user_id field from template and response models
+* This change removes the user_id field from multiple data models across different modules. The field was an optional string parameter that tracked user ownership but is no longer needed in the model definitions.
+* Key changes:
+* Remove user_id field from ChatMessageTemplate and ChatSessionTemplate classes
+* Remove user_id field from FhirProviderTemplate class
+* Remove user_id field from SummaryTemplate class
+* Remove user_id field from McpServerResponseData and McpServerToolResponseData classes
+* Remove user_id field from WorkflowDefinition and WorkflowResponse classes
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
