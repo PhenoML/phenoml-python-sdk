@@ -1,3 +1,14 @@
+## 5.0.0 - 2026-02-09
+* feat: remove user_id field from template and response models
+* This change removes the user_id field from multiple data models across the phenoml SDK, indicating a shift away from user-specific data modeling. The removal affects template and response classes in agent, fhir_provider, summary, tools, and workflows modules.
+* Key changes:
+* Remove user_id field from ChatMessageTemplate and ChatSessionTemplate in agent module
+* Remove user_id field from FhirProviderTemplate in fhir_provider module
+* Remove user_id field from SummaryTemplate in summary module
+* Remove user_id field from McpServerResponseData and McpServerToolResponseData in tools module
+* Remove user_id field from WorkflowDefinition and WorkflowResponse in workflows module
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
