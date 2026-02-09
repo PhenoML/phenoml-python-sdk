@@ -1,3 +1,14 @@
+## 4.0.1 - 2026-02-09
+* fix: remove duplicate 403 error handling in FHIR client
+* Remove redundant ForbiddenError handling blocks that were duplicated in both
+* synchronous and asynchronous FHIR client implementations. This cleanup improves
+* code maintainability and eliminates unnecessary error handling logic.
+* Key changes:
+* Remove duplicate 403 status code handling from RawFhirProviderClient
+* Remove duplicate 403 status code handling from AsyncRawFhirProviderClient
+* Streamline error handling flow by eliminating redundant ForbiddenError exceptions
+* 🌿 Generated with Fern
+
 ## 4.0.0 - 2026-02-08
 * feat: refactor upload_code_system API to use request objects
 * Modernize the upload_code_system API by replacing individual parameters with structured request objects, improving type safety and API usability.
