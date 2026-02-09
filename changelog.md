@@ -1,3 +1,12 @@
+## 5.0.0 - 2026-02-09
+* feat: remove 403 Forbidden error handling from FHIR client
+* Remove 403 status code handling from both synchronous and asynchronous FHIR provider clients. This change simplifies error handling by removing the ForbiddenError exception case that was previously raised for HTTP 403 responses.
+* Key changes:
+* Remove 403 status code check and ForbiddenError handling from RawFhirProviderClient
+* Remove 403 status code check and ForbiddenError handling from AsyncRawFhirProviderClient
+* Streamline error handling flow by focusing on remaining status codes (404, etc.)
+* 🌿 Generated with Fern
+
 ## 4.0.0 - 2026-02-08
 * feat: refactor upload_code_system API to use request objects
 * Modernize the upload_code_system API by replacing individual parameters with structured request objects, improving type safety and API usability.
