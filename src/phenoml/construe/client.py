@@ -7,6 +7,7 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawConstrueClient, RawConstrueClient
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.delete_code_system_response import DeleteCodeSystemResponse
+from .types.export_code_system_response import ExportCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
@@ -235,6 +236,51 @@ class ConstrueClient:
         )
         """
         _response = self._raw_client.delete_custom_code_system(
+            codesystem, version=version, request_options=request_options
+        )
+        return _response.data
+
+    def export_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ExportCodeSystemResponse:
+        """
+        Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.
+        The exported file can be re-uploaded directly via POST /construe/upload with format "json".
+        Only available on dedicated instances. Builtin systems cannot be exported.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExportCodeSystemResponse
+            Exported code system as JSON file
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.export_custom_code_system(
+            codesystem="CUSTOM_CODES",
+            version="version",
+        )
+        """
+        _response = self._raw_client.export_custom_code_system(
             codesystem, version=version, request_options=request_options
         )
         return _response.data
@@ -745,6 +791,59 @@ class AsyncConstrueClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_custom_code_system(
+            codesystem, version=version, request_options=request_options
+        )
+        return _response.data
+
+    async def export_custom_code_system(
+        self,
+        codesystem: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ExportCodeSystemResponse:
+        """
+        Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.
+        The exported file can be re-uploaded directly via POST /construe/upload with format "json".
+        Only available on dedicated instances. Builtin systems cannot be exported.
+
+        Parameters
+        ----------
+        codesystem : str
+            Code system name
+
+        version : typing.Optional[str]
+            Specific version of the code system. Required if multiple versions exist.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExportCodeSystemResponse
+            Exported code system as JSON file
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.export_custom_code_system(
+                codesystem="CUSTOM_CODES",
+                version="version",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.export_custom_code_system(
             codesystem, version=version, request_options=request_options
         )
         return _response.data

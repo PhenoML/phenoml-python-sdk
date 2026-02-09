@@ -1,3 +1,14 @@
+## 4.1.0 - 2026-02-09
+* feat: add export_custom_code_system method to construe client
+* This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
+* Key changes:
+* Add export_custom_code_system method to both sync and async ConstrueClient classes
+* Implement corresponding raw client methods with comprehensive error handling
+* Create new ExportCodeSystemResponse type for structured export data
+* Update module imports and documentation with usage examples
+* Remove redundant 403 error handling from FHIR provider endpoints
+* 🌿 Generated with Fern
+
 ## 4.0.0 - 2026-02-08
 * feat: refactor upload_code_system API to use request objects
 * Modernize the upload_code_system API by replacing individual parameters with structured request objects, improving type safety and API usability.
