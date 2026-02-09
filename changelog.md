@@ -1,3 +1,14 @@
+## 4.0.1 - 2026-02-09
+* fix: remove HTTP 403 error handling from FHIR client methods
+* Remove redundant 403 Forbidden error handling logic from both sync and async
+* FHIR provider client methods. This change streamlines error handling by removing
+* duplicate error case handling that was not providing additional value.
+* Key changes:
+* Remove 403 status code handling from sync RawFhirProviderClient method
+* Remove 403 status code handling from async AsyncRawFhirProviderClient method
+* Simplify error handling flow by reducing redundant error cases
+* 🌿 Generated with Fern
+
 ## 4.0.0 - 2026-02-08
 * feat: refactor upload_code_system API to use request objects
 * Modernize the upload_code_system API by replacing individual parameters with structured request objects, improving type safety and API usability.
