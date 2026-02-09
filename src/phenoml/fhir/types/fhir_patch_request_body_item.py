@@ -20,15 +20,16 @@ class FhirPatchRequestBodyItem(UniversalBaseModel):
     JSON Pointer to the target location
     """
 
-    value: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    value: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     The value to use (required for add, replace, test operations)
     """
 
-    from_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="from")] = pydantic.Field(default=None)
-    """
-    Source location for move and copy operations (JSON Pointer)
-    """
+    from_: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="from"),
+        pydantic.Field(alias="from", description="Source location for move and copy operations (JSON Pointer)"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -20,20 +20,16 @@ class CohortResponse(UniversalBaseModel):
     Status message with details about the analysis
     """
 
-    patient_ids: typing_extensions.Annotated[typing.Optional[typing.List[str]], FieldMetadata(alias="patientIds")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Array of patient IDs that match the cohort criteria
-    """
-
-    patient_count: typing_extensions.Annotated[typing.Optional[int], FieldMetadata(alias="patientCount")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Total number of patients in the cohort
-    """
-
+    patient_ids: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="patientIds"),
+        pydantic.Field(alias="patientIds", description="Array of patient IDs that match the cohort criteria"),
+    ] = None
+    patient_count: typing_extensions.Annotated[
+        typing.Optional[int],
+        FieldMetadata(alias="patientCount"),
+        pydantic.Field(alias="patientCount", description="Total number of patients in the cohort"),
+    ] = None
     queries: typing.Optional[typing.List[SearchConcept]] = pydantic.Field(default=None)
     """
     Individual search concepts that were identified and executed

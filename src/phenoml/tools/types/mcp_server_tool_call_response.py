@@ -17,7 +17,7 @@ class McpServerToolCallResponse(UniversalBaseModel):
     Status message
     """
 
-    result: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    result: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Result of the MCP server tool call
     """

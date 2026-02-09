@@ -2,17 +2,56 @@
 
 # isort: skip_file
 
-from .error_response import ErrorResponse
-from .fhir_bundle import FhirBundle
-from .fhir_bundle_entry_item import FhirBundleEntryItem
-from .fhir_bundle_entry_item_request import FhirBundleEntryItemRequest
-from .fhir_bundle_entry_item_request_method import FhirBundleEntryItemRequestMethod
-from .fhir_bundle_entry_item_response import FhirBundleEntryItemResponse
-from .fhir_patch_request_body_item import FhirPatchRequestBodyItem
-from .fhir_patch_request_body_item_op import FhirPatchRequestBodyItemOp
-from .fhir_resource import FhirResource
-from .fhir_resource_meta import FhirResourceMeta
-from .fhir_search_response import FhirSearchResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .error_response import ErrorResponse
+    from .fhir_bundle import FhirBundle
+    from .fhir_bundle_entry_item import FhirBundleEntryItem
+    from .fhir_bundle_entry_item_request import FhirBundleEntryItemRequest
+    from .fhir_bundle_entry_item_request_method import FhirBundleEntryItemRequestMethod
+    from .fhir_bundle_entry_item_response import FhirBundleEntryItemResponse
+    from .fhir_patch_request_body_item import FhirPatchRequestBodyItem
+    from .fhir_patch_request_body_item_op import FhirPatchRequestBodyItemOp
+    from .fhir_resource import FhirResource
+    from .fhir_resource_meta import FhirResourceMeta
+    from .fhir_search_response import FhirSearchResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "ErrorResponse": ".error_response",
+    "FhirBundle": ".fhir_bundle",
+    "FhirBundleEntryItem": ".fhir_bundle_entry_item",
+    "FhirBundleEntryItemRequest": ".fhir_bundle_entry_item_request",
+    "FhirBundleEntryItemRequestMethod": ".fhir_bundle_entry_item_request_method",
+    "FhirBundleEntryItemResponse": ".fhir_bundle_entry_item_response",
+    "FhirPatchRequestBodyItem": ".fhir_patch_request_body_item",
+    "FhirPatchRequestBodyItemOp": ".fhir_patch_request_body_item_op",
+    "FhirResource": ".fhir_resource",
+    "FhirResourceMeta": ".fhir_resource_meta",
+    "FhirSearchResponse": ".fhir_search_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "ErrorResponse",

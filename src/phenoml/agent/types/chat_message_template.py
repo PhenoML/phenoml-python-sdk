@@ -42,22 +42,17 @@ class ChatMessageTemplate(UniversalBaseModel):
     Message updated time
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    User ID
-    """
-
     function_name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Function name
     """
 
-    function_args: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    function_args: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Function arguments
     """
 
-    function_result: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    function_result: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Function result
     """

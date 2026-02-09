@@ -21,7 +21,7 @@ class ErrorResponse(UniversalBaseModel):
     HTTP status code
     """
 
-    data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    data: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Additional error details
     """

@@ -7,7 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class ExecuteWorkflowResponseResults(UniversalBaseModel):
-    steps: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    steps: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Results for each executed workflow step, keyed by step ID
     """

@@ -16,11 +16,6 @@ class McpServerToolResponseData(UniversalBaseModel):
     ID of the MCP server tool
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the user who created the MCP server tool
-    """
-
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Name of the MCP server tool
@@ -31,7 +26,7 @@ class McpServerToolResponseData(UniversalBaseModel):
     Description of the MCP server tool
     """
 
-    input_schema: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    input_schema: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Input schema of the MCP server tool
     """

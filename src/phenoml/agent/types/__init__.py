@@ -2,26 +2,74 @@
 
 # isort: skip_file
 
-from .agent_chat_response import AgentChatResponse
-from .agent_create_request import AgentCreateRequest
-from .agent_create_request_provider import AgentCreateRequestProvider
-from .agent_delete_response import AgentDeleteResponse
-from .agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
-from .agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
-from .agent_get_chat_messages_response import AgentGetChatMessagesResponse
-from .agent_list_response import AgentListResponse
-from .agent_prompts_response import AgentPromptsResponse
-from .agent_response import AgentResponse
-from .agent_template import AgentTemplate
-from .agent_template_provider import AgentTemplateProvider
-from .chat_message_template import ChatMessageTemplate
-from .chat_message_template_role import ChatMessageTemplateRole
-from .chat_session_template import ChatSessionTemplate
-from .json_patch import JsonPatch
-from .json_patch_operation import JsonPatchOperation
-from .json_patch_operation_op import JsonPatchOperationOp
-from .prompt_template import PromptTemplate
-from .success_response import SuccessResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .agent_chat_response import AgentChatResponse
+    from .agent_create_request import AgentCreateRequest
+    from .agent_create_request_provider import AgentCreateRequestProvider
+    from .agent_delete_response import AgentDeleteResponse
+    from .agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
+    from .agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
+    from .agent_get_chat_messages_response import AgentGetChatMessagesResponse
+    from .agent_list_response import AgentListResponse
+    from .agent_prompts_response import AgentPromptsResponse
+    from .agent_response import AgentResponse
+    from .agent_template import AgentTemplate
+    from .agent_template_provider import AgentTemplateProvider
+    from .chat_message_template import ChatMessageTemplate
+    from .chat_message_template_role import ChatMessageTemplateRole
+    from .chat_session_template import ChatSessionTemplate
+    from .json_patch import JsonPatch
+    from .json_patch_operation import JsonPatchOperation
+    from .json_patch_operation_op import JsonPatchOperationOp
+    from .prompt_template import PromptTemplate
+    from .success_response import SuccessResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "AgentChatResponse": ".agent_chat_response",
+    "AgentCreateRequest": ".agent_create_request",
+    "AgentCreateRequestProvider": ".agent_create_request_provider",
+    "AgentDeleteResponse": ".agent_delete_response",
+    "AgentGetChatMessagesRequestOrder": ".agent_get_chat_messages_request_order",
+    "AgentGetChatMessagesRequestRole": ".agent_get_chat_messages_request_role",
+    "AgentGetChatMessagesResponse": ".agent_get_chat_messages_response",
+    "AgentListResponse": ".agent_list_response",
+    "AgentPromptsResponse": ".agent_prompts_response",
+    "AgentResponse": ".agent_response",
+    "AgentTemplate": ".agent_template",
+    "AgentTemplateProvider": ".agent_template_provider",
+    "ChatMessageTemplate": ".chat_message_template",
+    "ChatMessageTemplateRole": ".chat_message_template_role",
+    "ChatSessionTemplate": ".chat_session_template",
+    "JsonPatch": ".json_patch",
+    "JsonPatchOperation": ".json_patch_operation",
+    "JsonPatchOperationOp": ".json_patch_operation_op",
+    "PromptTemplate": ".prompt_template",
+    "SuccessResponse": ".success_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "AgentChatResponse",
