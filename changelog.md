@@ -1,3 +1,18 @@
+## 5.0.0 - 2026-02-10
+* refactor: simplify code system upload API and remove user_id fields
+* This change simplifies the code system upload API by removing complex union types
+* and flattening parameters, while also cleaning up user_id fields across multiple
+* modules. The upload API now uses individual parameters instead of request objects
+* and switches to asynchronous processing.
+* Key changes:
+* Replace UploadRequest union types with individual parameters in upload_code_system
+* Change upload API to return 202 immediately with asynchronous processing
+* Remove user_id fields from chat, FHIR provider, summary, tools, and workflow templates
+* Add name and version fields to ConstrueUploadCodeSystemResponse
+* Replace upload request classes with UploadRequestFormat enum
+* Update documentation to reflect asynchronous processing model
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
