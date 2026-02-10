@@ -1,3 +1,17 @@
+## 5.0.0 - 2026-02-10
+* refactor: simplify code system upload API to use individual parameters
+* Refactors the construe module's upload_code_system method to replace the complex
+* UploadRequest union type with individual parameters, making the API more intuitive
+* and easier to use. Also removes user_id fields from various template models.
+* Key changes:
+* Replace UploadRequest union with individual parameters (name, version, format, etc.)
+* Remove complex UploadRequestCsv and UploadRequestJson classes
+* Update API to accept individual parameters instead of request object
+* Remove user_id fields from ChatMessageTemplate, ChatSessionTemplate, and other models
+* Simplify upload response to include name and version fields
+* Update documentation to reflect asynchronous processing behavior
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
