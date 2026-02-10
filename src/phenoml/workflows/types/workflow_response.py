@@ -19,11 +19,6 @@ class WorkflowResponse(UniversalBaseModel):
     Unique identifier for the workflow
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the user who created the workflow
-    """
-
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Human-readable name for the workflow
@@ -34,7 +29,7 @@ class WorkflowResponse(UniversalBaseModel):
     Natural language instructions that define the workflow logic
     """
 
-    sample_data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    sample_data: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Sample data used for workflow graph generation
     """

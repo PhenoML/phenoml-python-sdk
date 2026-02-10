@@ -2,29 +2,63 @@
 
 # isort: skip_file
 
-from . import agent, authtoken, cohort, construe, lang2fhir, tools
-from .client import Asyncphenoml, phenoml
-from .environment import phenomlEnvironment
-from .version import __version__
-from .wrapper_client import PhenoMLClient, AsyncPhenoMLClient
+import typing
+from importlib import import_module
 
-# Primary client classes (recommended)
-Client = PhenoMLClient
-AsyncClient = AsyncPhenoMLClient
+if typing.TYPE_CHECKING:
+    from . import agent, authtoken, cohort, construe, fhir, fhir_provider, lang2fhir, summary, tools, workflows
+    from .client import Asyncphenoml, phenoml
+    from .environment import phenomlEnvironment
+_dynamic_imports: typing.Dict[str, str] = {
+    "Asyncphenoml": ".client",
+    "agent": ".agent",
+    "authtoken": ".authtoken",
+    "cohort": ".cohort",
+    "construe": ".construe",
+    "fhir": ".fhir",
+    "fhir_provider": ".fhir_provider",
+    "lang2fhir": ".lang2fhir",
+    "phenoml": ".client",
+    "phenomlEnvironment": ".environment",
+    "summary": ".summary",
+    "tools": ".tools",
+    "workflows": ".workflows",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "Asyncphenoml",
-    "AsyncPhenoMLClient", 
-    "AsyncClient",  # Primary async client
-    "PhenoMLClient",
-    "Client",  # Primary sync client
-    "__version__",
     "agent",
     "authtoken",
     "cohort",
     "construe",
+    "fhir",
+    "fhir_provider",
     "lang2fhir",
-    "phenoml",  # Base client (for advanced users)
+    "phenoml",
     "phenomlEnvironment",
+    "summary",
     "tools",
+    "workflows",
 ]

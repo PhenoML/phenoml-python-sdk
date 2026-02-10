@@ -17,7 +17,7 @@ class Lang2FhirSearchDefinition(UniversalBaseModel):
     FHIR resource type to search
     """
 
-    search_parameters: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    search_parameters: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Prepared FHIR search parameters
     """

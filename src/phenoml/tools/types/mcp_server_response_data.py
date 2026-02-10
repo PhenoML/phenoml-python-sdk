@@ -16,11 +16,6 @@ class McpServerResponseData(UniversalBaseModel):
     ID of the MCP server
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the user who created the MCP server
-    """
-
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Name of the MCP server

@@ -7,7 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class Lang2FhirAndCreateResponse(UniversalBaseModel):
-    fhir_resource: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    fhir_resource: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     The created FHIR resource
     """

@@ -1,3 +1,16 @@
+## 5.0.0 - 2026-02-09
+* Breaking changes:
+* Flatten `upload_code_system()` — replaces the `UploadRequest_Csv`/`UploadRequest_Json` discriminated union with individual keyword arguments (`name`, `version`, `format`, `file`, `code_col`, `desc_col`, `defn_col`, `codes`, `replace`, `async_`). Removes `UploadRequest`, `UploadRequest_Csv`, `UploadRequest_Json`, `UploadRequestCsv`, `UploadRequestJson` types; adds `UploadRequestFormat` enum (`csv`/`json`)
+* Remove `user_id` field from `ChatMessageTemplate`, `ChatSessionTemplate`, `FhirProviderTemplate`, `McpServerResponseData`, `McpServerToolResponseData`, `WorkflowDefinition`, `WorkflowResponse`, `SummaryTemplate`
+* Remove `PhenoMLClient`, `AsyncPhenoMLClient`, `Client`, `AsyncClient` wrapper aliases and `__version__` from top-level exports
+* Auth token endpoint now sends credentials as JSON body instead of Basic auth header
+* Remove `X-Fern-SDK-Name`, `X-Fern-SDK-Version`, `User-Agent` from default request headers
+* New features:
+* Add `instance_url` parameter to client constructors — automatically sets base URL to `https://{instance_url}`
+* Export `fhir`, `fhir_provider`, `summary`, `workflows` submodules from top-level package
+* Add `BaseClientOptions`, `BaseRequestOptions` type exports
+* Narrow dict value types from `Optional[Any]` to `Any` in `ChatMessageTemplate.function_args`, `ChatMessageTemplate.function_result`, `SummaryTemplate.metadata`, `McpServerToolResponseData.input_schema`, `WorkflowDefinition.sample_data`, `WorkflowResponse.sample_data`
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
