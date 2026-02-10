@@ -24,9 +24,7 @@ from .semantic_search_response import SemanticSearchResponse
 from .semantic_search_result import SemanticSearchResult
 from .text_search_response import TextSearchResponse
 from .text_search_result import TextSearchResult
-from .upload_request import UploadRequest, UploadRequest_Csv, UploadRequest_Json
-from .upload_request_csv import UploadRequestCsv
-from .upload_request_json import UploadRequestJson
+from .upload_request_format import UploadRequestFormat
 
 __all__ = [
     "Citation",
@@ -51,9 +49,5 @@ __all__ = [
     "SemanticSearchResult",
     "TextSearchResponse",
     "TextSearchResult",
-    "UploadRequest",
-    "UploadRequestCsv",
-    "UploadRequestJson",
-    "UploadRequest_Csv",
-    "UploadRequest_Json",
+    "UploadRequestFormat",
 ]

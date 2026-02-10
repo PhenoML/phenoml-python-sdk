@@ -1,3 +1,16 @@
+## 5.0.0 - 2026-02-10
+* refactor: simplify construe upload code system API interface
+* Refactor the construe upload_code_system method from using a complex union request object to accepting individual parameters directly. This change makes the API more intuitive and easier to use by flattening the parameter structure and removing the need for discriminated union types.
+* Key changes:
+* Replace UploadRequest union type with individual method parameters (name, version, format, etc.)
+* Remove complex UploadRequest, UploadRequestCsv, and UploadRequestJson type definitions
+* Add new UploadRequestFormat enum for upload format specification
+* Update method signatures in both sync and async clients to accept flattened parameters
+* Remove user_id fields from various template types across modules for cleaner data models
+* Update documentation to reflect asynchronous processing behavior and polling requirements
+* Add name and version fields to ConstrueUploadCodeSystemResponse for better response tracking
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
