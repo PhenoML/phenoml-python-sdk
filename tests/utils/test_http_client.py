@@ -57,5 +57,6 @@ def test_get_empty_json_request_body() -> None:
         json={}, data=None, request_options=unrelated_request_options, omit=None
     )
 
-    assert json_body_extras is None
+    # Explicitly passed empty dict is preserved (not collapsed to None)
+    assert json_body_extras == {}
     assert data_body_extras is None
