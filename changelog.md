@@ -1,3 +1,14 @@
+## 5.0.0 - 2026-02-10
+* feat: replace upload request object with individual parameters
+* Simplify the API for uploading code systems by replacing the complex UploadRequest union type with individual parameters for better developer experience.
+* Key changes:
+* Remove UploadRequest, UploadRequestCsv, and UploadRequestJson types
+* Replace upload_code_system method signature with individual parameters (name, version, format, etc.)
+* Add UploadRequestFormat enum for format specification
+* Update documentation examples to use simplified parameter-based approach
+* Remove user_id fields from various model templates across agent, fhir_provider, summary, tools, and workflows modules
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
