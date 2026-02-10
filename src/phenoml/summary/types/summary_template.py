@@ -9,7 +9,6 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class SummaryTemplate(UniversalBaseModel):
     id: typing.Optional[str] = None
-    user_id: typing.Optional[str] = None
     name: typing.Optional[str] = None
     description: typing.Optional[str] = None
     template: typing.Optional[str] = pydantic.Field(default=None)

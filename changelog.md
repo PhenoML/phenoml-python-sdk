@@ -1,3 +1,18 @@
+## 5.0.0 - 2026-02-10
+* refactor: change code system upload API from request object to individual parameters
+* Refactors the upload_code_system method signature to accept individual parameters instead of
+* a unified UploadRequest object. Changes asynchronous processing to be the default behavior,
+* returning 202 status immediately while processing happens in the background.
+* Key changes:
+* Replace UploadRequest union type with individual parameters (name, version, format, etc.)
+* Remove complex UploadRequest_Csv and UploadRequest_Json discriminated union types
+* Simplify to UploadRequestFormat enum with "csv" and "json" values
+* Remove user_id fields from multiple template classes for cleaner data models
+* Change upload behavior to always be asynchronous with 202 response
+* Add name and version fields to upload response object
+* Update documentation to reflect new async-first approach
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
