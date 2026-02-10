@@ -12,11 +12,6 @@ class ChatSessionTemplate(UniversalBaseModel):
     Chat session ID
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    User ID
-    """
-
     session_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Chat session ID

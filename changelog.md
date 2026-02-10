@@ -1,3 +1,15 @@
+## 5.0.0 - 2026-02-10
+* refactor: flatten API parameters and remove user_id fields
+* Refactored the construe upload_code_system API to use flattened parameters instead of a complex request object, and removed user_id fields from multiple template models across the codebase.
+* Key changes:
+* Replace UploadRequest union type with individual parameters for upload_code_system method
+* Update API to return 202 for asynchronous processing instead of synchronous completion
+* Remove user_id field from ChatMessageTemplate, ChatSessionTemplate, FhirProviderTemplate, SummaryTemplate, McpServerResponseData, McpServerToolResponseData, WorkflowDefinition, and WorkflowResponse
+* Add name and version fields to ConstrueUploadCodeSystemResponse
+* Update documentation to reflect asynchronous processing workflow
+* Remove unused upload request types (UploadRequestCsv, UploadRequestJson) and replace with UploadRequestFormat enum
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
