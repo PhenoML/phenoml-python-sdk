@@ -25,11 +25,7 @@ from .types import (
     SemanticSearchResult,
     TextSearchResponse,
     TextSearchResult,
-    UploadRequest,
-    UploadRequestCsv,
-    UploadRequestJson,
-    UploadRequest_Csv,
-    UploadRequest_Json,
+    UploadRequestFormat,
 )
 from .errors import (
     BadRequestError,
@@ -75,9 +71,5 @@ __all__ = [
     "TextSearchResponse",
     "TextSearchResult",
     "UnauthorizedError",
-    "UploadRequest",
-    "UploadRequestCsv",
-    "UploadRequestJson",
-    "UploadRequest_Csv",
-    "UploadRequest_Json",
+    "UploadRequestFormat",
 ]

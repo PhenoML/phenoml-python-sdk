@@ -19,11 +19,6 @@ class WorkflowResponse(UniversalBaseModel):
     Unique identifier for the workflow
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the user who created the workflow
-    """
-
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Human-readable name for the workflow
