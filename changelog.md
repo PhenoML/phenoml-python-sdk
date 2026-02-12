@@ -1,3 +1,14 @@
+## 5.0.0 - 2026-02-12
+* refactor: simplify code upload system API and remove user_id fields
+* Refactored the code upload system to use individual parameters instead of a complex request object, improving API usability and maintainability. The upload process now returns immediately and processes asynchronously, with status polling available via GET endpoint.
+* Key changes:
+* Replace UploadRequest union type with individual parameters in upload_code_system method
+* Change from synchronous to asynchronous processing model with 202 Accepted response
+* Remove user_id fields from multiple template classes for simplified data models
+* Add name and version fields to upload response for better tracking
+* Update documentation to reflect asynchronous processing workflow
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
