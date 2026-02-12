@@ -1,3 +1,19 @@
+## 5.0.0 - 2026-02-12
+* refactor: update upload_code_system API to use individual parameters instead of request object
+* Changed the upload_code_system method signature to accept individual parameters
+* directly rather than a single UploadRequest object. This simplifies the API
+* interface and allows for better type safety and documentation of each parameter.
+* Key changes:
+* Replace UploadRequest object parameter with individual name, version, format parameters
+* Add detailed parameter documentation with type hints and descriptions
+* Update method to use asynchronous processing model with 202 response
+* Remove deprecated UploadRequest union types and related classes
+* Add new GatewayTimeoutError (504) exception handling
+* Remove user_id fields from various template classes across modules
+* Update extracted code result to use 'reason' field instead of 'rationale'
+* Improve error handling with additional HTTP status codes
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
