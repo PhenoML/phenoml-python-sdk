@@ -69,7 +69,7 @@ class SummaryClient:
         target_resources: typing.Sequence[str],
         mode: str,
         description: typing.Optional[str] = OMIT,
-        example_fhir_data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateSummaryTemplateResponse:
         """
@@ -92,7 +92,7 @@ class SummaryClient:
         description : typing.Optional[str]
             Description of the template
 
-        example_fhir_data : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
             Optional example FHIR data that corresponds to the example summary
 
         request_options : typing.Optional[RequestOptions]
@@ -378,7 +378,7 @@ class AsyncSummaryClient:
         target_resources: typing.Sequence[str],
         mode: str,
         description: typing.Optional[str] = OMIT,
-        example_fhir_data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateSummaryTemplateResponse:
         """
@@ -401,7 +401,7 @@ class AsyncSummaryClient:
         description : typing.Optional[str]
             Description of the template
 
-        example_fhir_data : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
             Optional example FHIR data that corresponds to the example summary
 
         request_options : typing.Optional[RequestOptions]

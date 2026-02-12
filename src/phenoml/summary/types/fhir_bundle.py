@@ -10,7 +10,9 @@ from .fhir_bundle_entry_item import FhirBundleEntryItem
 
 
 class FhirBundle(UniversalBaseModel):
-    resource_type: typing_extensions.Annotated[typing.Literal["Bundle"], FieldMetadata(alias="resourceType")] = "Bundle"
+    resource_type: typing_extensions.Annotated[
+        typing.Literal["Bundle"], FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType")
+    ] = "Bundle"
     entry: typing.List[FhirBundleEntryItem]
 
     if IS_PYDANTIC_V2:

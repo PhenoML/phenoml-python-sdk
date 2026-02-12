@@ -9,7 +9,6 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class SummaryTemplate(UniversalBaseModel):
     id: typing.Optional[str] = None
-    user_id: typing.Optional[str] = None
     name: typing.Optional[str] = None
     description: typing.Optional[str] = None
     template: typing.Optional[str] = pydantic.Field(default=None)
@@ -27,7 +26,7 @@ class SummaryTemplate(UniversalBaseModel):
     Template mode (stored value)
     """
 
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
     created_at: typing.Optional[dt.datetime] = None
     updated_at: typing.Optional[dt.datetime] = None
 

@@ -2,4 +2,4 @@
 
 import typing
 
-FhirQueryResponseData = typing.Union[typing.Dict[str, typing.Optional[typing.Any]], str]
+FhirQueryResponseData = typing.Union[typing.Dict[str, typing.Any], str]

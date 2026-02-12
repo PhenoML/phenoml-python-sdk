@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawConstrueClient, RawConstrueClient
+from .types.code_response import CodeResponse
 from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.export_code_system_response import ExportCodeSystemResponse
@@ -17,7 +18,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
-from .types.upload_request import UploadRequest
+from .types.upload_request_format import UploadRequestFormat
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -39,16 +40,65 @@ class ConstrueClient:
         return self._raw_client
 
     def upload_code_system(
-        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: str,
+        version: str,
+        format: UploadRequestFormat,
+        revision: typing.Optional[float] = OMIT,
+        file: typing.Optional[str] = OMIT,
+        code_col: typing.Optional[str] = OMIT,
+        desc_col: typing.Optional[str] = OMIT,
+        defn_col: typing.Optional[str] = OMIT,
+        codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ConstrueUploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
-        Upon upload, construe generates embeddings for all of the codes in the code system and stores them in the vector database so you can
-        subsequently use the code system for construe/extract and lang2fhir/create (coming soon!)
+        Returns 202 immediately; embedding generation runs asynchronously. Poll
+        GET /construe/codes/systems/{codesystem}?version={version} to check when status
+        transitions from "processing" to "ready" or "failed".
 
         Parameters
         ----------
-        request : UploadRequest
+        name : str
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
+
+        version : str
+            Version of the code system
+
+        format : UploadRequestFormat
+            Upload format
+
+        revision : typing.Optional[float]
+            Optional revision number
+
+        file : typing.Optional[str]
+            The file contents as a base64-encoded string.
+            For CSV format, this is the CSV file contents.
+            For JSON format, this is a base64-encoded JSON array; prefer using 'codes' instead.
+
+        code_col : typing.Optional[str]
+            Column name containing codes (required for CSV format)
+
+        desc_col : typing.Optional[str]
+            Column name containing descriptions (required for CSV format)
+
+        defn_col : typing.Optional[str]
+            Optional column name containing long definitions (for CSV format)
+
+        codes : typing.Optional[typing.Sequence[CodeResponse]]
+            The codes to upload as a JSON array (JSON format only).
+            This is the preferred way to upload JSON codes, as it avoids unnecessary base64 encoding.
+            If both 'codes' and 'file' are provided, 'codes' takes precedence.
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -56,27 +106,34 @@ class ConstrueClient:
         Returns
         -------
         ConstrueUploadCodeSystemResponse
-            Successfully uploaded code system (synchronous)
+            Upload accepted for asynchronous processing
 
         Examples
         --------
         from phenoml import phenoml
-        from phenoml.construe import UploadRequest_Csv
 
         client = phenoml(
             token="YOUR_TOKEN",
         )
         client.construe.upload_code_system(
-            request=UploadRequest_Csv(
-                name="CUSTOM_CODES",
-                version="1.0",
-                file="file",
-                code_col="code",
-                desc_col="description",
-            ),
+            name="CUSTOM_CODES",
+            version="1.0",
+            format="csv",
         )
         """
-        _response = self._raw_client.upload_code_system(request=request, request_options=request_options)
+        _response = self._raw_client.upload_code_system(
+            name=name,
+            version=version,
+            format=format,
+            revision=revision,
+            file=file,
+            code_col=code_col,
+            desc_col=desc_col,
+            defn_col=defn_col,
+            codes=codes,
+            replace=replace,
+            request_options=request_options,
+        )
         return _response.data
 
     def extract_codes(
@@ -554,16 +611,65 @@ class AsyncConstrueClient:
         return self._raw_client
 
     async def upload_code_system(
-        self, *, request: UploadRequest, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        name: str,
+        version: str,
+        format: UploadRequestFormat,
+        revision: typing.Optional[float] = OMIT,
+        file: typing.Optional[str] = OMIT,
+        code_col: typing.Optional[str] = OMIT,
+        desc_col: typing.Optional[str] = OMIT,
+        defn_col: typing.Optional[str] = OMIT,
+        codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
+        replace: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> ConstrueUploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
-        Upon upload, construe generates embeddings for all of the codes in the code system and stores them in the vector database so you can
-        subsequently use the code system for construe/extract and lang2fhir/create (coming soon!)
+        Returns 202 immediately; embedding generation runs asynchronously. Poll
+        GET /construe/codes/systems/{codesystem}?version={version} to check when status
+        transitions from "processing" to "ready" or "failed".
 
         Parameters
         ----------
-        request : UploadRequest
+        name : str
+            Name of the code system. Names are case-insensitive and stored uppercase.
+            Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
+            reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
+
+        version : str
+            Version of the code system
+
+        format : UploadRequestFormat
+            Upload format
+
+        revision : typing.Optional[float]
+            Optional revision number
+
+        file : typing.Optional[str]
+            The file contents as a base64-encoded string.
+            For CSV format, this is the CSV file contents.
+            For JSON format, this is a base64-encoded JSON array; prefer using 'codes' instead.
+
+        code_col : typing.Optional[str]
+            Column name containing codes (required for CSV format)
+
+        desc_col : typing.Optional[str]
+            Column name containing descriptions (required for CSV format)
+
+        defn_col : typing.Optional[str]
+            Optional column name containing long definitions (for CSV format)
+
+        codes : typing.Optional[typing.Sequence[CodeResponse]]
+            The codes to upload as a JSON array (JSON format only).
+            This is the preferred way to upload JSON codes, as it avoids unnecessary base64 encoding.
+            If both 'codes' and 'file' are provided, 'codes' takes precedence.
+
+        replace : typing.Optional[bool]
+            If true, replaces an existing code system with the same name and version.
+            Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
+            When false (default), uploading a duplicate returns 409 Conflict.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -571,14 +677,13 @@ class AsyncConstrueClient:
         Returns
         -------
         ConstrueUploadCodeSystemResponse
-            Successfully uploaded code system (synchronous)
+            Upload accepted for asynchronous processing
 
         Examples
         --------
         import asyncio
 
         from phenoml import Asyncphenoml
-        from phenoml.construe import UploadRequest_Csv
 
         client = Asyncphenoml(
             token="YOUR_TOKEN",
@@ -587,19 +692,27 @@ class AsyncConstrueClient:
 
         async def main() -> None:
             await client.construe.upload_code_system(
-                request=UploadRequest_Csv(
-                    name="CUSTOM_CODES",
-                    version="1.0",
-                    file="file",
-                    code_col="code",
-                    desc_col="description",
-                ),
+                name="CUSTOM_CODES",
+                version="1.0",
+                format="csv",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.upload_code_system(request=request, request_options=request_options)
+        _response = await self._raw_client.upload_code_system(
+            name=name,
+            version=version,
+            format=format,
+            revision=revision,
+            file=file,
+            code_col=code_col,
+            desc_col=desc_col,
+            defn_col=defn_col,
+            codes=codes,
+            replace=replace,
+            request_options=request_options,
+        )
         return _response.data
 
     async def extract_codes(
