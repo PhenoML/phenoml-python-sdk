@@ -1,6 +1,8 @@
-## 5.0.1 - 2026-02-13
-* SDK regeneration
-* Unable to analyze changes with AI, incrementing PATCH version.
+## 5.1.0 - 2026-02-13
+* refactor: switch to lazy imports and deferred sub-client initialization
+* All module __init__.py files now use dynamic imports via __getattr__ to reduce startup overhead.
+* Sub-clients are lazily instantiated on first access instead of eagerly in __init__.
+* Adds force_multipart and http_response core utilities.
 
 ## 5.0.0 - 2026-02-13
 * refactor: simplify code upload API and improve async processing
