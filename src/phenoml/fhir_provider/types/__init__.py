@@ -2,24 +2,68 @@
 
 # isort: skip_file
 
-from .auth_method import AuthMethod
-from .fhir_provider_auth_config import FhirProviderAuthConfig
-from .fhir_provider_delete_response import FhirProviderDeleteResponse
-from .fhir_provider_list_response import FhirProviderListResponse
-from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
-from .fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
-from .fhir_provider_response import FhirProviderResponse
-from .fhir_provider_response_data import FhirProviderResponseData
-from .fhir_provider_sandbox_info import FhirProviderSandboxInfo
-from .fhir_provider_template import FhirProviderTemplate
-from .fhir_query_response import FhirQueryResponse
-from .fhir_query_response_data import FhirQueryResponseData
-from .json_web_key import JsonWebKey
-from .provider import Provider
-from .role import Role
-from .service_account_key import ServiceAccountKey
-from .service_account_metadata import ServiceAccountMetadata
-from .smart_configuration import SmartConfiguration
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .auth_method import AuthMethod
+    from .fhir_provider_auth_config import FhirProviderAuthConfig
+    from .fhir_provider_delete_response import FhirProviderDeleteResponse
+    from .fhir_provider_list_response import FhirProviderListResponse
+    from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
+    from .fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
+    from .fhir_provider_response import FhirProviderResponse
+    from .fhir_provider_response_data import FhirProviderResponseData
+    from .fhir_provider_sandbox_info import FhirProviderSandboxInfo
+    from .fhir_provider_template import FhirProviderTemplate
+    from .fhir_query_response import FhirQueryResponse
+    from .fhir_query_response_data import FhirQueryResponseData
+    from .json_web_key import JsonWebKey
+    from .provider import Provider
+    from .role import Role
+    from .service_account_key import ServiceAccountKey
+    from .service_account_metadata import ServiceAccountMetadata
+    from .smart_configuration import SmartConfiguration
+_dynamic_imports: typing.Dict[str, str] = {
+    "AuthMethod": ".auth_method",
+    "FhirProviderAuthConfig": ".fhir_provider_auth_config",
+    "FhirProviderDeleteResponse": ".fhir_provider_delete_response",
+    "FhirProviderListResponse": ".fhir_provider_list_response",
+    "FhirProviderListResponseFhirProvidersItem": ".fhir_provider_list_response_fhir_providers_item",
+    "FhirProviderRemoveAuthConfigResponse": ".fhir_provider_remove_auth_config_response",
+    "FhirProviderResponse": ".fhir_provider_response",
+    "FhirProviderResponseData": ".fhir_provider_response_data",
+    "FhirProviderSandboxInfo": ".fhir_provider_sandbox_info",
+    "FhirProviderTemplate": ".fhir_provider_template",
+    "FhirQueryResponse": ".fhir_query_response",
+    "FhirQueryResponseData": ".fhir_query_response_data",
+    "JsonWebKey": ".json_web_key",
+    "Provider": ".provider",
+    "Role": ".role",
+    "ServiceAccountKey": ".service_account_key",
+    "ServiceAccountMetadata": ".service_account_metadata",
+    "SmartConfiguration": ".smart_configuration",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "AuthMethod",
