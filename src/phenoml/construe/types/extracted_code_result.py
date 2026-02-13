@@ -3,9 +3,7 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
 from .citation import Citation
 
 
@@ -25,14 +23,7 @@ class ExtractedCodeResult(UniversalBaseModel):
     Whether the code passed validation. Always true unless include_invalid is set to true, in which case invalid codes will have this set to false.
     """
 
-    long_description: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="longDescription")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Long description of the code
-    """
-
-    rationale: typing.Optional[str] = pydantic.Field(default=None)
+    reason: typing.Optional[str] = pydantic.Field(default=None)
     """
     Explanation for why this code was extracted (if include_rationale is true)
     """
