@@ -47,12 +47,12 @@ class ChatMessageTemplate(UniversalBaseModel):
     Function name
     """
 
-    function_args: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    function_args: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Function arguments
     """
 
-    function_result: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    function_result: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Function result
     """

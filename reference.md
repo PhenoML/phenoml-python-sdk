@@ -4527,7 +4527,7 @@ client.summary.create_template(
 <dl>
 <dd>
 
-**example_fhir_data:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Optional example FHIR data that corresponds to the example summary
+**example_fhir_data:** `typing.Optional[typing.Dict[str, typing.Any]]` — Optional example FHIR data that corresponds to the example summary
     
 </dd>
 </dl>
@@ -5910,7 +5910,7 @@ client.tools.mcp_server.tools.call(
 <dl>
 <dd>
 
-**arguments:** `typing.Dict[str, typing.Optional[typing.Any]]` — Arguments to pass to the MCP server tool
+**arguments:** `typing.Dict[str, typing.Any]` — Arguments to pass to the MCP server tool
     
 </dd>
 </dl>
@@ -6075,7 +6075,7 @@ client.workflows.create(
 <dl>
 <dd>
 
-**sample_data:** `typing.Dict[str, typing.Optional[typing.Any]]` — Sample data to use for workflow graph generation
+**sample_data:** `typing.Dict[str, typing.Any]` — Sample data to use for workflow graph generation
     
 </dd>
 </dl>
@@ -6281,7 +6281,7 @@ client.workflows.update(
 <dl>
 <dd>
 
-**sample_data:** `typing.Dict[str, typing.Optional[typing.Any]]` — Sample data to use for workflow graph generation
+**sample_data:** `typing.Dict[str, typing.Any]` — Sample data to use for workflow graph generation
     
 </dd>
 </dl>
@@ -6459,7 +6459,7 @@ client.workflows.execute(
 <dl>
 <dd>
 
-**input_data:** `typing.Dict[str, typing.Optional[typing.Any]]` — Input data for workflow execution
+**input_data:** `typing.Dict[str, typing.Any]` — Input data for workflow execution
     
 </dd>
 </dl>

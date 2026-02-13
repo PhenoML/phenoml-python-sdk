@@ -130,7 +130,7 @@ class ToolsClient:
         self,
         mcp_server_tool_id: str,
         *,
-        arguments: typing.Dict[str, typing.Optional[typing.Any]],
+        arguments: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> McpServerToolCallResponse:
         """
@@ -141,7 +141,7 @@ class ToolsClient:
         mcp_server_tool_id : str
             ID of the MCP server tool to call
 
-        arguments : typing.Dict[str, typing.Optional[typing.Any]]
+        arguments : typing.Dict[str, typing.Any]
             Arguments to pass to the MCP server tool
 
         request_options : typing.Optional[RequestOptions]
@@ -310,7 +310,7 @@ class AsyncToolsClient:
         self,
         mcp_server_tool_id: str,
         *,
-        arguments: typing.Dict[str, typing.Optional[typing.Any]],
+        arguments: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
     ) -> McpServerToolCallResponse:
         """
@@ -321,7 +321,7 @@ class AsyncToolsClient:
         mcp_server_tool_id : str
             ID of the MCP server tool to call
 
-        arguments : typing.Dict[str, typing.Optional[typing.Any]]
+        arguments : typing.Dict[str, typing.Any]
             Arguments to pass to the MCP server tool
 
         request_options : typing.Optional[RequestOptions]

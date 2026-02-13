@@ -26,7 +26,7 @@ class McpServerToolResponseData(UniversalBaseModel):
     Description of the MCP server tool
     """
 
-    input_schema: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    input_schema: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Input schema of the MCP server tool
     """

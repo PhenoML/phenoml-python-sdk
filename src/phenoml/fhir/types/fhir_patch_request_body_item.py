@@ -20,7 +20,7 @@ class FhirPatchRequestBodyItem(UniversalBaseModel):
     JSON Pointer to the target location
     """
 
-    value: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    value: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     The value to use (required for add, replace, test operations)
     """
