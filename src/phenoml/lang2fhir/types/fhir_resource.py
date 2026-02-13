@@ -2,4 +2,4 @@
 
 import typing
 
-FhirResource = typing.Dict[str, typing.Optional[typing.Any]]
+FhirResource = typing.Dict[str, typing.Any]

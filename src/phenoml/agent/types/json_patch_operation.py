@@ -20,7 +20,7 @@ class JsonPatchOperation(UniversalBaseModel):
     A JSON Pointer string specifying a location within the target document
     """
 
-    value: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    value: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     The value to be used within the operations
     """

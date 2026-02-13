@@ -25,7 +25,7 @@ class WorkflowDefinition(UniversalBaseModel):
     Natural language instructions that define the workflow logic
     """
 
-    sample_data: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    sample_data: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Sample data used for workflow graph generation
     """

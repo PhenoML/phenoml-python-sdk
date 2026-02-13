@@ -12,7 +12,7 @@ class SubWorkflowDefinition(UniversalBaseModel):
     ID of the workflow to execute as a sub-workflow
     """
 
-    input: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    input: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Input data to pass to the sub-workflow
     """

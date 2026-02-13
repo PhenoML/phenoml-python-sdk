@@ -282,7 +282,7 @@ class FhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> typing.Dict[str, typing.Any]:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -315,7 +315,7 @@ class FhirClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        typing.Dict[str, typing.Any]
             Resource deleted successfully
 
         Examples
@@ -810,7 +810,7 @@ class AsyncFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> typing.Dict[str, typing.Any]:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -843,7 +843,7 @@ class AsyncFhirClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        typing.Dict[str, typing.Any]
             Resource deleted successfully
 
         Examples
