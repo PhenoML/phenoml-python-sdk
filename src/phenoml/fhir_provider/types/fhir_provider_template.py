@@ -15,11 +15,6 @@ class FhirProviderTemplate(UniversalBaseModel):
     Unique identifier for the FHIR provider
     """
 
-    user_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the user who owns this FHIR provider
-    """
-
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Display name for the FHIR provider

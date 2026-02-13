@@ -32,9 +32,9 @@ class GetCodeSystemDetailResponse(UniversalBaseModel):
     status: GetCodeSystemDetailResponseStatus = pydantic.Field()
     """
     Processing status of the code system.
-    - "processing": embeddings are being generated (async upload in progress)
+    - "processing": embeddings are being generated
     - "ready": code system is ready for use
-    - "failed": async processing failed (re-upload with replace=true to retry)
+    - "failed": processing failed (re-upload with replace=true to retry)
     """
 
     created_at: dt.datetime = pydantic.Field()
