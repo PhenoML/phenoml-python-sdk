@@ -17,7 +17,7 @@ class Lang2FhirCreateDefinition(UniversalBaseModel):
     FHIR resource type to create
     """
 
-    resource_template: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    resource_template: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Prepared FHIR resource template
     """

@@ -14,8 +14,12 @@ class FhirResourceMeta(UniversalBaseModel):
     Metadata about the resource
     """
 
-    version_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="versionId")] = None
-    last_updated: typing_extensions.Annotated[typing.Optional[dt.datetime], FieldMetadata(alias="lastUpdated")] = None
+    version_id: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="versionId"), pydantic.Field(alias="versionId")
+    ] = None
+    last_updated: typing_extensions.Annotated[
+        typing.Optional[dt.datetime], FieldMetadata(alias="lastUpdated"), pydantic.Field(alias="lastUpdated")
+    ] = None
     profile: typing.Optional[typing.List[str]] = None
 
     if IS_PYDANTIC_V2:

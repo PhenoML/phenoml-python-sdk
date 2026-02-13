@@ -1,0 +1,9 @@
+{
+  "cliVersion": "3.74.1",
+  "generatorName": "fernapi/fern-python-sdk",
+  "generatorVersion": "4.55.3",
+  "generatorConfig": {
+    "client_class_name": "phenoml"
+  },
+  "sdkVersion": "4.1.1"
+}

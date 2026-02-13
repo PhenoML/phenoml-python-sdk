@@ -17,9 +17,7 @@ class Lang2FhirAndSearchResponse(UniversalBaseModel):
     FHIR search parameters in standard format
     """
 
-    fhir_results: typing.Optional[typing.List[typing.Dict[str, typing.Optional[typing.Any]]]] = pydantic.Field(
-        default=None
-    )
+    fhir_results: typing.Optional[typing.List[typing.Dict[str, typing.Any]]] = pydantic.Field(default=None)
     """
     Array of FHIR resources returned from the search
     """

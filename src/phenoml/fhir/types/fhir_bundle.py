@@ -15,13 +15,11 @@ class FhirBundle(UniversalBaseModel):
     Based on the FHIRBundle struct from io/fhir.go.
     """
 
-    resource_type: typing_extensions.Annotated[typing.Literal["Bundle"], FieldMetadata(alias="resourceType")] = (
-        pydantic.Field(default="Bundle")
-    )
-    """
-    Always "Bundle" for bundle resources
-    """
-
+    resource_type: typing_extensions.Annotated[
+        typing.Literal["Bundle"],
+        FieldMetadata(alias="resourceType"),
+        pydantic.Field(alias="resourceType", description='Always "Bundle" for bundle resources'),
+    ] = "Bundle"
     total: typing.Optional[int] = pydantic.Field(default=None)
     """
     Total number of resources that match the search criteria.
