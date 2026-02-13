@@ -15,7 +15,7 @@ class Lang2FhirAndCreateMultiResponseResponseBundle(UniversalBaseModel):
 
     resource_type: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="resourceType")] = None
     type: typing.Optional[str] = None
-    entry: typing.Optional[typing.List[typing.Dict[str, typing.Optional[typing.Any]]]] = None
+    entry: typing.Optional[typing.List[typing.Dict[str, typing.Any]]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

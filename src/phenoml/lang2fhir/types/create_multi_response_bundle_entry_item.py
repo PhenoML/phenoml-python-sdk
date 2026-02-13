@@ -11,7 +11,7 @@ from .create_multi_response_bundle_entry_item_request import CreateMultiResponse
 
 class CreateMultiResponseBundleEntryItem(UniversalBaseModel):
     full_url: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="fullUrl")] = None
-    resource: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    resource: typing.Optional[typing.Dict[str, typing.Any]] = None
     request: typing.Optional[CreateMultiResponseBundleEntryItemRequest] = None
 
     if IS_PYDANTIC_V2:

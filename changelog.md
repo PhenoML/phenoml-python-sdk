@@ -1,3 +1,7 @@
+## 5.2.1 - 2026-02-13
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 5.2.0 - 2026-02-13
 * refactor: update dynamic import system and add SSE support
 * Refactor the dynamic import mechanism across all modules to support module-level imports and add comprehensive Server-Sent Events (SSE) support for real-time streaming capabilities.

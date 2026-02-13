@@ -26,7 +26,7 @@ class SummaryTemplate(UniversalBaseModel):
     Template mode (stored value)
     """
 
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    metadata: typing.Optional[typing.Dict[str, typing.Any]] = None
     created_at: typing.Optional[dt.datetime] = None
     updated_at: typing.Optional[dt.datetime] = None
 
