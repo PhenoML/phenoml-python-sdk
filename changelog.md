@@ -1,3 +1,7 @@
+## 5.0.1 - 2026-02-13
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 5.0.0 - 2026-02-13
 * refactor: simplify code upload API and improve async processing
 * Refactored the construe code system upload functionality to improve API consistency

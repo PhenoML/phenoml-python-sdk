@@ -2,19 +2,58 @@
 
 # isort: skip_file
 
-from .cohort_response import CohortResponse
-from .lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiResponse
-from .lang2fhir_and_create_multi_response_resource_info_item import Lang2FhirAndCreateMultiResponseResourceInfoItem
-from .lang2fhir_and_create_multi_response_response_bundle import Lang2FhirAndCreateMultiResponseResponseBundle
-from .lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
-from .lang2fhir_and_create_response import Lang2FhirAndCreateResponse
-from .lang2fhir_and_search_response import Lang2FhirAndSearchResponse
-from .mcp_server_response import McpServerResponse
-from .mcp_server_response_data import McpServerResponseData
-from .mcp_server_tool_call_response import McpServerToolCallResponse
-from .mcp_server_tool_response import McpServerToolResponse
-from .mcp_server_tool_response_data import McpServerToolResponseData
-from .search_concept import SearchConcept
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .cohort_response import CohortResponse
+    from .lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiResponse
+    from .lang2fhir_and_create_multi_response_resource_info_item import Lang2FhirAndCreateMultiResponseResourceInfoItem
+    from .lang2fhir_and_create_multi_response_response_bundle import Lang2FhirAndCreateMultiResponseResponseBundle
+    from .lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
+    from .lang2fhir_and_create_response import Lang2FhirAndCreateResponse
+    from .lang2fhir_and_search_response import Lang2FhirAndSearchResponse
+    from .mcp_server_response import McpServerResponse
+    from .mcp_server_response_data import McpServerResponseData
+    from .mcp_server_tool_call_response import McpServerToolCallResponse
+    from .mcp_server_tool_response import McpServerToolResponse
+    from .mcp_server_tool_response_data import McpServerToolResponseData
+    from .search_concept import SearchConcept
+_dynamic_imports: typing.Dict[str, str] = {
+    "CohortResponse": ".cohort_response",
+    "Lang2FhirAndCreateMultiResponse": ".lang2fhir_and_create_multi_response",
+    "Lang2FhirAndCreateMultiResponseResourceInfoItem": ".lang2fhir_and_create_multi_response_resource_info_item",
+    "Lang2FhirAndCreateMultiResponseResponseBundle": ".lang2fhir_and_create_multi_response_response_bundle",
+    "Lang2FhirAndCreateRequestResource": ".lang2fhir_and_create_request_resource",
+    "Lang2FhirAndCreateResponse": ".lang2fhir_and_create_response",
+    "Lang2FhirAndSearchResponse": ".lang2fhir_and_search_response",
+    "McpServerResponse": ".mcp_server_response",
+    "McpServerResponseData": ".mcp_server_response_data",
+    "McpServerToolCallResponse": ".mcp_server_tool_call_response",
+    "McpServerToolResponse": ".mcp_server_tool_response",
+    "McpServerToolResponseData": ".mcp_server_tool_response_data",
+    "SearchConcept": ".search_concept",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CohortResponse",

@@ -2,29 +2,78 @@
 
 # isort: skip_file
 
-from .citation import Citation
-from .code_response import CodeResponse
-from .code_system_details import CodeSystemDetails
-from .code_system_info import CodeSystemInfo
-from .construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
-from .delete_code_system_response import DeleteCodeSystemResponse
-from .export_code_system_response import ExportCodeSystemResponse
-from .extract_codes_result import ExtractCodesResult
-from .extract_request_config import ExtractRequestConfig
-from .extract_request_config_chunking_method import ExtractRequestConfigChunkingMethod
-from .extract_request_config_validation_method import ExtractRequestConfigValidationMethod
-from .extract_request_system import ExtractRequestSystem
-from .extracted_code_result import ExtractedCodeResult
-from .get_code_response import GetCodeResponse
-from .get_code_system_detail_response import GetCodeSystemDetailResponse
-from .get_code_system_detail_response_status import GetCodeSystemDetailResponseStatus
-from .list_code_systems_response import ListCodeSystemsResponse
-from .list_codes_response import ListCodesResponse
-from .semantic_search_response import SemanticSearchResponse
-from .semantic_search_result import SemanticSearchResult
-from .text_search_response import TextSearchResponse
-from .text_search_result import TextSearchResult
-from .upload_request_format import UploadRequestFormat
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .citation import Citation
+    from .code_response import CodeResponse
+    from .code_system_details import CodeSystemDetails
+    from .code_system_info import CodeSystemInfo
+    from .construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
+    from .delete_code_system_response import DeleteCodeSystemResponse
+    from .export_code_system_response import ExportCodeSystemResponse
+    from .extract_codes_result import ExtractCodesResult
+    from .extract_request_config import ExtractRequestConfig
+    from .extract_request_config_chunking_method import ExtractRequestConfigChunkingMethod
+    from .extract_request_config_validation_method import ExtractRequestConfigValidationMethod
+    from .extract_request_system import ExtractRequestSystem
+    from .extracted_code_result import ExtractedCodeResult
+    from .get_code_response import GetCodeResponse
+    from .get_code_system_detail_response import GetCodeSystemDetailResponse
+    from .get_code_system_detail_response_status import GetCodeSystemDetailResponseStatus
+    from .list_code_systems_response import ListCodeSystemsResponse
+    from .list_codes_response import ListCodesResponse
+    from .semantic_search_response import SemanticSearchResponse
+    from .semantic_search_result import SemanticSearchResult
+    from .text_search_response import TextSearchResponse
+    from .text_search_result import TextSearchResult
+    from .upload_request_format import UploadRequestFormat
+_dynamic_imports: typing.Dict[str, str] = {
+    "Citation": ".citation",
+    "CodeResponse": ".code_response",
+    "CodeSystemDetails": ".code_system_details",
+    "CodeSystemInfo": ".code_system_info",
+    "ConstrueUploadCodeSystemResponse": ".construe_upload_code_system_response",
+    "DeleteCodeSystemResponse": ".delete_code_system_response",
+    "ExportCodeSystemResponse": ".export_code_system_response",
+    "ExtractCodesResult": ".extract_codes_result",
+    "ExtractRequestConfig": ".extract_request_config",
+    "ExtractRequestConfigChunkingMethod": ".extract_request_config_chunking_method",
+    "ExtractRequestConfigValidationMethod": ".extract_request_config_validation_method",
+    "ExtractRequestSystem": ".extract_request_system",
+    "ExtractedCodeResult": ".extracted_code_result",
+    "GetCodeResponse": ".get_code_response",
+    "GetCodeSystemDetailResponse": ".get_code_system_detail_response",
+    "GetCodeSystemDetailResponseStatus": ".get_code_system_detail_response_status",
+    "ListCodeSystemsResponse": ".list_code_systems_response",
+    "ListCodesResponse": ".list_codes_response",
+    "SemanticSearchResponse": ".semantic_search_response",
+    "SemanticSearchResult": ".semantic_search_result",
+    "TextSearchResponse": ".text_search_response",
+    "TextSearchResult": ".text_search_result",
+    "UploadRequestFormat": ".upload_request_format",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "Citation",
