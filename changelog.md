@@ -1,6 +1,9 @@
 ## 5.2.1 - 2026-02-13
-* SDK regeneration
-* Unable to analyze changes with AI, incrementing PATCH version.
+* fix: tighten type annotations and improve Pydantic v2 compatibility
+* Simplify error body types from Optional[Any] to Any across all error constructors
+* Tighten dict value types from Dict[str, Optional[Any]] to Dict[str, Any] in workflow and tool parameters
+* Fix Pydantic v2 root validation to consistently use model_validator(mode="before")
+* Update Poetry build configuration for better compatibility
 
 ## 5.2.0 - 2026-02-13
 * refactor: update dynamic import system and add SSE support
