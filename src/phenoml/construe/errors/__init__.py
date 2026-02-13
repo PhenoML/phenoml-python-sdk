@@ -6,6 +6,7 @@ from .bad_request_error import BadRequestError
 from .conflict_error import ConflictError
 from .failed_dependency_error import FailedDependencyError
 from .forbidden_error import ForbiddenError
+from .gateway_timeout_error import GatewayTimeoutError
 from .internal_server_error import InternalServerError
 from .not_found_error import NotFoundError
 from .not_implemented_error import NotImplementedError
@@ -17,6 +18,7 @@ __all__ = [
     "ConflictError",
     "FailedDependencyError",
     "ForbiddenError",
+    "GatewayTimeoutError",
     "InternalServerError",
     "NotFoundError",
     "NotImplementedError",

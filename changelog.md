@@ -1,3 +1,20 @@
+## 5.0.0 - 2026-02-13
+* refactor: simplify code upload API and improve async processing
+* Refactored the construe code system upload functionality to improve API consistency
+* and enhance asynchronous processing. The upload endpoint now returns 202 immediately
+* for async processing instead of synchronous response, improving user experience for
+* large code system uploads.
+* Key changes:
+* Remove complex union types for upload requests, flatten parameters into direct method arguments
+* Change upload behavior to always process asynchronously with 202 response
+* Add new error handling for 404 Not Found, 503 Service Unavailable, and 504 Gateway Timeout
+* Remove user_id fields from various template models to simplify data structures
+* Update documentation to reflect async processing workflow with status polling
+* Replace UploadRequest union types with simpler UploadRequestFormat enum
+* Rename rationale field to reason in ExtractedCodeResult for consistency
+* Add name and version fields to upload response for better tracking
+* 🌿 Generated with Fern
+
 ## 4.1.0 - 2026-02-09
 * feat: add export_custom_code_system method to construe client
 * This change introduces a new feature to export custom code systems as JSON files compatible with the upload format. The exported files can be re-uploaded directly via the POST /construe/upload endpoint, enabling better code system management and portability.
