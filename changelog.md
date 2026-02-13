@@ -1,3 +1,16 @@
+## 5.3.0 - 2026-02-13
+* chore: update SDK generator to 4.45.0 with improved retry logic and multipart handling
+* Update the Fern Python SDK generator from version 4.35.3 to 4.45.0, introducing enhanced HTTP client capabilities and test infrastructure improvements.
+* Key changes:
+* Update generator version to 4.45.0 in Fern metadata
+* Upgrade Python version from 3.8 to 3.9 across CI workflows
+* Add pytest-xdist dependency for parallel test execution
+* Implement sophisticated retry logic with jitter and X-RateLimit-Reset header support
+* Add async token provider support in AsyncClientWrapper
+* Improve multipart form data handling to filter None values
+* Add comprehensive test coverage for HTTP client utilities
+* 🌿 Generated with Fern
+
 ## 5.2.1 - 2026-02-13
 * fix: tighten type annotations and improve Pydantic v2 compatibility
 * Simplify error body types from Optional[Any] to Any across all error constructors
