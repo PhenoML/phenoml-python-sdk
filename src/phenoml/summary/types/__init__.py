@@ -2,19 +2,58 @@
 
 # isort: skip_file
 
-from .create_summary_request_fhir_resources import CreateSummaryRequestFhirResources
-from .create_summary_request_mode import CreateSummaryRequestMode
-from .create_summary_response import CreateSummaryResponse
-from .create_summary_template_response import CreateSummaryTemplateResponse
-from .error_response import ErrorResponse
-from .fhir_bundle import FhirBundle
-from .fhir_bundle_entry_item import FhirBundleEntryItem
-from .fhir_resource import FhirResource
-from .summary_delete_template_response import SummaryDeleteTemplateResponse
-from .summary_get_template_response import SummaryGetTemplateResponse
-from .summary_list_templates_response import SummaryListTemplatesResponse
-from .summary_template import SummaryTemplate
-from .summary_update_template_response import SummaryUpdateTemplateResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .create_summary_request_fhir_resources import CreateSummaryRequestFhirResources
+    from .create_summary_request_mode import CreateSummaryRequestMode
+    from .create_summary_response import CreateSummaryResponse
+    from .create_summary_template_response import CreateSummaryTemplateResponse
+    from .error_response import ErrorResponse
+    from .fhir_bundle import FhirBundle
+    from .fhir_bundle_entry_item import FhirBundleEntryItem
+    from .fhir_resource import FhirResource
+    from .summary_delete_template_response import SummaryDeleteTemplateResponse
+    from .summary_get_template_response import SummaryGetTemplateResponse
+    from .summary_list_templates_response import SummaryListTemplatesResponse
+    from .summary_template import SummaryTemplate
+    from .summary_update_template_response import SummaryUpdateTemplateResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateSummaryRequestFhirResources": ".create_summary_request_fhir_resources",
+    "CreateSummaryRequestMode": ".create_summary_request_mode",
+    "CreateSummaryResponse": ".create_summary_response",
+    "CreateSummaryTemplateResponse": ".create_summary_template_response",
+    "ErrorResponse": ".error_response",
+    "FhirBundle": ".fhir_bundle",
+    "FhirBundleEntryItem": ".fhir_bundle_entry_item",
+    "FhirResource": ".fhir_resource",
+    "SummaryDeleteTemplateResponse": ".summary_delete_template_response",
+    "SummaryGetTemplateResponse": ".summary_get_template_response",
+    "SummaryListTemplatesResponse": ".summary_list_templates_response",
+    "SummaryTemplate": ".summary_template",
+    "SummaryUpdateTemplateResponse": ".summary_update_template_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CreateSummaryRequestFhirResources",

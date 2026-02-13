@@ -2,17 +2,54 @@
 
 # isort: skip_file
 
-from .create_multi_response import CreateMultiResponse
-from .create_multi_response_bundle import CreateMultiResponseBundle
-from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEntryItem
-from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
-from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
-from .create_request_resource import CreateRequestResource
-from .document_request_resource import DocumentRequestResource
-from .fhir_resource import FhirResource
-from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
-from .search_response import SearchResponse
-from .search_response_resource_type import SearchResponseResourceType
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .create_multi_response import CreateMultiResponse
+    from .create_multi_response_bundle import CreateMultiResponseBundle
+    from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEntryItem
+    from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
+    from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
+    from .create_request_resource import CreateRequestResource
+    from .document_request_resource import DocumentRequestResource
+    from .fhir_resource import FhirResource
+    from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
+    from .search_response import SearchResponse
+    from .search_response_resource_type import SearchResponseResourceType
+_dynamic_imports: typing.Dict[str, str] = {
+    "CreateMultiResponse": ".create_multi_response",
+    "CreateMultiResponseBundle": ".create_multi_response_bundle",
+    "CreateMultiResponseBundleEntryItem": ".create_multi_response_bundle_entry_item",
+    "CreateMultiResponseBundleEntryItemRequest": ".create_multi_response_bundle_entry_item_request",
+    "CreateMultiResponseResourcesItem": ".create_multi_response_resources_item",
+    "CreateRequestResource": ".create_request_resource",
+    "DocumentRequestResource": ".document_request_resource",
+    "FhirResource": ".fhir_resource",
+    "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
+    "SearchResponse": ".search_response",
+    "SearchResponseResourceType": ".search_response_resource_type",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "CreateMultiResponse",
