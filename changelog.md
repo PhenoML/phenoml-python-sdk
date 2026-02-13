@@ -1,3 +1,14 @@
+## 5.2.0 - 2026-02-13
+* refactor: update dynamic import system and add SSE support
+* Refactor the dynamic import mechanism across all modules to support module-level imports and add comprehensive Server-Sent Events (SSE) support for real-time streaming capabilities.
+* Key changes:
+* Update __getattr__ functions to handle module-level imports when module_name matches attribute pattern
+* Fix incorrect import paths for submodules (prompts, auth, mcp_server, tools)
+* Add complete SSE implementation with EventSource, decoders, and connection utilities
+* Fix Pydantic serialization to use dict() instead of deprecated model_dump()
+* Remove redundant import in test file
+* 🌿 Generated with Fern
+
 ## 5.1.0 - 2026-02-13
 * refactor: switch to lazy imports and deferred sub-client initialization
 * All module __init__.py files now use dynamic imports via __getattr__ to reduce startup overhead.
