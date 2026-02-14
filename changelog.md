@@ -1,6 +1,14 @@
-## 5.2.2 - 2026-02-14
-* SDK regeneration
-* Unable to analyze changes with AI, incrementing PATCH version.
+## 5.3.0 - 2026-02-14
+* feat: add configurable instance URL, enhanced retry logic, and SSE parsing utilities
+* Add instance_url parameter to client constructors for configurable server endpoints
+* Add status_code property to HTTP response objects
+* Enhance retry logic with jitter to prevent thundering herd
+* Add X-RateLimit-Reset header parsing for smarter rate limit handling
+* Add Server-Sent Events (SSE) parsing utilities with discriminated union support
+* Improve URL joining for base URLs with path prefixes
+* Add async token support for custom authentication flows
+* Add runtime metadata headers (X-Fern-Runtime, X-Fern-Platform)
+* Drop Python 3.8 support; minimum version is now 3.9
 
 ## 5.2.1 - 2026-02-13
 * fix: tighten type annotations and improve Pydantic v2 compatibility
