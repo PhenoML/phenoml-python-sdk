@@ -39,6 +39,9 @@ class phenoml:
 
 
 
+    instance_url : typing.Optional[str]
+        Server URL variable for 'instanceUrl'. Defaults to 'experiment.app.pheno.ml'.
+
     token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
@@ -66,6 +69,7 @@ class phenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
@@ -75,6 +79,9 @@ class phenoml:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
+        if instance_url is not None:
+            _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
+            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,
@@ -196,6 +203,9 @@ class Asyncphenoml:
 
 
 
+    instance_url : typing.Optional[str]
+        Server URL variable for 'instanceUrl'. Defaults to 'experiment.app.pheno.ml'.
+
     token : typing.Union[str, typing.Callable[[], str]]
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
@@ -223,6 +233,7 @@ class Asyncphenoml:
         *,
         base_url: typing.Optional[str] = None,
         environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
@@ -232,6 +243,9 @@ class Asyncphenoml:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
+        if instance_url is not None:
+            _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
+            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
             token=token,

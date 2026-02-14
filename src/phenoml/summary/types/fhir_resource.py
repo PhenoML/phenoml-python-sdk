@@ -9,10 +9,9 @@ from ...core.serialization import FieldMetadata
 
 
 class FhirResource(UniversalBaseModel):
-    resource_type: typing_extensions.Annotated[str, FieldMetadata(alias="resourceType")] = pydantic.Field()
-    """
-    FHIR resource type
-    """
+    resource_type: typing_extensions.Annotated[
+        str, FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType", description="FHIR resource type")
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

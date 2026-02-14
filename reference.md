@@ -1,6 +1,6 @@
 # Reference
 ## Agent
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -123,7 +123,7 @@ In shared/experiment environments, the default sandbox provider is used if a dif
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...) -&gt; AsyncHttpResponse[AgentListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -193,7 +193,7 @@ client.agent.list(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -263,7 +263,7 @@ client.agent.get(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -395,7 +395,7 @@ In shared/experiment environments, the default sandbox provider is used if a dif
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -&gt; AsyncHttpResponse[AgentDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -465,7 +465,7 @@ client.agent.delete(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -560,7 +560,7 @@ client.agent.patch(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">chat</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">chat</a>(...) -&gt; AsyncHttpResponse[AgentChatResponse]</code></summary>
 <dl>
 <dd>
 
@@ -679,7 +679,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...) -&gt; AsyncHttpResponse[AgentGetChatMessagesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -786,7 +786,7 @@ If not specified, messages with all roles are returned.
 </details>
 
 ## Agent Prompts
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -889,7 +889,7 @@ client.agent.prompts.create(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>()</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>() -&gt; AsyncHttpResponse[PromptsListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -949,7 +949,7 @@ client.agent.prompts.list()
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">get</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1019,7 +1019,7 @@ client.agent.prompts.get(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">update</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1129,7 +1129,7 @@ client.agent.prompts.update(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">delete</a>(...) -&gt; AsyncHttpResponse[PromptsDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1199,7 +1199,7 @@ client.agent.prompts.delete(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">patch</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1294,7 +1294,7 @@ client.agent.prompts.patch(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">load_defaults</a>()</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">load_defaults</a>() -&gt; AsyncHttpResponse[SuccessResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1355,7 +1355,7 @@ client.agent.prompts.load_defaults()
 </details>
 
 ## Authtoken Auth
-<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">generate_token</a>(...)</code></summary>
+<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">generate_token</a>(...) -&gt; AsyncHttpResponse[AuthGenerateTokenResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1435,7 +1435,7 @@ client.authtoken.auth.generate_token(
 </details>
 
 ## Cohort
-<details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...)</code></summary>
+<details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...) -&gt; AsyncHttpResponse[CohortResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1506,7 +1506,7 @@ client.cohort.analyze(
 </details>
 
 ## Construe
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...) -&gt; AsyncHttpResponse[ConstrueUploadCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1669,7 +1669,7 @@ When false (default), uploading a duplicate returns 409 Conflict.
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">extract_codes</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">extract_codes</a>(...) -&gt; AsyncHttpResponse[ExtractCodesResult]</code></summary>
 <dl>
 <dd>
 
@@ -1757,7 +1757,7 @@ client.construe.extract_codes(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>()</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>() -&gt; AsyncHttpResponse[ListCodeSystemsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1817,7 +1817,7 @@ client.construe.list_available_code_systems()
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...) -&gt; AsyncHttpResponse[GetCodeSystemDetailResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1896,7 +1896,7 @@ client.construe.get_code_system_detail(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...) -&gt; AsyncHttpResponse[DeleteCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1976,7 +1976,7 @@ client.construe.delete_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...) -&gt; AsyncHttpResponse[ExportCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2057,7 +2057,7 @@ client.construe.export_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...) -&gt; AsyncHttpResponse[ListCodesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2156,7 +2156,7 @@ client.construe.list_codes_in_a_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...) -&gt; AsyncHttpResponse[GetCodeResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2246,7 +2246,7 @@ client.construe.get_a_specific_code(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...) -&gt; AsyncHttpResponse[SemanticSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2361,7 +2361,7 @@ client.construe.semantic_search_embedding_based(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...) -&gt; AsyncHttpResponse[TextSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2482,7 +2482,7 @@ client.construe.terminology_server_text_search(
 </details>
 
 ## Fhir
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -&gt; AsyncHttpResponse[FhirSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2611,7 +2611,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -2751,7 +2751,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -2892,7 +2892,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...) -&gt; AsyncHttpResponse[typing.Dict[str, typing.Any]]</code></summary>
 <dl>
 <dd>
 
@@ -3007,7 +3007,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -3148,7 +3148,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...) -&gt; AsyncHttpResponse[FhirBundle]</code></summary>
 <dl>
 <dd>
 
@@ -3294,7 +3294,7 @@ Optional field as not all FHIR servers include it (e.g., Medplum).
 </details>
 
 ## FhirProvider
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3441,7 +3441,7 @@ client.fhir_provider.create(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">list</a>()</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">list</a>() -&gt; AsyncHttpResponse[FhirProviderListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3504,7 +3504,7 @@ client.fhir_provider.list()
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">get</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3577,7 +3577,7 @@ client.fhir_provider.get(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...) -&gt; AsyncHttpResponse[FhirProviderDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3649,7 +3649,7 @@ client.fhir_provider.delete(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3771,7 +3771,7 @@ client.fhir_provider.add_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3856,7 +3856,7 @@ client.fhir_provider.set_active_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderRemoveAuthConfigResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3939,7 +3939,7 @@ client.fhir_provider.remove_auth_config(
 </details>
 
 ## Lang2Fhir
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -4027,7 +4027,7 @@ client.lang2fhir.create(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create_multi</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create_multi</a>(...) -&gt; AsyncHttpResponse[CreateMultiResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4115,7 +4115,7 @@ client.lang2fhir.create_multi(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">search</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">search</a>(...) -&gt; AsyncHttpResponse[SearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4202,7 +4202,7 @@ Examples:
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...) -&gt; AsyncHttpResponse[Lang2FhirUploadProfileResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4281,7 +4281,7 @@ client.lang2fhir.upload_profile(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">document</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">document</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -4374,7 +4374,7 @@ File type is auto-detected from content magic bytes.
 </details>
 
 ## Summary
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>()</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>() -&gt; AsyncHttpResponse[SummaryListTemplatesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4434,7 +4434,7 @@ client.summary.list_templates()
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...) -&gt; AsyncHttpResponse[CreateSummaryTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4547,7 +4547,7 @@ client.summary.create_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...) -&gt; AsyncHttpResponse[SummaryGetTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4617,7 +4617,7 @@ client.summary.get_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...) -&gt; AsyncHttpResponse[SummaryUpdateTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4731,7 +4731,7 @@ client.summary.update_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...) -&gt; AsyncHttpResponse[SummaryDeleteTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4801,7 +4801,7 @@ client.summary.delete_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...) -&gt; AsyncHttpResponse[CreateSummaryResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4905,7 +4905,7 @@ Summary generation mode:
 </details>
 
 ## Tools
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndCreateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5016,7 +5016,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resources_multi</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resources_multi</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndCreateMultiResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5131,7 +5131,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">search_fhir_resources</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">search_fhir_resources</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5257,7 +5257,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">analyze_cohort</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">analyze_cohort</a>(...) -&gt; AsyncHttpResponse[CohortResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5361,7 +5361,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </details>
 
 ## Tools McpServer
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5440,7 +5440,7 @@ client.tools.mcp_server.create(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>()</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>() -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5500,7 +5500,7 @@ client.tools.mcp_server.list()
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5570,7 +5570,7 @@ client.tools.mcp_server.get(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5641,7 +5641,7 @@ client.tools.mcp_server.delete(
 </details>
 
 ## Tools McpServer Tools
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5711,7 +5711,7 @@ client.tools.mcp_server.tools.list(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5781,7 +5781,7 @@ client.tools.mcp_server.tools.get(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5851,7 +5851,7 @@ client.tools.mcp_server.tools.delete(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...) -&gt; AsyncHttpResponse[McpServerToolCallResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5931,7 +5931,7 @@ client.tools.mcp_server.tools.call(
 </details>
 
 ## Workflows
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...) -&gt; AsyncHttpResponse[ListWorkflowsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6001,7 +6001,7 @@ client.workflows.list(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create</a>(...) -&gt; AsyncHttpResponse[CreateWorkflowResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6119,7 +6119,7 @@ client.workflows.create(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...) -&gt; AsyncHttpResponse[WorkflowsGetResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6198,7 +6198,7 @@ client.workflows.get(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...) -&gt; AsyncHttpResponse[WorkflowsUpdateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6325,7 +6325,7 @@ client.workflows.update(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...) -&gt; AsyncHttpResponse[WorkflowsDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6395,7 +6395,7 @@ client.workflows.delete(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">execute</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">execute</a>(...) -&gt; AsyncHttpResponse[ExecuteWorkflowResponse]</code></summary>
 <dl>
 <dd>
 

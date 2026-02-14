@@ -9,20 +9,16 @@ from ...core.serialization import FieldMetadata
 
 
 class CreateMultiResponseResourcesItem(UniversalBaseModel):
-    temp_id: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="tempId")] = pydantic.Field(
-        default=None
-    )
-    """
-    Temporary UUID for the resource
-    """
-
-    resource_type: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="resourceType")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    FHIR resource type
-    """
-
+    temp_id: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="tempId"),
+        pydantic.Field(alias="tempId", description="Temporary UUID for the resource"),
+    ] = None
+    resource_type: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="resourceType"),
+        pydantic.Field(alias="resourceType", description="FHIR resource type"),
+    ] = None
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Text excerpt this resource was extracted from

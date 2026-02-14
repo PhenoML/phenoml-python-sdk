@@ -15,11 +15,13 @@ class FhirResource(UniversalBaseModel):
     but the specific structure depends on the resource type.
     """
 
-    resource_type: typing_extensions.Annotated[str, FieldMetadata(alias="resourceType")] = pydantic.Field()
-    """
-    The type of FHIR resource (e.g., Patient, Observation, etc.)
-    """
-
+    resource_type: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="resourceType"),
+        pydantic.Field(
+            alias="resourceType", description="The type of FHIR resource (e.g., Patient, Observation, etc.)"
+        ),
+    ]
     id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Logical ID of the resource
