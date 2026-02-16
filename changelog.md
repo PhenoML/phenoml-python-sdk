@@ -1,3 +1,7 @@
+## 5.2.2 - 2026-02-16
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 5.2.1 - 2026-02-13
 * fix: tighten type annotations and improve Pydantic v2 compatibility
 * Simplify error body types from Optional[Any] to Any across all error constructors
