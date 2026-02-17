@@ -346,6 +346,7 @@ class AgentClient:
         phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentChatResponse:
         """
@@ -372,6 +373,9 @@ class AgentClient:
 
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -402,6 +406,7 @@ class AgentClient:
             phenoml_fhir_provider=phenoml_fhir_provider,
             context=context,
             session_id=session_id,
+            enhanced_reasoning=enhanced_reasoning,
             request_options=request_options,
         )
         return _response.data
@@ -850,6 +855,7 @@ class AsyncAgentClient:
         phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentChatResponse:
         """
@@ -876,6 +882,9 @@ class AsyncAgentClient:
 
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -914,6 +923,7 @@ class AsyncAgentClient:
             phenoml_fhir_provider=phenoml_fhir_provider,
             context=context,
             session_id=session_id,
+            enhanced_reasoning=enhanced_reasoning,
             request_options=request_options,
         )
         return _response.data

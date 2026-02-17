@@ -1,3 +1,14 @@
+## 5.3.0 - 2026-02-17
+* feat: add enhanced reasoning parameter and update generator version
+* Add support for enhanced reasoning capabilities across agent chat methods in both sync and async clients. This new optional parameter enables improved response quality and reliability with increased latency.
+* Key changes:
+* Add enhanced_reasoning optional boolean parameter to agent chat methods
+* Update generator version from 4.35.3 to 4.35.4 in metadata
+* Remove User-Agent header from client wrapper
+* Fix GitHub Actions workflow formatting and missing job name
+* Update documentation to describe enhanced reasoning functionality
+* 🌿 Generated with Fern
+
 ## 5.2.1 - 2026-02-13
 * fix: tighten type annotations and improve Pydantic v2 compatibility
 * Simplify error body types from Optional[Any] to Any across all error constructors

@@ -649,6 +649,7 @@ class RawAgentClient:
         phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentChatResponse]:
         """
@@ -676,6 +677,9 @@ class RawAgentClient:
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
 
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -692,6 +696,7 @@ class RawAgentClient:
                 "context": context,
                 "session_id": session_id,
                 "agent_id": agent_id,
+                "enhanced_reasoning": enhanced_reasoning,
             },
             headers={
                 "content-type": "application/json",
@@ -1483,6 +1488,7 @@ class AsyncRawAgentClient:
         phenoml_fhir_provider: typing.Optional[str] = None,
         context: typing.Optional[str] = OMIT,
         session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentChatResponse]:
         """
@@ -1510,6 +1516,9 @@ class AsyncRawAgentClient:
         session_id : typing.Optional[str]
             Optional session ID for conversation continuity
 
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1526,6 +1535,7 @@ class AsyncRawAgentClient:
                 "context": context,
                 "session_id": session_id,
                 "agent_id": agent_id,
+                "enhanced_reasoning": enhanced_reasoning,
             },
             headers={
                 "content-type": "application/json",

@@ -667,6 +667,14 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dl>
 <dd>
 
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
