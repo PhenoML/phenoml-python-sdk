@@ -67,7 +67,7 @@ jobs:
         run: |
           VERSION=$(grep -m1 '^version' pyproject.toml | sed 's/.*"\(.*\)".*/\1/')
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+          if git ls-remote --tags origin | grep -q "refs/tags/${VERSION}$"; then
             echo "Tag $VERSION already exists, skipping"
             echo "should_publish=false" >> "$GITHUB_OUTPUT"
           else
