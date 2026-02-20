@@ -350,7 +350,7 @@ class AgentClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentChatResponse:
         """
-        Send a message to an agent and receive a response
+        Send a message to an agent and receive a JSON response.
 
         Parameters
         ----------
@@ -400,6 +400,81 @@ class AgentClient:
         )
         """
         _response = self._raw_client.chat(
+            message=message,
+            agent_id=agent_id,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            context=context,
+            session_id=session_id,
+            enhanced_reasoning=enhanced_reasoning,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def stream_chat(
+        self,
+        *,
+        message: str,
+        agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        context: typing.Optional[str] = OMIT,
+        session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Send a message to an agent and receive the response as a Server-Sent Events
+        (SSE) stream. Events include message_start, content_delta, tool_use,
+        tool_result, message_end, and error.
+
+        Parameters
+        ----------
+        message : str
+            The message to send to the agent
+
+        agent_id : str
+            The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        context : typing.Optional[str]
+            Optional context for the conversation
+
+        session_id : typing.Optional[str]
+            Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.agent.stream_chat(
+            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+            message="What is the patient's current condition?",
+            agent_id="agent-123",
+        )
+        """
+        _response = self._raw_client.stream_chat(
             message=message,
             agent_id=agent_id,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
@@ -859,7 +934,7 @@ class AsyncAgentClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AgentChatResponse:
         """
-        Send a message to an agent and receive a response
+        Send a message to an agent and receive a JSON response.
 
         Parameters
         ----------
@@ -917,6 +992,89 @@ class AsyncAgentClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.chat(
+            message=message,
+            agent_id=agent_id,
+            phenoml_on_behalf_of=phenoml_on_behalf_of,
+            phenoml_fhir_provider=phenoml_fhir_provider,
+            context=context,
+            session_id=session_id,
+            enhanced_reasoning=enhanced_reasoning,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def stream_chat(
+        self,
+        *,
+        message: str,
+        agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        context: typing.Optional[str] = OMIT,
+        session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> None:
+        """
+        Send a message to an agent and receive the response as a Server-Sent Events
+        (SSE) stream. Events include message_start, content_delta, tool_use,
+        tool_result, message_end, and error.
+
+        Parameters
+        ----------
+        message : str
+            The message to send to the agent
+
+        agent_id : str
+            The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        context : typing.Optional[str]
+            Optional context for the conversation
+
+        session_id : typing.Optional[str]
+            Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.agent.stream_chat(
+                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+                message="What is the patient's current condition?",
+                agent_id="agent-123",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.stream_chat(
             message=message,
             agent_id=agent_id,
             phenoml_on_behalf_of=phenoml_on_behalf_of,

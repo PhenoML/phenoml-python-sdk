@@ -653,7 +653,7 @@ class RawAgentClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AgentChatResponse]:
         """
-        Send a message to an agent and receive a response
+        Send a message to an agent and receive a JSON response.
 
         Parameters
         ----------
@@ -716,6 +716,125 @@ class RawAgentClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def stream_chat(
+        self,
+        *,
+        message: str,
+        agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        context: typing.Optional[str] = OMIT,
+        session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[None]:
+        """
+        Send a message to an agent and receive the response as a Server-Sent Events
+        (SSE) stream. Events include message_start, content_delta, tool_use,
+        tool_result, message_end, and error.
+
+        Parameters
+        ----------
+        message : str
+            The message to send to the agent
+
+        agent_id : str
+            The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        context : typing.Optional[str]
+            Optional context for the conversation
+
+        session_id : typing.Optional[str]
+            Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[None]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "agent/stream-chat",
+            method="POST",
+            json={
+                "message": message,
+                "context": context,
+                "session_id": session_id,
+                "agent_id": agent_id,
+                "enhanced_reasoning": enhanced_reasoning,
+            },
+            headers={
+                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return HttpResponse(response=_response, data=None)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
@@ -1492,7 +1611,7 @@ class AsyncRawAgentClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AgentChatResponse]:
         """
-        Send a message to an agent and receive a response
+        Send a message to an agent and receive a JSON response.
 
         Parameters
         ----------
@@ -1555,6 +1674,125 @@ class AsyncRawAgentClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def stream_chat(
+        self,
+        *,
+        message: str,
+        agent_id: str,
+        phenoml_on_behalf_of: typing.Optional[str] = None,
+        phenoml_fhir_provider: typing.Optional[str] = None,
+        context: typing.Optional[str] = OMIT,
+        session_id: typing.Optional[str] = OMIT,
+        enhanced_reasoning: typing.Optional[bool] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[None]:
+        """
+        Send a message to an agent and receive the response as a Server-Sent Events
+        (SSE) stream. Events include message_start, content_delta, tool_use,
+        tool_result, message_end, and error.
+
+        Parameters
+        ----------
+        message : str
+            The message to send to the agent
+
+        agent_id : str
+            The ID of the agent to chat with
+
+        phenoml_on_behalf_of : typing.Optional[str]
+            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+
+        phenoml_fhir_provider : typing.Optional[str]
+            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+            Multiple FHIR provider integrations can be provided as comma-separated values.
+
+        context : typing.Optional[str]
+            Optional context for the conversation
+
+        session_id : typing.Optional[str]
+            Optional session ID for conversation continuity
+
+        enhanced_reasoning : typing.Optional[bool]
+            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "agent/stream-chat",
+            method="POST",
+            json={
+                "message": message,
+                "context": context,
+                "session_id": session_id,
+                "agent_id": agent_id,
+                "enhanced_reasoning": enhanced_reasoning,
+            },
+            headers={
+                "content-type": "application/json",
+                "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
+                "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
