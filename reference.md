@@ -572,7 +572,7 @@ client.agent.patch(
 <dl>
 <dd>
 
-Send a message to an agent and receive a response
+Send a message to an agent and receive a JSON response.
 </dd>
 </dl>
 </dd>
@@ -598,6 +598,137 @@ client.agent.chat(
     message="What is the patient's current condition?",
     agent_id="agent-123",
 )
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**message:** `str` — The message to send to the agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_id:** `str` — The ID of the agent to chat with
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**context:** `typing.Optional[str]` — Optional context for the conversation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">stream_chat</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a message to an agent and receive the response as a Server-Sent Events
+(SSE) stream. Events include message_start, content_delta, tool_use,
+tool_result, message_end, and error.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+response = client.agent.stream_chat(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+    message="What is the patient's current condition?",
+    agent_id="agent-123",
+)
+for chunk in response.data:
+    yield chunk
 
 ```
 </dd>

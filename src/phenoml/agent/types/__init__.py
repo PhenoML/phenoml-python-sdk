@@ -7,6 +7,8 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .agent_chat_response import AgentChatResponse
+    from .agent_chat_stream_event import AgentChatStreamEvent
+    from .agent_chat_stream_event_type import AgentChatStreamEventType
     from .agent_create_request import AgentCreateRequest
     from .agent_create_request_provider import AgentCreateRequestProvider
     from .agent_delete_response import AgentDeleteResponse
@@ -28,6 +30,8 @@ if typing.TYPE_CHECKING:
     from .success_response import SuccessResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentChatResponse": ".agent_chat_response",
+    "AgentChatStreamEvent": ".agent_chat_stream_event",
+    "AgentChatStreamEventType": ".agent_chat_stream_event_type",
     "AgentCreateRequest": ".agent_create_request",
     "AgentCreateRequestProvider": ".agent_create_request_provider",
     "AgentDeleteResponse": ".agent_delete_response",
@@ -73,6 +77,8 @@ def __dir__():
 
 __all__ = [
     "AgentChatResponse",
+    "AgentChatStreamEvent",
+    "AgentChatStreamEventType",
     "AgentCreateRequest",
     "AgentCreateRequestProvider",
     "AgentDeleteResponse",
