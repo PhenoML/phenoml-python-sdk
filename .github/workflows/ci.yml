@@ -1,53 +1,110 @@
 name: ci
-on: [push]
+
+on:
+  push:
+  workflow_dispatch:
+
 jobs:
+  compile:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
       - name: Set up python
         uses: actions/setup-python@v4
-        with:
+
+      - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+
       - name: Install dependencies
         run: poetry install
+
       - name: Compile
         run: poetry run mypy .
+
   test:
+    needs: [ compile ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
       - name: Set up python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
+
       - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+
       - name: Install dependencies
         run: poetry install
 
       - name: Test
         run: poetry run pytest -rP .
 
-  publish:
-    needs: [compile, test]
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+  tag:
+    needs: [ compile, test ]
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version and check tag
+        id: check
+        run: |
+          VERSION=$(grep -m1 '^version' pyproject.toml | sed 's/.*"\(.*\)".*/\1/')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git ls-remote --tags origin | grep -q "refs/tags/${VERSION}$"; then
+            echo "Tag $VERSION already exists, skipping"
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create tag and GitHub release
+        if: steps.check.outputs.should_publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.check.outputs.version }}" \
+            --target "${{ github.sha }}" \
+            --title "${{ steps.check.outputs.version }}" \
+            --generate-notes
+
+  publish:
+    needs: [ compile, test, tag ]
+    if: needs.tag.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Set up python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
+
       - name: Bootstrap poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
+
       - name: Install dependencies
         run: poetry install
+
       - name: Publish to pypi
         run: |
           poetry config repositories.remote https://upload.pypi.org/legacy/
