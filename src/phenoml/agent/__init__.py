@@ -8,6 +8,8 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .types import (
         AgentChatResponse,
+        AgentChatStreamEvent,
+        AgentChatStreamEventType,
         AgentCreateRequest,
         AgentCreateRequestProvider,
         AgentDeleteResponse,
@@ -33,6 +35,8 @@ if typing.TYPE_CHECKING:
     from .prompts import PromptsDeleteResponse, PromptsListResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentChatResponse": ".types",
+    "AgentChatStreamEvent": ".types",
+    "AgentChatStreamEventType": ".types",
     "AgentCreateRequest": ".types",
     "AgentCreateRequestProvider": ".types",
     "AgentDeleteResponse": ".types",
@@ -86,6 +90,8 @@ def __dir__():
 
 __all__ = [
     "AgentChatResponse",
+    "AgentChatStreamEvent",
+    "AgentChatStreamEventType",
     "AgentCreateRequest",
     "AgentCreateRequestProvider",
     "AgentDeleteResponse",
