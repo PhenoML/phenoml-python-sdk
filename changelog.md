@@ -1,18 +1,12 @@
 ## 5.4.0 - 2026-02-20
-* feat: add streaming chat support and update CI workflow
-* Add new streaming chat capability to agent client with Server-Sent Events
-* support, enabling real-time responses for better user experience. The
-* streaming endpoint provides events including message_start, content_delta,
-* tool_use, tool_result, message_end, and error, with comprehensive error
-* handling and JSON parsing validation.
+* feat: add streaming chat functionality to agent client
+* Add support for Server-Sent Events (SSE) streaming in agent chat, allowing real-time response streaming. This enhancement provides a new stream_chat method alongside the existing chat method for different use cases.
 * Key changes:
-* Add `stream_chat` method to both sync and async agent clients with SSE support
-* Add new types `AgentChatStreamEvent` and `AgentChatStreamEventType` for streaming responses
-* Simplify CI workflow by removing complex tagging logic and dependency chains
+* Add stream_chat method with SSE support for both sync and async clients
+* Introduce AgentChatStreamEvent and AgentChatStreamEventType for streaming response handling
+* Update CI workflow to simplify job dependencies and remove auto-tagging
 * Update Fern CLI version from 3.74.1 to 3.76.0
-* Add "phenostore" provider to FHIR provider enum
-* Update documentation with streaming examples and clearer API descriptions
-* Improve chat method descriptions to distinguish between JSON and streaming responses
+* Improve chat method documentation to clarify JSON vs streaming response types
 * 🌿 Generated with Fern
 
 ## 5.3.0 - 2026-02-17
