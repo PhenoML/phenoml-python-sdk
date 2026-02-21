@@ -1,3 +1,10 @@
+## 5.5.0 - 2026-02-20
+* feat: add phenostore as an option for FHIR Provider
+* Add "phenostore" as a new supported provider in the FHIR Provider type, expanding the set of available healthcare data integrations.
+* Key changes:
+* Add "phenostore" to the Provider union type alongside existing providers
+* 🌿 Generated with Fern
+
 ## 5.4.0 - 2026-02-20
 * feat: add streaming chat functionality to agent client
 * Add support for Server-Sent Events (SSE) streaming in agent chat, allowing real-time response streaming. This enhancement provides a new stream_chat method alongside the existing chat method for different use cases.
