@@ -4,7 +4,16 @@ import typing
 
 Provider = typing.Union[
     typing.Literal[
-        "athenahealth", "canvas", "cerner", "elation", "epic", "google_healthcare", "hapi", "medplum", "sandbox"
+        "athenahealth",
+        "canvas",
+        "cerner",
+        "elation",
+        "epic",
+        "google_healthcare",
+        "hapi",
+        "medplum",
+        "phenostore",
+        "sandbox",
     ],
     typing.Any,
 ]
