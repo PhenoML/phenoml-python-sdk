@@ -1,3 +1,14 @@
+## 6.0.0 - 2026-02-23
+* refactor: update delete behavior and remove is_active fields
+* Updates FHIR provider deletion to use hard deletes instead of soft deletes. This change simplifies the data model by removing the is_active tracking field and aligning the behavior with actual deletion operations.
+* Key changes:
+* Update documentation to reflect hard delete behavior for FHIR providers
+* Remove is_active field from FhirProviderSandboxInfo model
+* Remove is_active field from FhirProviderTemplate model
+* Remove is_active field from McpServerResponseData model
+* Remove is_active field from McpServerToolResponseData model
+* 🌿 Generated with Fern
+
 ## 5.6.0 - 2026-02-23
 * feat: refactor authentication configuration with simplified role system
 * Refactor FHIR provider authentication configuration by restructuring parameters, improving documentation clarity, and simplifying the role system. The changes enhance usability by making parameter usage more explicit and reducing complexity in role definitions.

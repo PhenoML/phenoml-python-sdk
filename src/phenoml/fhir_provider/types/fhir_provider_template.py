@@ -41,11 +41,6 @@ class FhirProviderTemplate(UniversalBaseModel):
     Map of authentication configurations (key is auth_config_id)
     """
 
-    is_active: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Whether the FHIR provider is active
-    """
-
     last_updated: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     Timestamp when the provider was last updated
