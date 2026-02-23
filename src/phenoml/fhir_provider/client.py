@@ -193,7 +193,7 @@ class FhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderDeleteResponse:
         """
-        Soft deletes a FHIR provider by setting is_active to false.
+        Deletes a FHIR provider.
 
         Note: Sandbox providers cannot be deleted.
 
@@ -581,7 +581,7 @@ class AsyncFhirProviderClient:
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirProviderDeleteResponse:
         """
-        Soft deletes a FHIR provider by setting is_active to false.
+        Deletes a FHIR provider.
 
         Note: Sandbox providers cannot be deleted.
 

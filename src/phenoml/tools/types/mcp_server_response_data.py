@@ -31,11 +31,6 @@ class McpServerResponseData(UniversalBaseModel):
     URL of the MCP server
     """
 
-    is_active: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Whether the MCP server is active
-    """
-
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

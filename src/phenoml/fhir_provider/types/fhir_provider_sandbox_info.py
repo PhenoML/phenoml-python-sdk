@@ -31,11 +31,6 @@ class FhirProviderSandboxInfo(UniversalBaseModel):
     Provider type (always "sandbox" for this schema)
     """
 
-    is_active: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Whether the FHIR provider is active
-    """
-
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
