@@ -3528,7 +3528,7 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
-**client_id:** `typing.Optional[str]` — OAuth client ID (required for most auth methods)
+**client_id:** `typing.Optional[str]` — OAuth client ID (required for jwt, client_secret, and on_behalf_of auth methods)
     
 </dd>
 </dl>
@@ -3552,6 +3552,14 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
+**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **role:** `typing.Optional[Role]` 
     
 </dd>
@@ -3560,7 +3568,7 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
-**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
     
 </dd>
 </dl>
@@ -3874,7 +3882,7 @@ client.fhir_provider.add_auth_config(
 <dl>
 <dd>
 
-**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method)
+**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
     
 </dd>
 </dl>
@@ -3890,7 +3898,7 @@ client.fhir_provider.add_auth_config(
 <dl>
 <dd>
 
-**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
     
 </dd>
 </dl>
