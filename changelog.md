@@ -1,3 +1,14 @@
+## 5.6.0 - 2026-02-23
+* feat: refactor authentication configuration with simplified role system
+* Refactor FHIR provider authentication configuration by restructuring parameters, improving documentation clarity, and simplifying the role system. The changes enhance usability by making parameter usage more explicit and reducing complexity in role definitions.
+* Key changes:
+* Add credential_expiry parameter to method signatures for JWT authentication
+* Update client_id description to specify required auth methods (jwt, client_secret, on_behalf_of)
+* Enhance scopes parameter documentation with auth method restrictions and better guidance
+* Simplify Role type from multiple specific literals to admin/read/write options
+* Improve credential_expiry documentation with default behavior clarification
+* 🌿 Generated with Fern
+
 ## 5.5.0 - 2026-02-20
 * feat: add phenostore as an option for FHIR Provider
 * Add "phenostore" as a new supported provider in the FHIR Provider type, expanding the set of available healthcare data integrations.

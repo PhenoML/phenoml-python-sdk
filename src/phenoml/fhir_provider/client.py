@@ -45,6 +45,7 @@ class FhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        credential_expiry: typing.Optional[dt.datetime] = OMIT,
         role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -70,17 +71,20 @@ class FhirProviderClient:
             Optional description of the FHIR provider
 
         client_id : typing.Optional[str]
-            OAuth client ID (required for most auth methods)
+            OAuth client ID (required for jwt, client_secret, and on_behalf_of auth methods)
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        credential_expiry : typing.Optional[dt.datetime]
+            Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
+
         role : typing.Optional[Role]
 
         scopes : typing.Optional[str]
-            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -113,6 +117,7 @@ class FhirProviderClient:
             client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
+            credential_expiry=credential_expiry,
             role=role,
             scopes=scopes,
             request_options=request_options,
@@ -250,12 +255,12 @@ class FhirProviderClient:
         service_account_key : typing.Optional[ServiceAccountKey]
 
         credential_expiry : typing.Optional[dt.datetime]
-            Expiry time for JWT credentials (only applicable for JWT auth method)
+            Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
 
         role : typing.Optional[Role]
 
         scopes : typing.Optional[str]
-            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -404,6 +409,7 @@ class AsyncFhirProviderClient:
         client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
+        credential_expiry: typing.Optional[dt.datetime] = OMIT,
         role: typing.Optional[Role] = OMIT,
         scopes: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -429,17 +435,20 @@ class AsyncFhirProviderClient:
             Optional description of the FHIR provider
 
         client_id : typing.Optional[str]
-            OAuth client ID (required for most auth methods)
+            OAuth client ID (required for jwt, client_secret, and on_behalf_of auth methods)
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
 
         service_account_key : typing.Optional[ServiceAccountKey]
 
+        credential_expiry : typing.Optional[dt.datetime]
+            Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
+
         role : typing.Optional[Role]
 
         scopes : typing.Optional[str]
-            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -480,6 +489,7 @@ class AsyncFhirProviderClient:
             client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
+            credential_expiry=credential_expiry,
             role=role,
             scopes=scopes,
             request_options=request_options,
@@ -641,12 +651,12 @@ class AsyncFhirProviderClient:
         service_account_key : typing.Optional[ServiceAccountKey]
 
         credential_expiry : typing.Optional[dt.datetime]
-            Expiry time for JWT credentials (only applicable for JWT auth method)
+            Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
 
         role : typing.Optional[Role]
 
         scopes : typing.Optional[str]
-            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. You are solely responsible for ensuring the scopes are valid options for the provider being created or updated.
+            OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
