@@ -6,7 +6,11 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .athena_health_role import AthenaHealthRole
     from .auth_method import AuthMethod
+    from .cerner_role import CernerRole
+    from .elation_role import ElationRole
+    from .epic_role import EpicRole
     from .fhir_provider_auth_config import FhirProviderAuthConfig
     from .fhir_provider_delete_response import FhirProviderDeleteResponse
     from .fhir_provider_list_response import FhirProviderListResponse
@@ -19,13 +23,19 @@ if typing.TYPE_CHECKING:
     from .fhir_query_response import FhirQueryResponse
     from .fhir_query_response_data import FhirQueryResponseData
     from .json_web_key import JsonWebKey
+    from .medplum_role import MedplumRole
+    from .phenostore_role import PhenostoreRole
     from .provider import Provider
     from .role import Role
     from .service_account_key import ServiceAccountKey
     from .service_account_metadata import ServiceAccountMetadata
     from .smart_configuration import SmartConfiguration
 _dynamic_imports: typing.Dict[str, str] = {
+    "AthenaHealthRole": ".athena_health_role",
     "AuthMethod": ".auth_method",
+    "CernerRole": ".cerner_role",
+    "ElationRole": ".elation_role",
+    "EpicRole": ".epic_role",
     "FhirProviderAuthConfig": ".fhir_provider_auth_config",
     "FhirProviderDeleteResponse": ".fhir_provider_delete_response",
     "FhirProviderListResponse": ".fhir_provider_list_response",
@@ -38,6 +48,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirQueryResponse": ".fhir_query_response",
     "FhirQueryResponseData": ".fhir_query_response_data",
     "JsonWebKey": ".json_web_key",
+    "MedplumRole": ".medplum_role",
+    "PhenostoreRole": ".phenostore_role",
     "Provider": ".provider",
     "Role": ".role",
     "ServiceAccountKey": ".service_account_key",
@@ -68,7 +80,11 @@ def __dir__():
 
 
 __all__ = [
+    "AthenaHealthRole",
     "AuthMethod",
+    "CernerRole",
+    "ElationRole",
+    "EpicRole",
     "FhirProviderAuthConfig",
     "FhirProviderDeleteResponse",
     "FhirProviderListResponse",
@@ -81,6 +97,8 @@ __all__ = [
     "FhirQueryResponse",
     "FhirQueryResponseData",
     "JsonWebKey",
+    "MedplumRole",
+    "PhenostoreRole",
     "Provider",
     "Role",
     "ServiceAccountKey",

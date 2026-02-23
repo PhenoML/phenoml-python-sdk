@@ -2,26 +2,11 @@
 
 import typing
 
-Role = typing.Union[
-    typing.Literal[
-        "SmartV1Admin",
-        "SmartV1Read",
-        "SmartV1Write",
-        "SmartV2Admin",
-        "SmartV2Read",
-        "SmartV2Write",
-        "USCDISmartV1Admin",
-        "USCDISmartV1Read",
-        "USCDISmartV1Write",
-        "USCDISmartV2Admin",
-        "USCDISmartV2Read",
-        "USCDISmartV2Write",
-        "CernerSmartV1Admin",
-        "CernerSmartV1Read",
-        "CernerSmartV1Write",
-        "CernerSmartV2Admin",
-        "CernerSmartV2Read",
-        "CernerSmartV2Write",
-    ],
-    typing.Any,
-]
+from .athena_health_role import AthenaHealthRole
+from .cerner_role import CernerRole
+from .elation_role import ElationRole
+from .epic_role import EpicRole
+from .medplum_role import MedplumRole
+from .phenostore_role import PhenostoreRole
+
+Role = typing.Union[EpicRole, CernerRole, AthenaHealthRole, MedplumRole, ElationRole, PhenostoreRole]

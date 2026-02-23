@@ -1,3 +1,14 @@
+## 5.6.0 - 2026-02-23
+* feat: enhance FHIR provider auth configuration with provider-specific roles
+* Improve the FHIR provider authentication system by introducing provider-specific role types and enhancing auth configuration parameters. This update makes the API more type-safe and provides better guidance for developers when configuring authentication.
+* Key changes:
+* Add provider-specific role types (AthenaHealthRole, CernerRole, ElationRole, EpicRole, MedplumRole, PhenostoreRole)
+* Refactor Role type to be a union of provider-specific role types for better type safety
+* Add credential_expiry parameter to auth configuration methods with improved documentation
+* Update parameter descriptions to clarify auth method requirements and scope limitations
+* Improve scopes parameter documentation with validation guidance
+* 🌿 Generated with Fern
+
 ## 5.5.0 - 2026-02-20
 * feat: add phenostore as an option for FHIR Provider
 * Add "phenostore" as a new supported provider in the FHIR Provider type, expanding the set of available healthcare data integrations.

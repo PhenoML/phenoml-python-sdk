@@ -7,7 +7,11 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        AthenaHealthRole,
         AuthMethod,
+        CernerRole,
+        ElationRole,
+        EpicRole,
         FhirProviderAuthConfig,
         FhirProviderDeleteResponse,
         FhirProviderListResponse,
@@ -20,6 +24,8 @@ if typing.TYPE_CHECKING:
         FhirQueryResponse,
         FhirQueryResponseData,
         JsonWebKey,
+        MedplumRole,
+        PhenostoreRole,
         Provider,
         Role,
         ServiceAccountKey,
@@ -28,8 +34,12 @@ if typing.TYPE_CHECKING:
     )
     from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
 _dynamic_imports: typing.Dict[str, str] = {
+    "AthenaHealthRole": ".types",
     "AuthMethod": ".types",
     "BadRequestError": ".errors",
+    "CernerRole": ".types",
+    "ElationRole": ".types",
+    "EpicRole": ".types",
     "FhirProviderAuthConfig": ".types",
     "FhirProviderDeleteResponse": ".types",
     "FhirProviderListResponse": ".types",
@@ -44,7 +54,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
     "JsonWebKey": ".types",
+    "MedplumRole": ".types",
     "NotFoundError": ".errors",
+    "PhenostoreRole": ".types",
     "Provider": ".types",
     "Role": ".types",
     "ServiceAccountKey": ".types",
@@ -76,8 +88,12 @@ def __dir__():
 
 
 __all__ = [
+    "AthenaHealthRole",
     "AuthMethod",
     "BadRequestError",
+    "CernerRole",
+    "ElationRole",
+    "EpicRole",
     "FhirProviderAuthConfig",
     "FhirProviderDeleteResponse",
     "FhirProviderListResponse",
@@ -92,7 +108,9 @@ __all__ = [
     "ForbiddenError",
     "InternalServerError",
     "JsonWebKey",
+    "MedplumRole",
     "NotFoundError",
+    "PhenostoreRole",
     "Provider",
     "Role",
     "ServiceAccountKey",
