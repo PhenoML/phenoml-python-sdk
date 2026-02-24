@@ -402,6 +402,7 @@ class RawFhirProviderClient:
         fhir_provider_id: str,
         *,
         auth_method: AuthMethod,
+        client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
@@ -421,6 +422,9 @@ class RawFhirProviderClient:
             ID of the FHIR provider to add auth config to
 
         auth_method : AuthMethod
+
+        client_id : typing.Optional[str]
+            OAuth client ID for this auth configuration. Required for jwt, client_secret, and on_behalf_of auth methods if the provider does not already have a client_id set.
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
@@ -448,6 +452,7 @@ class RawFhirProviderClient:
             method="PATCH",
             json={
                 "auth_method": auth_method,
+                "client_id": client_id,
                 "client_secret": client_secret,
                 "service_account_key": convert_and_respect_annotation_metadata(
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"
@@ -1124,6 +1129,7 @@ class AsyncRawFhirProviderClient:
         fhir_provider_id: str,
         *,
         auth_method: AuthMethod,
+        client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
@@ -1143,6 +1149,9 @@ class AsyncRawFhirProviderClient:
             ID of the FHIR provider to add auth config to
 
         auth_method : AuthMethod
+
+        client_id : typing.Optional[str]
+            OAuth client ID for this auth configuration. Required for jwt, client_secret, and on_behalf_of auth methods if the provider does not already have a client_id set.
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
@@ -1170,6 +1179,7 @@ class AsyncRawFhirProviderClient:
             method="PATCH",
             json={
                 "auth_method": auth_method,
+                "client_id": client_id,
                 "client_secret": client_secret,
                 "service_account_key": convert_and_respect_annotation_metadata(
                     object_=service_account_key, annotation=ServiceAccountKey, direction="write"

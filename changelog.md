@@ -1,3 +1,15 @@
+## 6.1.0 - 2026-02-24
+* feat: add client_id parameter to FHIR provider auth configuration
+* Enhance FHIR provider authentication by adding optional client_id parameter to auth configurations. This provides more granular control over OAuth authentication at the individual configuration level rather than only at the provider template level.
+* The client_id parameter is now available in the add_auth_config method for both sync and async FHIR provider clients. When set at the auth configuration level, it takes precedence over the provider-level client_id for better flexibility in multi-tenant scenarios.
+* Key changes:
+* Add optional client_id parameter to add_auth_config methods in both sync and async clients
+* Include client_id in FhirProviderAuthConfig type with proper documentation
+* Update documentation to clarify OAuth client ID requirements for different auth methods
+* Mark provider-level client_id as deprecated in favor of auth-config-level setting
+* Maintain backward compatibility with existing provider configurations
+* 🌿 Generated with Fern
+
 ## 6.0.0 - 2026-02-23
 * refactor: update delete behavior and remove is_active fields
 * Updates FHIR provider deletion to use hard deletes instead of soft deletes. This change simplifies the data model by removing the is_active tracking field and aligning the behavior with actual deletion operations.
