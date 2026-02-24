@@ -55,6 +55,11 @@ class FhirProviderAuthConfig(UniversalBaseModel):
     OAuth scopes
     """
 
+    client_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    OAuth client ID for this auth configuration. When set, takes precedence over the provider-level client_id.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

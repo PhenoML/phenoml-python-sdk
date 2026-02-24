@@ -229,6 +229,7 @@ class FhirProviderClient:
         fhir_provider_id: str,
         *,
         auth_method: AuthMethod,
+        client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
@@ -248,6 +249,9 @@ class FhirProviderClient:
             ID of the FHIR provider to add auth config to
 
         auth_method : AuthMethod
+
+        client_id : typing.Optional[str]
+            OAuth client ID for this auth configuration. Required for jwt, client_secret, and on_behalf_of auth methods if the provider does not already have a client_id set.
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
@@ -285,6 +289,7 @@ class FhirProviderClient:
         _response = self._raw_client.add_auth_config(
             fhir_provider_id,
             auth_method=auth_method,
+            client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
             credential_expiry=credential_expiry,
@@ -625,6 +630,7 @@ class AsyncFhirProviderClient:
         fhir_provider_id: str,
         *,
         auth_method: AuthMethod,
+        client_id: typing.Optional[str] = OMIT,
         client_secret: typing.Optional[str] = OMIT,
         service_account_key: typing.Optional[ServiceAccountKey] = OMIT,
         credential_expiry: typing.Optional[dt.datetime] = OMIT,
@@ -644,6 +650,9 @@ class AsyncFhirProviderClient:
             ID of the FHIR provider to add auth config to
 
         auth_method : AuthMethod
+
+        client_id : typing.Optional[str]
+            OAuth client ID for this auth configuration. Required for jwt, client_secret, and on_behalf_of auth methods if the provider does not already have a client_id set.
 
         client_secret : typing.Optional[str]
             OAuth client secret (required for client_secret and on_behalf_of auth methods)
@@ -689,6 +698,7 @@ class AsyncFhirProviderClient:
         _response = await self._raw_client.add_auth_config(
             fhir_provider_id,
             auth_method=auth_method,
+            client_id=client_id,
             client_secret=client_secret,
             service_account_key=service_account_key,
             credential_expiry=credential_expiry,

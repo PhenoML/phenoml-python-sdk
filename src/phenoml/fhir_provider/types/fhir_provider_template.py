@@ -33,7 +33,7 @@ class FhirProviderTemplate(UniversalBaseModel):
 
     client_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    OAuth client ID
+    OAuth client ID. Deprecated: use client_id on FhirProviderAuthConfig instead. Retained for backward compatibility with existing providers.
     """
 
     auth_configs: typing.Optional[typing.Dict[str, FhirProviderAuthConfig]] = pydantic.Field(default=None)
