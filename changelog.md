@@ -1,3 +1,14 @@
+## 6.3.0 - 2026-02-25
+* chore: update dependencies and add servicerequest resource type
+* This commit updates the CLI version to 3.88.1, upgrades the certifi package
+* to version 2026.2.25, and adds support for the "servicerequest" resource type
+* in the Lang2FhirAndCreateRequestResource union type.
+* Key changes:
+* Update Fern CLI version from 3.86.0 to 3.88.1
+* Upgrade certifi package from 2026.1.4 to 2026.2.25 with updated file hashes
+* Add "servicerequest" to Lang2FhirAndCreateRequestResource literal options
+* 🌿 Generated with Fern
+
 ## 6.2.0 - 2026-02-25
 * feat: add servicerequest resource type support
 * Extend the CreateRequestResource union type to include "servicerequest"
