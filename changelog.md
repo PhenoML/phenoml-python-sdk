@@ -1,3 +1,15 @@
+## 6.2.0 - 2026-02-25
+* feat: add servicerequest resource type support
+* Extend the CreateRequestResource union type to include "servicerequest"
+* as a supported resource type for the lang2fhir service. This enhancement
+* provides additional FHIR resource creation capabilities for service
+* request workflows.
+* Key changes:
+* Add "servicerequest" to CreateRequestResource union type
+* Update CLI version from 3.85.2 to 3.86.0 in metadata
+* Maintain backward compatibility with existing resource types
+* 🌿 Generated with Fern
+
 ## 6.1.0 - 2026-02-24
 * feat: add client_id parameter to FHIR provider auth configuration
 * Enhance FHIR provider authentication by adding optional client_id parameter to auth configurations. This provides more granular control over OAuth authentication at the individual configuration level rather than only at the provider template level.
