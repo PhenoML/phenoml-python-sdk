@@ -7,7 +7,26 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .auth_method import AuthMethod
+    from .client_secret_auth import ClientSecretAuth
+    from .fhir_provider_add_auth_config_request import (
+        FhirProviderAddAuthConfigRequest,
+        FhirProviderAddAuthConfigRequest_ClientSecret,
+        FhirProviderAddAuthConfigRequest_GoogleHealthcare,
+        FhirProviderAddAuthConfigRequest_Jwt,
+        FhirProviderAddAuthConfigRequest_None,
+        FhirProviderAddAuthConfigRequest_OnBehalfOf,
+        FhirProviderAddAuthConfigRequest_TokenPassthrough,
+    )
     from .fhir_provider_auth_config import FhirProviderAuthConfig
+    from .fhir_provider_create_request_auth import (
+        FhirProviderCreateRequestAuth,
+        FhirProviderCreateRequestAuth_ClientSecret,
+        FhirProviderCreateRequestAuth_GoogleHealthcare,
+        FhirProviderCreateRequestAuth_Jwt,
+        FhirProviderCreateRequestAuth_None,
+        FhirProviderCreateRequestAuth_OnBehalfOf,
+        FhirProviderCreateRequestAuth_TokenPassthrough,
+    )
     from .fhir_provider_delete_response import FhirProviderDeleteResponse
     from .fhir_provider_list_response import FhirProviderListResponse
     from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
@@ -18,15 +37,35 @@ if typing.TYPE_CHECKING:
     from .fhir_provider_template import FhirProviderTemplate
     from .fhir_query_response import FhirQueryResponse
     from .fhir_query_response_data import FhirQueryResponseData
+    from .google_healthcare_auth import GoogleHealthcareAuth
     from .json_web_key import JsonWebKey
+    from .jwt_auth import JwtAuth
+    from .no_auth import NoAuth
+    from .on_behalf_of_auth import OnBehalfOfAuth
     from .provider import Provider
     from .role import Role
     from .service_account_key import ServiceAccountKey
     from .service_account_metadata import ServiceAccountMetadata
     from .smart_configuration import SmartConfiguration
+    from .token_passthrough_auth import TokenPassthroughAuth
 _dynamic_imports: typing.Dict[str, str] = {
     "AuthMethod": ".auth_method",
+    "ClientSecretAuth": ".client_secret_auth",
+    "FhirProviderAddAuthConfigRequest": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_ClientSecret": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_GoogleHealthcare": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_Jwt": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_None": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_OnBehalfOf": ".fhir_provider_add_auth_config_request",
+    "FhirProviderAddAuthConfigRequest_TokenPassthrough": ".fhir_provider_add_auth_config_request",
     "FhirProviderAuthConfig": ".fhir_provider_auth_config",
+    "FhirProviderCreateRequestAuth": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_ClientSecret": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_GoogleHealthcare": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_Jwt": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_None": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_OnBehalfOf": ".fhir_provider_create_request_auth",
+    "FhirProviderCreateRequestAuth_TokenPassthrough": ".fhir_provider_create_request_auth",
     "FhirProviderDeleteResponse": ".fhir_provider_delete_response",
     "FhirProviderListResponse": ".fhir_provider_list_response",
     "FhirProviderListResponseFhirProvidersItem": ".fhir_provider_list_response_fhir_providers_item",
@@ -37,12 +76,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirProviderTemplate": ".fhir_provider_template",
     "FhirQueryResponse": ".fhir_query_response",
     "FhirQueryResponseData": ".fhir_query_response_data",
+    "GoogleHealthcareAuth": ".google_healthcare_auth",
     "JsonWebKey": ".json_web_key",
+    "JwtAuth": ".jwt_auth",
+    "NoAuth": ".no_auth",
+    "OnBehalfOfAuth": ".on_behalf_of_auth",
     "Provider": ".provider",
     "Role": ".role",
     "ServiceAccountKey": ".service_account_key",
     "ServiceAccountMetadata": ".service_account_metadata",
     "SmartConfiguration": ".smart_configuration",
+    "TokenPassthroughAuth": ".token_passthrough_auth",
 }
 
 
@@ -69,7 +113,22 @@ def __dir__():
 
 __all__ = [
     "AuthMethod",
+    "ClientSecretAuth",
+    "FhirProviderAddAuthConfigRequest",
+    "FhirProviderAddAuthConfigRequest_ClientSecret",
+    "FhirProviderAddAuthConfigRequest_GoogleHealthcare",
+    "FhirProviderAddAuthConfigRequest_Jwt",
+    "FhirProviderAddAuthConfigRequest_None",
+    "FhirProviderAddAuthConfigRequest_OnBehalfOf",
+    "FhirProviderAddAuthConfigRequest_TokenPassthrough",
     "FhirProviderAuthConfig",
+    "FhirProviderCreateRequestAuth",
+    "FhirProviderCreateRequestAuth_ClientSecret",
+    "FhirProviderCreateRequestAuth_GoogleHealthcare",
+    "FhirProviderCreateRequestAuth_Jwt",
+    "FhirProviderCreateRequestAuth_None",
+    "FhirProviderCreateRequestAuth_OnBehalfOf",
+    "FhirProviderCreateRequestAuth_TokenPassthrough",
     "FhirProviderDeleteResponse",
     "FhirProviderListResponse",
     "FhirProviderListResponseFhirProvidersItem",
@@ -80,10 +139,15 @@ __all__ = [
     "FhirProviderTemplate",
     "FhirQueryResponse",
     "FhirQueryResponseData",
+    "GoogleHealthcareAuth",
     "JsonWebKey",
+    "JwtAuth",
+    "NoAuth",
+    "OnBehalfOfAuth",
     "Provider",
     "Role",
     "ServiceAccountKey",
     "ServiceAccountMetadata",
     "SmartConfiguration",
+    "TokenPassthroughAuth",
 ]

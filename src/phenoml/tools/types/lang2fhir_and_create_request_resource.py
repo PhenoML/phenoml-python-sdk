@@ -18,6 +18,7 @@ Lang2FhirAndCreateRequestResource = typing.Union[
         "procedure",
         "questionnaire",
         "questionnaireresponse",
+        "servicerequest",
         "simple-observation",
         "vital-signs",
     ],

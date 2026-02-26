@@ -1,3 +1,19 @@
+## 7.0.0 - 2026-02-26
+* feat: refactor FHIR provider authentication to use structured auth types
+* Refactor FHIR provider API from individual auth parameters to structured auth
+* configuration objects, improving type safety and developer experience. This
+* change replaces separate auth_method, client_id, client_secret and other
+* parameters with unified auth objects that encapsulate auth-specific fields.
+* Key changes:
+* Replace individual auth parameters with FhirProviderCreateRequestAuth union type
+* Replace add_auth_config parameters with FhirProviderAddAuthConfigRequest union type
+* Add new auth type classes: ClientSecretAuth, JwtAuth, GoogleHealthcareAuth, etc.
+* Update examples to use new structured auth approach (e.g., FhirProviderCreateRequestAuth_Jwt)
+* Add servicerequest resource type support
+* Update CLI version from 3.86.0 to 3.88.4
+* Update certifi dependency from 2026.1.4 to 2026.2.25
+* 🌿 Generated with Fern
+
 ## 6.2.0 - 2026-02-25
 * feat: add servicerequest resource type support
 * Extend the CreateRequestResource union type to include "servicerequest"
