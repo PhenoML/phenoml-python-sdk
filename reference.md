@@ -3463,6 +3463,7 @@ Note: The "sandbox" provider type cannot be created via this API - it is managed
 
 ```python
 from phenoml import phenoml
+from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
 
 client = phenoml(
     token="YOUR_TOKEN",
@@ -3470,8 +3471,10 @@ client = phenoml(
 client.fhir_provider.create(
     name="Epic Sandbox",
     provider="athenahealth",
-    auth_method="client_secret",
     base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+    auth=FhirProviderCreateRequestAuth_Jwt(
+        client_id="your-client-id",
+    ),
 )
 
 ```
@@ -3504,14 +3507,6 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
-**auth_method:** `AuthMethod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **base_url:** `str` — Base URL of the FHIR server
     
 </dd>
@@ -3520,55 +3515,15 @@ client.fhir_provider.create(
 <dl>
 <dd>
 
+**auth:** `FhirProviderCreateRequestAuth` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **description:** `typing.Optional[str]` — Optional description of the FHIR provider
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**client_id:** `typing.Optional[str]` — OAuth client ID (required for jwt, client_secret, and on_behalf_of auth methods)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**client_secret:** `typing.Optional[str]` — OAuth client secret (required for client_secret and on_behalf_of auth methods)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**service_account_key:** `typing.Optional[ServiceAccountKey]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**role:** `typing.Optional[Role]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
     
 </dd>
 </dl>
@@ -3827,13 +3782,16 @@ Note: Sandbox providers cannot be modified.
 
 ```python
 from phenoml import phenoml
+from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
 
 client = phenoml(
     token="YOUR_TOKEN",
 )
 client.fhir_provider.add_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-    auth_method="client_secret",
+    request=FhirProviderAddAuthConfigRequest_Jwt(
+        client_id="your-client-id",
+    ),
 )
 
 ```
@@ -3858,55 +3816,7 @@ client.fhir_provider.add_auth_config(
 <dl>
 <dd>
 
-**auth_method:** `AuthMethod` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**client_id:** `typing.Optional[str]` — OAuth client ID for this auth configuration. Required for jwt, client_secret, and on_behalf_of auth methods if the provider does not already have a client_id set.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**client_secret:** `typing.Optional[str]` — OAuth client secret (required for client_secret and on_behalf_of auth methods)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**service_account_key:** `typing.Optional[ServiceAccountKey]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**credential_expiry:** `typing.Optional[dt.datetime]` — Expiry time for JWT credentials (only applicable for JWT auth method). If omitted, a default expiry is used.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**role:** `typing.Optional[Role]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**scopes:** `typing.Optional[str]` — OAuth scopes to request. Cannot be specified with role. If neither role nor scopes are specified, the provider-specific default role will be used. Only applicable to `client_secret`, `jwt`, and `on_behalf_of` auth methods; specifying scopes for other auth methods will return an error. Make sure the scopes you specify are appropriate for the auth config and provider you are using.
+**request:** `FhirProviderAddAuthConfigRequest` 
     
 </dd>
 </dl>

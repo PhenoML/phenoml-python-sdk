@@ -1,3 +1,16 @@
+## 7.0.0 - 2026-02-26
+* feat: refactor FHIR provider authentication API with structured auth objects
+* This change refactors the FHIR provider authentication API from individual parameters to structured auth objects using discriminated unions. The update improves type safety and makes authentication configuration more intuitive by grouping related parameters into coherent auth types.
+* Key changes:
+* Replace individual auth parameters with structured `FhirProviderCreateRequestAuth` and `FhirProviderAddAuthConfigRequest` types
+* Add new authentication type classes: `JwtAuth`, `ClientSecretAuth`, `OnBehalfOfAuth`, `GoogleHealthcareAuth`, `TokenPassthroughAuth`, and `NoAuth`
+* Update API client methods to accept structured auth objects instead of multiple optional parameters
+* Add discriminated union types for better type safety and validation
+* Update documentation examples to use new structured auth configuration
+* Add support for "servicerequest" resource type in Lang2FHIR
+* Update CLI version from 3.86.0 to 3.88.4 and certifi package version
+* 🌿 Generated with Fern
+
 ## 6.2.0 - 2026-02-25
 * feat: add servicerequest resource type support
 * Extend the CreateRequestResource union type to include "servicerequest"
