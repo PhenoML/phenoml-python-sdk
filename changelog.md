@@ -1,3 +1,13 @@
+## 7.1.0 - 2026-03-02
+* refactor: replace DocumentRequestResource with generic string type
+* Removes the restrictive DocumentRequestResource enum type and replaces it with a generic string type to support all FHIR resource types and US Core profile names. This improves flexibility by allowing the API to accept any valid FHIR resource type instead of being limited to just questionnaire and questionnaireresponse.
+* Key changes:
+* Remove DocumentRequestResource type definition and imports
+* Update document() method signatures to accept `str` instead of `DocumentRequestResource`
+* Update documentation to reflect expanded resource type support
+* Clean up all references across client, raw client, and types modules
+* 🌿 Generated with Fern
+
 ## 7.0.0 - 2026-02-26
 * feat: refactor FHIR provider authentication to use structured auth types
 * Refactor FHIR provider API from individual auth parameters to structured auth

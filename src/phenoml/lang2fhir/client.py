@@ -7,7 +7,6 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawLang2FhirClient, RawLang2FhirClient
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
-from .types.document_request_resource import DocumentRequestResource
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -216,12 +215,7 @@ class Lang2FhirClient:
         return _response.data
 
     def document(
-        self,
-        *,
-        version: str,
-        resource: DocumentRequestResource,
-        content: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirResource:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -231,8 +225,8 @@ class Lang2FhirClient:
         version : str
             FHIR version to use
 
-        resource : DocumentRequestResource
-            Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
+        resource : str
+            Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
 
         content : str
             Base64 encoded file content.
@@ -498,12 +492,7 @@ class AsyncLang2FhirClient:
         return _response.data
 
     async def document(
-        self,
-        *,
-        version: str,
-        resource: DocumentRequestResource,
-        content: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
     ) -> FhirResource:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -513,8 +502,8 @@ class AsyncLang2FhirClient:
         version : str
             FHIR version to use
 
-        resource : DocumentRequestResource
-            Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
+        resource : str
+            Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
 
         content : str
             Base64 encoded file content.

@@ -12,7 +12,6 @@ if typing.TYPE_CHECKING:
     from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
     from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
     from .create_request_resource import CreateRequestResource
-    from .document_request_resource import DocumentRequestResource
     from .fhir_resource import FhirResource
     from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
     from .search_response import SearchResponse
@@ -24,7 +23,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateMultiResponseBundleEntryItemRequest": ".create_multi_response_bundle_entry_item_request",
     "CreateMultiResponseResourcesItem": ".create_multi_response_resources_item",
     "CreateRequestResource": ".create_request_resource",
-    "DocumentRequestResource": ".document_request_resource",
     "FhirResource": ".fhir_resource",
     "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
     "SearchResponse": ".search_response",
@@ -60,7 +58,6 @@ __all__ = [
     "CreateMultiResponseBundleEntryItemRequest",
     "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
-    "DocumentRequestResource",
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
     "SearchResponse",

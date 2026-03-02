@@ -15,7 +15,6 @@ from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
-from .types.document_request_resource import DocumentRequestResource
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -419,12 +418,7 @@ class RawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def document(
-        self,
-        *,
-        version: str,
-        resource: DocumentRequestResource,
-        content: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[FhirResource]:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -434,8 +428,8 @@ class RawLang2FhirClient:
         version : str
             FHIR version to use
 
-        resource : DocumentRequestResource
-            Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
+        resource : str
+            Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
 
         content : str
             Base64 encoded file content.
@@ -908,12 +902,7 @@ class AsyncRawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def document(
-        self,
-        *,
-        version: str,
-        resource: DocumentRequestResource,
-        content: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[FhirResource]:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -923,8 +912,8 @@ class AsyncRawLang2FhirClient:
         version : str
             FHIR version to use
 
-        resource : DocumentRequestResource
-            Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
+        resource : str
+            Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
 
         content : str
             Base64 encoded file content.
