@@ -4406,7 +4406,7 @@ client.lang2fhir.document(
 <dl>
 <dd>
 
-**resource:** `DocumentRequestResource` — Type of FHIR resource to create (questionnaire and US Core questionnaireresponse profiles currently supported)
+**resource:** `str` — Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
     
 </dd>
 </dl>
