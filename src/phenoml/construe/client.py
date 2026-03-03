@@ -12,6 +12,7 @@ from .types.export_code_system_response import ExportCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
+from .types.feedback_response import FeedbackResponse
 from .types.get_code_response import GetCodeResponse
 from .types.get_code_system_detail_response import GetCodeSystemDetailResponse
 from .types.list_code_systems_response import ListCodeSystemsResponse
@@ -515,6 +516,84 @@ class ConstrueClient:
         """
         _response = self._raw_client.semantic_search_embedding_based(
             codesystem, text=text, version=version, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    def submit_feedback_on_extraction_results(
+        self,
+        *,
+        text: str,
+        received_result: ExtractCodesResult,
+        expected_result: ExtractCodesResult,
+        detail: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FeedbackResponse:
+        """
+        Submits user feedback on results from the Construe extraction endpoint.
+        Feedback includes the full extraction result received and the result the user expected.
+
+        Parameters
+        ----------
+        text : str
+            The natural language text that was used for code extraction
+
+        received_result : ExtractCodesResult
+
+        expected_result : ExtractCodesResult
+
+        detail : typing.Optional[str]
+            Optional details explaining the feedback
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FeedbackResponse
+            Feedback saved successfully
+
+        Examples
+        --------
+        from phenoml import phenoml
+        from phenoml.construe import (
+            ExtractCodesResult,
+            ExtractedCodeResult,
+            ExtractRequestSystem,
+        )
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.construe.submit_feedback_on_extraction_results(
+            text="Patient has type 2 diabetes with hyperglycemia",
+            received_result=ExtractCodesResult(
+                system=ExtractRequestSystem(),
+                codes=[
+                    ExtractedCodeResult(
+                        code="195967001",
+                        description="Asthma",
+                        valid=True,
+                    )
+                ],
+            ),
+            expected_result=ExtractCodesResult(
+                system=ExtractRequestSystem(),
+                codes=[
+                    ExtractedCodeResult(
+                        code="195967001",
+                        description="Asthma",
+                        valid=True,
+                    )
+                ],
+            ),
+        )
+        """
+        _response = self._raw_client.submit_feedback_on_extraction_results(
+            text=text,
+            received_result=received_result,
+            expected_result=expected_result,
+            detail=detail,
+            request_options=request_options,
         )
         return _response.data
 
@@ -1158,6 +1237,92 @@ class AsyncConstrueClient:
         """
         _response = await self._raw_client.semantic_search_embedding_based(
             codesystem, text=text, version=version, limit=limit, request_options=request_options
+        )
+        return _response.data
+
+    async def submit_feedback_on_extraction_results(
+        self,
+        *,
+        text: str,
+        received_result: ExtractCodesResult,
+        expected_result: ExtractCodesResult,
+        detail: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> FeedbackResponse:
+        """
+        Submits user feedback on results from the Construe extraction endpoint.
+        Feedback includes the full extraction result received and the result the user expected.
+
+        Parameters
+        ----------
+        text : str
+            The natural language text that was used for code extraction
+
+        received_result : ExtractCodesResult
+
+        expected_result : ExtractCodesResult
+
+        detail : typing.Optional[str]
+            Optional details explaining the feedback
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FeedbackResponse
+            Feedback saved successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+        from phenoml.construe import (
+            ExtractCodesResult,
+            ExtractedCodeResult,
+            ExtractRequestSystem,
+        )
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.construe.submit_feedback_on_extraction_results(
+                text="Patient has type 2 diabetes with hyperglycemia",
+                received_result=ExtractCodesResult(
+                    system=ExtractRequestSystem(),
+                    codes=[
+                        ExtractedCodeResult(
+                            code="195967001",
+                            description="Asthma",
+                            valid=True,
+                        )
+                    ],
+                ),
+                expected_result=ExtractCodesResult(
+                    system=ExtractRequestSystem(),
+                    codes=[
+                        ExtractedCodeResult(
+                            code="195967001",
+                            description="Asthma",
+                            valid=True,
+                        )
+                    ],
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.submit_feedback_on_extraction_results(
+            text=text,
+            received_result=received_result,
+            expected_result=expected_result,
+            detail=detail,
+            request_options=request_options,
         )
         return _response.data
 

@@ -1,3 +1,13 @@
+## 7.2.0 - 2026-03-03
+* feat: add feedback submission for extraction results
+* Add new functionality to submit user feedback on Construe extraction endpoint results. This enables users to provide feedback comparing actual extraction results with expected outcomes to improve the service.
+* Key changes:
+* Add submit_feedback_on_extraction_results method to both sync and async clients
+* Create FeedbackResponse type to handle feedback submission responses
+* Add comprehensive documentation and usage examples for the new endpoint
+* Include proper error handling for all standard HTTP error responses
+* 🌿 Generated with Fern
+
 ## 7.1.0 - 2026-03-02
 * refactor: replace DocumentRequestResource with generic string type
 * Removes the restrictive DocumentRequestResource enum type and replaces it with a generic string type to support all FHIR resource types and US Core profile names. This improves flexibility by allowing the API to accept any valid FHIR resource type instead of being limited to just questionnaire and questionnaireresponse.
