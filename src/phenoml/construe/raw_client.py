@@ -27,6 +27,7 @@ from .types.export_code_system_response import ExportCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
 from .types.extract_request_config import ExtractRequestConfig
 from .types.extract_request_system import ExtractRequestSystem
+from .types.feedback_response import FeedbackResponse
 from .types.get_code_response import GetCodeResponse
 from .types.get_code_system_detail_response import GetCodeSystemDetailResponse
 from .types.list_code_systems_response import ListCodeSystemsResponse
@@ -1040,6 +1041,117 @@ class RawConstrueClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def submit_feedback_on_extraction_results(
+        self,
+        *,
+        text: str,
+        received_result: ExtractCodesResult,
+        expected_result: ExtractCodesResult,
+        detail: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[FeedbackResponse]:
+        """
+        Submits user feedback on results from the Construe extraction endpoint.
+        Feedback includes the full extraction result received and the result the user expected.
+
+        Parameters
+        ----------
+        text : str
+            The natural language text that was used for code extraction
+
+        received_result : ExtractCodesResult
+
+        expected_result : ExtractCodesResult
+
+        detail : typing.Optional[str]
+            Optional details explaining the feedback
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[FeedbackResponse]
+            Feedback saved successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "construe/feedback",
+            method="POST",
+            json={
+                "text": text,
+                "received_result": convert_and_respect_annotation_metadata(
+                    object_=received_result, annotation=ExtractCodesResult, direction="write"
+                ),
+                "expected_result": convert_and_respect_annotation_metadata(
+                    object_=expected_result, annotation=ExtractCodesResult, direction="write"
+                ),
+                "detail": detail,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FeedbackResponse,
+                    parse_obj_as(
+                        type_=FeedbackResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -2193,6 +2305,117 @@ class AsyncRawConstrueClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def submit_feedback_on_extraction_results(
+        self,
+        *,
+        text: str,
+        received_result: ExtractCodesResult,
+        expected_result: ExtractCodesResult,
+        detail: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[FeedbackResponse]:
+        """
+        Submits user feedback on results from the Construe extraction endpoint.
+        Feedback includes the full extraction result received and the result the user expected.
+
+        Parameters
+        ----------
+        text : str
+            The natural language text that was used for code extraction
+
+        received_result : ExtractCodesResult
+
+        expected_result : ExtractCodesResult
+
+        detail : typing.Optional[str]
+            Optional details explaining the feedback
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[FeedbackResponse]
+            Feedback saved successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "construe/feedback",
+            method="POST",
+            json={
+                "text": text,
+                "received_result": convert_and_respect_annotation_metadata(
+                    object_=received_result, annotation=ExtractCodesResult, direction="write"
+                ),
+                "expected_result": convert_and_respect_annotation_metadata(
+                    object_=expected_result, annotation=ExtractCodesResult, direction="write"
+                ),
+                "detail": detail,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FeedbackResponse,
+                    parse_obj_as(
+                        type_=FeedbackResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,

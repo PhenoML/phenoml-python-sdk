@@ -2500,6 +2500,126 @@ client.construe.semantic_search_embedding_based(
 </dl>
 </details>
 
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback_on_extraction_results</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Submits user feedback on results from the Construe extraction endpoint.
+Feedback includes the full extraction result received and the result the user expected.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+from phenoml.construe import (
+    ExtractCodesResult,
+    ExtractedCodeResult,
+    ExtractRequestSystem,
+)
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.construe.submit_feedback_on_extraction_results(
+    text="Patient has type 2 diabetes with hyperglycemia",
+    received_result=ExtractCodesResult(
+        system=ExtractRequestSystem(),
+        codes=[
+            ExtractedCodeResult(
+                code="195967001",
+                description="Asthma",
+                valid=True,
+            )
+        ],
+    ),
+    expected_result=ExtractCodesResult(
+        system=ExtractRequestSystem(),
+        codes=[
+            ExtractedCodeResult(
+                code="195967001",
+                description="Asthma",
+                valid=True,
+            )
+        ],
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**text:** `str` — The natural language text that was used for code extraction
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**received_result:** `ExtractCodesResult` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**expected_result:** `ExtractCodesResult` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**detail:** `typing.Optional[str]` — Optional details explaining the feedback
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...)</code></summary>
 <dl>
 <dd>
