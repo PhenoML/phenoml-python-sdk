@@ -259,6 +259,58 @@ class Lang2FhirClient:
         )
         return _response.data
 
+    def extract_multiple_fhir_resources_from_a_document(
+        self,
+        *,
+        version: str,
+        content: str,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMultiResponse:
+        """
+        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        version : str
+            FHIR version to use
+
+        content : str
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMultiResponse
+            Successfully extracted FHIR resources from document
+
+        Examples
+        --------
+        from phenoml import phenoml
+
+        client = phenoml(
+            token="YOUR_TOKEN",
+        )
+        client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+            version="R4",
+            content="content",
+        )
+        """
+        _response = self._raw_client.extract_multiple_fhir_resources_from_a_document(
+            version=version, content=content, provider=provider, request_options=request_options
+        )
+        return _response.data
+
 
 class AsyncLang2FhirClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -541,5 +593,65 @@ class AsyncLang2FhirClient:
         """
         _response = await self._raw_client.document(
             version=version, resource=resource, content=content, request_options=request_options
+        )
+        return _response.data
+
+    async def extract_multiple_fhir_resources_from_a_document(
+        self,
+        *,
+        version: str,
+        content: str,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateMultiResponse:
+        """
+        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        version : str
+            FHIR version to use
+
+        content : str
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateMultiResponse
+            Successfully extracted FHIR resources from document
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import Asyncphenoml
+
+        client = Asyncphenoml(
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+                version="R4",
+                content="content",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.extract_multiple_fhir_resources_from_a_document(
+            version=version, content=content, provider=provider, request_options=request_options
         )
         return _response.data

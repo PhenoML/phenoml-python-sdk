@@ -18,7 +18,14 @@ if typing.TYPE_CHECKING:
         SearchResponse,
         SearchResponseResourceType,
     )
-    from .errors import BadRequestError, FailedDependencyError, ForbiddenError, InternalServerError, UnauthorizedError
+    from .errors import (
+        BadRequestError,
+        FailedDependencyError,
+        ForbiddenError,
+        InternalServerError,
+        UnauthorizedError,
+        UnprocessableEntityError,
+    )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "CreateMultiResponse": ".types",
@@ -35,6 +42,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SearchResponse": ".types",
     "SearchResponseResourceType": ".types",
     "UnauthorizedError": ".errors",
+    "UnprocessableEntityError": ".errors",
 }
 
 
@@ -75,4 +83,5 @@ __all__ = [
     "SearchResponse",
     "SearchResponseResourceType",
     "UnauthorizedError",
+    "UnprocessableEntityError",
 ]

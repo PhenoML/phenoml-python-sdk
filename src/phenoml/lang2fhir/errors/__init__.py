@@ -11,12 +11,14 @@ if typing.TYPE_CHECKING:
     from .forbidden_error import ForbiddenError
     from .internal_server_error import InternalServerError
     from .unauthorized_error import UnauthorizedError
+    from .unprocessable_entity_error import UnprocessableEntityError
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".bad_request_error",
     "FailedDependencyError": ".failed_dependency_error",
     "ForbiddenError": ".forbidden_error",
     "InternalServerError": ".internal_server_error",
     "UnauthorizedError": ".unauthorized_error",
+    "UnprocessableEntityError": ".unprocessable_entity_error",
 }
 
 
@@ -41,4 +43,11 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["BadRequestError", "FailedDependencyError", "ForbiddenError", "InternalServerError", "UnauthorizedError"]
+__all__ = [
+    "BadRequestError",
+    "FailedDependencyError",
+    "ForbiddenError",
+    "InternalServerError",
+    "UnauthorizedError",
+    "UnprocessableEntityError",
+]

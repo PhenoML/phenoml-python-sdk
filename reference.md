@@ -4558,6 +4558,100 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
+Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+Resources are linked with proper references (e.g., Conditions reference the Patient).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import phenoml
+
+client = phenoml(
+    token="YOUR_TOKEN",
+)
+client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+    version="R4",
+    content="content",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**version:** `str` — FHIR version to use
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**content:** `str` 
+
+Base64 encoded file content.
+Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+File type is auto-detected from content magic bytes.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**provider:** `typing.Optional[str]` — Optional FHIR provider name for provider-specific profiles
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Summary
 <details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>()</code></summary>
 <dl>

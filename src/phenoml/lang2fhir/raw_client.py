@@ -13,6 +13,7 @@ from .errors.failed_dependency_error import FailedDependencyError
 from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
+from .errors.unprocessable_entity_error import UnprocessableEntityError
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
 from .types.fhir_resource import FhirResource
@@ -506,6 +507,114 @@ class RawLang2FhirClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def extract_multiple_fhir_resources_from_a_document(
+        self,
+        *,
+        version: str,
+        content: str,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[CreateMultiResponse]:
+        """
+        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        version : str
+            FHIR version to use
+
+        content : str
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[CreateMultiResponse]
+            Successfully extracted FHIR resources from document
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "lang2fhir/document/multi",
+            method="POST",
+            json={
+                "version": version,
+                "content": content,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateMultiResponse,
+                    parse_obj_as(
+                        type_=CreateMultiResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawLang2FhirClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -965,6 +1074,114 @@ class AsyncRawLang2FhirClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def extract_multiple_fhir_resources_from_a_document(
+        self,
+        *,
+        version: str,
+        content: str,
+        provider: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CreateMultiResponse]:
+        """
+        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
+        Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
+        Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        Parameters
+        ----------
+        version : str
+            FHIR version to use
+
+        content : str
+            Base64 encoded file content.
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            File type is auto-detected from content magic bytes.
+
+        provider : typing.Optional[str]
+            Optional FHIR provider name for provider-specific profiles
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CreateMultiResponse]
+            Successfully extracted FHIR resources from document
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "lang2fhir/document/multi",
+            method="POST",
+            json={
+                "version": version,
+                "content": content,
+                "provider": provider,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateMultiResponse,
+                    parse_obj_as(
+                        type_=CreateMultiResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,

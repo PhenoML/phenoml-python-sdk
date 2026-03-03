@@ -1,3 +1,14 @@
+## 7.3.0 - 2026-03-03
+* feat: add document multi-resource extraction endpoint
+* Add comprehensive support for extracting multiple FHIR resources from documents through a new API endpoint. This enhancement combines document text extraction with multi-resource detection capabilities.
+* Key changes:
+* Add extract_multiple_fhir_resources_from_a_document method for both sync and async clients
+* Implement new UnprocessableEntityError (422) for handling validation errors
+* Add comprehensive documentation and examples for the new endpoint
+* Support automatic detection of Patient, Condition, MedicationRequest, Observation resources
+* Include proper resource linking with references between related resources
+* 🌿 Generated with Fern
+
 ## 7.2.0 - 2026-03-03
 * feat: add feedback submission for extraction results
 * Add new functionality to submit user feedback on Construe extraction endpoint results. This enables users to provide feedback comparing actual extraction results with expected outcomes to improve the service.
