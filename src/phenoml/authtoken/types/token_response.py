@@ -3,15 +3,24 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
 
 
-class FhirResource(UniversalBaseModel):
-    resource_type: typing_extensions.Annotated[
-        str, FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType", description="FHIR resource type")
-    ]
+class TokenResponse(UniversalBaseModel):
+    access_token: str = pydantic.Field()
+    """
+    JWT access token for subsequent authenticated requests
+    """
+
+    token_type: str = pydantic.Field()
+    """
+    Token type (always "Bearer")
+    """
+
+    expires_in: int = pydantic.Field()
+    """
+    Token lifetime in seconds
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

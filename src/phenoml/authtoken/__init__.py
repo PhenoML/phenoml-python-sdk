@@ -6,14 +6,18 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import BadRequestErrorBody, UnauthorizedErrorBody
-    from .errors import BadRequestError, UnauthorizedError
+    from .types import BadRequestErrorBody, OAuthError, OAuthErrorError, TokenResponse, UnauthorizedErrorBody
+    from .errors import BadRequestError, InternalServerError, UnauthorizedError
     from . import auth
     from .auth import AuthGenerateTokenResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AuthGenerateTokenResponse": ".auth",
     "BadRequestError": ".errors",
     "BadRequestErrorBody": ".types",
+    "InternalServerError": ".errors",
+    "OAuthError": ".types",
+    "OAuthErrorError": ".types",
+    "TokenResponse": ".types",
     "UnauthorizedError": ".errors",
     "UnauthorizedErrorBody": ".types",
     "auth": ".auth",
@@ -45,6 +49,10 @@ __all__ = [
     "AuthGenerateTokenResponse",
     "BadRequestError",
     "BadRequestErrorBody",
+    "InternalServerError",
+    "OAuthError",
+    "OAuthErrorError",
+    "TokenResponse",
     "UnauthorizedError",
     "UnauthorizedErrorBody",
     "auth",

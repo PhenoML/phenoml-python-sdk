@@ -51,11 +51,9 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.list_templates()
         """
         _response = self._raw_client.list_templates(request_options=request_options)
@@ -105,11 +103,9 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.create_template(
             name="name",
             example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
@@ -149,11 +145,9 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.get_template(
             id="id",
         )
@@ -202,11 +196,9 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.update_template(
             id="id",
             name="name",
@@ -247,11 +239,9 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.delete_template(
             id="id",
         )
@@ -301,12 +291,10 @@ class SummaryClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
         from phenoml.summary import FhirResource
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.summary.create(
             fhir_resources=FhirResource(
                 resource_type="resourceType",
@@ -354,11 +342,9 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -416,11 +402,9 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -468,11 +452,9 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -529,11 +511,9 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -582,11 +562,9 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -644,12 +622,10 @@ class AsyncSummaryClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
         from phenoml.summary import FhirResource
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:

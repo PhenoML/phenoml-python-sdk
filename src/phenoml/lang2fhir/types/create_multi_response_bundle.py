@@ -14,7 +14,9 @@ class CreateMultiResponseBundle(UniversalBaseModel):
     FHIR transaction Bundle containing all extracted resources
     """
 
-    resource_type: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="resourceType")] = None
+    resource_type: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType")
+    ] = None
     type: typing.Optional[str] = None
     entry: typing.Optional[typing.List[CreateMultiResponseBundleEntryItem]] = None
 

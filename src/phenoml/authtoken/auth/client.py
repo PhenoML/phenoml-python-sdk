@@ -4,6 +4,7 @@ import typing
 
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
+from ..types.token_response import TokenResponse
 from .raw_client import AsyncRawAuthClient, RawAuthClient
 from .types.auth_generate_token_response import AuthGenerateTokenResponse
 
@@ -50,11 +51,9 @@ class AuthClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.authtoken.auth.generate_token(
             username="username",
             password="password",
@@ -62,6 +61,51 @@ class AuthClient:
         """
         _response = self._raw_client.generate_token(
             username=username, password=password, request_options=request_options
+        )
+        return _response.data
+
+    def get_token(
+        self,
+        *,
+        grant_type: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> TokenResponse:
+        """
+        OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+        Accepts client_id and client_secret in the request body (JSON or
+        form-encoded) or via Basic Auth header (RFC 6749 §2.3.1), and
+        returns an access token with expiration information.
+
+        Parameters
+        ----------
+        grant_type : typing.Optional[str]
+            Must be "client_credentials" if provided
+
+        client_id : typing.Optional[str]
+            The client ID (credential username)
+
+        client_secret : typing.Optional[str]
+            The client secret (credential password)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TokenResponse
+            Successfully generated token
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient()
+        client.authtoken.auth.get_token()
+        """
+        _response = self._raw_client.get_token(
+            grant_type=grant_type, client_id=client_id, client_secret=client_secret, request_options=request_options
         )
         return _response.data
 
@@ -107,11 +151,9 @@ class AsyncAuthClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -125,5 +167,58 @@ class AsyncAuthClient:
         """
         _response = await self._raw_client.generate_token(
             username=username, password=password, request_options=request_options
+        )
+        return _response.data
+
+    async def get_token(
+        self,
+        *,
+        grant_type: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> TokenResponse:
+        """
+        OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+        Accepts client_id and client_secret in the request body (JSON or
+        form-encoded) or via Basic Auth header (RFC 6749 §2.3.1), and
+        returns an access token with expiration information.
+
+        Parameters
+        ----------
+        grant_type : typing.Optional[str]
+            Must be "client_credentials" if provided
+
+        client_id : typing.Optional[str]
+            The client ID (credential username)
+
+        client_secret : typing.Optional[str]
+            The client secret (credential password)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TokenResponse
+            Successfully generated token
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient()
+
+
+        async def main() -> None:
+            await client.authtoken.auth.get_token()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_token(
+            grant_type=grant_type, client_id=client_id, client_secret=client_secret, request_options=request_options
         )
         return _response.data

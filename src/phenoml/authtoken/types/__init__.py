@@ -7,9 +7,15 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .bad_request_error_body import BadRequestErrorBody
+    from .o_auth_error import OAuthError
+    from .o_auth_error_error import OAuthErrorError
+    from .token_response import TokenResponse
     from .unauthorized_error_body import UnauthorizedErrorBody
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestErrorBody": ".bad_request_error_body",
+    "OAuthError": ".o_auth_error",
+    "OAuthErrorError": ".o_auth_error_error",
+    "TokenResponse": ".token_response",
     "UnauthorizedErrorBody": ".unauthorized_error_body",
 }
 
@@ -35,4 +41,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["BadRequestErrorBody", "UnauthorizedErrorBody"]
+__all__ = ["BadRequestErrorBody", "OAuthError", "OAuthErrorError", "TokenResponse", "UnauthorizedErrorBody"]
