@@ -57,7 +57,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.list(
             verbose=True,
@@ -113,7 +114,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.create(
             verbose=True,
@@ -165,7 +167,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.get(
             id="id",
@@ -226,7 +229,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.update(
             id="id",
@@ -275,7 +279,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.delete(
             id="id",
@@ -315,7 +320,8 @@ class WorkflowsClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.execute(
             id="id",
@@ -372,7 +378,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -436,7 +443,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -496,7 +504,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -565,7 +574,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -624,7 +634,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -672,7 +683,8 @@ class AsyncWorkflowsClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

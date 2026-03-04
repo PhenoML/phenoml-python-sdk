@@ -65,7 +65,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.create(
             version="R4",
@@ -115,7 +116,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.create_multi(
             text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
@@ -163,7 +165,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.search(
             text="Appointments between March 2-9, 2025",
@@ -205,7 +208,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.upload_profile(
             profile="(base64 encoded FHIR StructureDefinition JSON)",
@@ -246,7 +250,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.document(
             version="R4",
@@ -299,7 +304,8 @@ class Lang2FhirClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
             version="R4",
@@ -364,7 +370,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -422,7 +429,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -478,7 +486,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -528,7 +537,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -577,7 +587,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -638,7 +649,8 @@ class AsyncLang2FhirClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

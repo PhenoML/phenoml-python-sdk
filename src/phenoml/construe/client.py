@@ -114,7 +114,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.upload_code_system(
             name="CUSTOM_CODES",
@@ -172,7 +173,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.extract_codes(
             text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
@@ -204,7 +206,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.list_available_code_systems()
         """
@@ -242,7 +245,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.get_code_system_detail(
             codesystem="ICD-10-CM",
@@ -286,7 +290,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.delete_custom_code_system(
             codesystem="CUSTOM_CODES",
@@ -331,7 +336,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.export_custom_code_system(
             codesystem="CUSTOM_CODES",
@@ -384,7 +390,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.list_codes_in_a_code_system(
             codesystem="ICD-10-CM",
@@ -435,7 +442,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.get_a_specific_code(
             codesystem="ICD-10-CM",
@@ -505,7 +513,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.semantic_search_embedding_based(
             codesystem="ICD-10-CM",
@@ -562,7 +571,8 @@ class ConstrueClient:
         )
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.submit_feedback_on_extraction_results(
             text="Patient has type 2 diabetes with hyperglycemia",
@@ -659,7 +669,8 @@ class ConstrueClient:
         from phenoml import phenoml
 
         client = phenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.terminology_server_text_search(
             codesystem="ICD-10-CM",
@@ -765,7 +776,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -831,7 +843,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -871,7 +884,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -917,7 +931,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -969,7 +984,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1022,7 +1038,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1083,7 +1100,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1142,7 +1160,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1220,7 +1239,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1285,7 +1305,8 @@ class AsyncConstrueClient:
         )
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1390,7 +1411,8 @@ class AsyncConstrueClient:
         from phenoml import Asyncphenoml
 
         client = Asyncphenoml(
-            token="YOUR_TOKEN",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

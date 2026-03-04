@@ -1,3 +1,15 @@
+## 8.0.0 - 2026-03-04
+* feat: migrate authentication from token to OAuth 2.0 client credentials
+* This change updates the PhenoML Python SDK from token-based authentication to OAuth 2.0 client credentials flow, improving security and standardizing authentication patterns. The client now automatically manages access token lifecycle including refresh when tokens expire.
+* Key changes:
+* Replace token parameter with client_id and client_secret in client initialization
+* Add OAuth 2.0 token endpoint client.authtoken.auth.get_token()
+* Implement automatic token management with OAuthTokenProvider
+* Update all code examples to use new authentication method
+* Add environment variable support for PHENOML_CLIENT_ID and PHENOML_CLIENT_SECRET
+* Add new OAuth error types and response models
+* 🌿 Generated with Fern
+
 ## 7.3.0 - 2026-03-03
 * feat: add document multi-resource extraction endpoint
 * Add comprehensive support for extracting multiple FHIR resources from documents through a new API endpoint. This enhancement combines document text extraction with multi-resource detection capabilities.
