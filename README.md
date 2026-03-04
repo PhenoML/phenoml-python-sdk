@@ -30,8 +30,8 @@ client = PhenomlClient(
 
 client.agent.create(
     name="name",
+    provider="provider_id",
     prompts=["prompt_123", "prompt_456"],
-    is_active=True,
 )
 ```
 
@@ -54,8 +54,8 @@ client = AsyncPhenomlClient(
 async def main() -> None:
     await client.agent.create(
         name="name",
+        provider="provider_id",
         prompts=["prompt_123", "prompt_456"],
-        is_active=True,
     )
 
 
