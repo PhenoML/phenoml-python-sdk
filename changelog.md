@@ -13,9 +13,9 @@
 ```python
 # Before
 from phenoml import PhenoMLClient
-client = PhenoMLClient(token="YOUR_TOKEN", base_url="https://api.phenoml.com")
+client = PhenoMLClient(token="YOUR_TOKEN", base_url="https://yourinstance.app.pheno.ml")
 # or
-client = PhenoMLClient(username="user", password="pass", base_url="https://api.phenoml.com")
+client = PhenoMLClient(username="user", password="pass", base_url="https://yourinstance.app.pheno.ml")
 
 # After (option 1: env vars PHENOML_CLIENT_ID and PHENOML_CLIENT_SECRET)
 from phenoml import PhenomlClient
