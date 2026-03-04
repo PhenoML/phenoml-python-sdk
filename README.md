@@ -20,12 +20,12 @@ A full reference for this library is available [here](https://github.com/phenoml
 Instantiate and use the client with the following:
 
 ```python
-from phenoml import Client
+from phenoml import PhenomlClient
 
-client = Client(
-    username="your_username",
-    password="your_password",
-    base_url="https://your-phenoml-instance.com"
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
 )
 
 client.agent.create(
@@ -42,17 +42,16 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 import asyncio
 
-from phenoml import AsyncClient
+from phenoml import AsyncPhenomlClient
 
-client = AsyncClient(
-    username="your_username",
-    password="your_password",
-    base_url="https://your-phenoml-instance.com"
+client = AsyncPhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
 )
 
 
 async def main() -> None:
-    await client.initialize()  # Generate token from username/password
     await client.agent.create(
         name="name",
         prompts=["prompt_123", "prompt_456"],
@@ -86,10 +85,12 @@ The SDK provides access to raw response data, including headers, through the `.w
 The `.with_raw_response` property returns a "raw" client that can be used to access the `.headers` and `.data` attributes.
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenomlClient
 
-client = phenoml(
-    ...,
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
 )
 response = client.agent.with_raw_response.create(...)
 print(response.headers)  # access the response headers
@@ -121,11 +122,12 @@ client.agent.create(..., request_options={
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```python
+from phenoml import PhenomlClient
 
-from phenoml import phenoml
-
-client = phenoml(
-    ...,
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
     timeout=20.0,
 )
 
@@ -143,10 +145,12 @@ and transports.
 
 ```python
 import httpx
-from phenoml import phenoml
+from phenoml import PhenomlClient
 
-client = phenoml(
-    ...,
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
     httpx_client=httpx.Client(
         proxies="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
