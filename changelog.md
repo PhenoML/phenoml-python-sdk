@@ -6,6 +6,40 @@
 - **Client renamed**: The main client class is now `PhenomlClient` (was `PhenoMLClient` wrapper / `phenoml` base class).
 - **Wrapper client removed**: The custom `wrapper_client.py` has been removed. Use `PhenomlClient` directly.
 
+### Migration Guide
+
+**Authentication** — replace token-based auth with client credentials:
+
+```python
+# Before
+from phenoml import PhenoMLClient
+client = PhenoMLClient(token="YOUR_TOKEN", base_url="https://api.phenoml.com")
+# or
+client = PhenoMLClient(username="user", password="pass", base_url="https://api.phenoml.com")
+
+# After (option 1: env vars PHENOML_CLIENT_ID and PHENOML_CLIENT_SECRET)
+from phenoml import PhenomlClient
+client = PhenomlClient()
+
+# After (option 2: explicit credentials)
+from phenoml import PhenomlClient
+client = PhenomlClient(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET")
+
+# After (option 3: pre-existing token)
+from phenoml import PhenomlClient
+client = PhenomlClient(token=lambda: "YOUR_TOKEN")
+```
+
+**Import updates:**
+
+```python
+# Before
+from phenoml import PhenoMLClient
+
+# After
+from phenoml import PhenomlClient
+```
+
 ### Added
 
 - New `/v2/auth/token` OAuth 2.0 client credentials endpoint with `TokenResponse`, `OAuthError`, and `OAuthErrorError` types.
