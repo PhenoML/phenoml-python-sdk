@@ -48,13 +48,6 @@ from phenoml import PhenomlClient
 - `datetime_utils` module for date/time handling.
 - Python 3.13, 3.14, and 3.15 support.
 
-### Internal
-
-- Upgraded Fern Python SDK generator to 4.61.4 and Fern CLI to 4.3.3.
-- Major HTTP client rewrite with improved retry logic and logging.
-- Expanded Pydantic utilities.
-- Added `pytest-xdist` for parallel test execution.
-
 ## 7.3.0 - 2026-03-03
 * feat: add document multi-resource extraction endpoint
 * Add comprehensive support for extracting multiple FHIR resources from documents through a new API endpoint. This enhancement combines document text extraction with multi-resource detection capabilities.
