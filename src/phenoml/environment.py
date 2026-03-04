@@ -3,5 +3,5 @@
 import enum
 
 
-class phenomlEnvironment(enum.Enum):
+class PhenomlClientEnvironment(enum.Enum):
     DEFAULT = "https://experiment.app.pheno.ml"

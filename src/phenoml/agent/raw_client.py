@@ -10,7 +10,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.http_sse._api import EventSource
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pydantic_utilities import parse_obj_as
+from ..core.pydantic_utilities import parse_obj_as, parse_sse_obj
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
@@ -851,9 +851,9 @@ class RawAgentClient:
                                 try:
                                     yield typing.cast(
                                         AgentChatStreamEvent,
-                                        parse_obj_as(
+                                        parse_sse_obj(
+                                            sse=_sse,
                                             type_=AgentChatStreamEvent,  # type: ignore
-                                            object_=_sse.json(),
                                         ),
                                     )
                                 except JSONDecodeError as e:
@@ -1844,9 +1844,9 @@ class AsyncRawAgentClient:
                                 try:
                                     yield typing.cast(
                                         AgentChatStreamEvent,
-                                        parse_obj_as(
+                                        parse_sse_obj(
+                                            sse=_sse,
                                             type_=AgentChatStreamEvent,  # type: ignore
-                                            object_=_sse.json(),
                                         ),
                                     )
                                 except JSONDecodeError as e:

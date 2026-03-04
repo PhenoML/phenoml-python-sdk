@@ -1,3 +1,62 @@
+## 8.0.0 - 2026-03-04
+
+### Breaking Changes
+
+- **Authentication**: Replaced username/password authentication with OAuth 2.0 client credentials. The client now accepts `client_id` and `client_secret` parameters (defaulting to `PHENOML_CLIENT_ID` and `PHENOML_CLIENT_SECRET` environment variables). Tokens are automatically obtained and refreshed via the `/v2/auth/token` endpoint. A `token` callable is also supported for pre-existing tokens.
+- **Client renamed**: The main client class is now `PhenomlClient` (was `PhenoMLClient` wrapper / `phenoml` base class).
+- **Wrapper client removed**: The custom `wrapper_client.py` has been removed. Use `PhenomlClient` directly.
+
+### Migration Guide
+
+**Authentication** — replace username/password with client credentials:
+
+```python
+# Before
+from phenoml import PhenoMLClient
+client = PhenoMLClient(
+    username="user",
+    password="pass",
+    base_url="https://yourinstance.app.pheno.ml",
+)
+
+# After (option 1: env vars PHENOML_CLIENT_ID and PHENOML_CLIENT_SECRET)
+from phenoml import PhenomlClient
+client = PhenomlClient(base_url="https://yourinstance.app.pheno.ml")
+
+# After (option 2: explicit credentials)
+from phenoml import PhenomlClient
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
+)
+
+# After (option 3: pre-existing token)
+from phenoml import PhenomlClient
+client = PhenomlClient(
+    token=lambda: "YOUR_TOKEN",
+    base_url="https://yourinstance.app.pheno.ml",
+)
+```
+
+**Import updates:**
+
+```python
+# Before
+from phenoml import PhenoMLClient
+
+# After
+from phenoml import PhenomlClient
+```
+
+### Added
+
+- New `/v2/auth/token` OAuth 2.0 client credentials endpoint with `TokenResponse`, `OAuthError`, and `OAuthErrorError` types.
+- `OAuthTokenProvider` and `AsyncOAuthTokenProvider` for automatic token acquisition and refresh.
+- Structured logging support via new `logging` module.
+- `datetime_utils` module for date/time handling.
+- Python 3.13, 3.14, and 3.15 support.
+
 ## 7.3.0 - 2026-03-03
 * feat: add document multi-resource extraction endpoint
 * Add comprehensive support for extracting multiple FHIR resources from documents through a new API endpoint. This enhancement combines document text extraction with multi-resource detection capabilities.

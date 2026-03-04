@@ -62,11 +62,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.create(
             version="R4",
             resource="auto",
@@ -112,11 +110,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.create_multi(
             text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
         )
@@ -160,11 +156,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.search(
             text="Appointments between March 2-9, 2025",
         )
@@ -202,11 +196,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.upload_profile(
             profile="(base64 encoded FHIR StructureDefinition JSON)",
         )
@@ -243,11 +235,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.document(
             version="R4",
             resource="questionnaire",
@@ -296,11 +286,9 @@ class Lang2FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenomlClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenomlClient()
         client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
             version="R4",
             content="content",
@@ -361,11 +349,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -419,11 +405,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -475,11 +459,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -525,11 +507,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -574,11 +554,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
@@ -635,11 +613,9 @@ class AsyncLang2FhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenomlClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenomlClient()
 
 
         async def main() -> None:
