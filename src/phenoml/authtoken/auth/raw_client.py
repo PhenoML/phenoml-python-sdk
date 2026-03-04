@@ -11,6 +11,7 @@ from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.token_response import TokenResponse
 from .types.auth_generate_token_response import AuthGenerateTokenResponse
 
 # this is used as the default value for optional parameters
@@ -94,6 +95,90 @@ class RawAuthClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def get_token(
+        self,
+        *,
+        grant_type: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[TokenResponse]:
+        """
+        OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+
+        Parameters
+        ----------
+        grant_type : typing.Optional[str]
+            Must be "client_credentials" if provided
+
+        client_id : typing.Optional[str]
+            The client ID (credential username)
+
+        client_secret : typing.Optional[str]
+            The client secret (credential password)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[TokenResponse]
+            Successfully generated token
+        """
+        _json_request_body: typing.Dict[str, typing.Any] = {}
+        if grant_type is not OMIT:
+            _json_request_body["grant_type"] = grant_type
+        if client_id is not OMIT:
+            _json_request_body["client_id"] = client_id
+        if client_secret is not OMIT:
+            _json_request_body["client_secret"] = client_secret
+        _response = self._client_wrapper.httpx_client.request(
+            "v2/auth/token",
+            method="POST",
+            json=_json_request_body,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TokenResponse,
+                    parse_obj_as(
+                        type_=TokenResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawAuthClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -141,6 +226,90 @@ class AsyncRawAuthClient:
                     AuthGenerateTokenResponse,
                     parse_obj_as(
                         type_=AuthGenerateTokenResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_token(
+        self,
+        *,
+        grant_type: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[TokenResponse]:
+        """
+        OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+
+        Parameters
+        ----------
+        grant_type : typing.Optional[str]
+            Must be "client_credentials" if provided
+
+        client_id : typing.Optional[str]
+            The client ID (credential username)
+
+        client_secret : typing.Optional[str]
+            The client secret (credential password)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[TokenResponse]
+            Successfully generated token
+        """
+        _json_request_body: typing.Dict[str, typing.Any] = {}
+        if grant_type is not OMIT:
+            _json_request_body["grant_type"] = grant_type
+        if client_id is not OMIT:
+            _json_request_body["client_id"] = client_id
+        if client_secret is not OMIT:
+            _json_request_body["client_secret"] = client_secret
+        _response = await self._client_wrapper.httpx_client.request(
+            "v2/auth/token",
+            method="POST",
+            json=_json_request_body,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TokenResponse,
+                    parse_obj_as(
+                        type_=TokenResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
