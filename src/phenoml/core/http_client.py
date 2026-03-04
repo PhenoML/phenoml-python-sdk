@@ -85,7 +85,7 @@ def _retry_timeout(response: httpx.Response, retries: int) -> float:
 
 
 def _should_retry(response: httpx.Response) -> bool:
-    retryable_400s = [429, 408, 409]
+    retryable_400s = [429, 408, 409, 401]
     return response.status_code >= 500 or response.status_code in retryable_400s
 
 

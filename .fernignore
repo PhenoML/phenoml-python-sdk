@@ -6,3 +6,4 @@ src/phenoml/__init__.py
 README.md
 LICENSE
 changelog.md
+src/phenoml/core/http_client.py
