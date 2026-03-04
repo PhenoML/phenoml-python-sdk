@@ -5,5 +5,5 @@
   "generatorConfig": {
     "client_class_name": "PhenomlClient"
   },
-  "sdkVersion": "8.0.0"
+  "sdkVersion": "8.0.1"
 }
