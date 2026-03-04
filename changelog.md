@@ -13,21 +13,30 @@
 ```python
 # Before
 from phenoml import PhenoMLClient
-client = PhenoMLClient(token="YOUR_TOKEN", base_url="https://yourinstance.app.pheno.ml")
-# or
-client = PhenoMLClient(username="user", password="pass", base_url="https://yourinstance.app.pheno.ml")
+client = PhenoMLClient(
+    username="user",
+    password="pass",
+    base_url="https://yourinstance.app.pheno.ml",
+)
 
 # After (option 1: env vars PHENOML_CLIENT_ID and PHENOML_CLIENT_SECRET)
 from phenoml import PhenomlClient
-client = PhenomlClient()
+client = PhenomlClient(base_url="https://yourinstance.app.pheno.ml")
 
 # After (option 2: explicit credentials)
 from phenoml import PhenomlClient
-client = PhenomlClient(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET")
+client = PhenomlClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    base_url="https://yourinstance.app.pheno.ml",
+)
 
 # After (option 3: pre-existing token)
 from phenoml import PhenomlClient
-client = PhenomlClient(token=lambda: "YOUR_TOKEN")
+client = PhenomlClient(
+    token=lambda: "YOUR_TOKEN",
+    base_url="https://yourinstance.app.pheno.ml",
+)
 ```
 
 **Import updates:**
