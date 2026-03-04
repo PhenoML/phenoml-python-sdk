@@ -27,10 +27,11 @@ Creates a new PhenoAgent with specified configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.create(
     name="name",
@@ -150,10 +151,11 @@ Retrieves a list of PhenoAgents belonging to the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.list(
     tags="tags",
@@ -220,10 +222,11 @@ Retrieves a specific agent by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.get(
     id="id",
@@ -290,10 +293,11 @@ Updates an existing agent's configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.update(
     id="id",
@@ -422,10 +426,11 @@ Deletes an existing agent
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.delete(
     id="id",
@@ -492,11 +497,12 @@ Patches an existing agent's configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.agent import JsonPatchOperation
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.patch(
     id="id",
@@ -587,10 +593,11 @@ Send a message to an agent and receive a JSON response.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.chat(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -716,10 +723,11 @@ tool_result, message_end, and error.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 response = client.agent.stream_chat(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -845,10 +853,11 @@ Retrieves a list of chat messages for a given chat session
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.get_chat_messages(
     chat_session_id="chat_session_id",
@@ -952,10 +961,11 @@ Creates a new agent prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.create(
     name="Medical Assistant System Prompt",
@@ -1055,10 +1065,11 @@ Retrieves a list of agent prompts belonging to the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.list()
 
@@ -1115,10 +1126,11 @@ Retrieves a specific prompt by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.get(
     id="id",
@@ -1185,10 +1197,11 @@ Updates an existing prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.update(
     id="id",
@@ -1295,10 +1308,11 @@ Deletes a prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.delete(
     id="id",
@@ -1365,11 +1379,12 @@ Patches an existing prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.agent import JsonPatchOperation
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.patch(
     id="id",
@@ -1460,10 +1475,11 @@ Loads default agent prompts for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.agent.prompts.load_defaults()
 
@@ -1521,10 +1537,11 @@ Obtain an access token using client credentials
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.authtoken.auth.generate_token(
     username="username",
@@ -1573,6 +1590,94 @@ client.authtoken.auth.generate_token(
 </dl>
 </details>
 
+<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">get_token</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+Accepts client_id and client_secret in the request body (JSON or
+form-encoded) or via Basic Auth header (RFC 6749 §2.3.1), and
+returns an access token with expiration information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenoMLClient
+
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+)
+client.authtoken.auth.get_token()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**grant_type:** `typing.Optional[str]` — Must be "client_credentials" if provided
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_id:** `typing.Optional[str]` — The client ID (credential username)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_secret:** `typing.Optional[str]` — The client secret (credential password)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Cohort
 <details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...)</code></summary>
 <dl>
@@ -1601,10 +1706,11 @@ Converts natural language text into structured FHIR search queries for patient c
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.cohort.analyze(
     text="female patients over 65 with diabetes but not hypertension",
@@ -1675,10 +1781,11 @@ transitions from "processing" to "ready" or "failed".
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.upload_code_system(
     name="CUSTOM_CODES",
@@ -1837,10 +1944,11 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.extract_codes(
     text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
@@ -1923,10 +2031,11 @@ Returns the terminology server's catalog of available code systems, including bo
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.list_available_code_systems()
 
@@ -1983,10 +2092,11 @@ Returns full metadata for a single code system, including timestamps and builtin
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.get_code_system_detail(
     codesystem="ICD-10-CM",
@@ -2063,10 +2173,11 @@ Only available on dedicated instances. Large systems may take up to a minute to 
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.delete_custom_code_system(
     codesystem="CUSTOM_CODES",
@@ -2144,10 +2255,11 @@ Only available on dedicated instances. Builtin systems cannot be exported.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.export_custom_code_system(
     codesystem="CUSTOM_CODES",
@@ -2225,10 +2337,11 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.list_codes_in_a_code_system(
     codesystem="ICD-10-CM",
@@ -2324,10 +2437,11 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.get_a_specific_code(
     codesystem="ICD-10-CM",
@@ -2430,10 +2544,11 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.semantic_search_embedding_based(
     codesystem="ICD-10-CM",
@@ -2528,15 +2643,16 @@ Feedback includes the full extraction result received and the result the user ex
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.construe import (
     ExtractCodesResult,
     ExtractedCodeResult,
     ExtractRequestSystem,
 )
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.submit_feedback_on_extraction_results(
     text="Patient has type 2 diabetes with hyperglycemia",
@@ -2670,10 +2786,11 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.construe.terminology_server_text_search(
     codesystem="ICD-10-CM",
@@ -2770,10 +2887,11 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.search(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -2899,10 +3017,11 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.create(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -3039,10 +3158,11 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.upsert(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -3180,10 +3300,11 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.delete(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -3300,11 +3421,12 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir import FhirPatchRequestBodyItem
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.patch(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -3438,11 +3560,12 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir.execute_bundle(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -3582,11 +3705,12 @@ Note: The "sandbox" provider type cannot be created via this API - it is managed
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.create(
     name="Epic Sandbox",
@@ -3693,10 +3817,11 @@ Sandbox providers return FhirProviderSandboxInfo.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.list()
 
@@ -3756,10 +3881,11 @@ On shared instances, only sandbox providers can be accessed.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.get(
     fhir_provider_id="fhir_provider_id",
@@ -3828,10 +3954,11 @@ Note: Sandbox providers cannot be deleted.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.delete(
     fhir_provider_id="fhir_provider_id",
@@ -3901,11 +4028,12 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.add_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
@@ -3989,10 +4117,11 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.set_active_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
@@ -4071,10 +4200,11 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.fhir_provider.remove_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
@@ -4151,10 +4281,11 @@ Converts natural language text into a structured FHIR resource
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.create(
     version="R4",
@@ -4241,10 +4372,11 @@ Resources are linked with proper references (e.g., Conditions reference the Pati
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.create_multi(
     text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
@@ -4334,10 +4466,11 @@ Schedule, ServiceRequest, Slot, and Specimen.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.search(
     text="Appointments between March 2-9, 2025",
@@ -4423,10 +4556,11 @@ Uploads will be rejected if:
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.upload_profile(
     profile="(base64 encoded FHIR StructureDefinition JSON)",
@@ -4493,10 +4627,11 @@ Extracts text from a document (PDF or image) and converts it into a structured F
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.document(
     version="R4",
@@ -4588,10 +4723,11 @@ Resources are linked with proper references (e.g., Conditions reference the Pati
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
     version="R4",
@@ -4680,10 +4816,11 @@ Retrieves all summary templates for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.list_templates()
 
@@ -4740,10 +4877,11 @@ Creates a summary template from an example using LLM function calling
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.create_template(
     name="name",
@@ -4853,10 +4991,11 @@ Retrieves a specific summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.get_template(
     id="id",
@@ -4923,10 +5062,11 @@ Updates an existing summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.update_template(
     id="id",
@@ -5037,10 +5177,11 @@ Deletes a summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.delete_template(
     id="id",
@@ -5110,11 +5251,12 @@ Creates a summary from FHIR resources using one of three modes:
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.summary import FhirResource
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.summary.create(
     fhir_resources=FhirResource(
@@ -5211,10 +5353,11 @@ Converts natural language to FHIR resource and optionally stores it in a FHIR se
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.create_fhir_resource(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -5326,10 +5469,11 @@ resolve them via PUT requests after the initial bundle creation.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.create_fhir_resources_multi(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -5437,10 +5581,11 @@ Converts natural language to FHIR search parameters and executes search in FHIR 
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.search_fhir_resources(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -5563,10 +5708,11 @@ Uses LLM to extract search concepts from natural language and builds patient coh
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.analyze_cohort(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -5667,10 +5813,11 @@ Creates a new MCP server
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.create(
     name="My MCP Server",
@@ -5746,10 +5893,11 @@ Lists all MCP servers for a specific user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.list()
 
@@ -5806,10 +5954,11 @@ Gets a MCP server by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.get(
     mcp_server_id="mcp_server_id",
@@ -5876,10 +6025,11 @@ Deletes a MCP server by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.delete(
     mcp_server_id="mcp_server_id",
@@ -5947,10 +6097,11 @@ Lists all MCP server tools for a specific MCP server
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.tools.list(
     mcp_server_id="mcp_server_id",
@@ -6017,10 +6168,11 @@ Gets a MCP server tool by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.tools.get(
     mcp_server_tool_id="mcp_server_tool_id",
@@ -6087,10 +6239,11 @@ Deletes a MCP server tool by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.tools.delete(
     mcp_server_tool_id="mcp_server_tool_id",
@@ -6157,10 +6310,11 @@ Calls a MCP server tool
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.tools.mcp_server.tools.call(
     mcp_server_tool_id="mcp_server_tool_id",
@@ -6237,10 +6391,11 @@ Retrieves all workflow definitions for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.list(
     verbose=True,
@@ -6307,10 +6462,11 @@ Creates a new workflow definition with graph generation from workflow instructio
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.create(
     verbose=True,
@@ -6425,10 +6581,11 @@ Retrieves a workflow definition by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.get(
     id="id",
@@ -6504,10 +6661,11 @@ Updates an existing workflow definition
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.update(
     id="id",
@@ -6631,10 +6789,11 @@ Deletes a workflow definition by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.delete(
     id="id",
@@ -6701,10 +6860,11 @@ Executes a workflow with provided input data and returns results
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
+client = PhenoMLClient(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
 )
 client.workflows.execute(
     id="id",

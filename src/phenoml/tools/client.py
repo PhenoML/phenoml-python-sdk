@@ -78,10 +78,11 @@ class ToolsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tools.create_fhir_resource(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -146,10 +147,11 @@ class ToolsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tools.create_fhir_resources_multi(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -218,10 +220,11 @@ class ToolsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tools.search_fhir_resources(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -279,10 +282,11 @@ class ToolsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tools.analyze_cohort(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -370,10 +374,11 @@ class AsyncToolsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -446,10 +451,11 @@ class AsyncToolsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -526,10 +532,11 @@ class AsyncToolsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -595,10 +602,11 @@ class AsyncToolsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

@@ -45,10 +45,11 @@ class CohortClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.cohort.analyze(
             text="female patients over 65 with diabetes but not hypertension",
@@ -94,10 +95,11 @@ class AsyncCohortClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

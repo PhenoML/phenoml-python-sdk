@@ -54,10 +54,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.list(
             verbose=True,
@@ -110,10 +111,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.create(
             verbose=True,
@@ -162,10 +164,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.get(
             id="id",
@@ -223,10 +226,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.update(
             id="id",
@@ -272,10 +276,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.delete(
             id="id",
@@ -312,10 +317,11 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.workflows.execute(
             id="id",
@@ -369,10 +375,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -433,10 +440,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -493,10 +501,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -562,10 +571,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -621,10 +631,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -669,10 +680,11 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

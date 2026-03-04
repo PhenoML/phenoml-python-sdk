@@ -85,10 +85,11 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.search(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -165,10 +166,11 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.create(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -248,10 +250,11 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.upsert(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -320,10 +323,11 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.delete(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -395,11 +399,12 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
         from phenoml.fhir import FhirPatchRequestBodyItem
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.patch(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -474,11 +479,12 @@ class FhirClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
         from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
-        client = phenoml(
-            token="YOUR_TOKEN",
+        client = PhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.fhir.execute_bundle(
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
@@ -591,10 +597,11 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -679,10 +686,11 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -770,10 +778,11 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -850,10 +859,11 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -933,11 +943,12 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
         from phenoml.fhir import FhirPatchRequestBodyItem
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -1020,11 +1031,12 @@ class AsyncFhirClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
         from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
+        client = AsyncPhenoMLClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
