@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import os
 import typing
 
 import httpx
+from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .environment import phenomlEnvironment
+from .core.logging import LogConfig, Logger
+from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvider
+from .environment import PhenoMLClientEnvironment
 
 if typing.TYPE_CHECKING:
     from .agent.client import AgentClient, AsyncAgentClient
@@ -21,27 +25,38 @@ if typing.TYPE_CHECKING:
     from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
 
-class phenoml:
+class PhenoMLClient:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
     Parameters
     ----------
+
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : phenomlEnvironment
-        The environment to use for requests from the client. from .environment import phenomlEnvironment
+    client_id : str
+        The client identifier used for authentication.
 
+    client_secret : str
+        The client secret used for authentication.
 
+    timeout : typing.Optional[float]
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
-        Defaults to phenomlEnvironment.DEFAULT
+    follow_redirects : typing.Optional[bool]
+        Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
+    httpx_client : typing.Optional[httpx.Client]
+        The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    # or ...
 
-    token : typing.Union[str, typing.Callable[[], str]]
-    headers : typing.Optional[typing.Dict[str, str]]
-        Additional headers to send with every request.
+    base_url : typing.Optional[str]
+        The base url to use for requests from the client.
+
+    token : typing.Callable[[], str]
+        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
 
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -54,38 +69,114 @@ class phenoml:
 
     Examples
     --------
-    from phenoml import phenoml
+    from phenoml import PhenoMLClient
 
-    client = phenoml(
-        token="YOUR_TOKEN",
+    client = PhenoMLClient()
+
+    # or ...
+
+    from phenoml import PhenoMLClient
+
+    client = PhenoMLClient(
+        base_url="https://yourhost.com/path/to/api",
+        token="YOUR_BEARER_TOKEN",
     )
     """
 
+    @typing.overload
     def __init__(
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
+        client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
+    ): ...
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.Client] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
+        token: typing.Callable[[], str],
+    ): ...
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
+        client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
+        token: typing.Optional[typing.Callable[[], str]] = None,
+        _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.Client] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        self._client_wrapper = SyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
-            headers=headers,
-            httpx_client=httpx_client
-            if httpx_client is not None
-            else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-            if follow_redirects is not None
-            else httpx.Client(timeout=_defaulted_timeout),
-            timeout=_defaulted_timeout,
-        )
+        if instance_url is not None:
+            _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
+            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
+        if token is not None:
+            self._client_wrapper = SyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                headers=headers,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.Client(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+                logging=logging,
+                token=_token_getter_override if _token_getter_override is not None else token,
+            )
+        elif client_id is not None and client_secret is not None:
+            oauth_token_provider = OAuthTokenProvider(
+                client_id=client_id,
+                client_secret=client_secret,
+                client_wrapper=SyncClientWrapper(
+                    base_url=_get_base_url(base_url=base_url, environment=environment),
+                    headers=headers,
+                    httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    if follow_redirects is not None
+                    else httpx.Client(timeout=_defaulted_timeout),
+                    timeout=_defaulted_timeout,
+                    logging=logging,
+                ),
+            )
+            self._client_wrapper = SyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                headers=headers,
+                token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.Client(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+                logging=logging,
+            )
+        else:
+            raise ApiError(
+                body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
+            )
         self._agent: typing.Optional[AgentClient] = None
         self._authtoken: typing.Optional[AuthtokenClient] = None
         self._cohort: typing.Optional[CohortClient] = None
@@ -178,27 +269,38 @@ class phenoml:
         return self._workflows
 
 
-class Asyncphenoml:
+class AsyncPhenoMLClient:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
     Parameters
     ----------
+
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : phenomlEnvironment
-        The environment to use for requests from the client. from .environment import phenomlEnvironment
+    client_id : str
+        The client identifier used for authentication.
 
+    client_secret : str
+        The client secret used for authentication.
 
+    timeout : typing.Optional[float]
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
-        Defaults to phenomlEnvironment.DEFAULT
+    follow_redirects : typing.Optional[bool]
+        Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
+    httpx_client : typing.Optional[httpx.AsyncClient]
+        The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    # or ...
 
-    token : typing.Union[str, typing.Callable[[], str]]
-    headers : typing.Optional[typing.Dict[str, str]]
-        Additional headers to send with every request.
+    base_url : typing.Optional[str]
+        The base url to use for requests from the client.
+
+    token : typing.Callable[[], str]
+        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
 
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -211,38 +313,115 @@ class Asyncphenoml:
 
     Examples
     --------
-    from phenoml import Asyncphenoml
+    from phenoml import AsyncPhenoMLClient
 
-    client = Asyncphenoml(
-        token="YOUR_TOKEN",
+    client = AsyncPhenoMLClient()
+
+    # or ...
+
+    from phenoml import AsyncPhenoMLClient
+
+    client = AsyncPhenoMLClient(
+        base_url="https://yourhost.com/path/to/api",
+        token="YOUR_BEARER_TOKEN",
     )
     """
 
+    @typing.overload
     def __init__(
         self,
         *,
         base_url: typing.Optional[str] = None,
-        environment: phenomlEnvironment = phenomlEnvironment.DEFAULT,
-        token: typing.Union[str, typing.Callable[[], str]],
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
+        client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
+    ): ...
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
+        token: typing.Callable[[], str],
+    ): ...
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PhenoMLClientEnvironment = PhenoMLClientEnvironment.DEFAULT,
+        instance_url: typing.Optional[str] = None,
+        headers: typing.Optional[typing.Dict[str, str]] = None,
+        client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
+        token: typing.Optional[typing.Callable[[], str]] = None,
+        _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        self._client_wrapper = AsyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            token=token,
-            headers=headers,
-            httpx_client=httpx_client
-            if httpx_client is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-            if follow_redirects is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout),
-            timeout=_defaulted_timeout,
-        )
+        if instance_url is not None:
+            _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
+            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
+        if token is not None:
+            self._client_wrapper = AsyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                headers=headers,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+                logging=logging,
+                token=_token_getter_override if _token_getter_override is not None else token,
+            )
+        elif client_id is not None and client_secret is not None:
+            oauth_token_provider = AsyncOAuthTokenProvider(
+                client_id=client_id,
+                client_secret=client_secret,
+                client_wrapper=AsyncClientWrapper(
+                    base_url=_get_base_url(base_url=base_url, environment=environment),
+                    headers=headers,
+                    httpx_client=httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    if follow_redirects is not None
+                    else httpx.AsyncClient(timeout=_defaulted_timeout),
+                    timeout=_defaulted_timeout,
+                    logging=logging,
+                ),
+            )
+            self._client_wrapper = AsyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                headers=headers,
+                token=_token_getter_override,
+                async_token=oauth_token_provider.get_token,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+                logging=logging,
+            )
+        else:
+            raise ApiError(
+                body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
+            )
         self._agent: typing.Optional[AsyncAgentClient] = None
         self._authtoken: typing.Optional[AsyncAuthtokenClient] = None
         self._cohort: typing.Optional[AsyncCohortClient] = None
@@ -335,7 +514,7 @@ class Asyncphenoml:
         return self._workflows
 
 
-def _get_base_url(*, base_url: typing.Optional[str] = None, environment: phenomlEnvironment) -> str:
+def _get_base_url(*, base_url: typing.Optional[str] = None, environment: PhenoMLClientEnvironment) -> str:
     if base_url is not None:
         return base_url
     elif environment is not None:

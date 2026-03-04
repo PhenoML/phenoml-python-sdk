@@ -111,11 +111,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.upload_code_system(
             name="CUSTOM_CODES",
             version="1.0",
@@ -169,11 +167,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.extract_codes(
             text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
         )
@@ -201,11 +197,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.list_available_code_systems()
         """
         _response = self._raw_client.list_available_code_systems(request_options=request_options)
@@ -239,11 +233,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.get_code_system_detail(
             codesystem="ICD-10-CM",
             version="2025",
@@ -283,11 +275,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.delete_custom_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
@@ -328,11 +318,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.export_custom_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
@@ -381,11 +369,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.list_codes_in_a_code_system(
             codesystem="ICD-10-CM",
             version="2025",
@@ -432,11 +418,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.get_a_specific_code(
             codesystem="ICD-10-CM",
             code_id="E11.65",
@@ -502,11 +486,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.semantic_search_embedding_based(
             codesystem="ICD-10-CM",
             text="patient has trouble breathing at night and wakes up gasping",
@@ -554,16 +536,14 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
         from phenoml.construe import (
             ExtractCodesResult,
             ExtractedCodeResult,
             ExtractRequestSystem,
         )
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.submit_feedback_on_extraction_results(
             text="Patient has type 2 diabetes with hyperglycemia",
             received_result=ExtractCodesResult(
@@ -656,11 +636,9 @@ class ConstrueClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.construe.terminology_server_text_search(
             codesystem="ICD-10-CM",
             q="E11.65",
@@ -762,11 +740,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -828,11 +804,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -868,11 +842,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -914,11 +886,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -966,11 +936,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1019,11 +987,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1080,11 +1046,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1139,11 +1103,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1217,11 +1179,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1277,16 +1237,14 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
         from phenoml.construe import (
             ExtractCodesResult,
             ExtractedCodeResult,
             ExtractRequestSystem,
         )
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1387,11 +1345,9 @@ class AsyncConstrueClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:

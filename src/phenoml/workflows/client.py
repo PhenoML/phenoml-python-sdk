@@ -54,11 +54,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.list(
             verbose=True,
         )
@@ -110,11 +108,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.create(
             verbose=True,
             name="Patient Data Mapping Workflow",
@@ -162,11 +158,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.get(
             id="id",
             verbose=True,
@@ -223,11 +217,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.update(
             id="id",
             verbose=True,
@@ -272,11 +264,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.delete(
             id="id",
         )
@@ -312,11 +302,9 @@ class WorkflowsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.workflows.execute(
             id="id",
             input_data={
@@ -369,11 +357,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -433,11 +419,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -493,11 +477,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -562,11 +544,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -621,11 +601,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -669,11 +647,9 @@ class AsyncWorkflowsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:

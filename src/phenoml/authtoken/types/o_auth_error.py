@@ -3,15 +3,24 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
+from .o_auth_error_error import OAuthErrorError
 
 
-class FhirResource(UniversalBaseModel):
-    resource_type: typing_extensions.Annotated[
-        str, FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType", description="FHIR resource type")
-    ]
+class OAuthError(UniversalBaseModel):
+    """
+    OAuth 2.0 error response (RFC 6749 §5.2)
+    """
+
+    error: OAuthErrorError = pydantic.Field()
+    """
+    Error code
+    """
+
+    error_description: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Human-readable error description
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

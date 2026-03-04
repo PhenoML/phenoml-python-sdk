@@ -21,8 +21,12 @@ class ServiceAccountKey(UniversalBaseModel):
     client_id: str
     auth_uri: str
     token_uri: str
-    auth_provider_x509cert_url: typing_extensions.Annotated[str, FieldMetadata(alias="auth_provider_x509_cert_url")]
-    client_x509cert_url: typing_extensions.Annotated[str, FieldMetadata(alias="client_x509_cert_url")]
+    auth_provider_x509cert_url: typing_extensions.Annotated[
+        str, FieldMetadata(alias="auth_provider_x509_cert_url"), pydantic.Field(alias="auth_provider_x509_cert_url")
+    ]
+    client_x509cert_url: typing_extensions.Annotated[
+        str, FieldMetadata(alias="client_x509_cert_url"), pydantic.Field(alias="client_x509_cert_url")
+    ]
     universe_domain: str
 
     if IS_PYDANTIC_V2:

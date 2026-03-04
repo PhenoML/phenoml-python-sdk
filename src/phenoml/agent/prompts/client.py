@@ -70,11 +70,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.create(
             name="Medical Assistant System Prompt",
             content="You are a helpful medical assistant specialized in FHIR data processing...",
@@ -106,11 +104,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.list()
         """
         _response = self._raw_client.list(request_options=request_options)
@@ -135,11 +131,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.get(
             id="id",
         )
@@ -191,11 +185,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.update(
             id="id",
         )
@@ -230,11 +222,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.delete(
             id="id",
         )
@@ -265,12 +255,10 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
         from phenoml.agent import JsonPatchOperation
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.patch(
             id="id",
             request=[
@@ -310,11 +298,9 @@ class PromptsClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.prompts.load_defaults()
         """
         _response = self._raw_client.load_defaults(request_options=request_options)
@@ -378,11 +364,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -422,11 +406,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -459,11 +441,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -523,11 +503,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -572,11 +550,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -615,12 +591,10 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
         from phenoml.agent import JsonPatchOperation
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -668,11 +642,9 @@ class AsyncPromptsClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:

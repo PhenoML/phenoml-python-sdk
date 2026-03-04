@@ -90,11 +90,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.create(
             name="name",
             prompts=["prompt_123", "prompt_456"],
@@ -134,11 +132,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.list(
             tags="tags",
         )
@@ -165,11 +161,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.get(
             id="id",
         )
@@ -230,11 +224,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.update(
             id="id",
             name="name",
@@ -274,11 +266,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.delete(
             id="id",
         )
@@ -309,12 +299,10 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
         from phenoml.agent import JsonPatchOperation
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.patch(
             id="id",
             request=[
@@ -388,11 +376,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.chat(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -464,11 +450,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         response = client.agent.stream_chat(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -533,11 +517,9 @@ class AgentClient:
 
         Examples
         --------
-        from phenoml import phenoml
+        from phenoml import PhenoMLClient
 
-        client = phenoml(
-            token="YOUR_TOKEN",
-        )
+        client = PhenoMLClient()
         client.agent.get_chat_messages(
             chat_session_id="chat_session_id",
             num_messages=1,
@@ -631,11 +613,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -683,11 +663,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -722,11 +700,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -795,11 +771,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -847,11 +821,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -890,12 +862,10 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
         from phenoml.agent import JsonPatchOperation
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -977,11 +947,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1061,11 +1029,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:
@@ -1139,11 +1105,9 @@ class AsyncAgentClient:
         --------
         import asyncio
 
-        from phenoml import Asyncphenoml
+        from phenoml import AsyncPhenoMLClient
 
-        client = Asyncphenoml(
-            token="YOUR_TOKEN",
-        )
+        client = AsyncPhenoMLClient()
 
 
         async def main() -> None:

@@ -1,6 +1,6 @@
 # Reference
 ## Agent
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -27,11 +27,9 @@ Creates a new PhenoAgent with specified configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.create(
     name="name",
     prompts=["prompt_123", "prompt_456"],
@@ -123,7 +121,7 @@ In shared/experiment environments, the default sandbox provider is used if a dif
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...) -&gt; AsyncHttpResponse[AgentListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -150,11 +148,9 @@ Retrieves a list of PhenoAgents belonging to the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.list(
     tags="tags",
 )
@@ -193,7 +189,7 @@ client.agent.list(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -220,11 +216,9 @@ Retrieves a specific agent by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.get(
     id="id",
 )
@@ -263,7 +257,7 @@ client.agent.get(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -290,11 +284,9 @@ Updates an existing agent's configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.update(
     id="id",
     name="name",
@@ -395,7 +387,7 @@ In shared/experiment environments, the default sandbox provider is used if a dif
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -&gt; AsyncHttpResponse[AgentDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -422,11 +414,9 @@ Deletes an existing agent
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.delete(
     id="id",
 )
@@ -465,7 +455,7 @@ client.agent.delete(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...) -&gt; AsyncHttpResponse[AgentResponse]</code></summary>
 <dl>
 <dd>
 
@@ -492,12 +482,10 @@ Patches an existing agent's configuration
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.agent import JsonPatchOperation
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.patch(
     id="id",
     request=[
@@ -560,7 +548,7 @@ client.agent.patch(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">chat</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">chat</a>(...) -&gt; AsyncHttpResponse[AgentChatResponse]</code></summary>
 <dl>
 <dd>
 
@@ -587,11 +575,9 @@ Send a message to an agent and receive a JSON response.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.chat(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -687,7 +673,9 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">stream_chat</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">stream_chat</a>(...) -&gt; typing.AsyncIterator[
+    AsyncHttpResponse[typing.AsyncIterator[AgentChatStreamEvent]]
+]</code></summary>
 <dl>
 <dd>
 
@@ -716,11 +704,9 @@ tool_result, message_end, and error.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 response = client.agent.stream_chat(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -818,7 +804,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...)</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...) -&gt; AsyncHttpResponse[AgentGetChatMessagesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -845,11 +831,9 @@ Retrieves a list of chat messages for a given chat session
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.get_chat_messages(
     chat_session_id="chat_session_id",
     num_messages=1,
@@ -925,7 +909,7 @@ If not specified, messages with all roles are returned.
 </details>
 
 ## Agent Prompts
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -952,11 +936,9 @@ Creates a new agent prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.create(
     name="Medical Assistant System Prompt",
     content="You are a helpful medical assistant specialized in FHIR data processing...",
@@ -1028,7 +1010,7 @@ client.agent.prompts.create(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>()</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>() -&gt; AsyncHttpResponse[PromptsListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1055,11 +1037,9 @@ Retrieves a list of agent prompts belonging to the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.list()
 
 ```
@@ -1088,7 +1068,7 @@ client.agent.prompts.list()
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">get</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1115,11 +1095,9 @@ Retrieves a specific prompt by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.get(
     id="id",
 )
@@ -1158,7 +1136,7 @@ client.agent.prompts.get(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">update</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1185,11 +1163,9 @@ Updates an existing prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.update(
     id="id",
 )
@@ -1268,7 +1244,7 @@ client.agent.prompts.update(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">delete</a>(...) -&gt; AsyncHttpResponse[PromptsDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1295,11 +1271,9 @@ Deletes a prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.delete(
     id="id",
 )
@@ -1338,7 +1312,7 @@ client.agent.prompts.delete(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">patch</a>(...) -&gt; AsyncHttpResponse[AgentPromptsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1365,12 +1339,10 @@ Patches an existing prompt
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.agent import JsonPatchOperation
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.patch(
     id="id",
     request=[
@@ -1433,7 +1405,7 @@ client.agent.prompts.patch(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">load_defaults</a>()</code></summary>
+<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">load_defaults</a>() -&gt; AsyncHttpResponse[SuccessResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1460,11 +1432,9 @@ Loads default agent prompts for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.agent.prompts.load_defaults()
 
 ```
@@ -1494,7 +1464,7 @@ client.agent.prompts.load_defaults()
 </details>
 
 ## Authtoken Auth
-<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">generate_token</a>(...)</code></summary>
+<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">generate_token</a>(...) -&gt; AsyncHttpResponse[AuthGenerateTokenResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1521,11 +1491,9 @@ Obtain an access token using client credentials
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.authtoken.auth.generate_token(
     username="username",
     password="password",
@@ -1573,8 +1541,93 @@ client.authtoken.auth.generate_token(
 </dl>
 </details>
 
+<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">get_token</a>(...) -&gt; AsyncHttpResponse[TokenResponse]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
+Accepts client_id and client_secret in the request body (JSON or
+form-encoded) or via Basic Auth header (RFC 6749 §2.3.1), and
+returns an access token with expiration information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenoMLClient
+
+client = PhenoMLClient()
+client.authtoken.auth.get_token()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**grant_type:** `typing.Optional[str]` — Must be "client_credentials" if provided
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_id:** `typing.Optional[str]` — The client ID (credential username)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**client_secret:** `typing.Optional[str]` — The client secret (credential password)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Cohort
-<details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...)</code></summary>
+<details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...) -&gt; AsyncHttpResponse[CohortResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1601,11 +1654,9 @@ Converts natural language text into structured FHIR search queries for patient c
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.cohort.analyze(
     text="female patients over 65 with diabetes but not hypertension",
 )
@@ -1645,7 +1696,7 @@ client.cohort.analyze(
 </details>
 
 ## Construe
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...) -&gt; AsyncHttpResponse[ConstrueUploadCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1675,11 +1726,9 @@ transitions from "processing" to "ready" or "failed".
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.upload_code_system(
     name="CUSTOM_CODES",
     version="1.0",
@@ -1808,7 +1857,7 @@ When false (default), uploading a duplicate returns 409 Conflict.
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">extract_codes</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">extract_codes</a>(...) -&gt; AsyncHttpResponse[ExtractCodesResult]</code></summary>
 <dl>
 <dd>
 
@@ -1837,11 +1886,9 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.extract_codes(
     text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
 )
@@ -1896,7 +1943,7 @@ client.construe.extract_codes(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>()</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>() -&gt; AsyncHttpResponse[ListCodeSystemsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1923,11 +1970,9 @@ Returns the terminology server's catalog of available code systems, including bo
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.list_available_code_systems()
 
 ```
@@ -1956,7 +2001,7 @@ client.construe.list_available_code_systems()
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...) -&gt; AsyncHttpResponse[GetCodeSystemDetailResponse]</code></summary>
 <dl>
 <dd>
 
@@ -1983,11 +2028,9 @@ Returns full metadata for a single code system, including timestamps and builtin
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.get_code_system_detail(
     codesystem="ICD-10-CM",
     version="2025",
@@ -2035,7 +2078,7 @@ client.construe.get_code_system_detail(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...) -&gt; AsyncHttpResponse[DeleteCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2063,11 +2106,9 @@ Only available on dedicated instances. Large systems may take up to a minute to 
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.delete_custom_code_system(
     codesystem="CUSTOM_CODES",
     version="version",
@@ -2115,7 +2156,7 @@ client.construe.delete_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...) -&gt; AsyncHttpResponse[ExportCodeSystemResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2144,11 +2185,9 @@ Only available on dedicated instances. Builtin systems cannot be exported.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.export_custom_code_system(
     codesystem="CUSTOM_CODES",
     version="version",
@@ -2196,7 +2235,7 @@ client.construe.export_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...) -&gt; AsyncHttpResponse[ListCodesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2225,11 +2264,9 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.list_codes_in_a_code_system(
     codesystem="ICD-10-CM",
     version="2025",
@@ -2295,7 +2332,7 @@ client.construe.list_codes_in_a_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...) -&gt; AsyncHttpResponse[GetCodeResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2324,11 +2361,9 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.get_a_specific_code(
     codesystem="ICD-10-CM",
     code_id="E11.65",
@@ -2385,7 +2420,7 @@ client.construe.get_a_specific_code(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...) -&gt; AsyncHttpResponse[SemanticSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2430,11 +2465,9 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.semantic_search_embedding_based(
     codesystem="ICD-10-CM",
     text="patient has trouble breathing at night and wakes up gasping",
@@ -2500,7 +2533,7 @@ client.construe.semantic_search_embedding_based(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback_on_extraction_results</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback_on_extraction_results</a>(...) -&gt; AsyncHttpResponse[FeedbackResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2528,16 +2561,14 @@ Feedback includes the full extraction result received and the result the user ex
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.construe import (
     ExtractCodesResult,
     ExtractedCodeResult,
     ExtractRequestSystem,
 )
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.submit_feedback_on_extraction_results(
     text="Patient has type 2 diabetes with hyperglycemia",
     received_result=ExtractCodesResult(
@@ -2620,7 +2651,7 @@ client.construe.submit_feedback_on_extraction_results(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...)</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...) -&gt; AsyncHttpResponse[TextSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2670,11 +2701,9 @@ Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.construe.terminology_server_text_search(
     codesystem="ICD-10-CM",
     q="E11.65",
@@ -2741,7 +2770,7 @@ client.construe.terminology_server_text_search(
 </details>
 
 ## Fhir
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -&gt; AsyncHttpResponse[FhirSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -2770,11 +2799,9 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.search(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
@@ -2870,7 +2897,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -2899,11 +2926,9 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.create(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
@@ -3010,7 +3035,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -3039,11 +3064,9 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.upsert(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
@@ -3151,7 +3174,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...) -&gt; AsyncHttpResponse[typing.Dict[str, typing.Any]]</code></summary>
 <dl>
 <dd>
 
@@ -3180,11 +3203,9 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.delete(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
@@ -3266,7 +3287,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -3300,12 +3321,10 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir import FhirPatchRequestBodyItem
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.patch(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     fhir_path="Patient",
@@ -3407,7 +3426,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...)</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...) -&gt; AsyncHttpResponse[FhirBundle]</code></summary>
 <dl>
 <dd>
 
@@ -3438,12 +3457,10 @@ The request is proxied to the configured FHIR server with appropriate authentica
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir.execute_bundle(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -3553,7 +3570,7 @@ Optional field as not all FHIR servers include it (e.g., Medplum).
 </details>
 
 ## FhirProvider
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3582,12 +3599,10 @@ Note: The "sandbox" provider type cannot be created via this API - it is managed
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.create(
     name="Epic Sandbox",
     provider="athenahealth",
@@ -3663,7 +3678,7 @@ client.fhir_provider.create(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">list</a>()</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">list</a>() -&gt; AsyncHttpResponse[FhirProviderListResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3693,11 +3708,9 @@ Sandbox providers return FhirProviderSandboxInfo.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.list()
 
 ```
@@ -3726,7 +3739,7 @@ client.fhir_provider.list()
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">get</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3756,11 +3769,9 @@ On shared instances, only sandbox providers can be accessed.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.get(
     fhir_provider_id="fhir_provider_id",
 )
@@ -3799,7 +3810,7 @@ client.fhir_provider.get(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...) -&gt; AsyncHttpResponse[FhirProviderDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3828,11 +3839,9 @@ Note: Sandbox providers cannot be deleted.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.delete(
     fhir_provider_id="fhir_provider_id",
 )
@@ -3871,7 +3880,7 @@ client.fhir_provider.delete(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3901,12 +3910,10 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.add_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     request=FhirProviderAddAuthConfigRequest_Jwt(
@@ -3956,7 +3963,7 @@ client.fhir_provider.add_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderResponse]</code></summary>
 <dl>
 <dd>
 
@@ -3989,11 +3996,9 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.set_active_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     auth_config_id="auth-config-123",
@@ -4041,7 +4046,7 @@ client.fhir_provider.set_active_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...)</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...) -&gt; AsyncHttpResponse[FhirProviderRemoveAuthConfigResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4071,11 +4076,9 @@ Note: Sandbox providers cannot be modified.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.fhir_provider.remove_auth_config(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     auth_config_id="auth-config-123",
@@ -4124,7 +4127,7 @@ client.fhir_provider.remove_auth_config(
 </details>
 
 ## Lang2Fhir
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -4151,11 +4154,9 @@ Converts natural language text into a structured FHIR resource
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.create(
     version="R4",
     resource="auto",
@@ -4212,7 +4213,7 @@ client.lang2fhir.create(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create_multi</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create_multi</a>(...) -&gt; AsyncHttpResponse[CreateMultiResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4241,11 +4242,9 @@ Resources are linked with proper references (e.g., Conditions reference the Pati
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.create_multi(
     text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
 )
@@ -4300,7 +4299,7 @@ client.lang2fhir.create_multi(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">search</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">search</a>(...) -&gt; AsyncHttpResponse[SearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4334,11 +4333,9 @@ Schedule, ServiceRequest, Slot, and Specimen.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.search(
     text="Appointments between March 2-9, 2025",
 )
@@ -4387,7 +4384,7 @@ Examples:
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...) -&gt; AsyncHttpResponse[Lang2FhirUploadProfileResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4423,11 +4420,9 @@ Uploads will be rejected if:
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.upload_profile(
     profile="(base64 encoded FHIR StructureDefinition JSON)",
 )
@@ -4466,7 +4461,7 @@ client.lang2fhir.upload_profile(
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">document</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">document</a>(...) -&gt; AsyncHttpResponse[FhirResource]</code></summary>
 <dl>
 <dd>
 
@@ -4493,11 +4488,9 @@ Extracts text from a document (PDF or image) and converts it into a structured F
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.document(
     version="R4",
     resource="questionnaire",
@@ -4558,7 +4551,7 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...)</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -&gt; AsyncHttpResponse[CreateMultiResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4588,11 +4581,9 @@ Resources are linked with proper references (e.g., Conditions reference the Pati
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
     version="R4",
     content="content",
@@ -4653,7 +4644,7 @@ File type is auto-detected from content magic bytes.
 </details>
 
 ## Summary
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>()</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>() -&gt; AsyncHttpResponse[SummaryListTemplatesResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4680,11 +4671,9 @@ Retrieves all summary templates for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.list_templates()
 
 ```
@@ -4713,7 +4702,7 @@ client.summary.list_templates()
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...) -&gt; AsyncHttpResponse[CreateSummaryTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4740,11 +4729,9 @@ Creates a summary template from an example using LLM function calling
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.create_template(
     name="name",
     example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
@@ -4826,7 +4813,7 @@ client.summary.create_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...) -&gt; AsyncHttpResponse[SummaryGetTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4853,11 +4840,9 @@ Retrieves a specific summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.get_template(
     id="id",
 )
@@ -4896,7 +4881,7 @@ client.summary.get_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...) -&gt; AsyncHttpResponse[SummaryUpdateTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -4923,11 +4908,9 @@ Updates an existing summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.update_template(
     id="id",
     name="name",
@@ -5010,7 +4993,7 @@ client.summary.update_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...) -&gt; AsyncHttpResponse[SummaryDeleteTemplateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5037,11 +5020,9 @@ Deletes a summary template
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.delete_template(
     id="id",
 )
@@ -5080,7 +5061,7 @@ client.summary.delete_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...) -&gt; AsyncHttpResponse[CreateSummaryResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5110,12 +5091,10 @@ Creates a summary from FHIR resources using one of three modes:
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 from phenoml.summary import FhirResource
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.summary.create(
     fhir_resources=FhirResource(
         resource_type="resourceType",
@@ -5184,7 +5163,7 @@ Summary generation mode:
 </details>
 
 ## Tools
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndCreateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5211,11 +5190,9 @@ Converts natural language to FHIR resource and optionally stores it in a FHIR se
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.create_fhir_resource(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -5295,7 +5272,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resources_multi</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resources_multi</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndCreateMultiResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5326,11 +5303,9 @@ resolve them via PUT requests after the initial bundle creation.
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.create_fhir_resources_multi(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -5410,7 +5385,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">search_fhir_resources</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">search_fhir_resources</a>(...) -&gt; AsyncHttpResponse[Lang2FhirAndSearchResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5437,11 +5412,9 @@ Converts natural language to FHIR search parameters and executes search in FHIR 
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.search_fhir_resources(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -5536,7 +5509,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">analyze_cohort</a>(...)</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">analyze_cohort</a>(...) -&gt; AsyncHttpResponse[CohortResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5563,11 +5536,9 @@ Uses LLM to extract search concepts from natural language and builds patient coh
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.analyze_cohort(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -5640,7 +5611,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </details>
 
 ## Tools McpServer
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5667,11 +5638,9 @@ Creates a new MCP server
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.create(
     name="My MCP Server",
     mcp_server_url="https://mcp.example.com",
@@ -5719,7 +5688,7 @@ client.tools.mcp_server.create(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>()</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>() -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5746,11 +5715,9 @@ Lists all MCP servers for a specific user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.list()
 
 ```
@@ -5779,7 +5746,7 @@ client.tools.mcp_server.list()
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5806,11 +5773,9 @@ Gets a MCP server by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.get(
     mcp_server_id="mcp_server_id",
 )
@@ -5849,7 +5814,7 @@ client.tools.mcp_server.get(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...) -&gt; AsyncHttpResponse[McpServerResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5876,11 +5841,9 @@ Deletes a MCP server by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.delete(
     mcp_server_id="mcp_server_id",
 )
@@ -5920,7 +5883,7 @@ client.tools.mcp_server.delete(
 </details>
 
 ## Tools McpServer Tools
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -5947,11 +5910,9 @@ Lists all MCP server tools for a specific MCP server
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.tools.list(
     mcp_server_id="mcp_server_id",
 )
@@ -5990,7 +5951,7 @@ client.tools.mcp_server.tools.list(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6017,11 +5978,9 @@ Gets a MCP server tool by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.tools.get(
     mcp_server_tool_id="mcp_server_tool_id",
 )
@@ -6060,7 +6019,7 @@ client.tools.mcp_server.tools.get(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...) -&gt; AsyncHttpResponse[McpServerToolResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6087,11 +6046,9 @@ Deletes a MCP server tool by ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.tools.delete(
     mcp_server_tool_id="mcp_server_tool_id",
 )
@@ -6130,7 +6087,7 @@ client.tools.mcp_server.tools.delete(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...)</code></summary>
+<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...) -&gt; AsyncHttpResponse[McpServerToolCallResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6157,11 +6114,9 @@ Calls a MCP server tool
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.tools.mcp_server.tools.call(
     mcp_server_tool_id="mcp_server_tool_id",
     arguments={"title": "PhenoML Agent API"},
@@ -6210,7 +6165,7 @@ client.tools.mcp_server.tools.call(
 </details>
 
 ## Workflows
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...) -&gt; AsyncHttpResponse[ListWorkflowsResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6237,11 +6192,9 @@ Retrieves all workflow definitions for the authenticated user
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.list(
     verbose=True,
 )
@@ -6280,7 +6233,7 @@ client.workflows.list(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">create</a>(...) -&gt; AsyncHttpResponse[CreateWorkflowResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6307,11 +6260,9 @@ Creates a new workflow definition with graph generation from workflow instructio
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.create(
     verbose=True,
     name="Patient Data Mapping Workflow",
@@ -6398,7 +6349,7 @@ client.workflows.create(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...) -&gt; AsyncHttpResponse[WorkflowsGetResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6425,11 +6376,9 @@ Retrieves a workflow definition by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.get(
     id="id",
     verbose=True,
@@ -6477,7 +6426,7 @@ client.workflows.get(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...) -&gt; AsyncHttpResponse[WorkflowsUpdateResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6504,11 +6453,9 @@ Updates an existing workflow definition
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.update(
     id="id",
     verbose=True,
@@ -6604,7 +6551,7 @@ client.workflows.update(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...) -&gt; AsyncHttpResponse[WorkflowsDeleteResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6631,11 +6578,9 @@ Deletes a workflow definition by its ID
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.delete(
     id="id",
 )
@@ -6674,7 +6619,7 @@ client.workflows.delete(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">execute</a>(...)</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">execute</a>(...) -&gt; AsyncHttpResponse[ExecuteWorkflowResponse]</code></summary>
 <dl>
 <dd>
 
@@ -6701,11 +6646,9 @@ Executes a workflow with provided input data and returns results
 <dd>
 
 ```python
-from phenoml import phenoml
+from phenoml import PhenoMLClient
 
-client = phenoml(
-    token="YOUR_TOKEN",
-)
+client = PhenoMLClient()
 client.workflows.execute(
     id="id",
     input_data={

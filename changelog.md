@@ -1,3 +1,7 @@
+## 7.3.1 - 2026-03-04
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 7.3.0 - 2026-03-03
 * feat: add document multi-resource extraction endpoint
 * Add comprehensive support for extracting multiple FHIR resources from documents through a new API endpoint. This enhancement combines document text extraction with multi-resource detection capabilities.
