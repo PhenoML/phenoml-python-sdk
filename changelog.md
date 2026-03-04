@@ -1,6 +1,25 @@
-## 7.3.1 - 2026-03-04
-* SDK regeneration
-* Unable to analyze changes with AI, incrementing PATCH version.
+## 8.0.0 - 2026-03-04
+
+### Breaking Changes
+
+- **Authentication**: Migrated from token-based auth to OAuth 2.0 client credentials flow. The client now accepts `client_id` and `client_secret` parameters (defaulting to `PHENOML_CLIENT_ID` and `PHENOML_CLIENT_SECRET` environment variables) instead of a `token` parameter. Tokens are automatically obtained and refreshed via the `/v2/auth/token` endpoint. A `token` callable is also supported for pre-generated tokens.
+- **Client renamed**: The main client class is now `PhenoMLClient` (was `phenoml`).
+- **Wrapper client removed**: The custom `wrapper_client.py` has been removed. Use `PhenoMLClient` directly.
+
+### Added
+
+- New `/v2/auth/token` OAuth 2.0 client credentials endpoint with `TokenResponse`, `OAuthError`, and `OAuthErrorError` types.
+- `OAuthTokenProvider` and `AsyncOAuthTokenProvider` for automatic token acquisition and refresh.
+- Structured logging support via new `logging` module.
+- `datetime_utils` module for date/time handling.
+- Python 3.13, 3.14, and 3.15 support.
+
+### Internal
+
+- Upgraded Fern Python SDK generator to 4.61.4 and Fern CLI to 4.3.3.
+- Major HTTP client rewrite with improved retry logic and logging.
+- Expanded Pydantic utilities.
+- Added `pytest-xdist` for parallel test execution.
 
 ## 7.3.0 - 2026-03-03
 * feat: add document multi-resource extraction endpoint
