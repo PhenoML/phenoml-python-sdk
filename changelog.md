@@ -2,13 +2,13 @@
 
 ### Breaking Changes
 
-- **Authentication**: Migrated from token-based auth to OAuth 2.0 client credentials flow. The client now accepts `client_id` and `client_secret` parameters (defaulting to `PHENOML_CLIENT_ID` and `PHENOML_CLIENT_SECRET` environment variables) instead of a `token` parameter. Tokens are automatically obtained and refreshed via the `/v2/auth/token` endpoint. A `token` callable is also supported for pre-generated tokens.
+- **Authentication**: Replaced username/password authentication with OAuth 2.0 client credentials. The client now accepts `client_id` and `client_secret` parameters (defaulting to `PHENOML_CLIENT_ID` and `PHENOML_CLIENT_SECRET` environment variables). Tokens are automatically obtained and refreshed via the `/v2/auth/token` endpoint. A `token` callable is also supported for pre-existing tokens.
 - **Client renamed**: The main client class is now `PhenomlClient` (was `PhenoMLClient` wrapper / `phenoml` base class).
 - **Wrapper client removed**: The custom `wrapper_client.py` has been removed. Use `PhenomlClient` directly.
 
 ### Migration Guide
 
-**Authentication** — replace token-based auth with client credentials:
+**Authentication** — replace username/password with client credentials:
 
 ```python
 # Before
