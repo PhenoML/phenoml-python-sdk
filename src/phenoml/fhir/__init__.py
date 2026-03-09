@@ -19,7 +19,15 @@ if typing.TYPE_CHECKING:
         FhirResourceMeta,
         FhirSearchResponse,
     )
-    from .errors import BadGatewayError, BadRequestError, InternalServerError, NotFoundError, UnauthorizedError
+    from .errors import (
+        BadGatewayError,
+        BadRequestError,
+        InternalServerError,
+        NotFoundError,
+        ServiceUnavailableError,
+        TooManyRequestsError,
+        UnauthorizedError,
+    )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadGatewayError": ".errors",
     "BadRequestError": ".errors",
@@ -36,6 +44,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirSearchResponse": ".types",
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
+    "ServiceUnavailableError": ".errors",
+    "TooManyRequestsError": ".errors",
     "UnauthorizedError": ".errors",
 }
 
@@ -77,5 +87,7 @@ __all__ = [
     "FhirSearchResponse",
     "InternalServerError",
     "NotFoundError",
+    "ServiceUnavailableError",
+    "TooManyRequestsError",
     "UnauthorizedError",
 ]

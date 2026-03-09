@@ -1,3 +1,13 @@
+## 8.1.0 - 2026-03-09
+* feat: add ServiceUnavailableError and TooManyRequestsError handling
+* Add comprehensive error handling for HTTP 429 (Too Many Requests) and HTTP 503 (Service Unavailable) status codes across all FHIR client methods. This improves the client's robustness by properly handling rate limiting and temporary service unavailability scenarios.
+* Key changes:
+* Add ServiceUnavailableError class for HTTP 503 responses
+* Add TooManyRequestsError class for HTTP 429 responses with structured ErrorResponse body
+* Update all sync and async client methods to handle these new error types
+* Add proper imports and exports in module initialization files
+* 🌿 Generated with Fern
+
 ## 8.0.0 - 2026-03-04
 
 ### Breaking Changes
