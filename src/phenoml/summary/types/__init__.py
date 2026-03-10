@@ -10,7 +10,6 @@ if typing.TYPE_CHECKING:
     from .create_summary_request_mode import CreateSummaryRequestMode
     from .create_summary_response import CreateSummaryResponse
     from .create_summary_template_response import CreateSummaryTemplateResponse
-    from .error_response import ErrorResponse
     from .fhir_bundle import FhirBundle
     from .fhir_bundle_entry_item import FhirBundleEntryItem
     from .fhir_resource import FhirResource
@@ -24,7 +23,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateSummaryRequestMode": ".create_summary_request_mode",
     "CreateSummaryResponse": ".create_summary_response",
     "CreateSummaryTemplateResponse": ".create_summary_template_response",
-    "ErrorResponse": ".error_response",
     "FhirBundle": ".fhir_bundle",
     "FhirBundleEntryItem": ".fhir_bundle_entry_item",
     "FhirResource": ".fhir_resource",
@@ -62,7 +60,6 @@ __all__ = [
     "CreateSummaryRequestMode",
     "CreateSummaryResponse",
     "CreateSummaryTemplateResponse",
-    "ErrorResponse",
     "FhirBundle",
     "FhirBundleEntryItem",
     "FhirResource",
