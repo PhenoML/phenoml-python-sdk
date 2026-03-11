@@ -543,6 +543,7 @@ class RawWorkflowsClient:
         id: str,
         *,
         input_data: typing.Dict[str, typing.Any],
+        preview: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ExecuteWorkflowResponse]:
         """
@@ -555,6 +556,9 @@ class RawWorkflowsClient:
 
         input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
+
+        preview : typing.Optional[bool]
+            If true, create operations return mock resources instead of persisting to the FHIR server
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -569,6 +573,7 @@ class RawWorkflowsClient:
             method="POST",
             json={
                 "input_data": input_data,
+                "preview": preview,
             },
             headers={
                 "content-type": "application/json",
@@ -1162,6 +1167,7 @@ class AsyncRawWorkflowsClient:
         id: str,
         *,
         input_data: typing.Dict[str, typing.Any],
+        preview: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ExecuteWorkflowResponse]:
         """
@@ -1174,6 +1180,9 @@ class AsyncRawWorkflowsClient:
 
         input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
+
+        preview : typing.Optional[bool]
+            If true, create operations return mock resources instead of persisting to the FHIR server
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1188,6 +1197,7 @@ class AsyncRawWorkflowsClient:
             method="POST",
             json={
                 "input_data": input_data,
+                "preview": preview,
             },
             headers={
                 "content-type": "application/json",

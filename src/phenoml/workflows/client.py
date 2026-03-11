@@ -279,6 +279,7 @@ class WorkflowsClient:
         id: str,
         *,
         input_data: typing.Dict[str, typing.Any],
+        preview: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExecuteWorkflowResponse:
         """
@@ -291,6 +292,9 @@ class WorkflowsClient:
 
         input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
+
+        preview : typing.Optional[bool]
+            If true, create operations return mock resources instead of persisting to the FHIR server
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -315,7 +319,9 @@ class WorkflowsClient:
             },
         )
         """
-        _response = self._raw_client.execute(id, input_data=input_data, request_options=request_options)
+        _response = self._raw_client.execute(
+            id, input_data=input_data, preview=preview, request_options=request_options
+        )
         return _response.data
 
 
@@ -622,6 +628,7 @@ class AsyncWorkflowsClient:
         id: str,
         *,
         input_data: typing.Dict[str, typing.Any],
+        preview: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ExecuteWorkflowResponse:
         """
@@ -634,6 +641,9 @@ class AsyncWorkflowsClient:
 
         input_data : typing.Dict[str, typing.Any]
             Input data for workflow execution
+
+        preview : typing.Optional[bool]
+            If true, create operations return mock resources instead of persisting to the FHIR server
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -666,5 +676,7 @@ class AsyncWorkflowsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.execute(id, input_data=input_data, request_options=request_options)
+        _response = await self._raw_client.execute(
+            id, input_data=input_data, preview=preview, request_options=request_options
+        )
         return _response.data

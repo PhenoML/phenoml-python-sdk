@@ -5,6 +5,6 @@
   "generatorConfig": {
     "client_class_name": "PhenomlClient"
   },
-  "originGitCommit": "cdfe611a02d68f09dbce1eb259387269402552fb",
-  "sdkVersion": "9.0.0"
+  "originGitCommit": "670d2f19d924d953196b4131bb16a252f2b6148f",
+  "sdkVersion": "9.1.0"
 }
