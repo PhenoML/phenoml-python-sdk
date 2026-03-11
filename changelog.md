@@ -1,3 +1,6 @@
+## 9.0.0 - 2026-03-11
+* The `ErrorResponse` type has been removed from the summary module. If your code references `phenoml.summary.ErrorResponse` or imports it directly, you'll need to update your error handling logic to use the appropriate error types for your specific use case.
+
 ## 8.1.0 - 2026-03-09
 * feat: add ServiceUnavailableError and TooManyRequestsError handling
 * Add comprehensive error handling for HTTP 429 (Too Many Requests) and HTTP 503 (Service Unavailable) status codes across all FHIR client methods. This improves the client's robustness by properly handling rate limiting and temporary service unavailability scenarios.
