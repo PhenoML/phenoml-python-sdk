@@ -1,3 +1,6 @@
+## 9.1.0 - 2026-03-11
+* The workflow execution methods now support an optional `preview` parameter. When set to true, workflows return mock resources instead of persisting data to the FHIR server, enabling safe testing and development.
+
 ## 9.0.0 - 2026-03-11
 * The `ErrorResponse` type has been removed from the summary module. If your code references `phenoml.summary.ErrorResponse` or imports it directly, you'll need to update your error handling logic to use the appropriate error types for your specific use case.
 

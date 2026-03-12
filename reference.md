@@ -6689,6 +6689,14 @@ client.workflows.execute(
 <dl>
 <dd>
 
+**preview:** `typing.Optional[bool]` — If true, create operations return mock resources instead of persisting to the FHIR server
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>

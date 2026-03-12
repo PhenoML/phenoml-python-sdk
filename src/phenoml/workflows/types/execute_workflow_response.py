@@ -19,6 +19,10 @@ class ExecuteWorkflowResponse(UniversalBaseModel):
     """
 
     results: typing.Optional[ExecuteWorkflowResponseResults] = None
+    preview: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether the workflow was executed in preview mode
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
