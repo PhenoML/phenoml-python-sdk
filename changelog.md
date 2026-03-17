@@ -1,3 +1,6 @@
+## 9.2.0 - 2026-03-17
+* The SDK now supports "meditech" as a FHIR provider option, enabling integration with Meditech healthcare systems.
+
 ## 9.1.0 - 2026-03-11
 * The workflow execution methods now support an optional `preview` parameter. When set to true, workflows return mock resources instead of persisting data to the FHIR server, enabling safe testing and development.
 
