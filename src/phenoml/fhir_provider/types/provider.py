@@ -11,6 +11,7 @@ Provider = typing.Union[
         "epic",
         "google_healthcare",
         "hapi",
+        "meditech",
         "medplum",
         "phenostore",
         "sandbox",
