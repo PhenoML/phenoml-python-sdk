@@ -1,3 +1,14 @@
+## 9.2.1 - 2026-03-23
+* docs: update parameter documentation for auth methods
+* Clarify that username and password parameters in authentication methods
+* represent API credential client ID and client secret respectively, rather
+* than user login credentials.
+* Key changes:
+* Update username parameter description from "The user's username or email" to "The API credential client ID"
+* Update password parameter description from "The user's password" to "The API credential client secret"
+* Apply changes consistently across both sync and async auth clients
+* 🌿 Generated with Fern
+
 ## 9.2.0 - 2026-03-17
 * The SDK now supports "meditech" as a FHIR provider option, enabling integration with Meditech healthcare systems.
 

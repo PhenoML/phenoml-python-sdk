@@ -36,10 +36,10 @@ class AuthClient:
         Parameters
         ----------
         username : str
-            The user's username or email
+            The API credential client ID
 
         password : str
-            The user's password
+            The API credential client secret
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -134,10 +134,10 @@ class AsyncAuthClient:
         Parameters
         ----------
         username : str
-            The user's username or email
+            The API credential client ID
 
         password : str
-            The user's password
+            The API credential client secret
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

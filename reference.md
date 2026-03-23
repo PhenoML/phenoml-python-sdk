@@ -1513,7 +1513,7 @@ client.authtoken.auth.generate_token(
 <dl>
 <dd>
 
-**username:** `str` — The user's username or email
+**username:** `str` — The API credential client ID
     
 </dd>
 </dl>
@@ -1521,7 +1521,7 @@ client.authtoken.auth.generate_token(
 <dl>
 <dd>
 
-**password:** `str` — The user's password
+**password:** `str` — The API credential client secret
     
 </dd>
 </dl>
