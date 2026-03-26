@@ -56,7 +56,7 @@ class ExtractRequestConfig(UniversalBaseModel):
     Citations show the exact text spans (with character offsets) that led to each code.
     Only available when using chunking_method: "sentences".
     The "none" method returns full text as one chunk (not useful for citations).
-    LLM-based chunking (paragraphs, topics) does not support citations.
+    LLM-based chunking (paragraphs, topics, soap_note) does not support citations.
     """
 
     if IS_PYDANTIC_V2:

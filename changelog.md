@@ -1,3 +1,6 @@
+## 9.3.0 - 2026-03-26
+* The SDK now supports "soap_note" as a chunking method option for medical document processing, specifically designed for SOAP (Subjective, Objective, Assessment, Plan) note structures.
+
 ## 9.2.0 - 2026-03-17
 * The SDK now supports "meditech" as a FHIR provider option, enabling integration with Meditech healthcare systems.
 
