@@ -1,3 +1,6 @@
+## 9.3.0 - 2026-03-26
+* The extraction API now supports context-based relevance filtering. Use the new `extraction_context` parameter to describe your extraction goal and `min_context_relevance` to set a threshold that automatically filters out irrelevant document chunks before extraction, reducing noise and processing costs.
+
 ## 9.2.0 - 2026-03-17
 * The SDK now supports "meditech" as a FHIR provider option, enabling integration with Meditech healthcare systems.
 

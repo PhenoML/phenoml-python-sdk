@@ -56,7 +56,22 @@ class ExtractRequestConfig(UniversalBaseModel):
     Citations show the exact text spans (with character offsets) that led to each code.
     Only available when using chunking_method: "sentences".
     The "none" method returns full text as one chunk (not useful for citations).
-    LLM-based chunking (paragraphs, topics) does not support citations.
+    LLM-based chunking (paragraphs, topics, soap_note) does not support citations.
+    """
+
+    extraction_context: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional context describing the goal of the extraction.
+    Required when min_context_relevance is greater than 0.
+    """
+
+    min_context_relevance: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Minimum relevance score (0.0–1.0) a chunk must reach to proceed to code extraction.
+    Chunks are scored by an LLM against the extraction_context goal. Chunks below this
+    threshold are dropped, reducing noise and extraction cost.
+    Set to 0 (the default) to disable relevance filtering and extract from all chunks.
+    Requires the "extraction_context" field when set above 0.
     """
 
     if IS_PYDANTIC_V2:
