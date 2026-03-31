@@ -1,3 +1,6 @@
+## 9.4.0 - 2026-03-31
+* The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
+
 ## 9.3.0 - 2026-03-26
 * The extraction API now supports context-based relevance filtering. Use the new `extraction_context` parameter to describe your extraction goal and `min_context_relevance` to set a threshold that automatically filters out irrelevant document chunks before extraction, reducing noise and processing costs.
 

@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .extract_codes_result import ExtractCodesResult
     from .extract_request_config import ExtractRequestConfig
     from .extract_request_config_chunking_method import ExtractRequestConfigChunkingMethod
+    from .extract_request_config_consistency_effort import ExtractRequestConfigConsistencyEffort
     from .extract_request_config_validation_method import ExtractRequestConfigValidationMethod
     from .extract_request_system import ExtractRequestSystem
     from .extracted_code_result import ExtractedCodeResult
@@ -41,6 +42,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ExtractCodesResult": ".extract_codes_result",
     "ExtractRequestConfig": ".extract_request_config",
     "ExtractRequestConfigChunkingMethod": ".extract_request_config_chunking_method",
+    "ExtractRequestConfigConsistencyEffort": ".extract_request_config_consistency_effort",
     "ExtractRequestConfigValidationMethod": ".extract_request_config_validation_method",
     "ExtractRequestSystem": ".extract_request_system",
     "ExtractedCodeResult": ".extracted_code_result",
@@ -90,6 +92,7 @@ __all__ = [
     "ExtractCodesResult",
     "ExtractRequestConfig",
     "ExtractRequestConfigChunkingMethod",
+    "ExtractRequestConfigConsistencyEffort",
     "ExtractRequestConfigValidationMethod",
     "ExtractRequestSystem",
     "ExtractedCodeResult",
