@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .extract_request_config_chunking_method import ExtractRequestConfigChunkingMethod
+from .extract_request_config_consistency_effort import ExtractRequestConfigConsistencyEffort
 from .extract_request_config_validation_method import ExtractRequestConfigValidationMethod
 
 
@@ -72,6 +73,13 @@ class ExtractRequestConfig(UniversalBaseModel):
     threshold are dropped, reducing noise and extraction cost.
     Set to 0 (the default) to disable relevance filtering and extract from all chunks.
     Requires the "extraction_context" field when set above 0.
+    """
+
+    consistency_effort: typing.Optional[ExtractRequestConfigConsistencyEffort] = pydantic.Field(default=None)
+    """
+    How much effort to spend ensuring consistent results across repeated requests.
+    Higher levels apply stricter filtering to remove borderline codes that may
+    vary between calls, improving determinism at the cost of additional latency.
     """
 
     if IS_PYDANTIC_V2:
