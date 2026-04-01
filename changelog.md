@@ -1,3 +1,19 @@
+## 9.4.1 - 2026-04-01
+* test: add WireMock-based wire tests for all SDK endpoints
+* Introduce a comprehensive wire test suite that validates every public API
+* endpoint against a WireMock container. Tests cover agent, agent prompts,
+* auth token, cohort, construe, FHIR, FHIR provider, lang2fhir, summary,
+* tools, and MCP server endpoints. The WireMock container lifecycle is
+* managed by a top-level pytest plugin (tests/conftest.py) that starts and
+* stops the container exactly once per test run, with full support for
+* pytest-xdist parallel execution.
+* Key changes:
+* Add tests/conftest.py to manage WireMock container lifecycle via docker-compose
+* Add tests/wire/conftest.py with shared client factory and request verification helpers
+* Add wire test files for all major resource groups (agent, construe, fhir, lang2fhir, summary, tools, etc.)
+* Add `requests` and `types-requests` dev dependencies to pyproject.toml
+* 🌿 Generated with Fern
+
 ## 9.4.0 - 2026-03-31
 * The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
 
