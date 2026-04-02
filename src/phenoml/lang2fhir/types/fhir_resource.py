@@ -3,3 +3,6 @@
 import typing
 
 FhirResource = typing.Dict[str, typing.Any]
+"""
+A FHIR resource (schema depends on resource type)
+"""
