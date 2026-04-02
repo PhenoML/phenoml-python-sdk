@@ -1,9 +1,26 @@
 # Phenoml Python Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Ffern-demo%2Fphenoml-python-sdk)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fphenoml%2Fphenoml-python-sdk)
 [![pypi](https://img.shields.io/pypi/v/phenoml)](https://pypi.python.org/pypi/phenoml)
 
-The Phenoml Python library provides convenient access to the Phenoml API from Python.
+The Phenoml Python library provides convenient access to the Phenoml APIs from Python.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Reference](#reference)
+- [Usage](#usage)
+- [Environments](#environments)
+- [Async Client](#async-client)
+- [Exception Handling](#exception-handling)
+- [Streaming](#streaming)
+- [Oauth Token Override](#oauth-token-override)
+- [Advanced](#advanced)
+  - [Access Raw Response Data](#access-raw-response-data)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Client](#custom-client)
+- [Contributing](#contributing)
 
 ## Installation
 
@@ -23,21 +40,36 @@ Instantiate and use the client with the following:
 from phenoml import PhenomlClient
 
 client = PhenomlClient(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-    base_url="https://yourinstance.app.pheno.ml",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
 )
 
 client.agent.create(
     name="name",
-    provider="provider_id",
-    prompts=["prompt_123", "prompt_456"],
+    prompts=[
+        "prompt_123",
+        "prompt_456"
+    ],
+    provider="provider",
+)
+```
+
+## Environments
+
+This SDK allows you to configure different environments for API requests.
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    environment=PhenomlClientEnvironment.DEFAULT,
 )
 ```
 
 ## Async Client
 
-The SDK also exports an `async` client so that you can make non-blocking calls to our API.
+The SDK also exports an `async` client so that you can make non-blocking calls to our API. Note that if you are constructing an Async httpx client class to pass into this client, use `httpx.AsyncClient()` instead of `httpx.Client()` (e.g. for the `httpx_client` parameter of this client).
 
 ```python
 import asyncio
@@ -45,17 +77,19 @@ import asyncio
 from phenoml import AsyncPhenomlClient
 
 client = AsyncPhenomlClient(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-    base_url="https://yourinstance.app.pheno.ml",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
 )
 
 
 async def main() -> None:
     await client.agent.create(
         name="name",
-        provider="provider_id",
-        prompts=["prompt_123", "prompt_456"],
+        prompts=[
+            "prompt_123",
+            "prompt_456"
+        ],
+        provider="provider",
     )
 
 
@@ -77,6 +111,47 @@ except ApiError as e:
     print(e.body)
 ```
 
+## Streaming
+
+The SDK supports streaming responses, as well, the response will be a generator that you can loop over.
+
+```python
+from phenoml import PhenomlClient
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+)
+
+client.agent.stream_chat(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+    message="What is the patient\'s current condition?",
+    agent_id="agent-123",
+)
+```
+
+## Oauth Token Override
+
+This SDK supports two authentication methods: OAuth client credentials flow (automatic token management) or direct bearer token authentication. You can choose between these options when initializing the client:
+
+```python
+from phenoml import PhenomlClient
+
+# Option 1: Direct bearer token (bypass OAuth flow)
+client = PhenomlClient(
+    ...,
+    token="my-pre-generated-bearer-token",
+)
+
+# Option 2: OAuth client credentials flow (automatic token management)
+client = PhenomlClient(
+    ...,
+    client_id="your-client-id",
+    client_secret="your-client-secret",
+)
+```
+
 ## Advanced
 
 ### Access Raw Response Data
@@ -87,13 +162,10 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 ```python
 from phenoml import PhenomlClient
 
-client = PhenomlClient(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-    base_url="https://yourinstance.app.pheno.ml",
-)
+client = PhenomlClient(...)
 response = client.agent.with_raw_response.create(...)
 print(response.headers)  # access the response headers
+print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
 ```
 
@@ -124,13 +196,7 @@ The SDK defaults to a 60 second timeout. You can configure this with a timeout o
 ```python
 from phenoml import PhenomlClient
 
-client = PhenomlClient(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-    base_url="https://yourinstance.app.pheno.ml",
-    timeout=20.0,
-)
-
+client = PhenomlClient(..., timeout=20.0)
 
 # Override timeout for a specific method
 client.agent.create(..., request_options={
@@ -148,11 +214,9 @@ import httpx
 from phenoml import PhenomlClient
 
 client = PhenomlClient(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-    base_url="https://yourinstance.app.pheno.ml",
+    ...,
     httpx_client=httpx.Client(
-        proxies="http://my.test.proxy.example.com",
+        proxy="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
     ),
 )
