@@ -1,3 +1,9 @@
+## 9.5.0 - 2026-04-03
+* The SDK now retries requests automatically on network-level failures (`ConnectError`, `RemoteProtocolError`) in addition to retryable HTTP status codes, using the same exponential-backoff strategy. Response parsing failures now raise a dedicated `ParsingError` (wrapping `pydantic.ValidationError`) to make debugging malformed API responses easier. Note: the minimum supported Python version is now **3.10**.
+* The SDK now raises a `ParsingError` (from `phenoml.core`) when a server response cannot be validated against its expected schema. This replaces unhandled Pydantic `ValidationError` exceptions and gives callers structured access to the HTTP status code, response headers, response body, and the underlying validation error via the `cause` attribute.
+* The SDK now raises a structured `ParsingError` (instead of a raw `pydantic.ValidationError`) when a server response cannot be deserialized. This provides consistent error handling across all API clients, with the original validation error available via the `cause` attribute alongside the HTTP status code, headers, and response body.
+* The SDK now raises a structured `ParsingError` (instead of a raw `pydantic.ValidationError`) when a server response cannot be deserialized. This applies to all workflow client methods and ensures error handling code that catches SDK error types continues to work correctly.
+
 ## 9.4.0 - 2026-03-31
 * The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
 
