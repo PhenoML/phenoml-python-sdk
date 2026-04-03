@@ -1,3 +1,7 @@
+## 9.5.0 - 2026-04-03
+* The SDK now automatically retries requests on low-level connection errors (`ConnectError`, `RemoteProtocolError`) using exponential backoff with jitter, in addition to the existing retry logic for retryable HTTP status codes. Pydantic validation errors encountered while parsing API responses are now raised as `ParsingError` (instead of being silently lost), giving callers clearer diagnostics when a response cannot be deserialized. Note: Python 3.8 and 3.9 are no longer supported — the minimum required Python version is now 3.10.
+* The SDK now raises a `ParsingError` (available as `from phenoml.core import ParsingError`) when a server response cannot be validated against the expected schema, instead of letting a raw Pydantic `ValidationError` propagate. The new exception exposes the HTTP status code, response headers, response body, and the underlying validation error, making it easier to diagnose schema mismatches.
+
 ## 9.4.0 - 2026-03-31
 * The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
 
