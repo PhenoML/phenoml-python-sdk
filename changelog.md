@@ -1,3 +1,9 @@
+## 10.0.0 - 2026-04-03
+* The `generate_token` method has been removed from `AuthClient` and `AsyncAuthClient`. Replace calls to `client.authtoken.auth.generate_token(username=..., password=...)` with `client.authtoken.auth.get_token(...)`. The `AuthGenerateTokenResponse`, `BadRequestErrorBody`, and `UnauthorizedErrorBody` types have also been removed from the public API. Additionally, the minimum supported Python version is now 3.10.
+* The SDK now surfaces a dedicated `ParsingError` exception (available via `from phenoml.core import ParsingError`) when a server response is valid JSON but fails to deserialize into the expected model. Previously, a raw Pydantic `ValidationError` would propagate unhandled in these cases. This makes it easier to distinguish malformed API responses from other HTTP errors.
+* The SDK now raises a `ParsingError` exception (available from `phenoml.core.parse_error`) when a server response cannot be parsed against the expected schema. This replaces unhandled Pydantic `ValidationError` exceptions with a structured error that includes the HTTP status code, response headers, response body, and the underlying validation cause — making it easier to diagnose unexpected API responses.
+* The SDK now raises a `ParsingError` (instead of a bare Pydantic `ValidationError`) when a server response cannot be deserialized. The `ParsingError` includes the HTTP status code, response headers, and response body alongside the original validation error, making it easier to diagnose unexpected API responses.
+
 ## 9.4.0 - 2026-03-31
 * The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
 

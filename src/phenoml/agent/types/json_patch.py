@@ -5,3 +5,6 @@ import typing
 from .json_patch_operation import JsonPatchOperation
 
 JsonPatch = typing.List[JsonPatchOperation]
+"""
+RFC 6902 JSON Patch document
+"""

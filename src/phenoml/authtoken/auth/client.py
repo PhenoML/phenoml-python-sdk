@@ -6,7 +6,6 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from ..types.token_response import TokenResponse
 from .raw_client import AsyncRawAuthClient, RawAuthClient
-from .types.auth_generate_token_response import AuthGenerateTokenResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -26,43 +25,6 @@ class AuthClient:
         RawAuthClient
         """
         return self._raw_client
-
-    def generate_token(
-        self, *, username: str, password: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AuthGenerateTokenResponse:
-        """
-        Obtain an access token using client credentials
-
-        Parameters
-        ----------
-        username : str
-            The API credential client ID
-
-        password : str
-            The API credential client secret
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AuthGenerateTokenResponse
-            Successfully generated token
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient()
-        client.authtoken.auth.generate_token(
-            username="username",
-            password="password",
-        )
-        """
-        _response = self._raw_client.generate_token(
-            username=username, password=password, request_options=request_options
-        )
-        return _response.data
 
     def get_token(
         self,
@@ -124,51 +86,6 @@ class AsyncAuthClient:
         AsyncRawAuthClient
         """
         return self._raw_client
-
-    async def generate_token(
-        self, *, username: str, password: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AuthGenerateTokenResponse:
-        """
-        Obtain an access token using client credentials
-
-        Parameters
-        ----------
-        username : str
-            The API credential client ID
-
-        password : str
-            The API credential client secret
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AuthGenerateTokenResponse
-            Successfully generated token
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient()
-
-
-        async def main() -> None:
-            await client.authtoken.auth.generate_token(
-                username="username",
-                password="password",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.generate_token(
-            username=username, password=password, request_options=request_options
-        )
-        return _response.data
 
     async def get_token(
         self,
