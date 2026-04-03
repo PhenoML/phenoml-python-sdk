@@ -1,3 +1,10 @@
+## 10.0.0 - 2026-04-03
+* **Breaking:** Dropped support for Python 3.8 and 3.9. The minimum supported Python version is now 3.10.
+* **Breaking:** The `proxies` parameter on the HTTP client has been renamed to `proxy`.
+* Upgraded Fern generator from 4.61.5 to 5.2.0 (CLI 4.50.2 → 4.54.1).
+* Added generated wire tests for all SDK endpoints.
+* Updated core dependencies including `pydantic`, `pytest`, and `anyio`.
+
 ## 9.4.0 - 2026-03-31
 * The extraction API now supports configurable consistency levels through the new `consistency_effort` parameter on `ExtractRequestConfig`. Set this to "low", "medium", or "high" to apply stricter filtering that removes borderline codes which may vary between repeated requests, improving determinism at the cost of additional latency.
 
