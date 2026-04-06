@@ -1,3 +1,17 @@
+## 10.0.1 - 2026-04-06
+* docs: expand consistency_effort docstring with validation context
+* Clarify how consistency_effort interacts with validation_method and
+* min_context_relevance in ExtractRequestConfig. The field description now
+* explains the two distinct modes in which consistency is applied:
+* Key changes:
+* Updated "codes" → "results" in the existing description for accuracy
+* Added explanation that when validation_method is non-"none", consistency
+* is applied to the validation step (unanimous validation required)
+* Added explanation that when validation_method is "none" and
+* min_context_relevance > 0, consistency is applied to the relevance
+* ranking step instead
+* 🌿 Generated with Fern
+
 ## 10.0.0 - 2026-04-03
 * The `generate_token` method has been removed from `AuthClient` and `AsyncAuthClient`. Replace calls to `client.authtoken.auth.generate_token(username=..., password=...)` with `client.authtoken.auth.get_token(...)`. The `AuthGenerateTokenResponse`, `BadRequestErrorBody`, and `UnauthorizedErrorBody` types have also been removed from the public API. Additionally, the minimum supported Python version is now 3.10.
 * The SDK now surfaces a dedicated `ParsingError` exception (available via `from phenoml.core import ParsingError`) when a server response is valid JSON but fails to deserialize into the expected model. Previously, a raw Pydantic `ValidationError` would propagate unhandled in these cases. This makes it easier to distinguish malformed API responses from other HTTP errors.
