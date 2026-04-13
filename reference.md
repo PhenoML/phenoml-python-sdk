@@ -4322,6 +4322,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**detection_effort:** `typing.Optional[CreateMultiRequestDetectionEffort]` — Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4683,6 +4691,14 @@ File type is auto-detected from content magic bytes.
 <dd>
 
 **provider:** `typing.Optional[str]` — Optional FHIR provider name for provider-specific profiles
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**detection_effort:** `typing.Optional[DocumentMultiRequestDetectionEffort]` — Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
     
 </dd>
 </dl>

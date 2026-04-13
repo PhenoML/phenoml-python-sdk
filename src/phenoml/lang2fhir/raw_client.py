@@ -15,8 +15,10 @@ from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
 from .errors.unprocessable_entity_error import UnprocessableEntityError
+from .types.create_multi_request_detection_effort import CreateMultiRequestDetectionEffort
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
+from .types.document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -132,6 +134,7 @@ class RawLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateMultiResponse]:
         """
@@ -150,6 +153,9 @@ class RawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -165,6 +171,7 @@ class RawLang2FhirClient:
                 "text": text,
                 "version": version,
                 "provider": provider,
+                "detection_effort": detection_effort,
             },
             headers={
                 "content-type": "application/json",
@@ -535,6 +542,7 @@ class RawLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateMultiResponse]:
         """
@@ -556,6 +564,9 @@ class RawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -571,6 +582,7 @@ class RawLang2FhirClient:
                 "version": version,
                 "content": content,
                 "provider": provider,
+                "detection_effort": detection_effort,
             },
             headers={
                 "content-type": "application/json",
@@ -748,6 +760,7 @@ class AsyncRawLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateMultiResponse]:
         """
@@ -766,6 +779,9 @@ class AsyncRawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -781,6 +797,7 @@ class AsyncRawLang2FhirClient:
                 "text": text,
                 "version": version,
                 "provider": provider,
+                "detection_effort": detection_effort,
             },
             headers={
                 "content-type": "application/json",
@@ -1151,6 +1168,7 @@ class AsyncRawLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateMultiResponse]:
         """
@@ -1172,6 +1190,9 @@ class AsyncRawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1187,6 +1208,7 @@ class AsyncRawLang2FhirClient:
                 "version": version,
                 "content": content,
                 "provider": provider,
+                "detection_effort": detection_effort,
             },
             headers={
                 "content-type": "application/json",

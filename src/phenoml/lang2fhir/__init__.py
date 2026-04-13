@@ -7,12 +7,14 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
+        CreateMultiRequestDetectionEffort,
         CreateMultiResponse,
         CreateMultiResponseBundle,
         CreateMultiResponseBundleEntryItem,
         CreateMultiResponseBundleEntryItemRequest,
         CreateMultiResponseResourcesItem,
         CreateRequestResource,
+        DocumentMultiRequestDetectionEffort,
         FhirResource,
         Lang2FhirUploadProfileResponse,
         SearchResponse,
@@ -28,12 +30,14 @@ if typing.TYPE_CHECKING:
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
+    "CreateMultiRequestDetectionEffort": ".types",
     "CreateMultiResponse": ".types",
     "CreateMultiResponseBundle": ".types",
     "CreateMultiResponseBundleEntryItem": ".types",
     "CreateMultiResponseBundleEntryItemRequest": ".types",
     "CreateMultiResponseResourcesItem": ".types",
     "CreateRequestResource": ".types",
+    "DocumentMultiRequestDetectionEffort": ".types",
     "FailedDependencyError": ".errors",
     "FhirResource": ".types",
     "ForbiddenError": ".errors",
@@ -69,12 +73,14 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
+    "CreateMultiRequestDetectionEffort",
     "CreateMultiResponse",
     "CreateMultiResponseBundle",
     "CreateMultiResponseBundleEntryItem",
     "CreateMultiResponseBundleEntryItemRequest",
     "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
+    "DocumentMultiRequestDetectionEffort",
     "FailedDependencyError",
     "FhirResource",
     "ForbiddenError",

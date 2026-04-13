@@ -6,23 +6,27 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .create_multi_request_detection_effort import CreateMultiRequestDetectionEffort
     from .create_multi_response import CreateMultiResponse
     from .create_multi_response_bundle import CreateMultiResponseBundle
     from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEntryItem
     from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
     from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
     from .create_request_resource import CreateRequestResource
+    from .document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
     from .fhir_resource import FhirResource
     from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
 _dynamic_imports: typing.Dict[str, str] = {
+    "CreateMultiRequestDetectionEffort": ".create_multi_request_detection_effort",
     "CreateMultiResponse": ".create_multi_response",
     "CreateMultiResponseBundle": ".create_multi_response_bundle",
     "CreateMultiResponseBundleEntryItem": ".create_multi_response_bundle_entry_item",
     "CreateMultiResponseBundleEntryItemRequest": ".create_multi_response_bundle_entry_item_request",
     "CreateMultiResponseResourcesItem": ".create_multi_response_resources_item",
     "CreateRequestResource": ".create_request_resource",
+    "DocumentMultiRequestDetectionEffort": ".document_multi_request_detection_effort",
     "FhirResource": ".fhir_resource",
     "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
     "SearchResponse": ".search_response",
@@ -52,12 +56,14 @@ def __dir__():
 
 
 __all__ = [
+    "CreateMultiRequestDetectionEffort",
     "CreateMultiResponse",
     "CreateMultiResponseBundle",
     "CreateMultiResponseBundleEntryItem",
     "CreateMultiResponseBundleEntryItemRequest",
     "CreateMultiResponseResourcesItem",
     "CreateRequestResource",
+    "DocumentMultiRequestDetectionEffort",
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
     "SearchResponse",
