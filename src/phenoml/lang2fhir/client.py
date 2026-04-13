@@ -5,8 +5,10 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawLang2FhirClient, RawLang2FhirClient
+from .types.create_multi_request_detection_effort import CreateMultiRequestDetectionEffort
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
+from .types.document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -82,6 +84,7 @@ class Lang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -99,6 +102,9 @@ class Lang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -118,7 +124,11 @@ class Lang2FhirClient:
         )
         """
         _response = self._raw_client.create_multi(
-            text=text, version=version, provider=provider, request_options=request_options
+            text=text,
+            version=version,
+            provider=provider,
+            detection_effort=detection_effort,
+            request_options=request_options,
         )
         return _response.data
 
@@ -255,6 +265,7 @@ class Lang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -276,6 +287,9 @@ class Lang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -295,7 +309,11 @@ class Lang2FhirClient:
         )
         """
         _response = self._raw_client.extract_multiple_fhir_resources_from_a_document(
-            version=version, content=content, provider=provider, request_options=request_options
+            version=version,
+            content=content,
+            provider=provider,
+            detection_effort=detection_effort,
+            request_options=request_options,
         )
         return _response.data
 
@@ -375,6 +393,7 @@ class AsyncLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -392,6 +411,9 @@ class AsyncLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -419,7 +441,11 @@ class AsyncLang2FhirClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create_multi(
-            text=text, version=version, provider=provider, request_options=request_options
+            text=text,
+            version=version,
+            provider=provider,
+            detection_effort=detection_effort,
+            request_options=request_options,
         )
         return _response.data
 
@@ -580,6 +606,7 @@ class AsyncLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -600,6 +627,9 @@ class AsyncLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
+            Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -628,6 +658,10 @@ class AsyncLang2FhirClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.extract_multiple_fhir_resources_from_a_document(
-            version=version, content=content, provider=provider, request_options=request_options
+            version=version,
+            content=content,
+            provider=provider,
+            detection_effort=detection_effort,
+            request_options=request_options,
         )
         return _response.data

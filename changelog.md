@@ -1,3 +1,6 @@
+## 10.1.0 - 2026-04-13
+* The `create_multi` and `extract_multiple_fhir_resources_from_a_document` methods on `Lang2FhirClient` and `AsyncLang2FhirClient` now accept an optional `detection_effort` parameter. Set it to `"standard"` (default behavior, runs detection once) or `"deep"` (runs detection multiple times for higher recall at the cost of additional latency). The new `CreateMultiRequestDetectionEffort` and `DocumentMultiRequestDetectionEffort` types are available from `phenoml.lang2fhir`.
+
 ## 10.0.1 - 2026-04-13
 * docs: expand consistency_effort field documentation
 * Update the `consistency_effort` field docstring in `ExtractRequestConfig`
