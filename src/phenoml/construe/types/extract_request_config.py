@@ -78,8 +78,16 @@ class ExtractRequestConfig(UniversalBaseModel):
     consistency_effort: typing.Optional[ExtractRequestConfigConsistencyEffort] = pydantic.Field(default=None)
     """
     How much effort to spend ensuring consistent results across repeated requests.
-    Higher levels apply stricter filtering to remove borderline codes that may
+    Higher levels apply stricter filtering to remove borderline results that may
     vary between calls, improving determinism at the cost of additional latency.
+    
+    When validation_method is set to a value other than "none", consistency is
+    applied to the validation step: codes must be unanimously validated across
+    multiple rounds to be included.
+    
+    When validation_method is "none" and min_context_relevance is set above 0,
+    consistency is applied to the relevance ranking step instead: chunks must
+    pass the relevance threshold in every round to be included.
     """
 
     if IS_PYDANTIC_V2:
