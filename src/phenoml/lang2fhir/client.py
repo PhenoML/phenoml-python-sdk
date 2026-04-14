@@ -84,6 +84,7 @@ class Lang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
@@ -102,6 +103,9 @@ class Lang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        implementation_guide : typing.Optional[str]
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -127,6 +131,7 @@ class Lang2FhirClient:
             text=text,
             version=version,
             provider=provider,
+            implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             request_options=request_options,
         )
@@ -177,7 +182,12 @@ class Lang2FhirClient:
         return _response.data
 
     def upload_profile(
-        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        profile: str,
+        implementation_guide: typing.Optional[str] = OMIT,
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirUploadProfileResponse:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
@@ -196,6 +206,12 @@ class Lang2FhirClient:
         profile : str
             Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
+        implementation_guide : typing.Optional[str]
+            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+
+        profile_context : typing.Optional[str]
+            Natural language context that helps the LLM select the right profiles from this implementation guide during resource detection. For example, "When the text mentions phenotypic features or abnormalities, prefer the hpo-observation profile over Condition." This is stored as IG-level metadata and injected into the LLM prompt. Max 2000 characters. Providing this field on any upload will update the context for the entire IG (last write wins).
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -213,7 +229,12 @@ class Lang2FhirClient:
             profile="(base64 encoded FHIR StructureDefinition JSON)",
         )
         """
-        _response = self._raw_client.upload_profile(profile=profile, request_options=request_options)
+        _response = self._raw_client.upload_profile(
+            profile=profile,
+            implementation_guide=implementation_guide,
+            profile_context=profile_context,
+            request_options=request_options,
+        )
         return _response.data
 
     def document(
@@ -265,6 +286,7 @@ class Lang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
@@ -286,6 +308,9 @@ class Lang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        implementation_guide : typing.Optional[str]
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -312,6 +337,7 @@ class Lang2FhirClient:
             version=version,
             content=content,
             provider=provider,
+            implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             request_options=request_options,
         )
@@ -393,6 +419,7 @@ class AsyncLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
@@ -411,6 +438,9 @@ class AsyncLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        implementation_guide : typing.Optional[str]
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -444,6 +474,7 @@ class AsyncLang2FhirClient:
             text=text,
             version=version,
             provider=provider,
+            implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             request_options=request_options,
         )
@@ -502,7 +533,12 @@ class AsyncLang2FhirClient:
         return _response.data
 
     async def upload_profile(
-        self, *, profile: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        profile: str,
+        implementation_guide: typing.Optional[str] = OMIT,
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> Lang2FhirUploadProfileResponse:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
@@ -520,6 +556,12 @@ class AsyncLang2FhirClient:
         ----------
         profile : str
             Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
+
+        implementation_guide : typing.Optional[str]
+            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+
+        profile_context : typing.Optional[str]
+            Natural language context that helps the LLM select the right profiles from this implementation guide during resource detection. For example, "When the text mentions phenotypic features or abnormalities, prefer the hpo-observation profile over Condition." This is stored as IG-level metadata and injected into the LLM prompt. Max 2000 characters. Providing this field on any upload will update the context for the entire IG (last write wins).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -546,7 +588,12 @@ class AsyncLang2FhirClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.upload_profile(profile=profile, request_options=request_options)
+        _response = await self._raw_client.upload_profile(
+            profile=profile,
+            implementation_guide=implementation_guide,
+            profile_context=profile_context,
+            request_options=request_options,
+        )
         return _response.data
 
     async def document(
@@ -606,6 +653,7 @@ class AsyncLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
@@ -627,6 +675,9 @@ class AsyncLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        implementation_guide : typing.Optional[str]
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -661,6 +712,7 @@ class AsyncLang2FhirClient:
             version=version,
             content=content,
             provider=provider,
+            implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             request_options=request_options,
         )
