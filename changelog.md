@@ -1,3 +1,6 @@
+## 10.2.0 - 2026-04-14
+* The `create_multi`, `extract_multiple_fhir_resources_from_a_document`, and `upload_profile` methods on `Lang2FhirClient` and `AsyncLang2FhirClient` now accept an optional `implementation_guide` parameter. When specified, profiles from the named Implementation Guide are included alongside US Core profiles during resource detection (US Core is always the base layer; custom IG profiles are additive). The `upload_profile` method also accepts a new optional `profile_context` parameter — a natural-language hint injected into the LLM prompt to guide profile selection within the IG (max 2000 characters; last write wins per IG).
+
 ## 10.1.0 - 2026-04-13
 * The `create_multi` and `extract_multiple_fhir_resources_from_a_document` methods on `Lang2FhirClient` and `AsyncLang2FhirClient` now accept an optional `detection_effort` parameter. Set it to `"standard"` (default behavior, runs detection once) or `"deep"` (runs detection multiple times for higher recall at the cost of additional latency). The new `CreateMultiRequestDetectionEffort` and `DocumentMultiRequestDetectionEffort` types are available from `phenoml.lang2fhir`.
 
