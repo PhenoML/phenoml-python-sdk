@@ -1,3 +1,8 @@
+## 10.3.0 - 2026-04-23
+### Added
+* **`ExtractRequestConfig`** now supports a new `validation_method` value, `"chunk_code_jaccard_similarity"`, which validates candidate codes using token-level Jaccard similarity between the source text chunk and the code description — a lightweight, LLM-free alternative to `"simple"` and `"medication_search"`.
+* **`ExtractRequestConfig.chunk_code_jaccard_similarity_filtering_threshold`** — a new optional `float` field (0.0–1.0) that sets the minimum Jaccard similarity score a code must reach to pass validation; ignored when any other validation method is active.
+
 ## 10.2.0 - 2026-04-14
 * The `create_multi`, `extract_multiple_fhir_resources_from_a_document`, and `upload_profile` methods on `Lang2FhirClient` and `AsyncLang2FhirClient` now accept an optional `implementation_guide` parameter. When specified, profiles from the named Implementation Guide are included alongside US Core profiles during resource detection (US Core is always the base layer; custom IG profiles are additive). The `upload_profile` method also accepts a new optional `profile_context` parameter — a natural-language hint injected into the LLM prompt to guide profile selection within the IG (max 2000 characters; last write wins per IG).
 
