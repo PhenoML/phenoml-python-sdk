@@ -12,7 +12,12 @@ from .extract_request_config_validation_method import ExtractRequestConfigValida
 class ExtractRequestConfig(UniversalBaseModel):
     chunking_method: typing.Optional[ExtractRequestConfigChunkingMethod] = pydantic.Field(default=None)
     """
-    Method for splitting input text into chunks before code extraction
+    Method for splitting input text into chunks before code extraction.
+    * none - Treat the full input as a single chunk.
+    * sentences - Split on sentence boundaries (supports citations).
+    * paragraphs / topics / soap_note - LLM-based chunking.
+    * clinical_ner_extract - Extract clinical concepts (problems, tests,
+      treatments) and use each as a chunk (supports citations).
     """
 
     max_codes_per_chunk: typing.Optional[int] = pydantic.Field(default=None)
@@ -34,6 +39,13 @@ class ExtractRequestConfig(UniversalBaseModel):
     * none - No validation, returns all candidate codes
     * simple - LLM-based validation
     * medication_search - LLM-based validation tailored for medication concepts
+    * chunk_code_jaccard_similarity - Token-level Jaccard similarity between source text chunk and code description
+    """
+
+    chunk_code_jaccard_similarity_filtering_threshold: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Minimum Jaccard similarity (0.0-1.0) for a code to be considered valid
+    when using the "chunk_code_jaccard_similarity" validation method. Ignored by other methods.
     """
 
     include_rationale: typing.Optional[bool] = pydantic.Field(default=None)
@@ -55,9 +67,7 @@ class ExtractRequestConfig(UniversalBaseModel):
     """
     Whether to include source text citations for each extracted code.
     Citations show the exact text spans (with character offsets) that led to each code.
-    Only available when using chunking_method: "sentences".
-    The "none" method returns full text as one chunk (not useful for citations).
-    LLM-based chunking (paragraphs, topics, soap_note) does not support citations.
+    Supported when chunking_method is "sentences" or "clinical_ner_extract".
     """
 
     extraction_context: typing.Optional[str] = pydantic.Field(default=None)

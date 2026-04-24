@@ -3,5 +3,5 @@
 import typing
 
 ExtractRequestConfigChunkingMethod = typing.Union[
-    typing.Literal["none", "sentences", "paragraphs", "topics", "soap_note"], typing.Any
+    typing.Literal["none", "sentences", "paragraphs", "topics", "soap_note", "clinical_ner_extract"], typing.Any
 ]
