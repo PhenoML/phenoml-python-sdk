@@ -34,6 +34,13 @@ class ExtractRequestConfig(UniversalBaseModel):
     * none - No validation, returns all candidate codes
     * simple - LLM-based validation
     * medication_search - LLM-based validation tailored for medication concepts
+    * chunk_code_jaccard_similarity - Token-level Jaccard similarity between source text chunk and code description
+    """
+
+    chunk_code_jaccard_similarity_filtering_threshold: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Minimum Jaccard similarity (0.0-1.0) for a code to be considered valid
+    when using the "chunk_code_jaccard_similarity" validation method. Ignored by other methods.
     """
 
     include_rationale: typing.Optional[bool] = pydantic.Field(default=None)
