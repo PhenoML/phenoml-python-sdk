@@ -2,4 +2,6 @@
 
 import typing
 
-ExtractRequestConfigValidationMethod = typing.Union[typing.Literal["none", "simple", "medication_search"], typing.Any]
+ExtractRequestConfigValidationMethod = typing.Union[
+    typing.Literal["none", "simple", "medication_search", "chunk_code_jaccard_similarity"], typing.Any
+]
