@@ -124,7 +124,7 @@ class Lang2FhirClient:
 
         client = PhenomlClient()
         client.lang2fhir.create_multi(
-            text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+            text="John Smith, male born on 1980-03-12, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
         )
         """
         _response = self._raw_client.create_multi(
@@ -464,7 +464,7 @@ class AsyncLang2FhirClient:
 
         async def main() -> None:
             await client.lang2fhir.create_multi(
-                text="John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+                text="John Smith, male born on 1980-03-12, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
             )
 
 

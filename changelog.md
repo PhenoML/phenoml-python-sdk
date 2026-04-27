@@ -1,3 +1,15 @@
+## 10.3.1 - 2026-04-27
+* chore: update example text in docstrings and wire tests
+* Replace the age-based patient description ("45-year-old male") with a
+* date-of-birth format ("male born on 1980-03-12") in the `create_multi`
+* docstring examples for both `Lang2FhirClient` and `AsyncLang2FhirClient`,
+* and align the corresponding wire test fixture accordingly.
+* Key changes:
+* Updated `Lang2FhirClient.create_multi` docstring example text
+* Updated `AsyncLang2FhirClient.create_multi` docstring example text
+* Updated `test_lang2Fhir_create_multi` wire test input text to match
+* 🌿 Generated with Fern
+
 ## 10.3.0 - 2026-04-24
 ### Added
 * **`ExtractRequestConfigChunkingMethod`** gains a new `"clinical_ner_extract"` value — extracts clinical concepts (problems, tests, treatments) and uses each concept as a chunk; supports source text citations.
