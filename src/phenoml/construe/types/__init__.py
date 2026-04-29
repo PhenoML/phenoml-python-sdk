@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .citation import Citation
+    from .code_category import CodeCategory
     from .code_response import CodeResponse
     from .code_system_details import CodeSystemDetails
     from .code_system_info import CodeSystemInfo
@@ -33,6 +34,7 @@ if typing.TYPE_CHECKING:
     from .upload_request_format import UploadRequestFormat
 _dynamic_imports: typing.Dict[str, str] = {
     "Citation": ".citation",
+    "CodeCategory": ".code_category",
     "CodeResponse": ".code_response",
     "CodeSystemDetails": ".code_system_details",
     "CodeSystemInfo": ".code_system_info",
@@ -83,6 +85,7 @@ def __dir__():
 
 __all__ = [
     "Citation",
+    "CodeCategory",
     "CodeResponse",
     "CodeSystemDetails",
     "CodeSystemInfo",

@@ -1,3 +1,11 @@
+## 10.4.0 - 2026-04-29
+### Added
+* **`CodeCategory`** — new model (fields: `uri`, `label`) representing a higher-level grouping for an extracted code (e.g. an HPO category term); exported from `phenoml.construe`.
+* **`ExtractRequestConfigChunkingMethod`** gains a new `"fasthpocr"` value — extracts HPO concepts directly with category annotations and citation support; requires `system: HPO` and causes most other config options to be ignored.
+* **`ExtractedCodeResult.categories`** — new optional `List[CodeCategory]` field populated when using full-extraction chunking methods such as `"fasthpocr"`.
+### Changed
+* **`ExtractRequestConfig.include_rationale`** — citations are now also supported when `chunking_method` is `"fasthpocr"` (previously documented as `"sentences"` and `"clinical_ner_extract"` only).
+
 ## 10.3.0 - 2026-04-24
 ### Added
 * **`ExtractRequestConfigChunkingMethod`** gains a new `"clinical_ner_extract"` value — extracts clinical concepts (problems, tests, treatments) and uses each concept as a chunk; supports source text citations.
