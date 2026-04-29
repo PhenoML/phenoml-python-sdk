@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .citation import Citation
+from .code_category import CodeCategory
 
 
 class ExtractedCodeResult(UniversalBaseModel):
@@ -39,6 +40,12 @@ class ExtractedCodeResult(UniversalBaseModel):
     Source text references showing where this code was found in the input.
     Only present when include_citations is true and chunking method supports it.
     Ancestor codes do not receive citations.
+    """
+
+    categories: typing.Optional[typing.List[CodeCategory]] = pydantic.Field(default=None)
+    """
+    Higher-level groupings the extracted code belongs to (e.g. HPO category terms).
+    Only populated by full-extraction chunking methods such as "fasthpocr".
     """
 
     if IS_PYDANTIC_V2:

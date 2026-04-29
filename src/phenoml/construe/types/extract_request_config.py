@@ -18,6 +18,10 @@ class ExtractRequestConfig(UniversalBaseModel):
     * paragraphs / topics / soap_note - LLM-based chunking.
     * clinical_ner_extract - Extract clinical concepts (problems, tests,
       treatments) and use each as a chunk (supports citations).
+    * fasthpocr - Extract HPO concepts directly with category
+      annotations (supports citations). Requires `system: HPO`;
+      other systems are rejected. Causes most other config options
+      to be ignored.
     """
 
     max_codes_per_chunk: typing.Optional[int] = pydantic.Field(default=None)
@@ -67,7 +71,7 @@ class ExtractRequestConfig(UniversalBaseModel):
     """
     Whether to include source text citations for each extracted code.
     Citations show the exact text spans (with character offsets) that led to each code.
-    Supported when chunking_method is "sentences" or "clinical_ner_extract".
+    Supported when chunking_method is "sentences", "clinical_ner_extract", or "fasthpocr".
     """
 
     extraction_context: typing.Optional[str] = pydantic.Field(default=None)

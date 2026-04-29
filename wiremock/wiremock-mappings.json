@@ -565,7 +565,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"SNOMED_CT_US_LITE\",\n    \"version\": \"20240901\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"195967001\",\n      \"description\": \"Asthma\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ]\n    }\n  ]\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"SNOMED_CT_US_LITE\",\n    \"version\": \"20240901\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"195967001\",\n      \"description\": \"Asthma\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
