@@ -4338,6 +4338,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**validation_method:** `typing.Optional[CreateMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4731,6 +4739,14 @@ File type is auto-detected from content magic bytes.
 <dd>
 
 **detection_effort:** `typing.Optional[DocumentMultiRequestDetectionEffort]` — Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**validation_method:** `typing.Optional[DocumentMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
     
 </dd>
 </dl>

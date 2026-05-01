@@ -16,9 +16,11 @@ from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
 from .errors.unprocessable_entity_error import UnprocessableEntityError
 from .types.create_multi_request_detection_effort import CreateMultiRequestDetectionEffort
+from .types.create_multi_request_validation_method import CreateMultiRequestValidationMethod
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
 from .types.document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
+from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -136,6 +138,7 @@ class RawLang2FhirClient:
         provider: typing.Optional[str] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
+        validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateMultiResponse]:
         """
@@ -160,6 +163,9 @@ class RawLang2FhirClient:
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
+        validation_method : typing.Optional[CreateMultiRequestValidationMethod]
+            FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -177,6 +183,7 @@ class RawLang2FhirClient:
                 "provider": provider,
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
+                "validation_method": validation_method,
             },
             headers={
                 "content-type": "application/json",
@@ -562,6 +569,7 @@ class RawLang2FhirClient:
         provider: typing.Optional[str] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
+        validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateMultiResponse]:
         """
@@ -589,6 +597,9 @@ class RawLang2FhirClient:
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
+        validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
+            FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -606,6 +617,7 @@ class RawLang2FhirClient:
                 "provider": provider,
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
+                "validation_method": validation_method,
             },
             headers={
                 "content-type": "application/json",
@@ -785,6 +797,7 @@ class AsyncRawLang2FhirClient:
         provider: typing.Optional[str] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
+        validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateMultiResponse]:
         """
@@ -809,6 +822,9 @@ class AsyncRawLang2FhirClient:
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
+        validation_method : typing.Optional[CreateMultiRequestValidationMethod]
+            FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -826,6 +842,7 @@ class AsyncRawLang2FhirClient:
                 "provider": provider,
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
+                "validation_method": validation_method,
             },
             headers={
                 "content-type": "application/json",
@@ -1211,6 +1228,7 @@ class AsyncRawLang2FhirClient:
         provider: typing.Optional[str] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
+        validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateMultiResponse]:
         """
@@ -1238,6 +1256,9 @@ class AsyncRawLang2FhirClient:
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
 
+        validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
+            FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1255,6 +1276,7 @@ class AsyncRawLang2FhirClient:
                 "provider": provider,
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
+                "validation_method": validation_method,
             },
             headers={
                 "content-type": "application/json",

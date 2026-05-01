@@ -7,26 +7,44 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .create_multi_request_detection_effort import CreateMultiRequestDetectionEffort
+    from .create_multi_request_validation_method import CreateMultiRequestValidationMethod
     from .create_multi_response import CreateMultiResponse
     from .create_multi_response_bundle import CreateMultiResponseBundle
     from .create_multi_response_bundle_entry_item import CreateMultiResponseBundleEntryItem
     from .create_multi_response_bundle_entry_item_request import CreateMultiResponseBundleEntryItemRequest
     from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
+    from .create_multi_response_validation import CreateMultiResponseValidation
+    from .create_multi_response_validation_passes_item import CreateMultiResponseValidationPassesItem
+    from .create_multi_response_validation_passes_item_issues_item import (
+        CreateMultiResponseValidationPassesItemIssuesItem,
+    )
+    from .create_multi_response_validation_passes_item_issues_item_severity import (
+        CreateMultiResponseValidationPassesItemIssuesItemSeverity,
+    )
+    from .create_multi_response_validation_passes_item_stats import CreateMultiResponseValidationPassesItemStats
     from .create_request_resource import CreateRequestResource
     from .document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
+    from .document_multi_request_validation_method import DocumentMultiRequestValidationMethod
     from .fhir_resource import FhirResource
     from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateMultiRequestDetectionEffort": ".create_multi_request_detection_effort",
+    "CreateMultiRequestValidationMethod": ".create_multi_request_validation_method",
     "CreateMultiResponse": ".create_multi_response",
     "CreateMultiResponseBundle": ".create_multi_response_bundle",
     "CreateMultiResponseBundleEntryItem": ".create_multi_response_bundle_entry_item",
     "CreateMultiResponseBundleEntryItemRequest": ".create_multi_response_bundle_entry_item_request",
     "CreateMultiResponseResourcesItem": ".create_multi_response_resources_item",
+    "CreateMultiResponseValidation": ".create_multi_response_validation",
+    "CreateMultiResponseValidationPassesItem": ".create_multi_response_validation_passes_item",
+    "CreateMultiResponseValidationPassesItemIssuesItem": ".create_multi_response_validation_passes_item_issues_item",
+    "CreateMultiResponseValidationPassesItemIssuesItemSeverity": ".create_multi_response_validation_passes_item_issues_item_severity",
+    "CreateMultiResponseValidationPassesItemStats": ".create_multi_response_validation_passes_item_stats",
     "CreateRequestResource": ".create_request_resource",
     "DocumentMultiRequestDetectionEffort": ".document_multi_request_detection_effort",
+    "DocumentMultiRequestValidationMethod": ".document_multi_request_validation_method",
     "FhirResource": ".fhir_resource",
     "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
     "SearchResponse": ".search_response",
@@ -57,13 +75,20 @@ def __dir__():
 
 __all__ = [
     "CreateMultiRequestDetectionEffort",
+    "CreateMultiRequestValidationMethod",
     "CreateMultiResponse",
     "CreateMultiResponseBundle",
     "CreateMultiResponseBundleEntryItem",
     "CreateMultiResponseBundleEntryItemRequest",
     "CreateMultiResponseResourcesItem",
+    "CreateMultiResponseValidation",
+    "CreateMultiResponseValidationPassesItem",
+    "CreateMultiResponseValidationPassesItemIssuesItem",
+    "CreateMultiResponseValidationPassesItemIssuesItemSeverity",
+    "CreateMultiResponseValidationPassesItemStats",
     "CreateRequestResource",
     "DocumentMultiRequestDetectionEffort",
+    "DocumentMultiRequestValidationMethod",
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
     "SearchResponse",

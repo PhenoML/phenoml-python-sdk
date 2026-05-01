@@ -1,3 +1,10 @@
+## 10.5.0 - 2026-05-01
+### Added
+* **`CreateMultiRequestValidationMethod`** and **`DocumentMultiRequestValidationMethod`** — new enums with values `"none"`, `"check"`, and `"fix"` controlling FHIR structure validation applied to the generated bundle.
+* **`validation_method`** — new optional parameter on `create_multi` and `extract_multiple_fhir_resources_from_a_document` (both `Lang2FhirClient` and `AsyncLang2FhirClient`); `"check"` validates the bundle and returns results, `"fix"` additionally attempts LLM-based auto-correction (up to 3 passes).
+* **`CreateMultiResponse.validation`** — new optional field of type `CreateMultiResponseValidation` populated when `validation_method` is `"check"` or `"fix"`; contains per-pass issues, statistics, fix status, attempt count, and a human-readable summary.
+* **`CreateMultiResponseValidation`**, **`CreateMultiResponseValidationPassesItem`**, **`CreateMultiResponseValidationPassesItemIssuesItem`**, **`CreateMultiResponseValidationPassesItemIssuesItemSeverity`**, and **`CreateMultiResponseValidationPassesItemStats`** — new response models representing the full FHIR validation result structure.
+
 ## 10.4.0 - 2026-04-29
 ### Added
 * **`CodeCategory`** — new model (fields: `uri`, `label`) representing a higher-level grouping for an extracted code (e.g. an HPO category term); exported from `phenoml.construe`.
