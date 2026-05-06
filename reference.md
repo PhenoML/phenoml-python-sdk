@@ -4632,6 +4632,14 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
+**config:** `typing.Optional[DocumentConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4644,7 +4652,7 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -> CreateMultiResponse</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -> DocumentMultiResponse</code></summary>
 <dl>
 <dd>
 
@@ -4747,6 +4755,14 @@ File type is auto-detected from content magic bytes.
 <dd>
 
 **validation_method:** `typing.Optional[DocumentMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**config:** `typing.Optional[DocumentConfig]` 
     
 </dd>
 </dl>

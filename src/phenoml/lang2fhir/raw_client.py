@@ -9,6 +9,7 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
 from .errors.failed_dependency_error import FailedDependencyError
 from .errors.forbidden_error import ForbiddenError
@@ -19,8 +20,10 @@ from .types.create_multi_request_detection_effort import CreateMultiRequestDetec
 from .types.create_multi_request_validation_method import CreateMultiRequestValidationMethod
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
+from .types.document_config import DocumentConfig
 from .types.document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
+from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -469,7 +472,13 @@ class RawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def document(
-        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        version: str,
+        resource: str,
+        content: str,
+        config: typing.Optional[DocumentConfig] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FhirResource]:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -487,6 +496,8 @@ class RawLang2FhirClient:
             Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
             File type is auto-detected from content magic bytes.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -502,6 +513,9 @@ class RawLang2FhirClient:
                 "version": version,
                 "resource": resource,
                 "content": content,
+                "config": convert_and_respect_annotation_metadata(
+                    object_=config, annotation=DocumentConfig, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -570,8 +584,9 @@ class RawLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
+        config: typing.Optional[DocumentConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateMultiResponse]:
+    ) -> HttpResponse[DocumentMultiResponse]:
         """
         Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
@@ -600,12 +615,14 @@ class RawLang2FhirClient:
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[CreateMultiResponse]
+        HttpResponse[DocumentMultiResponse]
             Successfully extracted FHIR resources from document
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -618,6 +635,9 @@ class RawLang2FhirClient:
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
+                "config": convert_and_respect_annotation_metadata(
+                    object_=config, annotation=DocumentConfig, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -628,9 +648,9 @@ class RawLang2FhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateMultiResponse,
+                    DocumentMultiResponse,
                     parse_obj_as(
-                        type_=CreateMultiResponse,  # type: ignore
+                        type_=DocumentMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1128,7 +1148,13 @@ class AsyncRawLang2FhirClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def document(
-        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        version: str,
+        resource: str,
+        content: str,
+        config: typing.Optional[DocumentConfig] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FhirResource]:
         """
         Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
@@ -1146,6 +1172,8 @@ class AsyncRawLang2FhirClient:
             Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
             File type is auto-detected from content magic bytes.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1161,6 +1189,9 @@ class AsyncRawLang2FhirClient:
                 "version": version,
                 "resource": resource,
                 "content": content,
+                "config": convert_and_respect_annotation_metadata(
+                    object_=config, annotation=DocumentConfig, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -1229,8 +1260,9 @@ class AsyncRawLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
+        config: typing.Optional[DocumentConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateMultiResponse]:
+    ) -> AsyncHttpResponse[DocumentMultiResponse]:
         """
         Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
@@ -1259,12 +1291,14 @@ class AsyncRawLang2FhirClient:
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[CreateMultiResponse]
+        AsyncHttpResponse[DocumentMultiResponse]
             Successfully extracted FHIR resources from document
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1277,6 +1311,9 @@ class AsyncRawLang2FhirClient:
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
+                "config": convert_and_respect_annotation_metadata(
+                    object_=config, annotation=DocumentConfig, direction="write"
+                ),
             },
             headers={
                 "content-type": "application/json",
@@ -1287,9 +1324,9 @@ class AsyncRawLang2FhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateMultiResponse,
+                    DocumentMultiResponse,
                     parse_obj_as(
-                        type_=CreateMultiResponse,  # type: ignore
+                        type_=DocumentMultiResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
