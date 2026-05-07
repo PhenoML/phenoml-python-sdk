@@ -1,3 +1,14 @@
+## 10.6.0 - 2026-05-07
+* ## [10.6.0] - 2025
+### Added
+* **`DocumentConfig`** — new optional processing configuration model accepted by `document()` and `extract_multiple_fhir_resources_from_a_document()` on `Lang2FhirClient` and `AsyncLang2FhirClient`.
+* **`PageFilter`** — new model (field: `context`) that configures per-page pre-extraction filtering; an LLM classifies each page and drops non-matching pages before FHIR extraction.
+* **`PageClassification`** — new response model (fields: `page_number`, `include`, `reason`) representing the LLM's keep/drop decision for a single document page.
+* **`DocumentMultiResponse`** — new response model returned by `extract_multiple_fhir_resources_from_a_document()`; extends `CreateMultiResponse` with an optional `page_classifications` list.
+* **`CreateMultiResponseResourcesItem.original_text`** — new optional field containing the verbatim text excerpt from the original clinical document.
+### Changed
+* **`document()` and `extract_multiple_fhir_resources_from_a_document()`** — both methods now document automatic synthetic patient identifier generation (`urn:phenoml:lang2fhir-generated-id` with a UUID value) when no identifier is found in the source text, ensuring US Core conformance.
+
 ## 10.5.0 - 2026-05-01
 ### Added
 * **`CreateMultiRequestValidationMethod`** and **`DocumentMultiRequestValidationMethod`** — new enums with values `"none"`, `"check"`, and `"fix"` controlling FHIR structure validation applied to the generated bundle.

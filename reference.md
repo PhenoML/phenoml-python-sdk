@@ -4162,7 +4162,9 @@ client.fhir_provider.remove_auth_config(
 <dl>
 <dd>
 
-Converts natural language text into a structured FHIR resource
+Converts natural language text into a structured FHIR resource.
+
+**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
 </dl>
 </dd>
@@ -4257,6 +4259,8 @@ client.lang2fhir.create(
 Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
 Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
 Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
 </dl>
 </dd>
@@ -4560,7 +4564,9 @@ client.lang2fhir.upload_profile(
 <dl>
 <dd>
 
-Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
+Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+
+**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
 </dl>
 </dd>
@@ -4632,6 +4638,14 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
+**config:** `typing.Optional[DocumentConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -4644,7 +4658,7 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -> CreateMultiResponse</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -> DocumentMultiResponse</code></summary>
 <dl>
 <dd>
 
@@ -4660,6 +4674,8 @@ Extracts text from a document (PDF or image) and converts it into multiple FHIR 
 returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
 Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
 Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
 </dl>
 </dd>
@@ -4747,6 +4763,14 @@ File type is auto-detected from content magic bytes.
 <dd>
 
 **validation_method:** `typing.Optional[DocumentMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**config:** `typing.Optional[DocumentConfig]` 
     
 </dd>
 </dl>

@@ -23,10 +23,14 @@ if typing.TYPE_CHECKING:
     )
     from .create_multi_response_validation_passes_item_stats import CreateMultiResponseValidationPassesItemStats
     from .create_request_resource import CreateRequestResource
+    from .document_config import DocumentConfig
     from .document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
     from .document_multi_request_validation_method import DocumentMultiRequestValidationMethod
+    from .document_multi_response import DocumentMultiResponse
     from .fhir_resource import FhirResource
     from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
+    from .page_classification import PageClassification
+    from .page_filter import PageFilter
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
 _dynamic_imports: typing.Dict[str, str] = {
@@ -43,10 +47,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateMultiResponseValidationPassesItemIssuesItemSeverity": ".create_multi_response_validation_passes_item_issues_item_severity",
     "CreateMultiResponseValidationPassesItemStats": ".create_multi_response_validation_passes_item_stats",
     "CreateRequestResource": ".create_request_resource",
+    "DocumentConfig": ".document_config",
     "DocumentMultiRequestDetectionEffort": ".document_multi_request_detection_effort",
     "DocumentMultiRequestValidationMethod": ".document_multi_request_validation_method",
+    "DocumentMultiResponse": ".document_multi_response",
     "FhirResource": ".fhir_resource",
     "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
+    "PageClassification": ".page_classification",
+    "PageFilter": ".page_filter",
     "SearchResponse": ".search_response",
     "SearchResponseResourceType": ".search_response_resource_type",
 }
@@ -87,10 +95,14 @@ __all__ = [
     "CreateMultiResponseValidationPassesItemIssuesItemSeverity",
     "CreateMultiResponseValidationPassesItemStats",
     "CreateRequestResource",
+    "DocumentConfig",
     "DocumentMultiRequestDetectionEffort",
     "DocumentMultiRequestValidationMethod",
+    "DocumentMultiResponse",
     "FhirResource",
     "Lang2FhirUploadProfileResponse",
+    "PageClassification",
+    "PageFilter",
     "SearchResponse",
     "SearchResponseResourceType",
 ]
