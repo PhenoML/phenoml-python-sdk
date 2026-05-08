@@ -171,7 +171,6 @@ class ToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -194,9 +193,6 @@ class ToolsClient:
 
         patient_id : typing.Optional[str]
             Patient ID to filter results
-
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
 
         count : typing.Optional[int]
             Maximum number of results to return
@@ -228,7 +224,6 @@ class ToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             patient_id=patient_id,
-            practitioner_id=practitioner_id,
             count=count,
             provider=provider,
             request_options=request_options,
@@ -469,7 +464,6 @@ class AsyncToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -492,9 +486,6 @@ class AsyncToolsClient:
 
         patient_id : typing.Optional[str]
             Patient ID to filter results
-
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
 
         count : typing.Optional[int]
             Maximum number of results to return
@@ -534,7 +525,6 @@ class AsyncToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             patient_id=patient_id,
-            practitioner_id=practitioner_id,
             count=count,
             provider=provider,
             request_options=request_options,

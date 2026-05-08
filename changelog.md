@@ -1,3 +1,7 @@
+## 10.5.1 - 2026-05-08
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 10.5.0 - 2026-05-01
 ### Added
 * **`CreateMultiRequestValidationMethod`** and **`DocumentMultiRequestValidationMethod`** — new enums with values `"none"`, `"check"`, and `"fix"` controlling FHIR structure validation applied to the generated bundle.
