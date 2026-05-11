@@ -1,0 +1,38 @@
+name: bundle-openapi-spec
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".fern/metadata.json"
+
+# Rapid Fern pushes could otherwise race two bundle jobs against the same
+# head branch and produce push conflicts; the latest commit always wins.
+concurrency:
+  group: bundle-openapi-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Fern's bot opens PRs from same-repo branches; skip forks so we don't
+    # expose write tokens to forked code (and couldn't push back anyway).
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    env:
+      # Quoted indirection: keeps untrusted ref values out of inline ${{ }}
+      # shell expansions per GitHub's workflow-injection guidance.
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: ${{ env.HEAD_REF }}
+
+      - name: Bundle OpenAPI spec
+        uses: PhenoML/sdk-shared-actions/bundle-openapi-spec@main
+        with:
+          output-path: src/phenoml/openapi/openapi.json
