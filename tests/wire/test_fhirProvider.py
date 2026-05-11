@@ -1,5 +1,7 @@
 from .conftest import get_client, verify_request_count
 
+from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt, FhirProviderCreateRequestAuth_Jwt
+
 
 def test_fhirProvider_create() -> None:
     """Test create endpoint with WireMock"""
@@ -9,7 +11,9 @@ def test_fhirProvider_create() -> None:
         name="Epic Sandbox",
         provider="athenahealth",
         base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
-        auth={"auth_method": "jwt", "client_id": "your-client-id"},
+        auth=FhirProviderCreateRequestAuth_Jwt(
+            client_id="your-client-id",
+        ),
     )
     verify_request_count(test_id, "POST", "/fhir-provider", None, 1)
 
@@ -48,7 +52,9 @@ def test_fhirProvider_add_auth_config() -> None:
     client = get_client(test_id)
     client.fhir_provider.add_auth_config(
         fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-        request={"auth_method": "jwt", "client_id": "your-client-id"},
+        request=FhirProviderAddAuthConfigRequest_Jwt(
+            client_id="your-client-id",
+        ),
     )
     verify_request_count(
         test_id, "PATCH", "/fhir-provider/1716d214-de93-43a4-aa6b-a878d864e2ad/add-auth-config", None, 1

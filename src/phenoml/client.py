@@ -44,6 +44,9 @@ class PhenomlClient:
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
+    max_retries : typing.Optional[int]
+        The default maximum number of retries for failed requests. Defaults to 2. Per-request `max_retries` in `request_options` takes precedence over this value.
+
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
@@ -61,6 +64,9 @@ class PhenomlClient:
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
+    max_retries : typing.Optional[int]
+        The default maximum number of retries for failed requests. Defaults to 2. Per-request `max_retries` in `request_options` takes precedence over this value.
+
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
@@ -71,7 +77,10 @@ class PhenomlClient:
     --------
     from phenoml import PhenomlClient
 
-    client = PhenomlClient()
+    client = PhenomlClient(
+        client_id="YOUR_CLIENT_ID",
+        client_secret="YOUR_CLIENT_SECRET",
+    )
 
     # or ...
 
@@ -92,6 +101,7 @@ class PhenomlClient:
         instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -107,6 +117,7 @@ class PhenomlClient:
         instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -124,6 +135,7 @@ class PhenomlClient:
         token: typing.Optional[typing.Callable[[], str]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -131,6 +143,7 @@ class PhenomlClient:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
+        _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
             base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
@@ -144,6 +157,7 @@ class PhenomlClient:
                 if follow_redirects is not None
                 else httpx.Client(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
+                max_retries=_defaulted_max_retries,
                 logging=logging,
                 token=_token_getter_override if _token_getter_override is not None else token,
             )
@@ -154,10 +168,13 @@ class PhenomlClient:
                 client_wrapper=SyncClientWrapper(
                     base_url=_get_base_url(base_url=base_url, environment=environment),
                     headers=headers,
-                    httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    httpx_client=httpx_client
+                    if httpx_client is not None
+                    else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                     if follow_redirects is not None
                     else httpx.Client(timeout=_defaulted_timeout),
                     timeout=_defaulted_timeout,
+                    max_retries=_defaulted_max_retries,
                     logging=logging,
                 ),
             )
@@ -171,6 +188,7 @@ class PhenomlClient:
                 if follow_redirects is not None
                 else httpx.Client(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
+                max_retries=_defaulted_max_retries,
                 logging=logging,
             )
         else:
@@ -269,6 +287,24 @@ class PhenomlClient:
         return self._workflows
 
 
+def _make_default_async_client(
+    timeout: typing.Optional[float],
+    follow_redirects: typing.Optional[bool],
+) -> httpx.AsyncClient:
+    try:
+        import httpx_aiohttp  # type: ignore[import-not-found]
+    except ImportError:
+        pass
+    else:
+        if follow_redirects is not None:
+            return httpx_aiohttp.HttpxAiohttpClient(timeout=timeout, follow_redirects=follow_redirects)
+        return httpx_aiohttp.HttpxAiohttpClient(timeout=timeout)
+
+    if follow_redirects is not None:
+        return httpx.AsyncClient(timeout=timeout, follow_redirects=follow_redirects)
+    return httpx.AsyncClient(timeout=timeout)
+
+
 class AsyncPhenomlClient:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
@@ -288,6 +324,9 @@ class AsyncPhenomlClient:
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
+    max_retries : typing.Optional[int]
+        The default maximum number of retries for failed requests. Defaults to 2. Per-request `max_retries` in `request_options` takes precedence over this value.
+
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
@@ -305,6 +344,9 @@ class AsyncPhenomlClient:
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
+    max_retries : typing.Optional[int]
+        The default maximum number of retries for failed requests. Defaults to 2. Per-request `max_retries` in `request_options` takes precedence over this value.
+
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
@@ -315,7 +357,10 @@ class AsyncPhenomlClient:
     --------
     from phenoml import AsyncPhenomlClient
 
-    client = AsyncPhenomlClient()
+    client = AsyncPhenomlClient(
+        client_id="YOUR_CLIENT_ID",
+        client_secret="YOUR_CLIENT_SECRET",
+    )
 
     # or ...
 
@@ -336,6 +381,7 @@ class AsyncPhenomlClient:
         instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -351,6 +397,7 @@ class AsyncPhenomlClient:
         instance_url: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -368,6 +415,7 @@ class AsyncPhenomlClient:
         token: typing.Optional[typing.Callable[[], str]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
+        max_retries: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -375,6 +423,7 @@ class AsyncPhenomlClient:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
+        _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
             base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
@@ -384,10 +433,9 @@ class AsyncPhenomlClient:
                 headers=headers,
                 httpx_client=httpx_client
                 if httpx_client is not None
-                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-                if follow_redirects is not None
-                else httpx.AsyncClient(timeout=_defaulted_timeout),
+                else _make_default_async_client(timeout=_defaulted_timeout, follow_redirects=follow_redirects),
                 timeout=_defaulted_timeout,
+                max_retries=_defaulted_max_retries,
                 logging=logging,
                 token=_token_getter_override if _token_getter_override is not None else token,
             )
@@ -398,10 +446,13 @@ class AsyncPhenomlClient:
                 client_wrapper=AsyncClientWrapper(
                     base_url=_get_base_url(base_url=base_url, environment=environment),
                     headers=headers,
-                    httpx_client=httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    httpx_client=httpx_client
+                    if httpx_client is not None
+                    else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                     if follow_redirects is not None
                     else httpx.AsyncClient(timeout=_defaulted_timeout),
                     timeout=_defaulted_timeout,
+                    max_retries=_defaulted_max_retries,
                     logging=logging,
                 ),
             )
@@ -412,10 +463,9 @@ class AsyncPhenomlClient:
                 async_token=oauth_token_provider.get_token,
                 httpx_client=httpx_client
                 if httpx_client is not None
-                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-                if follow_redirects is not None
-                else httpx.AsyncClient(timeout=_defaulted_timeout),
+                else _make_default_async_client(timeout=_defaulted_timeout, follow_redirects=follow_redirects),
                 timeout=_defaulted_timeout,
+                max_retries=_defaulted_max_retries,
                 logging=logging,
             )
         else:

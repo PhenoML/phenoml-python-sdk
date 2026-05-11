@@ -300,7 +300,6 @@ class RawToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -324,9 +323,6 @@ class RawToolsClient:
         patient_id : typing.Optional[str]
             Patient ID to filter results
 
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
-
         count : typing.Optional[int]
             Maximum number of results to return
 
@@ -347,7 +343,6 @@ class RawToolsClient:
             json={
                 "text": text,
                 "patient_id": patient_id,
-                "practitioner_id": practitioner_id,
                 "count": count,
                 "provider": provider,
             },
@@ -823,7 +818,6 @@ class AsyncRawToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -847,9 +841,6 @@ class AsyncRawToolsClient:
         patient_id : typing.Optional[str]
             Patient ID to filter results
 
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
-
         count : typing.Optional[int]
             Maximum number of results to return
 
@@ -870,7 +861,6 @@ class AsyncRawToolsClient:
             json={
                 "text": text,
                 "patient_id": patient_id,
-                "practitioner_id": practitioner_id,
                 "count": count,
                 "provider": provider,
             },

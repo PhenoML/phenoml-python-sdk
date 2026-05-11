@@ -21,8 +21,14 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
     ] = None
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Text excerpt this resource was extracted from
+    Context-enriched rewritten text excerpt for this resource
     """
+
+    original_text: typing_extensions.Annotated[
+        typing.Optional[str],
+        FieldMetadata(alias="originalText"),
+        pydantic.Field(alias="originalText", description="Verbatim text excerpt from the original clinical document"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

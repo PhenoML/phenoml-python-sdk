@@ -7,11 +7,14 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from . import agent, authtoken, cohort, construe, fhir, fhir_provider, lang2fhir, summary, tools, workflows
+    from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncPhenomlClient, PhenomlClient
     from .environment import PhenomlClientEnvironment
     from .version import __version__
 _dynamic_imports: typing.Dict[str, str] = {
     "AsyncPhenomlClient": ".client",
+    "DefaultAioHttpClient": "._default_clients",
+    "DefaultAsyncHttpxClient": "._default_clients",
     "PhenomlClient": ".client",
     "PhenomlClientEnvironment": ".environment",
     "__version__": ".version",
@@ -51,6 +54,8 @@ def __dir__():
 
 __all__ = [
     "AsyncPhenomlClient",
+    "DefaultAioHttpClient",
+    "DefaultAsyncHttpxClient",
     "PhenomlClient",
     "PhenomlClientEnvironment",
     "__version__",

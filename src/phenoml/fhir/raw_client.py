@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -88,7 +88,7 @@ class RawFhirClient:
             Successfully retrieved FHIR resource(s)
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="GET",
             params={
                 "query_parameters": query_parameters,
@@ -252,7 +252,7 @@ class RawFhirClient:
             Resource created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="POST",
             json={
                 "resourceType": resource_type,
@@ -411,7 +411,7 @@ class RawFhirClient:
             Resource upserted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PUT",
             json={
                 "resourceType": resource_type,
@@ -558,7 +558,7 @@ class RawFhirClient:
             Resource deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="DELETE",
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -715,7 +715,7 @@ class RawFhirClient:
             Resource patched successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
                 object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
@@ -872,7 +872,7 @@ class RawFhirClient:
             Bundle executed successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir",
             method="POST",
             json={
                 "total": total,
@@ -1032,7 +1032,7 @@ class AsyncRawFhirClient:
             Successfully retrieved FHIR resource(s)
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="GET",
             params={
                 "query_parameters": query_parameters,
@@ -1196,7 +1196,7 @@ class AsyncRawFhirClient:
             Resource created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="POST",
             json={
                 "resourceType": resource_type,
@@ -1355,7 +1355,7 @@ class AsyncRawFhirClient:
             Resource upserted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PUT",
             json={
                 "resourceType": resource_type,
@@ -1502,7 +1502,7 @@ class AsyncRawFhirClient:
             Resource deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="DELETE",
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -1659,7 +1659,7 @@ class AsyncRawFhirClient:
             Resource patched successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir/{jsonable_encoder(fhir_path)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
                 object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
@@ -1816,7 +1816,7 @@ class AsyncRawFhirClient:
             Bundle executed successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/fhir",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir",
             method="POST",
             json={
                 "total": total,

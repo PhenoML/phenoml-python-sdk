@@ -9,8 +9,10 @@ from .types.create_multi_request_detection_effort import CreateMultiRequestDetec
 from .types.create_multi_request_validation_method import CreateMultiRequestValidationMethod
 from .types.create_multi_response import CreateMultiResponse
 from .types.create_request_resource import CreateRequestResource
+from .types.document_config import DocumentConfig
 from .types.document_multi_request_detection_effort import DocumentMultiRequestDetectionEffort
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
+from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
 from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
@@ -43,7 +45,9 @@ class Lang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Converts natural language text into a structured FHIR resource
+        Converts natural language text into a structured FHIR resource.
+
+        **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -68,7 +72,10 @@ class Lang2FhirClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.create(
             version="R4",
             resource="auto",
@@ -95,6 +102,8 @@ class Lang2FhirClient:
         Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -128,7 +137,10 @@ class Lang2FhirClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.create_multi(
             text="John Smith, male born on 1980-03-12, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
         )
@@ -180,7 +192,10 @@ class Lang2FhirClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.search(
             text="Appointments between March 2-9, 2025",
         )
@@ -231,7 +246,10 @@ class Lang2FhirClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.upload_profile(
             profile="(base64 encoded FHIR StructureDefinition JSON)",
         )
@@ -245,10 +263,18 @@ class Lang2FhirClient:
         return _response.data
 
     def document(
-        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        version: str,
+        resource: str,
+        content: str,
+        config: typing.Optional[DocumentConfig] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
+        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+
+        **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -263,6 +289,8 @@ class Lang2FhirClient:
             Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
             File type is auto-detected from content magic bytes.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -275,7 +303,10 @@ class Lang2FhirClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.document(
             version="R4",
             resource="questionnaire",
@@ -283,7 +314,7 @@ class Lang2FhirClient:
         )
         """
         _response = self._raw_client.document(
-            version=version, resource=resource, content=content, request_options=request_options
+            version=version, resource=resource, content=content, config=config, request_options=request_options
         )
         return _response.data
 
@@ -296,13 +327,16 @@ class Lang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
+        config: typing.Optional[DocumentConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateMultiResponse:
+    ) -> DocumentMultiResponse:
         """
         Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -326,19 +360,24 @@ class Lang2FhirClient:
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        CreateMultiResponse
+        DocumentMultiResponse
             Successfully extracted FHIR resources from document
 
         Examples
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
             version="R4",
             content="content",
@@ -351,6 +390,7 @@ class Lang2FhirClient:
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             validation_method=validation_method,
+            config=config,
             request_options=request_options,
         )
         return _response.data
@@ -380,7 +420,9 @@ class AsyncLang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Converts natural language text into a structured FHIR resource
+        Converts natural language text into a structured FHIR resource.
+
+        **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -407,7 +449,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -440,6 +485,8 @@ class AsyncLang2FhirClient:
         Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -475,7 +522,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -535,7 +585,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -594,7 +647,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -614,10 +670,18 @@ class AsyncLang2FhirClient:
         return _response.data
 
     async def document(
-        self, *, version: str, resource: str, content: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        version: str,
+        resource: str,
+        content: str,
+        config: typing.Optional[DocumentConfig] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource
+        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+
+        **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -631,6 +695,8 @@ class AsyncLang2FhirClient:
             Base64 encoded file content.
             Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
             File type is auto-detected from content magic bytes.
+
+        config : typing.Optional[DocumentConfig]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -646,7 +712,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -660,7 +729,7 @@ class AsyncLang2FhirClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.document(
-            version=version, resource=resource, content=content, request_options=request_options
+            version=version, resource=resource, content=content, config=config, request_options=request_options
         )
         return _response.data
 
@@ -673,13 +742,16 @@ class AsyncLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
+        config: typing.Optional[DocumentConfig] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateMultiResponse:
+    ) -> DocumentMultiResponse:
         """
         Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
         Parameters
         ----------
@@ -703,12 +775,14 @@ class AsyncLang2FhirClient:
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
+        config : typing.Optional[DocumentConfig]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        CreateMultiResponse
+        DocumentMultiResponse
             Successfully extracted FHIR resources from document
 
         Examples
@@ -717,7 +791,10 @@ class AsyncLang2FhirClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -736,6 +813,7 @@ class AsyncLang2FhirClient:
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             validation_method=validation_method,
+            config=config,
             request_options=request_options,
         )
         return _response.data

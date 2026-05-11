@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -227,7 +227,7 @@ class RawSummaryClient:
             Template retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="GET",
             request_options=request_options,
         )
@@ -334,7 +334,7 @@ class RawSummaryClient:
             Template updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="PUT",
             json={
                 "name": name,
@@ -443,7 +443,7 @@ class RawSummaryClient:
             Template deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -838,7 +838,7 @@ class AsyncRawSummaryClient:
             Template retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="GET",
             request_options=request_options,
         )
@@ -945,7 +945,7 @@ class AsyncRawSummaryClient:
             Template updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="PUT",
             json={
                 "name": name,
@@ -1054,7 +1054,7 @@ class AsyncRawSummaryClient:
             Template deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir2summary/template/{jsonable_encoder(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )

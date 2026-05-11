@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -240,7 +240,7 @@ class RawFhirProviderClient:
             FHIR provider retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -318,7 +318,7 @@ class RawFhirProviderClient:
             FHIR provider deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -414,7 +414,7 @@ class RawFhirProviderClient:
             Auth configuration added successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/add-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/add-auth-config",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
                 object_=request, annotation=FhirProviderAddAuthConfigRequest, direction="write"
@@ -529,7 +529,7 @@ class RawFhirProviderClient:
             Check the message field to determine which case occurred.
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/set-active-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/set-active-auth-config",
             method="PATCH",
             json={
                 "auth_config_id": auth_config_id,
@@ -640,7 +640,7 @@ class RawFhirProviderClient:
             Auth configuration removed successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/remove-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/remove-auth-config",
             method="PATCH",
             json={
                 "auth_config_id": auth_config_id,
@@ -937,7 +937,7 @@ class AsyncRawFhirProviderClient:
             FHIR provider retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -1015,7 +1015,7 @@ class AsyncRawFhirProviderClient:
             FHIR provider deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1111,7 +1111,7 @@ class AsyncRawFhirProviderClient:
             Auth configuration added successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/add-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/add-auth-config",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
                 object_=request, annotation=FhirProviderAddAuthConfigRequest, direction="write"
@@ -1226,7 +1226,7 @@ class AsyncRawFhirProviderClient:
             Check the message field to determine which case occurred.
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/set-active-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/set-active-auth-config",
             method="PATCH",
             json={
                 "auth_config_id": auth_config_id,
@@ -1337,7 +1337,7 @@ class AsyncRawFhirProviderClient:
             Auth configuration removed successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir-provider/{jsonable_encoder(fhir_provider_id)}/remove-auth-config",
+            f"fhir-provider/{encode_path_param(fhir_provider_id)}/remove-auth-config",
             method="PATCH",
             json={
                 "auth_config_id": auth_config_id,
