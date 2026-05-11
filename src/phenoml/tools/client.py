@@ -80,7 +80,10 @@ class ToolsClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.create_fhir_resource(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -146,7 +149,10 @@ class ToolsClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.create_fhir_resources_multi(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -171,7 +177,6 @@ class ToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -195,9 +200,6 @@ class ToolsClient:
         patient_id : typing.Optional[str]
             Patient ID to filter results
 
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
-
         count : typing.Optional[int]
             Maximum number of results to return
 
@@ -216,7 +218,10 @@ class ToolsClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.search_fhir_resources(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -228,7 +233,6 @@ class ToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             patient_id=patient_id,
-            practitioner_id=practitioner_id,
             count=count,
             provider=provider,
             request_options=request_options,
@@ -275,7 +279,10 @@ class ToolsClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.analyze_cohort(
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
@@ -364,7 +371,10 @@ class AsyncToolsClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -438,7 +448,10 @@ class AsyncToolsClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -469,7 +482,6 @@ class AsyncToolsClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         patient_id: typing.Optional[str] = OMIT,
-        practitioner_id: typing.Optional[str] = OMIT,
         count: typing.Optional[int] = OMIT,
         provider: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -493,9 +505,6 @@ class AsyncToolsClient:
         patient_id : typing.Optional[str]
             Patient ID to filter results
 
-        practitioner_id : typing.Optional[str]
-            Practitioner ID to filter results
-
         count : typing.Optional[int]
             Maximum number of results to return
 
@@ -516,7 +525,10 @@ class AsyncToolsClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -534,7 +546,6 @@ class AsyncToolsClient:
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             patient_id=patient_id,
-            practitioner_id=practitioner_id,
             count=count,
             provider=provider,
             request_options=request_options,
@@ -583,7 +594,10 @@ class AsyncToolsClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

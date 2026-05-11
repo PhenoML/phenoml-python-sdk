@@ -113,7 +113,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.upload_code_system(
             name="CUSTOM_CODES",
             version="1.0",
@@ -169,7 +172,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.extract_codes(
             text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
         )
@@ -199,7 +205,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.list_available_code_systems()
         """
         _response = self._raw_client.list_available_code_systems(request_options=request_options)
@@ -235,7 +244,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.get_code_system_detail(
             codesystem="ICD-10-CM",
             version="2025",
@@ -277,7 +289,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.delete_custom_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
@@ -320,7 +335,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.export_custom_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
@@ -371,7 +389,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.list_codes_in_a_code_system(
             codesystem="ICD-10-CM",
             version="2025",
@@ -420,7 +441,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.get_a_specific_code(
             codesystem="ICD-10-CM",
             code_id="E11.65",
@@ -488,7 +512,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.semantic_search_embedding_based(
             codesystem="ICD-10-CM",
             text="patient has trouble breathing at night and wakes up gasping",
@@ -543,7 +570,10 @@ class ConstrueClient:
             ExtractRequestSystem,
         )
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.submit_feedback_on_extraction_results(
             text="Patient has type 2 diabetes with hyperglycemia",
             received_result=ExtractCodesResult(
@@ -638,7 +668,10 @@ class ConstrueClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.construe.terminology_server_text_search(
             codesystem="ICD-10-CM",
             q="E11.65",
@@ -742,7 +775,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -806,7 +842,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -844,7 +883,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -888,7 +930,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -938,7 +983,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -989,7 +1037,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -1048,7 +1099,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -1105,7 +1159,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -1181,7 +1238,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -1244,7 +1304,10 @@ class AsyncConstrueClient:
             ExtractRequestSystem,
         )
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -1347,7 +1410,10 @@ class AsyncConstrueClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

@@ -1,3 +1,19 @@
+## 11.0.0 - 2026-05-11
+### Breaking Changes
+* **`search_fhir_resources`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the `practitioner_id` parameter has been removed; remove any `practitioner_id=...` argument from call sites.
+* **`document_multi`** / **`extract_multiple_fhir_resources_from_a_document`** (`RawLang2FhirClient`, `AsyncRawLang2FhirClient`, `Lang2FhirClient`, `AsyncLang2FhirClient`) — now returns `DocumentMultiResponse` instead of `CreateMultiResponse`; update type annotations and any field access that is unique to `CreateMultiResponse`.
+### Added
+* **`DocumentConfig`** — new optional `config` parameter on `document` and `document_multi` / `extract_multiple_fhir_resources_from_a_document` (sync and async) for per-request document processing configuration.
+* **`DocumentMultiResponse`** — new dedicated response model extending `CreateMultiResponse` with an optional `page_classifications` list populated when a `PageFilter` is supplied.
+* **`PageFilter`** and **`PageClassification`** — new models enabling per-page LLM-based pre-extraction filtering; irrelevant pages are dropped before FHIR extraction and each page's decision is captured in `PageClassification`.
+* **`max_retries`** — new optional parameter on `PhenomlClient` and `AsyncPhenomlClient` (default `2`) for setting the client-wide retry count; per-request `RequestOptions.max_retries` still takes precedence.
+* **`DefaultAioHttpClient`**, **`DefaultAsyncHttpxClient`**, and the **`phenoml[aiohttp]`** extra — new convenience async HTTP client classes and optional install extra for aiohttp-backed async transport.
+### Changed
+* **`CreateMultiResponseResourcesItem.original_text`** — new optional field holding the verbatim source text excerpt; the existing `description` field now holds the context-enriched rewritten excerpt.
+### Fixed
+* **SSE streaming** (`iter_sse` / `aiter_sse`) — incremental charset decoding and `\r\n` / bare `\r` line-ending normalization now prevent dropped or malformed events on non-Unix line endings.
+* **Path parameter encoding** in prompts endpoints now uses `encode_path_param` instead of `jsonable_encoder`, ensuring correct URL-safe encoding for prompt IDs.
+
 ## 10.5.0 - 2026-05-01
 ### Added
 * **`CreateMultiRequestValidationMethod`** and **`DocumentMultiRequestValidationMethod`** — new enums with values `"none"`, `"check"`, and `"fix"` controlling FHIR structure validation applied to the generated bundle.

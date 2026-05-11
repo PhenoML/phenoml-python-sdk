@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
@@ -445,7 +445,7 @@ class RawConstrueClient:
             Code system detail
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            f"construe/codes/systems/{encode_path_param(codesystem)}",
             method="GET",
             params={
                 "version": version,
@@ -543,7 +543,7 @@ class RawConstrueClient:
             Code system deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            f"construe/codes/systems/{encode_path_param(codesystem)}",
             method="DELETE",
             params={
                 "version": version,
@@ -653,7 +653,7 @@ class RawConstrueClient:
             Exported code system as JSON file
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}/export",
+            f"construe/codes/systems/{encode_path_param(codesystem)}/export",
             method="GET",
             params={
                 "version": version,
@@ -793,7 +793,7 @@ class RawConstrueClient:
             Paginated list of codes
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}",
+            f"construe/codes/{encode_path_param(codesystem)}",
             method="GET",
             params={
                 "version": version,
@@ -898,7 +898,7 @@ class RawConstrueClient:
             Code details
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/{jsonable_encoder(code_id)}",
+            f"construe/codes/{encode_path_param(codesystem)}/{encode_path_param(code_id)}",
             method="GET",
             params={
                 "version": version,
@@ -1021,7 +1021,7 @@ class RawConstrueClient:
             Semantic search results ordered by similarity
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/search/semantic",
+            f"construe/codes/{encode_path_param(codesystem)}/search/semantic",
             method="GET",
             params={
                 "text": text,
@@ -1266,7 +1266,7 @@ class RawConstrueClient:
             Text search results
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/search/text",
+            f"construe/codes/{encode_path_param(codesystem)}/search/text",
             method="GET",
             params={
                 "q": q,
@@ -1753,7 +1753,7 @@ class AsyncRawConstrueClient:
             Code system detail
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            f"construe/codes/systems/{encode_path_param(codesystem)}",
             method="GET",
             params={
                 "version": version,
@@ -1851,7 +1851,7 @@ class AsyncRawConstrueClient:
             Code system deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}",
+            f"construe/codes/systems/{encode_path_param(codesystem)}",
             method="DELETE",
             params={
                 "version": version,
@@ -1961,7 +1961,7 @@ class AsyncRawConstrueClient:
             Exported code system as JSON file
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/systems/{jsonable_encoder(codesystem)}/export",
+            f"construe/codes/systems/{encode_path_param(codesystem)}/export",
             method="GET",
             params={
                 "version": version,
@@ -2101,7 +2101,7 @@ class AsyncRawConstrueClient:
             Paginated list of codes
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}",
+            f"construe/codes/{encode_path_param(codesystem)}",
             method="GET",
             params={
                 "version": version,
@@ -2206,7 +2206,7 @@ class AsyncRawConstrueClient:
             Code details
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/{jsonable_encoder(code_id)}",
+            f"construe/codes/{encode_path_param(codesystem)}/{encode_path_param(code_id)}",
             method="GET",
             params={
                 "version": version,
@@ -2329,7 +2329,7 @@ class AsyncRawConstrueClient:
             Semantic search results ordered by similarity
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/search/semantic",
+            f"construe/codes/{encode_path_param(codesystem)}/search/semantic",
             method="GET",
             params={
                 "text": text,
@@ -2574,7 +2574,7 @@ class AsyncRawConstrueClient:
             Text search results
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"construe/codes/{jsonable_encoder(codesystem)}/search/text",
+            f"construe/codes/{encode_path_param(codesystem)}/search/text",
             method="GET",
             params={
                 "q": q,

@@ -63,7 +63,10 @@ class AuthClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.authtoken.auth.get_token()
         """
         _response = self._raw_client.get_token(
@@ -126,7 +129,10 @@ class AsyncAuthClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

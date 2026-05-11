@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ....core.api_error import ApiError
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.http_response import AsyncHttpResponse, HttpResponse
-from ....core.jsonable_encoder import jsonable_encoder
+from ....core.jsonable_encoder import encode_path_param
 from ....core.parse_error import ParsingError
 from ....core.pydantic_utilities import parse_obj_as
 from ....core.request_options import RequestOptions
@@ -46,7 +46,7 @@ class RawToolsClient:
             Successfully listed MCP server tools
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/{jsonable_encoder(mcp_server_id)}/list",
+            f"tools/mcp-server/{encode_path_param(mcp_server_id)}/list",
             method="GET",
             request_options=request_options,
         )
@@ -122,7 +122,7 @@ class RawToolsClient:
             Successfully retrieved MCP server tool
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -198,7 +198,7 @@ class RawToolsClient:
             Successfully deleted MCP server tool
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -281,7 +281,7 @@ class RawToolsClient:
             Successfully called MCP server tool
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}/call",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}/call",
             method="POST",
             json={
                 "arguments": arguments,
@@ -380,7 +380,7 @@ class AsyncRawToolsClient:
             Successfully listed MCP server tools
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/{jsonable_encoder(mcp_server_id)}/list",
+            f"tools/mcp-server/{encode_path_param(mcp_server_id)}/list",
             method="GET",
             request_options=request_options,
         )
@@ -456,7 +456,7 @@ class AsyncRawToolsClient:
             Successfully retrieved MCP server tool
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -532,7 +532,7 @@ class AsyncRawToolsClient:
             Successfully deleted MCP server tool
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -615,7 +615,7 @@ class AsyncRawToolsClient:
             Successfully called MCP server tool
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"tools/mcp-server/tool/{jsonable_encoder(mcp_server_tool_id)}/call",
+            f"tools/mcp-server/tool/{encode_path_param(mcp_server_tool_id)}/call",
             method="POST",
             json={
                 "arguments": arguments,

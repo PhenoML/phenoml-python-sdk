@@ -47,7 +47,10 @@ class CohortClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.cohort.analyze(
             text="female patients over 65 with diabetes but not hypertension",
         )
@@ -94,7 +97,10 @@ class AsyncCohortClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

@@ -58,7 +58,10 @@ class McpServerClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.mcp_server.create(
             name="My MCP Server",
             mcp_server_url="https://mcp.example.com",
@@ -85,7 +88,10 @@ class McpServerClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.mcp_server.list()
         """
         _response = self._raw_client.list(request_options=request_options)
@@ -112,7 +118,10 @@ class McpServerClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.mcp_server.get(
             mcp_server_id="mcp_server_id",
         )
@@ -143,7 +152,10 @@ class McpServerClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.tools.mcp_server.delete(
             mcp_server_id="mcp_server_id",
         )
@@ -205,7 +217,10 @@ class AsyncMcpServerClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -242,7 +257,10 @@ class AsyncMcpServerClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -279,7 +297,10 @@ class AsyncMcpServerClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -318,7 +339,10 @@ class AsyncMcpServerClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

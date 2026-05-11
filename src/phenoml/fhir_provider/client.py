@@ -75,7 +75,10 @@ class FhirProviderClient:
         from phenoml import PhenomlClient
         from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.create(
             name="Epic Sandbox",
             provider="athenahealth",
@@ -116,7 +119,10 @@ class FhirProviderClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.list()
         """
         _response = self._raw_client.list(request_options=request_options)
@@ -148,7 +154,10 @@ class FhirProviderClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.get(
             fhir_provider_id="fhir_provider_id",
         )
@@ -181,7 +190,10 @@ class FhirProviderClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.delete(
             fhir_provider_id="fhir_provider_id",
         )
@@ -222,7 +234,10 @@ class FhirProviderClient:
         from phenoml import PhenomlClient
         from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.add_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
             request=FhirProviderAddAuthConfigRequest_Jwt(
@@ -266,7 +281,10 @@ class FhirProviderClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.set_active_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
             auth_config_id="auth-config-123",
@@ -306,7 +324,10 @@ class FhirProviderClient:
         --------
         from phenoml import PhenomlClient
 
-        client = PhenomlClient()
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
         client.fhir_provider.remove_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
             auth_config_id="auth-config-123",
@@ -378,7 +399,10 @@ class AsyncFhirProviderClient:
         from phenoml import AsyncPhenomlClient
         from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -427,7 +451,10 @@ class AsyncFhirProviderClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -467,7 +494,10 @@ class AsyncFhirProviderClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -508,7 +538,10 @@ class AsyncFhirProviderClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -557,7 +590,10 @@ class AsyncFhirProviderClient:
         from phenoml import AsyncPhenomlClient
         from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -611,7 +647,10 @@ class AsyncFhirProviderClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:
@@ -659,7 +698,10 @@ class AsyncFhirProviderClient:
 
         from phenoml import AsyncPhenomlClient
 
-        client = AsyncPhenomlClient()
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
 
 
         async def main() -> None:

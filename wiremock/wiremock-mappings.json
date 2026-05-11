@@ -909,8 +909,8 @@
       }
     },
     {
-      "id": "67ed561c-4aad-4be2-a3d2-238cc1c5f840",
-      "name": "Search or Get FHIR Resources - default",
+      "id": "03372c39-458a-494e-b589-275c36616f9f",
+      "name": "Search or Get FHIR Resources - Search results as FHIR Bundle",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "GET",
@@ -930,7 +930,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "67ed561c-4aad-4be2-a3d2-238cc1c5f840",
+      "uuid": "03372c39-458a-494e-b589-275c36616f9f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -943,8 +943,8 @@
       }
     },
     {
-      "id": "b22e58e0-9359-4cdf-8d2e-a3253ea7a2f3",
-      "name": "Create FHIR Resource - default",
+      "id": "177116aa-b6a5-4c98-89f1-35bbe95877e7",
+      "name": "Create FHIR Resource - Create a new patient",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "POST",
@@ -964,7 +964,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "b22e58e0-9359-4cdf-8d2e-a3253ea7a2f3",
+      "uuid": "177116aa-b6a5-4c98-89f1-35bbe95877e7",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -977,8 +977,8 @@
       }
     },
     {
-      "id": "1b1072aa-fdd8-4e2b-9b61-70bfa86f84dd",
-      "name": "Upsert FHIR Resource - default",
+      "id": "ed620004-9f03-4461-9996-b82c610e3488",
+      "name": "Upsert FHIR Resource - Create or update a patient",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PUT",
@@ -998,7 +998,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "1b1072aa-fdd8-4e2b-9b61-70bfa86f84dd",
+      "uuid": "ed620004-9f03-4461-9996-b82c610e3488",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1045,8 +1045,8 @@
       }
     },
     {
-      "id": "ce51a8af-25b5-42db-a98d-c21018a9159b",
-      "name": "Patch FHIR Resource - default",
+      "id": "a698d642-ad35-4b21-8360-5be27589da06",
+      "name": "Patch FHIR Resource - Replace patient's family name",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PATCH",
@@ -1066,7 +1066,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ce51a8af-25b5-42db-a98d-c21018a9159b",
+      "uuid": "a698d642-ad35-4b21-8360-5be27589da06",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1079,8 +1079,8 @@
       }
     },
     {
-      "id": "ff36f554-5335-4585-a288-2a20d853e955",
-      "name": "Execute FHIR Bundle Operation - default",
+      "id": "5aebd955-58eb-462d-b975-0fcc6b052117",
+      "name": "Execute FHIR Bundle Operation - Bundle execution response",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir",
         "method": "POST",
@@ -1097,7 +1097,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ff36f554-5335-4585-a288-2a20d853e955",
+      "uuid": "5aebd955-58eb-462d-b975-0fcc6b052117",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1352,7 +1352,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith, 45-year-old male\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1456,7 +1456,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith, 45-year-old male\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"reason\": \"clinical notes with diagnoses\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }

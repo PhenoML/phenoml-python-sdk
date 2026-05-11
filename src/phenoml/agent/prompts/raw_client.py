@@ -6,7 +6,7 @@ from json.decoder import JSONDecodeError
 from ...core.api_error import ApiError
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.http_response import AsyncHttpResponse, HttpResponse
-from ...core.jsonable_encoder import jsonable_encoder
+from ...core.jsonable_encoder import encode_path_param
 from ...core.parse_error import ParsingError
 from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
@@ -239,7 +239,7 @@ class RawPromptsClient:
             Prompt retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="GET",
             request_options=request_options,
         )
@@ -349,7 +349,7 @@ class RawPromptsClient:
             Prompt updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="PUT",
             json={
                 "name": name,
@@ -458,7 +458,7 @@ class RawPromptsClient:
             Prompt deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -547,7 +547,7 @@ class RawPromptsClient:
             Prompt patched successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(object_=request, annotation=JsonPatch, direction="write"),
             headers={
@@ -918,7 +918,7 @@ class AsyncRawPromptsClient:
             Prompt retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="GET",
             request_options=request_options,
         )
@@ -1028,7 +1028,7 @@ class AsyncRawPromptsClient:
             Prompt updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="PUT",
             json={
                 "name": name,
@@ -1137,7 +1137,7 @@ class AsyncRawPromptsClient:
             Prompt deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -1226,7 +1226,7 @@ class AsyncRawPromptsClient:
             Prompt patched successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"agent/prompts/{jsonable_encoder(id)}",
+            f"agent/prompts/{encode_path_param(id)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(object_=request, annotation=JsonPatch, direction="write"),
             headers={
