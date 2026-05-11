@@ -7,6 +7,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: extract-code-examples-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   extract:
     runs-on: ubuntu-latest
