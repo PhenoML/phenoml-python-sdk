@@ -1,3 +1,18 @@
+## 12.0.0 - 2026-05-12
+### Breaking Changes
+* **`McpServerResponseData`** — renamed to `McpServer` and removed from `phenoml.tools` exports; replace all imports and type annotations with `McpServer` from `phenoml.tools.types.mcp_server`.
+* **`McpServerToolResponseData`** — renamed to `McpServerTool` and removed from `phenoml.tools` exports; replace all imports and type annotations with `McpServerTool` from `phenoml.tools.types.mcp_server_tool`.
+* **`McpServerResponse.data` and `McpServerToolResponse.data`** — field types changed from the removed `*ResponseData` variants to `McpServer` and `McpServerTool` respectively; update any code relying on the old types.
+* **`FhirProviderTemplate`** — `id`, `name`, `provider`, `auth_configs`, and `last_updated` are now required fields; update all construction sites to supply all five fields.
+* **`FhirProviderSandboxInfo`** — `id`, `name`, and `provider` are now required fields; update all construction sites to supply all three fields.
+### Added
+* **`McpServer` and `McpServerTool`** — new public models (replacing the removed `*ResponseData` variants) now exported from `phenoml.tools`.
+* **`McpServerResponse.mcp_servers` and `McpServerResponse.mcp_server_tools`** — new optional list fields populated by MCP server create and list endpoints.
+* **`McpServerToolResponse.mcp_server_tools`** — new optional `List[McpServerTool]` field populated by the `/tools/mcp-server/{id}/list` endpoint.
+### Changed
+* **`SearchResponse`** — `resource_type` and `search_params` fields now use plain `pydantic.Field` with docstrings instead of `typing_extensions.Annotated` metadata; serialization behavior is unchanged.
+* **`code_id` parameter on `construe.get_a_specific_code`** — documentation clarifies that ICD-10-CM codes must be supplied without the cosmetic dot (e.g. `"E1165"` not `"E11.65"`).
+
 ## 11.0.0 - 2026-05-11
 ### Breaking Changes
 * **`search_fhir_resources`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the `practitioner_id` parameter has been removed; remove any `practitioner_id=...` argument from call sites.

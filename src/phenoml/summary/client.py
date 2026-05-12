@@ -113,10 +113,10 @@ class SummaryClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.summary.create_template(
-            name="name",
-            example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
-            target_resources=["Patient", "Condition", "Observation"],
-            mode="mode",
+            name="Discharge Summary",
+            example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+            target_resources=["Patient", "Condition", "MedicationRequest"],
+            mode="narrative",
         )
         """
         _response = self._raw_client.create_template(
@@ -213,10 +213,10 @@ class SummaryClient:
         )
         client.summary.update_template(
             id="id",
-            name="name",
-            template="template",
-            target_resources=["target_resources"],
-            mode="mode",
+            name="Discharge Summary",
+            template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+            target_resources=["Patient", "Encounter", "MedicationRequest"],
+            mode="narrative",
         )
         """
         _response = self._raw_client.update_template(
@@ -314,8 +314,10 @@ class SummaryClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.summary.create(
+            mode="narrative",
+            template_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
             fhir_resources=FhirResource(
-                resource_type="resourceType",
+                resource_type="Bundle",
             ),
         )
         """
@@ -433,10 +435,10 @@ class AsyncSummaryClient:
 
         async def main() -> None:
             await client.summary.create_template(
-                name="name",
-                example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
-                target_resources=["Patient", "Condition", "Observation"],
-                mode="mode",
+                name="Discharge Summary",
+                example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+                target_resources=["Patient", "Condition", "MedicationRequest"],
+                mode="narrative",
             )
 
 
@@ -549,10 +551,10 @@ class AsyncSummaryClient:
         async def main() -> None:
             await client.summary.update_template(
                 id="id",
-                name="name",
-                template="template",
-                target_resources=["target_resources"],
-                mode="mode",
+                name="Discharge Summary",
+                template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+                target_resources=["Patient", "Encounter", "MedicationRequest"],
+                mode="narrative",
             )
 
 
@@ -666,8 +668,10 @@ class AsyncSummaryClient:
 
         async def main() -> None:
             await client.summary.create(
+                mode="narrative",
+                template_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 fhir_resources=FhirResource(
-                    resource_type="resourceType",
+                    resource_type="Bundle",
                 ),
             )
 

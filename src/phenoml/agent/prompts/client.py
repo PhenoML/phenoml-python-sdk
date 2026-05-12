@@ -78,7 +78,10 @@ class PromptsClient:
         )
         client.agent.prompts.create(
             name="Medical Assistant System Prompt",
-            content="You are a helpful medical assistant specialized in FHIR data processing...",
+            description="System prompt for medical assistant agent",
+            content="You are a helpful medical assistant specialized in FHIR data processing.",
+            is_default=False,
+            tags=["medical", "system"],
         )
         """
         _response = self._raw_client.create(
@@ -202,6 +205,11 @@ class PromptsClient:
         )
         client.agent.prompts.update(
             id="id",
+            name="Medical Assistant System Prompt",
+            description="Updated system prompt",
+            content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+            is_default=False,
+            tags=["medical", "system", "updated"],
         )
         """
         _response = self._raw_client.update(
@@ -282,18 +290,9 @@ class PromptsClient:
             request=[
                 JsonPatchOperation(
                     op="replace",
-                    path="/name",
-                    value="Updated Agent Name",
-                ),
-                JsonPatchOperation(
-                    op="add",
-                    path="/tags/-",
-                    value="new-tag",
-                ),
-                JsonPatchOperation(
-                    op="remove",
-                    path="/description",
-                ),
+                    path="/content",
+                    value="Updated prompt content.",
+                )
             ],
         )
         """
@@ -396,7 +395,10 @@ class AsyncPromptsClient:
         async def main() -> None:
             await client.agent.prompts.create(
                 name="Medical Assistant System Prompt",
-                content="You are a helpful medical assistant specialized in FHIR data processing...",
+                description="System prompt for medical assistant agent",
+                content="You are a helpful medical assistant specialized in FHIR data processing.",
+                is_default=False,
+                tags=["medical", "system"],
             )
 
 
@@ -544,6 +546,11 @@ class AsyncPromptsClient:
         async def main() -> None:
             await client.agent.prompts.update(
                 id="id",
+                name="Medical Assistant System Prompt",
+                description="Updated system prompt",
+                content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+                is_default=False,
+                tags=["medical", "system", "updated"],
             )
 
 
@@ -642,18 +649,9 @@ class AsyncPromptsClient:
                 request=[
                     JsonPatchOperation(
                         op="replace",
-                        path="/name",
-                        value="Updated Agent Name",
-                    ),
-                    JsonPatchOperation(
-                        op="add",
-                        path="/tags/-",
-                        value="new-tag",
-                    ),
-                    JsonPatchOperation(
-                        op="remove",
-                        path="/description",
-                    ),
+                        path="/content",
+                        value="Updated prompt content.",
+                    )
                 ],
             )
 

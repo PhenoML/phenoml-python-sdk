@@ -10,12 +10,18 @@ from .provider import Provider
 
 
 class FhirProviderTemplate(UniversalBaseModel):
-    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Full FHIR provider configuration returned for non-sandbox providers.
+    `auth_configs` and `last_updated` are always populated, which is how
+    list responses distinguish this shape from `FhirProviderSandboxInfo`.
+    """
+
+    id: str = pydantic.Field()
     """
     Unique identifier for the FHIR provider
     """
 
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
     Display name for the FHIR provider
     """
@@ -25,7 +31,7 @@ class FhirProviderTemplate(UniversalBaseModel):
     Optional description of the FHIR provider
     """
 
-    provider: typing.Optional[Provider] = None
+    provider: Provider
     base_url: typing.Optional[str] = pydantic.Field(default=None)
     """
     Base URL of the FHIR server
@@ -36,12 +42,12 @@ class FhirProviderTemplate(UniversalBaseModel):
     OAuth client ID. Deprecated: use client_id on FhirProviderAuthConfig instead. Retained for backward compatibility with existing providers.
     """
 
-    auth_configs: typing.Optional[typing.Dict[str, FhirProviderAuthConfig]] = pydantic.Field(default=None)
+    auth_configs: typing.Dict[str, FhirProviderAuthConfig] = pydantic.Field()
     """
     Map of authentication configurations (key is auth_config_id)
     """
 
-    last_updated: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    last_updated: dt.datetime = pydantic.Field()
     """
     Timestamp when the provider was last updated
     """
