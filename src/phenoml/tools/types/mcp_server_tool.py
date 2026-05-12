@@ -6,24 +6,30 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class McpServerResponseData(UniversalBaseModel):
-    """
-    MCP server data
-    """
-
+class McpServerTool(UniversalBaseModel):
     id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ID of the MCP server
+    ID of the MCP server tool
     """
 
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Name of the MCP server
+    Name of the MCP server tool
     """
 
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Description of the MCP server
+    Description of the MCP server tool
+    """
+
+    input_schema: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
+    """
+    Input schema of the MCP server tool
+    """
+
+    mcp_server_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the MCP server that the tool belongs to
     """
 
     mcp_server_url: typing.Optional[str] = pydantic.Field(default=None)

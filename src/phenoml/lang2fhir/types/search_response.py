@@ -3,26 +3,22 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
 from .search_response_resource_type import SearchResponseResourceType
 
 
 class SearchResponse(UniversalBaseModel):
-    resource_type: typing_extensions.Annotated[
-        typing.Optional[SearchResponseResourceType],
-        FieldMetadata(alias="resourceType"),
-        pydantic.Field(alias="resourceType", description="The FHIR resource type identified for the search"),
-    ] = None
-    search_params: typing_extensions.Annotated[
-        typing.Optional[str],
-        FieldMetadata(alias="searchParams"),
-        pydantic.Field(
-            alias="searchParams",
-            description="FHIR search parameters in standard query string format.\nParameters are formatted according to the FHIR specification with appropriate operators.\nCode parameters are resolved to standard terminology codes (SNOMED CT, LOINC, RxNorm, ICD-10-CM).",
-        ),
-    ] = None
+    resource_type: typing.Optional[SearchResponseResourceType] = pydantic.Field(default=None)
+    """
+    The FHIR resource type identified for the search
+    """
+
+    search_params: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    FHIR search parameters in standard query string format.
+    Parameters are formatted according to the FHIR specification with appropriate operators.
+    Code parameters are resolved to standard terminology codes (SNOMED CT, LOINC, RxNorm, ICD-10-CM).
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
