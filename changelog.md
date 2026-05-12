@@ -1,3 +1,11 @@
+## 12.0.0 - 2026-05-12
+### Breaking Changes
+* **`CreateSummaryRequestFhirResources`**, **`FhirBundle`**, **`FhirBundleEntryItem`**, and **`FhirResource`** have been removed from `phenoml.summary`; remove any imports or usages of these types from your code.
+* **`McpServerResponseData`** has been renamed to **`McpServer`** in `phenoml.tools`; update all imports and type annotations accordingly.
+* **`McpServerToolResponseData`** has been renamed to **`McpServerTool`** in `phenoml.tools`; update all imports and type annotations accordingly.
+* **`FhirProviderTemplate`** fields `id`, `name`, `provider`, `auth_configs`, and `last_updated` are now required (non-`Optional`); code that assumed these could be `None` must be updated.
+* **`FhirProviderSandboxInfo`** fields `id`, `name`, and `provider` are now required (non-`Optional`); code that assumed these could be `None` must be updated.
+
 ## 11.0.0 - 2026-05-11
 ### Breaking Changes
 * **`search_fhir_resources`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the `practitioner_id` parameter has been removed; remove any `practitioner_id=...` argument from call sites.

@@ -18,8 +18,13 @@ def test_workflows_create() -> None:
     client.workflows.create(
         verbose=True,
         name="Patient Data Mapping Workflow",
-        workflow_instructions="Given diagnosis data, find the patient and create condition record",
-        sample_data={"patient_last_name": "Rippin", "patient_first_name": "Clay", "diagnosis_code": "I10"},
+        workflow_instructions="Given diagnosis data, find the patient and create a condition record linked to their encounter",
+        sample_data={
+            "patient_last_name": "Rippin",
+            "patient_first_name": "Clay",
+            "diagnosis_code": "I10",
+            "encounter_date": "2024-01-15",
+        },
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     )
     verify_request_count(test_id, "POST", "/workflows", {"verbose": "true"}, 1)
@@ -43,9 +48,14 @@ def test_workflows_update() -> None:
     client.workflows.update(
         id="id",
         verbose=True,
-        name="Updated Patient Data Mapping Workflow",
-        workflow_instructions="Given diagnosis data, find the patient and create condition record",
-        sample_data={"patient_last_name": "Smith", "patient_first_name": "John", "diagnosis_code": "E11"},
+        name="Patient Data Mapping Workflow (v2)",
+        workflow_instructions="Given diagnosis data, find the patient and create a condition record linked to their encounter",
+        sample_data={
+            "patient_last_name": "Rippin",
+            "patient_first_name": "Clay",
+            "diagnosis_code": "I10",
+            "encounter_date": "2024-01-15",
+        },
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     )
     verify_request_count(test_id, "PUT", "/workflows/id", {"verbose": "true"}, 1)
@@ -66,12 +76,12 @@ def test_workflows_execute() -> None:
     test_id = "workflows.execute.0"
     client = get_client(test_id)
     client.workflows.execute(
-        id="id",
+        id="7a8b9c0d-1234-5678-abcd-ef9876543210",
         input_data={
             "patient_last_name": "Johnson",
             "patient_first_name": "Mary",
             "diagnosis_code": "M79.3",
-            "encounter_date": "2024-01-15",
+            "encounter_date": "2024-03-20",
         },
     )
-    verify_request_count(test_id, "POST", "/workflows/id/execute", None, 1)
+    verify_request_count(test_id, "POST", "/workflows/7a8b9c0d-1234-5678-abcd-ef9876543210/execute", None, 1)

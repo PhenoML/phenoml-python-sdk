@@ -5,7 +5,6 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawSummaryClient, RawSummaryClient
-from .types.create_summary_request_fhir_resources import CreateSummaryRequestFhirResources
 from .types.create_summary_request_mode import CreateSummaryRequestMode
 from .types.create_summary_response import CreateSummaryResponse
 from .types.create_summary_template_response import CreateSummaryTemplateResponse
@@ -113,10 +112,10 @@ class SummaryClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.summary.create_template(
-            name="name",
-            example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
-            target_resources=["Patient", "Condition", "Observation"],
-            mode="mode",
+            name="Discharge Summary",
+            example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+            target_resources=["Patient", "Condition", "MedicationRequest"],
+            mode="narrative",
         )
         """
         _response = self._raw_client.create_template(
@@ -213,10 +212,10 @@ class SummaryClient:
         )
         client.summary.update_template(
             id="id",
-            name="name",
-            template="template",
-            target_resources=["target_resources"],
-            mode="mode",
+            name="Discharge Summary",
+            template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+            target_resources=["Patient", "Encounter", "MedicationRequest"],
+            mode="narrative",
         )
         """
         _response = self._raw_client.update_template(
@@ -267,7 +266,7 @@ class SummaryClient:
     def create(
         self,
         *,
-        fhir_resources: CreateSummaryRequestFhirResources,
+        fhir_resources: typing.Dict[str, typing.Any],
         mode: typing.Optional[CreateSummaryRequestMode] = OMIT,
         template_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -280,7 +279,7 @@ class SummaryClient:
 
         Parameters
         ----------
-        fhir_resources : CreateSummaryRequestFhirResources
+        fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle).
             For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
             identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
@@ -307,16 +306,35 @@ class SummaryClient:
         Examples
         --------
         from phenoml import PhenomlClient
-        from phenoml.summary import FhirResource
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.summary.create(
-            fhir_resources=FhirResource(
-                resource_type="resourceType",
-            ),
+            mode="narrative",
+            template_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            fhir_resources={
+                "resourceType": "Bundle",
+                "type": "collection",
+                "entry": [
+                    {
+                        "resource": {
+                            "resourceType": "Patient",
+                            "name": [{"given": ["John"], "family": "Doe"}],
+                            "gender": "male",
+                            "birthDate": "1979-03-15",
+                        }
+                    },
+                    {
+                        "resource": {
+                            "resourceType": "Condition",
+                            "code": {"text": "Type 2 Diabetes Mellitus"},
+                            "onsetDateTime": "2024-01-15",
+                        }
+                    },
+                ],
+            },
         )
         """
         _response = self._raw_client.create(
@@ -433,10 +451,10 @@ class AsyncSummaryClient:
 
         async def main() -> None:
             await client.summary.create_template(
-                name="name",
-                example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
-                target_resources=["Patient", "Condition", "Observation"],
-                mode="mode",
+                name="Discharge Summary",
+                example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+                target_resources=["Patient", "Condition", "MedicationRequest"],
+                mode="narrative",
             )
 
 
@@ -549,10 +567,10 @@ class AsyncSummaryClient:
         async def main() -> None:
             await client.summary.update_template(
                 id="id",
-                name="name",
-                template="template",
-                target_resources=["target_resources"],
-                mode="mode",
+                name="Discharge Summary",
+                template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+                target_resources=["Patient", "Encounter", "MedicationRequest"],
+                mode="narrative",
             )
 
 
@@ -614,7 +632,7 @@ class AsyncSummaryClient:
     async def create(
         self,
         *,
-        fhir_resources: CreateSummaryRequestFhirResources,
+        fhir_resources: typing.Dict[str, typing.Any],
         mode: typing.Optional[CreateSummaryRequestMode] = OMIT,
         template_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -627,7 +645,7 @@ class AsyncSummaryClient:
 
         Parameters
         ----------
-        fhir_resources : CreateSummaryRequestFhirResources
+        fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle).
             For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
             identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
@@ -656,7 +674,6 @@ class AsyncSummaryClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
-        from phenoml.summary import FhirResource
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -666,9 +683,29 @@ class AsyncSummaryClient:
 
         async def main() -> None:
             await client.summary.create(
-                fhir_resources=FhirResource(
-                    resource_type="resourceType",
-                ),
+                mode="narrative",
+                template_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                fhir_resources={
+                    "resourceType": "Bundle",
+                    "type": "collection",
+                    "entry": [
+                        {
+                            "resource": {
+                                "resourceType": "Patient",
+                                "name": [{"given": ["John"], "family": "Doe"}],
+                                "gender": "male",
+                                "birthDate": "1979-03-15",
+                            }
+                        },
+                        {
+                            "resource": {
+                                "resourceType": "Condition",
+                                "code": {"text": "Type 2 Diabetes Mellitus"},
+                                "onsetDateTime": "2024-01-15",
+                            }
+                        },
+                    ],
+                },
             )
 
 

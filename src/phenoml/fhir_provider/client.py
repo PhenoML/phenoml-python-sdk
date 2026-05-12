@@ -73,7 +73,7 @@ class FhirProviderClient:
         Examples
         --------
         from phenoml import PhenomlClient
-        from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
+        from phenoml.fhir_provider import FhirProviderCreateRequestAuth_ClientSecret
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -81,10 +81,12 @@ class FhirProviderClient:
         )
         client.fhir_provider.create(
             name="Epic Sandbox",
-            provider="athenahealth",
+            description="Epic sandbox environment for testing",
+            provider="epic",
             base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
-            auth=FhirProviderCreateRequestAuth_Jwt(
+            auth=FhirProviderCreateRequestAuth_ClientSecret(
                 client_id="your-client-id",
+                client_secret="your-client-secret",
             ),
         )
         """
@@ -232,7 +234,7 @@ class FhirProviderClient:
         Examples
         --------
         from phenoml import PhenomlClient
-        from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
+        from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_ClientSecret
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -240,8 +242,9 @@ class FhirProviderClient:
         )
         client.fhir_provider.add_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-            request=FhirProviderAddAuthConfigRequest_Jwt(
+            request=FhirProviderAddAuthConfigRequest_ClientSecret(
                 client_id="your-client-id",
+                client_secret="your-client-secret",
             ),
         )
         """
@@ -287,7 +290,7 @@ class FhirProviderClient:
         )
         client.fhir_provider.set_active_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-            auth_config_id="auth-config-123",
+            auth_config_id="auth-config-456",
         )
         """
         _response = self._raw_client.set_active_auth_config(
@@ -330,7 +333,7 @@ class FhirProviderClient:
         )
         client.fhir_provider.remove_auth_config(
             fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-            auth_config_id="auth-config-123",
+            auth_config_id="auth-config-456",
         )
         """
         _response = self._raw_client.remove_auth_config(
@@ -397,7 +400,7 @@ class AsyncFhirProviderClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
-        from phenoml.fhir_provider import FhirProviderCreateRequestAuth_Jwt
+        from phenoml.fhir_provider import FhirProviderCreateRequestAuth_ClientSecret
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -408,10 +411,12 @@ class AsyncFhirProviderClient:
         async def main() -> None:
             await client.fhir_provider.create(
                 name="Epic Sandbox",
-                provider="athenahealth",
+                description="Epic sandbox environment for testing",
+                provider="epic",
                 base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
-                auth=FhirProviderCreateRequestAuth_Jwt(
+                auth=FhirProviderCreateRequestAuth_ClientSecret(
                     client_id="your-client-id",
+                    client_secret="your-client-secret",
                 ),
             )
 
@@ -588,7 +593,7 @@ class AsyncFhirProviderClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
-        from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt
+        from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_ClientSecret
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -599,8 +604,9 @@ class AsyncFhirProviderClient:
         async def main() -> None:
             await client.fhir_provider.add_auth_config(
                 fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-                request=FhirProviderAddAuthConfigRequest_Jwt(
+                request=FhirProviderAddAuthConfigRequest_ClientSecret(
                     client_id="your-client-id",
+                    client_secret="your-client-secret",
                 ),
             )
 
@@ -656,7 +662,7 @@ class AsyncFhirProviderClient:
         async def main() -> None:
             await client.fhir_provider.set_active_auth_config(
                 fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-                auth_config_id="auth-config-123",
+                auth_config_id="auth-config-456",
             )
 
 
@@ -707,7 +713,7 @@ class AsyncFhirProviderClient:
         async def main() -> None:
             await client.fhir_provider.remove_auth_config(
                 fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-                auth_config_id="auth-config-123",
+                auth_config_id="auth-config-456",
             )
 
 

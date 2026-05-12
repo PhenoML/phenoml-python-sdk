@@ -1,6 +1,9 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.fhir_provider import FhirProviderAddAuthConfigRequest_Jwt, FhirProviderCreateRequestAuth_Jwt
+from phenoml.fhir_provider import (
+    FhirProviderAddAuthConfigRequest_ClientSecret,
+    FhirProviderCreateRequestAuth_ClientSecret,
+)
 
 
 def test_fhirProvider_create() -> None:
@@ -9,10 +12,12 @@ def test_fhirProvider_create() -> None:
     client = get_client(test_id)
     client.fhir_provider.create(
         name="Epic Sandbox",
-        provider="athenahealth",
+        description="Epic sandbox environment for testing",
+        provider="epic",
         base_url="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
-        auth=FhirProviderCreateRequestAuth_Jwt(
+        auth=FhirProviderCreateRequestAuth_ClientSecret(
             client_id="your-client-id",
+            client_secret="your-client-secret",
         ),
     )
     verify_request_count(test_id, "POST", "/fhir-provider", None, 1)
@@ -52,8 +57,9 @@ def test_fhirProvider_add_auth_config() -> None:
     client = get_client(test_id)
     client.fhir_provider.add_auth_config(
         fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-        request=FhirProviderAddAuthConfigRequest_Jwt(
+        request=FhirProviderAddAuthConfigRequest_ClientSecret(
             client_id="your-client-id",
+            client_secret="your-client-secret",
         ),
     )
     verify_request_count(
@@ -67,7 +73,7 @@ def test_fhirProvider_set_active_auth_config() -> None:
     client = get_client(test_id)
     client.fhir_provider.set_active_auth_config(
         fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-        auth_config_id="auth-config-123",
+        auth_config_id="auth-config-456",
     )
     verify_request_count(
         test_id, "PATCH", "/fhir-provider/1716d214-de93-43a4-aa6b-a878d864e2ad/set-active-auth-config", None, 1
@@ -80,7 +86,7 @@ def test_fhirProvider_remove_auth_config() -> None:
     client = get_client(test_id)
     client.fhir_provider.remove_auth_config(
         fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
-        auth_config_id="auth-config-123",
+        auth_config_id="auth-config-456",
     )
     verify_request_count(
         test_id, "PATCH", "/fhir-provider/1716d214-de93-43a4-aa6b-a878d864e2ad/remove-auth-config", None, 1
