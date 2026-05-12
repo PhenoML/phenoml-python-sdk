@@ -9,7 +9,10 @@ def test_agent_prompts_create() -> None:
     client = get_client(test_id)
     client.agent.prompts.create(
         name="Medical Assistant System Prompt",
-        content="You are a helpful medical assistant specialized in FHIR data processing...",
+        description="System prompt for medical assistant agent",
+        content="You are a helpful medical assistant specialized in FHIR data processing.",
+        is_default=False,
+        tags=["medical", "system"],
     )
     verify_request_count(test_id, "POST", "/agent/prompts", None, 1)
 
@@ -38,6 +41,11 @@ def test_agent_prompts_update() -> None:
     client = get_client(test_id)
     client.agent.prompts.update(
         id="id",
+        name="Medical Assistant System Prompt",
+        description="Updated system prompt",
+        content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+        is_default=False,
+        tags=["medical", "system", "updated"],
     )
     verify_request_count(test_id, "PUT", "/agent/prompts/id", None, 1)
 
@@ -61,18 +69,9 @@ def test_agent_prompts_patch() -> None:
         request=[
             JsonPatchOperation(
                 op="replace",
-                path="/name",
-                value="Updated Agent Name",
-            ),
-            JsonPatchOperation(
-                op="add",
-                path="/tags/-",
-                value="new-tag",
-            ),
-            JsonPatchOperation(
-                op="remove",
-                path="/description",
-            ),
+                path="/content",
+                value="Updated prompt content.",
+            )
         ],
     )
     verify_request_count(test_id, "PATCH", "/agent/prompts/id", None, 1)

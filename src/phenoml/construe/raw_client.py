@@ -884,7 +884,8 @@ class RawConstrueClient:
             Code system name
 
         code_id : str
-            The code identifier
+            The code identifier. ICD-10-CM codes are stored without their
+            cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
             Specific version of the code system
@@ -2192,7 +2193,8 @@ class AsyncRawConstrueClient:
             Code system name
 
         code_id : str
-            The code identifier
+            The code identifier. ICD-10-CM codes are stored without their
+            cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
             Specific version of the code system

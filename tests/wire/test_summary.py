@@ -1,7 +1,5 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.summary import FhirResource
-
 
 def test_summary_list_templates() -> None:
     """Test listTemplates endpoint with WireMock"""
@@ -16,10 +14,10 @@ def test_summary_create_template() -> None:
     test_id = "summary.create_template.0"
     client = get_client(test_id)
     client.summary.create_template(
-        name="name",
-        example_summary="Patient John Doe, age 45, presents with hypertension diagnosed on 2024-01-15.",
-        target_resources=["Patient", "Condition", "Observation"],
-        mode="mode",
+        name="Discharge Summary",
+        example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+        target_resources=["Patient", "Condition", "MedicationRequest"],
+        mode="narrative",
     )
     verify_request_count(test_id, "POST", "/fhir2summary/template", None, 1)
 
@@ -40,10 +38,10 @@ def test_summary_update_template() -> None:
     client = get_client(test_id)
     client.summary.update_template(
         id="id",
-        name="name",
-        template="template",
-        target_resources=["target_resources"],
-        mode="mode",
+        name="Discharge Summary",
+        template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+        target_resources=["Patient", "Encounter", "MedicationRequest"],
+        mode="narrative",
     )
     verify_request_count(test_id, "PUT", "/fhir2summary/template/id", None, 1)
 
@@ -63,8 +61,7 @@ def test_summary_create() -> None:
     test_id = "summary.create.0"
     client = get_client(test_id)
     client.summary.create(
-        fhir_resources=FhirResource(
-            resource_type="resourceType",
-        ),
+        mode="narrative",
+        template_id="a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     )
     verify_request_count(test_id, "POST", "/fhir2summary/create", None, 1)

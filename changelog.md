@@ -1,3 +1,18 @@
+## 12.0.0 - 2026-05-12
+### Breaking Changes
+* **`McpServerResponseData`** — renamed to `McpServer` and removed from `phenoml.tools`; replace all imports and type annotations with `from phenoml.tools import McpServer`.
+* **`McpServerToolResponseData`** — renamed to `McpServerTool` and removed from `phenoml.tools`; replace all imports and type annotations with `from phenoml.tools import McpServerTool`.
+* **`McpServerResponse.data` / `McpServerToolResponse.data`** — field types changed from `McpServerResponseData`/`McpServerToolResponseData` to `McpServer`/`McpServerTool` respectively; update all type annotations.
+* **`FhirProviderTemplate`** — fields `id`, `name`, `provider`, `auth_configs`, and `last_updated` are now required (non-`Optional`); remove `None`-guard logic and update constructors accordingly.
+* **`FhirProviderSandboxInfo`** — fields `id`, `name`, and `provider` are now required (non-`Optional`); update any construction or `None`-guard logic accordingly.
+### Added
+* **`McpServer`** and **`McpServerTool`** — new public models in `phenoml.tools` replacing the removed `*ResponseData` variants, carrying identical server/tool fields.
+* **`McpServerResponse.mcp_servers`** and **`McpServerResponse.mcp_server_tools`** — new optional list fields populated by the `/tools/mcp-server/create` and `/tools/mcp-server/list` endpoints.
+* **`McpServerToolResponse.mcp_server_tools`** — new optional `List[McpServerTool]` field populated by the `/tools/mcp-server/{id}/list` endpoint.
+### Changed
+* **`construe.get_a_specific_code`** — docstring clarifies that ICD-10-CM codes must be supplied without the cosmetic dot (e.g. `"E1165"` not `"E11.65"`).
+* **`agent.chat` streaming** — docstring expanded to describe the SSE frame format (`event:` + `data:` JSON lines) and the `message_end` terminator.
+
 ## 11.0.0 - 2026-05-11
 ### Breaking Changes
 * **`search_fhir_resources`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the `practitioner_id` parameter has been removed; remove any `practitioner_id=...` argument from call sites.

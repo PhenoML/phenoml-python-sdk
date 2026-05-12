@@ -1,6 +1,6 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.construe import ExtractCodesResult, ExtractedCodeResult, ExtractRequestSystem
+from phenoml.construe import CodeResponse, ExtractCodesResult, ExtractedCodeResult, ExtractRequestSystem
 
 
 def test_construe_upload_code_system() -> None:
@@ -10,7 +10,17 @@ def test_construe_upload_code_system() -> None:
     client.construe.upload_code_system(
         name="CUSTOM_CODES",
         version="1.0",
-        format="csv",
+        format="json",
+        codes=[
+            CodeResponse(
+                code="X001",
+                description="Example custom code 1",
+            ),
+            CodeResponse(
+                code="X002",
+                description="Example custom code 2",
+            ),
+        ],
     )
     verify_request_count(test_id, "POST", "/construe/upload", None, 1)
 
@@ -20,7 +30,11 @@ def test_construe_extract_codes() -> None:
     test_id = "construe.extract_codes.0"
     client = get_client(test_id)
     client.construe.extract_codes(
-        text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
+        text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
+        system=ExtractRequestSystem(
+            name="ICD-10-CM",
+            version="2025",
+        ),
     )
     verify_request_count(test_id, "POST", "/construe/extract", None, 1)
 
@@ -87,10 +101,10 @@ def test_construe_get_a_specific_code() -> None:
     client = get_client(test_id)
     client.construe.get_a_specific_code(
         codesystem="ICD-10-CM",
-        code_id="E11.65",
+        code_id="E1165",
         version="version",
     )
-    verify_request_count(test_id, "GET", "/construe/codes/ICD-10-CM/E11.65", {"version": "version"}, 1)
+    verify_request_count(test_id, "GET", "/construe/codes/ICD-10-CM/E1165", {"version": "version"}, 1)
 
 
 def test_construe_semantic_search_embedding_based() -> None:
@@ -119,25 +133,32 @@ def test_construe_submit_feedback_on_extraction_results() -> None:
     client.construe.submit_feedback_on_extraction_results(
         text="Patient has type 2 diabetes with hyperglycemia",
         received_result=ExtractCodesResult(
-            system=ExtractRequestSystem(),
+            system=ExtractRequestSystem(
+                name="ICD-10-CM",
+                version="2025",
+            ),
             codes=[
                 ExtractedCodeResult(
-                    code="195967001",
-                    description="Asthma",
+                    code="E11.9",
+                    description="Type 2 diabetes mellitus without complications",
                     valid=True,
                 )
             ],
         ),
         expected_result=ExtractCodesResult(
-            system=ExtractRequestSystem(),
+            system=ExtractRequestSystem(
+                name="ICD-10-CM",
+                version="2025",
+            ),
             codes=[
                 ExtractedCodeResult(
-                    code="195967001",
-                    description="Asthma",
+                    code="E11.65",
+                    description="Type 2 diabetes mellitus with hyperglycemia",
                     valid=True,
                 )
             ],
         ),
+        detail="Expected code E11.65 because the text mentions hyperglycemia",
     )
     verify_request_count(test_id, "POST", "/construe/feedback", None, 1)
 

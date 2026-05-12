@@ -97,9 +97,11 @@ class AgentClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.agent.create(
-            name="name",
-            prompts=["prompt_123", "prompt_456"],
-            provider="provider",
+            name="Medical Assistant",
+            description="An AI assistant for medical information processing",
+            prompts=["prompt_123"],
+            tags=["medical", "fhir"],
+            provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
         )
         """
         _response = self._raw_client.create(
@@ -241,9 +243,11 @@ class AgentClient:
         )
         client.agent.update(
             id="id",
-            name="name",
-            prompts=["prompt_123", "prompt_456"],
-            provider="provider",
+            name="Medical Assistant",
+            description="Updated description for the medical assistant",
+            prompts=["prompt_123"],
+            tags=["medical", "fhir", "updated"],
+            provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
         )
         """
         _response = self._raw_client.update(
@@ -326,17 +330,13 @@ class AgentClient:
             request=[
                 JsonPatchOperation(
                     op="replace",
-                    path="/name",
-                    value="Updated Agent Name",
+                    path="/description",
+                    value="patched description",
                 ),
                 JsonPatchOperation(
                     op="add",
                     path="/tags/-",
-                    value="new-tag",
-                ),
-                JsonPatchOperation(
-                    op="remove",
-                    path="/description",
+                    value="updated",
                 ),
             ],
         )
@@ -404,6 +404,7 @@ class AgentClient:
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
             message="What is the patient's current condition?",
+            session_id="session-abc123",
             agent_id="agent-123",
         )
         """
@@ -467,7 +468,9 @@ class AgentClient:
         Yields
         ------
         typing.Iterator[AgentChatStreamEvent]
-            Streaming chat response
+            Streaming chat response. Each frame is a standard SSE record
+            (`event:` line + `data:` JSON line). The example shows a single
+            `content_delta` payload — multiple frames stream until `message_end`.
 
         Examples
         --------
@@ -481,6 +484,7 @@ class AgentClient:
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
             message="What is the patient's current condition?",
+            session_id="session-abc123",
             agent_id="agent-123",
         )
         for chunk in response:
@@ -650,9 +654,11 @@ class AsyncAgentClient:
 
         async def main() -> None:
             await client.agent.create(
-                name="name",
-                prompts=["prompt_123", "prompt_456"],
-                provider="provider",
+                name="Medical Assistant",
+                description="An AI assistant for medical information processing",
+                prompts=["prompt_123"],
+                tags=["medical", "fhir"],
+                provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
             )
 
 
@@ -818,9 +824,11 @@ class AsyncAgentClient:
         async def main() -> None:
             await client.agent.update(
                 id="id",
-                name="name",
-                prompts=["prompt_123", "prompt_456"],
-                provider="provider",
+                name="Medical Assistant",
+                description="Updated description for the medical assistant",
+                prompts=["prompt_123"],
+                tags=["medical", "fhir", "updated"],
+                provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
             )
 
 
@@ -919,17 +927,13 @@ class AsyncAgentClient:
                 request=[
                     JsonPatchOperation(
                         op="replace",
-                        path="/name",
-                        value="Updated Agent Name",
+                        path="/description",
+                        value="patched description",
                     ),
                     JsonPatchOperation(
                         op="add",
                         path="/tags/-",
-                        value="new-tag",
-                    ),
-                    JsonPatchOperation(
-                        op="remove",
-                        path="/description",
+                        value="updated",
                     ),
                 ],
             )
@@ -1005,6 +1009,7 @@ class AsyncAgentClient:
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
                 message="What is the patient's current condition?",
+                session_id="session-abc123",
                 agent_id="agent-123",
             )
 
@@ -1071,7 +1076,9 @@ class AsyncAgentClient:
         Yields
         ------
         typing.AsyncIterator[AgentChatStreamEvent]
-            Streaming chat response
+            Streaming chat response. Each frame is a standard SSE record
+            (`event:` line + `data:` JSON line). The example shows a single
+            `content_delta` payload — multiple frames stream until `message_end`.
 
         Examples
         --------
@@ -1090,6 +1097,7 @@ class AsyncAgentClient:
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
                 message="What is the patient's current condition?",
+                session_id="session-abc123",
                 agent_id="agent-123",
             )
             async for chunk in response:

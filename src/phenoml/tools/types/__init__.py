@@ -13,11 +13,11 @@ if typing.TYPE_CHECKING:
     from .lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
     from .lang2fhir_and_create_response import Lang2FhirAndCreateResponse
     from .lang2fhir_and_search_response import Lang2FhirAndSearchResponse
+    from .mcp_server import McpServer
     from .mcp_server_response import McpServerResponse
-    from .mcp_server_response_data import McpServerResponseData
+    from .mcp_server_tool import McpServerTool
     from .mcp_server_tool_call_response import McpServerToolCallResponse
     from .mcp_server_tool_response import McpServerToolResponse
-    from .mcp_server_tool_response_data import McpServerToolResponseData
     from .search_concept import SearchConcept
 _dynamic_imports: typing.Dict[str, str] = {
     "CohortResponse": ".cohort_response",
@@ -27,11 +27,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Lang2FhirAndCreateRequestResource": ".lang2fhir_and_create_request_resource",
     "Lang2FhirAndCreateResponse": ".lang2fhir_and_create_response",
     "Lang2FhirAndSearchResponse": ".lang2fhir_and_search_response",
+    "McpServer": ".mcp_server",
     "McpServerResponse": ".mcp_server_response",
-    "McpServerResponseData": ".mcp_server_response_data",
+    "McpServerTool": ".mcp_server_tool",
     "McpServerToolCallResponse": ".mcp_server_tool_call_response",
     "McpServerToolResponse": ".mcp_server_tool_response",
-    "McpServerToolResponseData": ".mcp_server_tool_response_data",
     "SearchConcept": ".search_concept",
 }
 
@@ -65,10 +65,10 @@ __all__ = [
     "Lang2FhirAndCreateRequestResource",
     "Lang2FhirAndCreateResponse",
     "Lang2FhirAndSearchResponse",
+    "McpServer",
     "McpServerResponse",
-    "McpServerResponseData",
+    "McpServerTool",
     "McpServerToolCallResponse",
     "McpServerToolResponse",
-    "McpServerToolResponseData",
     "SearchConcept",
 ]
