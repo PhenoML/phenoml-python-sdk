@@ -8,9 +8,11 @@ def test_agent_create() -> None:
     test_id = "agent.create.0"
     client = get_client(test_id)
     client.agent.create(
-        name="name",
-        prompts=["prompt_123", "prompt_456"],
-        provider="provider",
+        name="Medical Assistant",
+        description="An AI assistant for medical information processing",
+        prompts=["prompt_123"],
+        tags=["medical", "fhir"],
+        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
     )
     verify_request_count(test_id, "POST", "/agent/create", None, 1)
 
@@ -41,9 +43,11 @@ def test_agent_update() -> None:
     client = get_client(test_id)
     client.agent.update(
         id="id",
-        name="name",
-        prompts=["prompt_123", "prompt_456"],
-        provider="provider",
+        name="Medical Assistant",
+        description="Updated description for the medical assistant",
+        prompts=["prompt_123"],
+        tags=["medical", "fhir", "updated"],
+        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
     )
     verify_request_count(test_id, "PUT", "/agent/id", None, 1)
 
@@ -67,17 +71,13 @@ def test_agent_patch() -> None:
         request=[
             JsonPatchOperation(
                 op="replace",
-                path="/name",
-                value="Updated Agent Name",
+                path="/description",
+                value="patched description",
             ),
             JsonPatchOperation(
                 op="add",
                 path="/tags/-",
-                value="new-tag",
-            ),
-            JsonPatchOperation(
-                op="remove",
-                path="/description",
+                value="updated",
             ),
         ],
     )
@@ -92,6 +92,7 @@ def test_agent_chat() -> None:
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
         message="What is the patient's current condition?",
+        session_id="session-abc123",
         agent_id="agent-123",
     )
     verify_request_count(test_id, "POST", "/agent/chat", None, 1)
@@ -105,6 +106,7 @@ def test_agent_stream_chat() -> None:
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
         message="What is the patient's current condition?",
+        session_id="session-abc123",
         agent_id="agent-123",
     ):
         pass

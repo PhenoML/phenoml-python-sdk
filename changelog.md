@@ -1,3 +1,13 @@
+## 12.0.0 - 2026-05-13
+### Breaking Changes
+* **`load_defaults`** — method removed from `PromptsClient`, `AsyncPromptsClient`, `RawPromptsClient`, and `AsyncRawPromptsClient`; delete any call sites using `agent.prompts.load_defaults()`.
+* **`FhirBundle`**, **`FhirBundleEntryItem`**, **`FhirResource`**, and **`CreateSummaryRequestFhirResources`** — types removed from `phenoml.summary`; update any imports or type annotations that reference them.
+* **`McpServerResponseData`** renamed to **`McpServer`** and **`McpServerToolResponseData`** renamed to **`McpServerTool`** in `phenoml.tools`; replace all imports and type annotations with the new names.
+### Added
+* **`McpServer`** — new public model representing an MCP server record, exported from `phenoml.tools`.
+* **`McpServerResponse.mcp_servers`** — new optional `List[McpServer]` field returned by the MCP server create and list endpoints.
+* **`McpServerResponse.mcp_server_tools`** and **`McpServerToolResponse.mcp_server_tools`** — new optional list fields carrying tools discovered at MCP server create time or via the list endpoint.
+
 ## 11.0.0 - 2026-05-11
 ### Breaking Changes
 * **`search_fhir_resources`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the `practitioner_id` parameter has been removed; remove any `practitioner_id=...` argument from call sites.

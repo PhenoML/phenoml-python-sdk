@@ -848,7 +848,9 @@ class RawAgentClient:
         Yields
         ------
         typing.Iterator[HttpResponse[typing.Iterator[AgentChatStreamEvent]]]
-            Streaming chat response
+            Streaming chat response. Each frame is a standard SSE record
+            (`event:` line + `data:` JSON line). The example shows a single
+            `content_delta` payload — multiple frames stream until `message_end`.
         """
         with self._client_wrapper.httpx_client.stream(
             "agent/stream-chat",
@@ -1880,7 +1882,9 @@ class AsyncRawAgentClient:
         Yields
         ------
         typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[AgentChatStreamEvent]]]
-            Streaming chat response
+            Streaming chat response. Each frame is a standard SSE record
+            (`event:` line + `data:` JSON line). The example shows a single
+            `content_delta` payload — multiple frames stream until `message_end`.
         """
         async with self._client_wrapper.httpx_client.stream(
             "agent/stream-chat",

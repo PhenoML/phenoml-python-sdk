@@ -8,15 +8,17 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class FhirProviderSandboxInfo(UniversalBaseModel):
     """
-    Information returned for sandbox FHIR providers.
+    Limited information returned for sandbox FHIR providers. Sandbox
+    responses omit `auth_configs` and `last_updated`, which is what
+    distinguishes this shape from `FhirProviderTemplate` in `oneOf`.
     """
 
-    id: typing.Optional[str] = pydantic.Field(default=None)
+    id: str = pydantic.Field()
     """
     Unique identifier for the FHIR provider
     """
 
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
     Display name for the FHIR provider
     """
@@ -26,7 +28,7 @@ class FhirProviderSandboxInfo(UniversalBaseModel):
     Optional description of the FHIR provider
     """
 
-    provider: typing.Optional[typing.Literal["sandbox"]] = pydantic.Field(default=None)
+    provider: typing.Literal["sandbox"] = pydantic.Field(default="sandbox")
     """
     Provider type (always "sandbox" for this schema)
     """

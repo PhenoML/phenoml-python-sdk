@@ -4,13 +4,14 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mcp_server_response_data import McpServerResponseData
+from .mcp_server import McpServer
+from .mcp_server_tool import McpServerTool
 
 
 class McpServerResponse(UniversalBaseModel):
     success: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Whether the MCP server was created successfully
+    Whether the operation succeeded
     """
 
     message: typing.Optional[str] = pydantic.Field(default=None)
@@ -18,9 +19,21 @@ class McpServerResponse(UniversalBaseModel):
     Status message
     """
 
-    data: typing.Optional[McpServerResponseData] = pydantic.Field(default=None)
+    data: typing.Optional[McpServer] = pydantic.Field(default=None)
     """
-    MCP server data
+    Single MCP server (returned by GET /tools/mcp-server/{mcp_server_id}).
+    """
+
+    mcp_servers: typing.Optional[typing.List[McpServer]] = pydantic.Field(default=None)
+    """
+    List of MCP servers. Returned by /tools/mcp-server/create (the
+    newly created server) and /tools/mcp-server/list (all servers).
+    """
+
+    mcp_server_tools: typing.Optional[typing.List[McpServerTool]] = pydantic.Field(default=None)
+    """
+    Tools loaded from the MCP server. Returned by /tools/mcp-server/create
+    alongside the server record, since tool discovery happens at create time.
     """
 
     if IS_PYDANTIC_V2:
