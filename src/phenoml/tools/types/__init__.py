@@ -16,7 +16,6 @@ if typing.TYPE_CHECKING:
     from .mcp_server import McpServer
     from .mcp_server_response import McpServerResponse
     from .mcp_server_tool import McpServerTool
-    from .mcp_server_tool_call_response import McpServerToolCallResponse
     from .mcp_server_tool_response import McpServerToolResponse
     from .search_concept import SearchConcept
 _dynamic_imports: typing.Dict[str, str] = {
@@ -30,7 +29,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServer": ".mcp_server",
     "McpServerResponse": ".mcp_server_response",
     "McpServerTool": ".mcp_server_tool",
-    "McpServerToolCallResponse": ".mcp_server_tool_call_response",
     "McpServerToolResponse": ".mcp_server_tool_response",
     "SearchConcept": ".search_concept",
 }
@@ -68,7 +66,6 @@ __all__ = [
     "McpServer",
     "McpServerResponse",
     "McpServerTool",
-    "McpServerToolCallResponse",
     "McpServerToolResponse",
     "SearchConcept",
 ]

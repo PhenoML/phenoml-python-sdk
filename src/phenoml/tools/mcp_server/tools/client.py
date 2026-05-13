@@ -4,12 +4,8 @@ import typing
 
 from ....core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ....core.request_options import RequestOptions
-from ...types.mcp_server_tool_call_response import McpServerToolCallResponse
 from ...types.mcp_server_tool_response import McpServerToolResponse
 from .raw_client import AsyncRawToolsClient, RawToolsClient
-
-# this is used as the default value for optional parameters
-OMIT = typing.cast(typing.Any, ...)
 
 
 class ToolsClient:
@@ -127,48 +123,6 @@ class ToolsClient:
         )
         """
         _response = self._raw_client.delete(mcp_server_tool_id, request_options=request_options)
-        return _response.data
-
-    def call(
-        self,
-        mcp_server_tool_id: str,
-        *,
-        arguments: typing.Dict[str, typing.Any],
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> McpServerToolCallResponse:
-        """
-        Calls a MCP server tool
-
-        Parameters
-        ----------
-        mcp_server_tool_id : str
-            ID of the MCP server tool to call
-
-        arguments : typing.Dict[str, typing.Any]
-            Arguments to pass to the MCP server tool
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        McpServerToolCallResponse
-            Successfully called MCP server tool
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.tools.mcp_server.tools.call(
-            mcp_server_tool_id="mcp_server_tool_id",
-            arguments={"title": "PhenoML Agent API"},
-        )
-        """
-        _response = self._raw_client.call(mcp_server_tool_id, arguments=arguments, request_options=request_options)
         return _response.data
 
 
@@ -311,56 +265,4 @@ class AsyncToolsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(mcp_server_tool_id, request_options=request_options)
-        return _response.data
-
-    async def call(
-        self,
-        mcp_server_tool_id: str,
-        *,
-        arguments: typing.Dict[str, typing.Any],
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> McpServerToolCallResponse:
-        """
-        Calls a MCP server tool
-
-        Parameters
-        ----------
-        mcp_server_tool_id : str
-            ID of the MCP server tool to call
-
-        arguments : typing.Dict[str, typing.Any]
-            Arguments to pass to the MCP server tool
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        McpServerToolCallResponse
-            Successfully called MCP server tool
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.tools.mcp_server.tools.call(
-                mcp_server_tool_id="mcp_server_tool_id",
-                arguments={"title": "PhenoML Agent API"},
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.call(
-            mcp_server_tool_id, arguments=arguments, request_options=request_options
-        )
         return _response.data
