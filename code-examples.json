@@ -456,6 +456,77 @@
       },
       "sdkCallSource": "client.agent.stream_chat(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        message=\"What is the patient's current condition?\",\n        session_id=\"session-abc123\",\n        agent_id=\"agent-123\",\n    )"
     },
+    "GET /agent/chat/messages": {
+      "httpMethod": "GET",
+      "httpPath": "/agent/chat/messages",
+      "sdkMethodChain": [
+        "agent",
+        "get_chat_messages"
+      ],
+      "sdkMethodName": "get_chat_messages",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "chat_session_id",
+            "value": "chat_session_id"
+          },
+          {
+            "name": "num_messages",
+            "value": 1
+          },
+          {
+            "name": "role",
+            "value": "user"
+          },
+          {
+            "name": "order",
+            "value": "asc"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "messages": [
+            {
+              "id": "message_001",
+              "session_id": "session_123",
+              "role": "user",
+              "content": "What is the patient's current condition?",
+              "created": "2025-03-01T14:00:00Z",
+              "updated": "2025-03-01T14:00:00Z",
+              "function_name": "get_patient_info",
+              "function_args": {
+                "patient_id": "123"
+              },
+              "function_result": {
+                "name": "John Doe"
+              },
+              "message_order": 1
+            },
+            {
+              "id": "message_002",
+              "session_id": "session_123",
+              "role": "assistant",
+              "content": "Based on the patient records, they have been diagnosed with Type 2 Diabetes Mellitus (ICD-10: E11.65).",
+              "created": "2025-03-01T14:00:02Z",
+              "updated": "2025-03-01T14:00:02Z",
+              "function_name": "get_patient_info",
+              "function_args": {
+                "patient_id": "123"
+              },
+              "function_result": {
+                "name": "John Doe"
+              },
+              "message_order": 2
+            }
+          ],
+          "total": 2,
+          "session_id": "session_123"
+        }
+      },
+      "sdkCallSource": "client.agent.get_chat_messages(\n        chat_session_id=\"chat_session_id\",\n        num_messages=1,\n        role=\"user\",\n        order=\"asc\",\n    )"
+    },
     "POST /agent/prompts": {
       "httpMethod": "POST",
       "httpPath": "/agent/prompts",
@@ -1126,6 +1197,74 @@
       },
       "sdkCallSource": "client.construe.export_custom_code_system(\n        codesystem=\"CUSTOM_CODES\",\n        version=\"version\",\n    )"
     },
+    "GET /construe/codes/{codesystem}": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/{codesystem}",
+      "sdkMethodChain": [
+        "construe",
+        "list_codes_in_a_code_system"
+      ],
+      "sdkMethodName": "list_codes_in_a_code_system",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "ICD-10-CM"
+          },
+          {
+            "name": "version",
+            "value": "2025"
+          },
+          {
+            "name": "cursor",
+            "value": "cursor"
+          },
+          {
+            "name": "limit",
+            "value": 1
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          },
+          "codes": [
+            {
+              "code": "A00",
+              "description": "Cholera",
+              "definition": "definition"
+            },
+            {
+              "code": "A000",
+              "description": "Cholera due to Vibrio cholerae 01, biovar cholerae",
+              "definition": "definition"
+            },
+            {
+              "code": "A001",
+              "description": "Cholera due to Vibrio cholerae 01, biovar eltor",
+              "definition": "definition"
+            },
+            {
+              "code": "A009",
+              "description": "Cholera, unspecified",
+              "definition": "definition"
+            },
+            {
+              "code": "A01",
+              "description": "Typhoid and paratyphoid fevers",
+              "definition": "definition"
+            }
+          ],
+          "next_cursor": "QTAx",
+          "has_more": true
+        }
+      },
+      "sdkCallSource": "client.construe.list_codes_in_a_code_system(\n        codesystem=\"ICD-10-CM\",\n        version=\"2025\",\n        cursor=\"cursor\",\n        limit=1,\n    )"
+    },
     "GET /construe/codes/{codesystem}/{code_id}": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/{codesystem}/{code_id}",
@@ -1163,6 +1302,67 @@
         }
       },
       "sdkCallSource": "client.construe.get_a_specific_code(\n        codesystem=\"ICD-10-CM\",\n        code_id=\"E1165\",\n        version=\"version\",\n    )"
+    },
+    "GET /construe/codes/{codesystem}/search/semantic": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/{codesystem}/search/semantic",
+      "sdkMethodChain": [
+        "construe",
+        "semantic_search_embedding_based"
+      ],
+      "sdkMethodName": "semantic_search_embedding_based",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "ICD-10-CM"
+          },
+          {
+            "name": "text",
+            "value": "patient has trouble breathing at night and wakes up gasping"
+          },
+          {
+            "name": "version",
+            "value": "version"
+          },
+          {
+            "name": "limit",
+            "value": 1
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          },
+          "results": [
+            {
+              "code": "R06.00",
+              "description": "Dyspnea, unspecified"
+            },
+            {
+              "code": "R06.01",
+              "description": "Orthopnea"
+            },
+            {
+              "code": "G47.33",
+              "description": "Obstructive sleep apnea"
+            },
+            {
+              "code": "R06.83",
+              "description": "Snoring"
+            },
+            {
+              "code": "J45.20",
+              "description": "Mild intermittent asthma, uncomplicated"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.construe.semantic_search_embedding_based(\n        codesystem=\"ICD-10-CM\",\n        text=\"patient has trouble breathing at night and wakes up gasping\",\n        version=\"version\",\n        limit=1,\n    )"
     },
     "POST /construe/feedback": {
       "httpMethod": "POST",
@@ -1204,6 +1404,60 @@
         }
       },
       "sdkCallSource": "client.construe.submit_feedback_on_extraction_results(\n        text=\"Patient has type 2 diabetes with hyperglycemia\",\n        received_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        ),\n        expected_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        ),\n        detail=\"Expected code E11.65 because the text mentions hyperglycemia\",\n    )"
+    },
+    "GET /construe/codes/{codesystem}/search/text": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/{codesystem}/search/text",
+      "sdkMethodChain": [
+        "construe",
+        "terminology_server_text_search"
+      ],
+      "sdkMethodName": "terminology_server_text_search",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "ICD-10-CM"
+          },
+          {
+            "name": "q",
+            "value": "E11.65"
+          },
+          {
+            "name": "version",
+            "value": "version"
+          },
+          {
+            "name": "limit",
+            "value": 1
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          },
+          "results": [
+            {
+              "code": "E11.65",
+              "description": "Type 2 diabetes mellitus with hyperglycemia"
+            },
+            {
+              "code": "E11.649",
+              "description": "Type 2 diabetes mellitus with hypoglycemia without coma"
+            },
+            {
+              "code": "E11.69",
+              "description": "Type 2 diabetes mellitus with other specified complication"
+            }
+          ],
+          "found": 3
+        }
+      },
+      "sdkCallSource": "client.construe.terminology_server_text_search(\n        codesystem=\"ICD-10-CM\",\n        q=\"E11.65\",\n        version=\"version\",\n        limit=1,\n    )"
     },
     "GET /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "GET",
@@ -1767,6 +2021,302 @@
         }
       },
       "sdkCallSource": "client.fhir_provider.delete(\n        fhir_provider_id=\"fhir_provider_id\",\n    )"
+    },
+    "PATCH /fhir-provider/{fhir_provider_id}/add-auth-config": {
+      "httpMethod": "PATCH",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/add-auth-config",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "add_auth_config"
+      ],
+      "sdkMethodName": "add_auth_config",
+      "request": {
+        "body": "<expr:FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>",
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
+          },
+          {
+            "name": "request",
+            "value": "<expr:FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir provider auth config added successfully",
+          "data": {
+            "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+            "name": "Epic Sandbox",
+            "description": "Epic sandbox environment for testing",
+            "provider": "epic",
+            "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+            "auth_configs": {
+              "auth-config-123": {
+                "auth_config_id": "auth-config-123",
+                "auth_method": "jwt",
+                "is_active_auth_config": true,
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-01-15T14:45:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read system/Observation.read",
+                "client_id": "your-client-id"
+              },
+              "auth-config-456": {
+                "auth_config_id": "auth-config-456",
+                "auth_method": "client_secret",
+                "is_active_auth_config": false,
+                "created_at": "2024-02-20T09:00:00Z",
+                "updated_at": "2024-02-20T09:00:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read",
+                "client_id": "your-other-client-id"
+              }
+            },
+            "last_updated": "2024-02-20T09:00:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.add_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        request=FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        ),\n    )"
+    },
+    "PATCH /fhir-provider/{fhir_provider_id}/set-active-auth-config": {
+      "httpMethod": "PATCH",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "set_active_auth_config"
+      ],
+      "sdkMethodName": "set_active_auth_config",
+      "request": {
+        "body": {
+          "auth_config_id": "auth-config-456"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
+          },
+          {
+            "name": "auth_config_id",
+            "value": "auth-config-456"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "FHIR provider auth config set as active successfully",
+          "data": {
+            "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+            "name": "Epic Sandbox",
+            "description": "Epic sandbox environment for testing",
+            "provider": "epic",
+            "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+            "auth_configs": {
+              "auth-config-123": {
+                "auth_config_id": "auth-config-123",
+                "auth_method": "jwt",
+                "is_active_auth_config": false,
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-02-20T11:00:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read system/Observation.read",
+                "client_id": "your-client-id"
+              },
+              "auth-config-456": {
+                "auth_config_id": "auth-config-456",
+                "auth_method": "client_secret",
+                "is_active_auth_config": true,
+                "created_at": "2024-02-20T09:00:00Z",
+                "updated_at": "2024-02-20T11:00:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read",
+                "client_id": "your-other-client-id"
+              }
+            },
+            "last_updated": "2024-02-20T11:00:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.set_active_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        auth_config_id=\"auth-config-456\",\n    )"
+    },
+    "PATCH /fhir-provider/{fhir_provider_id}/remove-auth-config": {
+      "httpMethod": "PATCH",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "remove_auth_config"
+      ],
+      "sdkMethodName": "remove_auth_config",
+      "request": {
+        "body": {
+          "auth_config_id": "auth-config-456"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
+          },
+          {
+            "name": "auth_config_id",
+            "value": "auth-config-456"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir provider auth config deleted successfully",
+          "data": {
+            "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+            "name": "Epic Sandbox",
+            "description": "Epic sandbox environment for testing",
+            "provider": "epic",
+            "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+            "auth_configs": {
+              "auth-config-123": {
+                "auth_config_id": "auth-config-123",
+                "auth_method": "jwt",
+                "is_active_auth_config": true,
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-01-15T10:30:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read system/Observation.read",
+                "client_id": "your-client-id"
+              }
+            },
+            "last_updated": "2024-02-20T11:30:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.remove_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        auth_config_id=\"auth-config-456\",\n    )"
     },
     "POST /lang2fhir/create": {
       "httpMethod": "POST",
