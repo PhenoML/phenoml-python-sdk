@@ -7,13 +7,9 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
-        CreateSummaryRequestFhirResources,
         CreateSummaryRequestMode,
         CreateSummaryResponse,
         CreateSummaryTemplateResponse,
-        FhirBundle,
-        FhirBundleEntryItem,
-        FhirResource,
         SummaryDeleteTemplateResponse,
         SummaryGetTemplateResponse,
         SummaryListTemplatesResponse,
@@ -23,13 +19,9 @@ if typing.TYPE_CHECKING:
     from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
-    "CreateSummaryRequestFhirResources": ".types",
     "CreateSummaryRequestMode": ".types",
     "CreateSummaryResponse": ".types",
     "CreateSummaryTemplateResponse": ".types",
-    "FhirBundle": ".types",
-    "FhirBundleEntryItem": ".types",
-    "FhirResource": ".types",
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
@@ -65,13 +57,9 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
-    "CreateSummaryRequestFhirResources",
     "CreateSummaryRequestMode",
     "CreateSummaryResponse",
     "CreateSummaryTemplateResponse",
-    "FhirBundle",
-    "FhirBundleEntryItem",
-    "FhirResource",
     "ForbiddenError",
     "InternalServerError",
     "NotFoundError",

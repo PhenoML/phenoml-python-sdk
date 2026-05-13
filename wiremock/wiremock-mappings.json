@@ -9,7 +9,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"provider\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -40,7 +40,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agents retrieved successfully\",\n  \"agents\": [\n    {\n      \"id\": \"agent_123\",\n      \"name\": \"Medical Assistant\",\n      \"description\": \"An AI assistant for medical information processing\",\n      \"prompts\": [\n        \"prompt_123\",\n        \"prompt_456\"\n      ],\n      \"tools\": [\n        \"mcp_server_123\",\n        \"mcp_server_456\"\n      ],\n      \"workflows\": [\n        \"workflow_123\",\n        \"workflow_456\"\n      ],\n      \"tags\": [\n        \"medical\",\n        \"fhir\"\n      ],\n      \"provider\": \"provider\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Agents retrieved successfully\",\n  \"agents\": [\n    {\n      \"id\": \"agent_123\",\n      \"name\": \"Medical Assistant\",\n      \"description\": \"An AI assistant for medical information processing\",\n      \"prompts\": [\n        \"prompt_123\"\n      ],\n      \"tools\": [\n        \"mcp_server_123\",\n        \"mcp_server_456\"\n      ],\n      \"workflows\": [\n        \"workflow_123\",\n        \"workflow_456\"\n      ],\n      \"tags\": [\n        \"medical\",\n        \"fhir\"\n      ],\n      \"provider\": [\n        \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n      ]\n    },\n    {\n      \"id\": \"agent_456\",\n      \"name\": \"Clinical Coding Assistant\",\n      \"description\": \"Helps with ICD-10 and SNOMED coding\",\n      \"prompts\": [\n        \"prompt_456\"\n      ],\n      \"tools\": [\n        \"mcp_server_123\",\n        \"mcp_server_456\"\n      ],\n      \"workflows\": [\n        \"workflow_123\",\n        \"workflow_456\"\n      ],\n      \"tags\": [\n        \"coding\"\n      ],\n      \"provider\": [\n        \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n      ]\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -72,7 +72,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"provider\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Agent retrieved successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -103,7 +103,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"provider\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Agent updated successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -165,7 +165,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"provider\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Agent patched successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -183,20 +183,20 @@
       }
     },
     {
-      "id": "607b913d-83aa-4c69-a047-a179cdf3afc9",
-      "name": "Chat with agent - default",
+      "id": "ff293a6e-87b7-47f8-b190-c69893360de1",
+      "name": "Chat with agent - Query Patient Condition",
       "request": {
         "urlPathTemplate": "/agent/chat",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"response\": \"I'll create a patient record for John Doe with diabetes. Let me process that information...\",\n  \"success\": true,\n  \"message\": \"Chat response generated successfully\",\n  \"session_id\": \"session_123\"\n}",
+        "body": "{\n  \"response\": \"Based on the patient records, they have been diagnosed with Type 2 Diabetes Mellitus (ICD-10: E11.65) and Essential Hypertension (ICD-10: I10). Current medications include Metformin 500mg BID and Lisinopril 10mg daily. Most recent HbA1c was 7.2% on 2024-12-15.\",\n  \"success\": true,\n  \"message\": \"Response generated successfully\",\n  \"session_id\": \"session-abc123\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "607b913d-83aa-4c69-a047-a179cdf3afc9",
+      "uuid": "ff293a6e-87b7-47f8-b190-c69893360de1",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -217,7 +217,7 @@
       },
       "response": {
         "status": 200,
-        "body": "event: message\ndata: {\"type\":\"message_start\",\"session_id\":\"session_123\",\"content\":\"I'll create a patient record...\",\"success\":true,\"message\":\"Response generated successfully\",\"function_name\":\"lang2fhir_search\",\"function_args\":{\"key\":\"value\"},\"function_result\":{\"key\":\"value\"}}\n",
+        "body": "event: message\ndata: {\"type\":\"content_delta\",\"session_id\":\"session-abc123\",\"content\":\"Based on the patient records, \",\"success\":true,\"message\":\"Response generated successfully\",\"function_name\":\"lang2fhir_search\",\"function_args\":{\"key\":\"value\"},\"function_result\":{\"key\":\"value\"}}\n",
         "headers": {
           "Content-Type": "text/event-stream"
         }
@@ -257,7 +257,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"messages\": [\n    {\n      \"id\": \"message_123\",\n      \"session_id\": \"session_123\",\n      \"role\": \"user\",\n      \"content\": \"Hello, how are you?\",\n      \"created\": \"2021-01-01T00:00:00Z\",\n      \"updated\": \"2021-01-01T00:00:00Z\",\n      \"function_name\": \"get_patient_info\",\n      \"function_args\": {\n        \"patient_id\": \"123\"\n      },\n      \"function_result\": {\n        \"name\": \"John Doe\"\n      },\n      \"message_order\": 1\n    }\n  ],\n  \"total\": 10,\n  \"session_id\": \"session_123\"\n}",
+        "body": "{\n  \"messages\": [\n    {\n      \"id\": \"message_001\",\n      \"session_id\": \"session_123\",\n      \"role\": \"user\",\n      \"content\": \"What is the patient's current condition?\",\n      \"created\": \"2025-03-01T14:00:00Z\",\n      \"updated\": \"2025-03-01T14:00:00Z\",\n      \"function_name\": \"get_patient_info\",\n      \"function_args\": {\n        \"patient_id\": \"123\"\n      },\n      \"function_result\": {\n        \"name\": \"John Doe\"\n      },\n      \"message_order\": 1\n    },\n    {\n      \"id\": \"message_002\",\n      \"session_id\": \"session_123\",\n      \"role\": \"assistant\",\n      \"content\": \"Based on the patient records, they have been diagnosed with Type 2 Diabetes Mellitus (ICD-10: E11.65).\",\n      \"created\": \"2025-03-01T14:00:02Z\",\n      \"updated\": \"2025-03-01T14:00:02Z\",\n      \"function_name\": \"get_patient_info\",\n      \"function_args\": {\n        \"patient_id\": \"123\"\n      },\n      \"function_result\": {\n        \"name\": \"John Doe\"\n      },\n      \"message_order\": 2\n    }\n  ],\n  \"total\": 2,\n  \"session_id\": \"session_123\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -310,7 +310,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompts retrieved successfully\",\n  \"prompts\": [\n    {\n      \"id\": \"prompt_123\",\n      \"name\": \"Medical Assistant System Prompt\",\n      \"description\": \"System prompt for medical assistant agent\",\n      \"content\": \"You are a helpful medical assistant...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"medical\",\n        \"system\"\n      ]\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompts retrieved successfully\",\n  \"prompts\": [\n    {\n      \"id\": \"prompt_123\",\n      \"name\": \"Medical Assistant System Prompt\",\n      \"description\": \"System prompt for medical assistant agent\",\n      \"content\": \"You are a helpful medical assistant...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"medical\",\n        \"system\"\n      ]\n    },\n    {\n      \"id\": \"prompt_456\",\n      \"name\": \"Clinical Coding Prompt\",\n      \"description\": \"Prompt for ICD-10 / SNOMED coding tasks\",\n      \"content\": \"You assist with mapping clinical text to standard codes...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"coding\"\n      ]\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -342,7 +342,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt created successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt retrieved successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -373,7 +373,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt created successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt updated successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -435,7 +435,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt created successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt patched successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -453,46 +453,20 @@
       }
     },
     {
-      "id": "55762f6b-b2ae-4fe2-893d-d3acee6fd86e",
-      "name": "Load default prompts - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/load-defaults",
-        "method": "POST"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Operation completed successfully\"\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "55762f6b-b2ae-4fe2-893d-d3acee6fd86e",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "f0141f15-ebcd-4ce4-8602-342d791ebbd4",
-      "name": "Request an access token - default",
+      "id": "af9e2455-b544-4b94-9eb8-88f0a1bb919c",
+      "name": "Request an access token - Client Credentials",
       "request": {
         "urlPathTemplate": "/v2/auth/token",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"access_token\": \"access_token\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 172800\n}",
+        "body": "{\n  \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 172800\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "f0141f15-ebcd-4ce4-8602-342d791ebbd4",
+      "uuid": "af9e2455-b544-4b94-9eb8-88f0a1bb919c",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -513,7 +487,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Cohort analysis completed successfully. Generated 3 search queries from 3 concepts.\",\n  \"queries\": [\n    {\n      \"resource_type\": \"Patient\",\n      \"search_params\": \"gender=female&birthdate=le1959-01-01\",\n      \"concept\": \"female patients over 65\",\n      \"exclude\": false\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Cohort analysis completed successfully. Generated 3 search queries from 3 concepts.\",\n  \"queries\": [\n    {\n      \"resource_type\": \"Patient\",\n      \"search_params\": \"gender=female&birthdate=le1959-01-01\",\n      \"concept\": \"female patients over 65\",\n      \"exclude\": false\n    },\n    {\n      \"resource_type\": \"Condition\",\n      \"search_params\": \"code=44054006\",\n      \"concept\": \"diabetes\",\n      \"exclude\": false\n    },\n    {\n      \"resource_type\": \"Condition\",\n      \"search_params\": \"code=38341003\",\n      \"concept\": \"hypertension\",\n      \"exclude\": true\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -531,8 +505,8 @@
       }
     },
     {
-      "id": "a390668f-16b9-4bda-8ff6-fc146986b243",
-      "name": "Upload custom code system - default",
+      "id": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
+      "name": "Upload custom code system - JSON codes (preferred)",
       "request": {
         "urlPathTemplate": "/construe/upload",
         "method": "POST"
@@ -544,7 +518,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "a390668f-16b9-4bda-8ff6-fc146986b243",
+      "uuid": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -557,20 +531,20 @@
       }
     },
     {
-      "id": "821748b7-a6c3-43ec-8ec4-cdba306ef013",
-      "name": "Extract medical codes from text - default",
+      "id": "483e6c62-b4d6-4793-80b0-16b68f91803d",
+      "name": "Extract medical codes from text - Basic Extraction",
       "request": {
         "urlPathTemplate": "/construe/extract",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"SNOMED_CT_US_LITE\",\n    \"version\": \"20240901\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"195967001\",\n      \"description\": \"Asthma\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"Q60.3\",\n      \"description\": \"Renal hypoplasia, unspecified\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"R93.42\",\n      \"description\": \"Abnormal findings on diagnostic imaging of kidney\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"N28.1\",\n      \"description\": \"Cyst of kidney, acquired\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "821748b7-a6c3-43ec-8ec4-cdba306ef013",
+      "uuid": "483e6c62-b4d6-4793-80b0-16b68f91803d",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -591,7 +565,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"systems\": [\n    {\n      \"name\": \"ICD-10-CM\",\n      \"version\": \"2025\",\n      \"code_count\": 72750,\n      \"builtin\": true\n    }\n  ]\n}",
+        "body": "{\n  \"systems\": [\n    {\n      \"name\": \"ICD-10-CM\",\n      \"version\": \"2025\",\n      \"code_count\": 97584,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"SNOMED_CT_US_LITE\",\n      \"version\": \"20240901\",\n      \"code_count\": 102837,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"RXNORM\",\n      \"version\": \"11042024\",\n      \"code_count\": 257619,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"LOINC\",\n      \"version\": \"2.78\",\n      \"code_count\": 98123,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"HPO\",\n      \"version\": \"2025\",\n      \"code_count\": 19542,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"CPT\",\n      \"version\": \"2025\",\n      \"code_count\": 10192,\n      \"builtin\": true\n    },\n    {\n      \"name\": \"ICD-10-PCS\",\n      \"version\": \"2025\",\n      \"code_count\": 78717,\n      \"builtin\": true\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -628,7 +602,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"name\": \"ICD-10-CM\",\n  \"version\": \"2025\",\n  \"code_count\": 72750,\n  \"builtin\": true,\n  \"status\": \"processing\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"name\": \"ICD-10-CM\",\n  \"version\": \"2025\",\n  \"code_count\": 97584,\n  \"builtin\": true,\n  \"status\": \"ready\",\n  \"created_at\": \"2026-02-10T18:33:23Z\",\n  \"updated_at\": \"2026-02-10T18:33:23Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -700,7 +674,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"name\": \"CUSTOM_CODES\",\n  \"version\": \"1.0\",\n  \"format\": \"json\",\n  \"codes\": [\n    {\n      \"code\": \"E11.65\",\n      \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n      \"definition\": \"definition\"\n    }\n  ]\n}",
+        "body": "{\n  \"name\": \"CUSTOM_CODES\",\n  \"version\": \"1.0\",\n  \"format\": \"json\",\n  \"codes\": [\n    {\n      \"code\": \"X001\",\n      \"description\": \"Example custom code 1\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"X002\",\n      \"description\": \"Example custom code 2\",\n      \"definition\": \"definition\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -718,8 +692,8 @@
       }
     },
     {
-      "id": "3ae7dba9-6d0f-4a5e-ab33-f793f2fe3ecf",
-      "name": "List codes in a code system - default",
+      "id": "5fdb8dbd-4872-4039-b1f5-367d13e5d207",
+      "name": "List codes in a code system - Browse ICD-10-CM",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}",
         "method": "GET",
@@ -742,12 +716,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"E11.65\",\n      \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n      \"definition\": \"definition\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": true\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"A00\",\n      \"description\": \"Cholera\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A000\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar cholerae\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A001\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar eltor\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A009\",\n      \"description\": \"Cholera, unspecified\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A01\",\n      \"description\": \"Typhoid and paratyphoid fevers\",\n      \"definition\": \"definition\"\n    }\n  ],\n  \"next_cursor\": \"QTAx\",\n  \"has_more\": true\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "3ae7dba9-6d0f-4a5e-ab33-f793f2fe3ecf",
+      "uuid": "5fdb8dbd-4872-4039-b1f5-367d13e5d207",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -760,8 +734,8 @@
       }
     },
     {
-      "id": "b031c64e-7a79-407e-a30d-3a031fcbe438",
-      "name": "Get a specific code - default",
+      "id": "9d0ec275-a631-42e2-a219-282bf98a1fc9",
+      "name": "Get a specific code - Look Up ICD-10 Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
         "method": "GET",
@@ -770,7 +744,7 @@
             "equalTo": "ICD-10-CM"
           },
           "codeID": {
-            "equalTo": "E11.65"
+            "equalTo": "E1165"
           }
         },
         "queryParameters": {
@@ -781,12 +755,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E11.65\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E1165\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "b031c64e-7a79-407e-a30d-3a031fcbe438",
+      "uuid": "9d0ec275-a631-42e2-a219-282bf98a1fc9",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -799,8 +773,8 @@
       }
     },
     {
-      "id": "bd3e73ce-8714-4dfd-b61b-f099a65d28ea",
-      "name": "Semantic search (embedding-based) - default",
+      "id": "8024d675-7be3-415a-99a3-00c8d8260daa",
+      "name": "Semantic search (embedding-based) - Respiratory Symptoms",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
         "method": "GET",
@@ -823,12 +797,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"E11.65\",\n      \"description\": \"Type 2 diabetes mellitus with hyperglycemia\"\n    }\n  ]\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"R06.00\",\n      \"description\": \"Dyspnea, unspecified\"\n    },\n    {\n      \"code\": \"R06.01\",\n      \"description\": \"Orthopnea\"\n    },\n    {\n      \"code\": \"G47.33\",\n      \"description\": \"Obstructive sleep apnea\"\n    },\n    {\n      \"code\": \"R06.83\",\n      \"description\": \"Snoring\"\n    },\n    {\n      \"code\": \"J45.20\",\n      \"description\": \"Mild intermittent asthma, uncomplicated\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "bd3e73ce-8714-4dfd-b61b-f099a65d28ea",
+      "uuid": "8024d675-7be3-415a-99a3-00c8d8260daa",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -867,8 +841,8 @@
       }
     },
     {
-      "id": "51d2231e-c0ef-4109-8f8f-b3811239d6ef",
-      "name": "Terminology server text search - default",
+      "id": "42d17eab-057d-4a17-8887-3ab0031c0f0a",
+      "name": "Terminology server text search - Search by Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
         "method": "GET",
@@ -891,12 +865,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"E11.65\",\n      \"description\": \"Type 2 diabetes mellitus with hyperglycemia\"\n    }\n  ],\n  \"found\": 150\n}",
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"E11.65\",\n      \"description\": \"Type 2 diabetes mellitus with hyperglycemia\"\n    },\n    {\n      \"code\": \"E11.649\",\n      \"description\": \"Type 2 diabetes mellitus with hypoglycemia without coma\"\n    },\n    {\n      \"code\": \"E11.69\",\n      \"description\": \"Type 2 diabetes mellitus with other specified complication\"\n    }\n  ],\n  \"found\": 3\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "51d2231e-c0ef-4109-8f8f-b3811239d6ef",
+      "uuid": "42d17eab-057d-4a17-8887-3ab0031c0f0a",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -959,7 +933,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"versionId\",\n    \"lastUpdated\": \"2024-01-15T09:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"456\",\n  \"meta\": {\n    \"versionId\": \"1\",\n    \"lastUpdated\": \"2024-01-15T10:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -993,7 +967,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"versionId\",\n    \"lastUpdated\": \"2024-01-15T09:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"2\",\n    \"lastUpdated\": \"2024-02-20T11:00:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1027,7 +1001,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"key\": \"value\"\n}",
+        "body": "{\n  \"resourceType\": \"OperationOutcome\",\n  \"issue\": [\n    {\n      \"severity\": \"information\",\n      \"code\": \"informational\",\n      \"details\": {\n        \"text\": \"Resource deleted successfully\"\n      }\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1061,7 +1035,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"versionId\",\n    \"lastUpdated\": \"2024-01-15T09:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"3\",\n    \"lastUpdated\": \"2024-02-20T11:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1118,7 +1092,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider created successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"athenahealth\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"key\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider created successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"epic\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"auth-config-123\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"auth_method\": \"client_secret\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T10:30:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1144,7 +1118,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir providers retrieved successfully\",\n  \"fhir_providers\": [\n    {\n      \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n      \"name\": \"Epic Sandbox\",\n      \"description\": \"Epic sandbox environment for testing\",\n      \"provider\": \"athenahealth\",\n      \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n      \"auth_configs\": {\n        \"key\": {\n          \"auth_config_id\": \"auth-config-123\",\n          \"is_active_auth_config\": true,\n          \"created_at\": \"2024-01-15T10:30:00Z\",\n          \"updated_at\": \"2024-01-15T14:45:00Z\",\n          \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n          \"json_web_key\": {\n            \"kty\": \"RSA\",\n            \"use\": \"sig\",\n            \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n            \"alg\": \"RS384\",\n            \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n            \"e\": \"AQAB\"\n          },\n          \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n          \"smart_configuration\": {\n            \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n            \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n            \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n            \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n            \"scopes_supported\": [\n              \"patient/*.read\",\n              \"system/*.read\"\n            ]\n          },\n          \"service_account_metadata\": {\n            \"type\": \"service_account\",\n            \"project_id\": \"my-gcp-project\",\n            \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n            \"client_id\": \"123456789012345678901\"\n          },\n          \"scopes\": \"system/Patient.read system/Observation.read\",\n          \"client_id\": \"your-client-id\"\n        }\n      },\n      \"last_updated\": \"2024-01-15T10:30:00Z\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir providers retrieved successfully\",\n  \"fhir_providers\": [\n    {\n      \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n      \"name\": \"Epic Sandbox\",\n      \"description\": \"Epic sandbox environment for testing\",\n      \"provider\": \"epic\",\n      \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n      \"auth_configs\": {\n        \"auth-config-123\": {\n          \"auth_config_id\": \"auth-config-123\",\n          \"auth_method\": \"jwt\",\n          \"is_active_auth_config\": true,\n          \"created_at\": \"2024-01-15T10:30:00Z\",\n          \"updated_at\": \"2024-01-15T10:30:00Z\",\n          \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n          \"json_web_key\": {\n            \"kty\": \"RSA\",\n            \"use\": \"sig\",\n            \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n            \"alg\": \"RS384\",\n            \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n            \"e\": \"AQAB\"\n          },\n          \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n          \"smart_configuration\": {\n            \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n            \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n            \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n            \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n            \"scopes_supported\": [\n              \"patient/*.read\",\n              \"system/*.read\"\n            ]\n          },\n          \"service_account_metadata\": {\n            \"type\": \"service_account\",\n            \"project_id\": \"my-gcp-project\",\n            \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n            \"client_id\": \"123456789012345678901\"\n          },\n          \"scopes\": \"system/Patient.read system/Observation.read\",\n          \"client_id\": \"your-client-id\"\n        }\n      },\n      \"last_updated\": \"2024-01-15T10:30:00Z\"\n    },\n    {\n      \"id\": \"4da196da-5cf1-4574-9e65-f97d7ea20b38\",\n      \"name\": \"PhenoML Sandbox\",\n      \"description\": \"Shared sandbox environment for experimentation\",\n      \"provider\": \"sandbox\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1176,7 +1150,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider created successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"athenahealth\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"key\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider retrieved successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"epic\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"auth-config-123\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"auth_method\": \"jwt\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T14:45:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1238,7 +1212,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider created successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"athenahealth\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"key\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider auth config added successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"epic\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"auth-config-123\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"auth_method\": \"jwt\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      },\n      \"auth-config-456\": {\n        \"auth_config_id\": \"auth-config-456\",\n        \"auth_method\": \"client_secret\",\n        \"is_active_auth_config\": false,\n        \"created_at\": \"2024-02-20T09:00:00Z\",\n        \"updated_at\": \"2024-02-20T09:00:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read\",\n        \"client_id\": \"your-other-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-02-20T09:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1269,7 +1243,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider created successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"athenahealth\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"key\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"FHIR provider auth config set as active successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"epic\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"auth-config-123\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"auth_method\": \"jwt\",\n        \"is_active_auth_config\": false,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-02-20T11:00:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      },\n      \"auth-config-456\": {\n        \"auth_config_id\": \"auth-config-456\",\n        \"auth_method\": \"client_secret\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-02-20T09:00:00Z\",\n        \"updated_at\": \"2024-02-20T11:00:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read\",\n        \"client_id\": \"your-other-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-02-20T11:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1300,7 +1274,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Auth configuration removed successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"athenahealth\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"key\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T14:45:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Fhir provider auth config deleted successfully\",\n  \"data\": {\n    \"id\": \"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n    \"name\": \"Epic Sandbox\",\n    \"description\": \"Epic sandbox environment for testing\",\n    \"provider\": \"epic\",\n    \"base_url\": \"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n    \"auth_configs\": {\n      \"auth-config-123\": {\n        \"auth_config_id\": \"auth-config-123\",\n        \"auth_method\": \"jwt\",\n        \"is_active_auth_config\": true,\n        \"created_at\": \"2024-01-15T10:30:00Z\",\n        \"updated_at\": \"2024-01-15T10:30:00Z\",\n        \"public_key_cert_pem\": \"-----BEGIN CERTIFICATE-----\\n...\",\n        \"json_web_key\": {\n          \"kty\": \"RSA\",\n          \"use\": \"sig\",\n          \"kid\": \"FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb\",\n          \"alg\": \"RS384\",\n          \"n\": \"0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS\",\n          \"e\": \"AQAB\"\n        },\n        \"credential_expiry\": \"2024-12-31T23:59:59Z\",\n        \"smart_configuration\": {\n          \"authorization_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize\",\n          \"token_endpoint\": \"https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token\",\n          \"issuer\": \"https://fhir.epic.com/interconnect-fhir-oauth\",\n          \"jwks_uri\": \"https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks\",\n          \"scopes_supported\": [\n            \"patient/*.read\",\n            \"system/*.read\"\n          ]\n        },\n        \"service_account_metadata\": {\n          \"type\": \"service_account\",\n          \"project_id\": \"my-gcp-project\",\n          \"client_email\": \"service-account@my-gcp-project.iam.gserviceaccount.com\",\n          \"client_id\": \"123456789012345678901\"\n        },\n        \"scopes\": \"system/Patient.read system/Observation.read\",\n        \"client_id\": \"your-client-id\"\n      }\n    },\n    \"last_updated\": \"2024-02-20T11:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1318,20 +1292,20 @@
       }
     },
     {
-      "id": "6f606759-9ab8-45b7-a48a-1c814304c8ff",
-      "name": "Create FHIR resource from text - default",
+      "id": "8bddb74a-94e1-409c-bc24-1708e995a652",
+      "name": "Create FHIR resource from text - Condition Resource",
       "request": {
         "urlPathTemplate": "/lang2fhir/create",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"key\": \"value\"\n}",
+        "body": "{\n  \"resourceType\": \"Condition\",\n  \"clinicalStatus\": {\n    \"coding\": [\n      {\n        \"system\": \"http://terminology.hl7.org/CodeSystem/condition-clinical\",\n        \"code\": \"active\"\n      }\n    ]\n  },\n  \"code\": {\n    \"coding\": [\n      {\n        \"system\": \"http://snomed.info/sct\",\n        \"code\": \"195967001\",\n        \"display\": \"Asthma\"\n      }\n    ],\n    \"text\": \"Severe persistent asthma with acute exacerbation\"\n  },\n  \"severity\": {\n    \"coding\": [\n      {\n        \"system\": \"http://snomed.info/sct\",\n        \"code\": \"24484000\",\n        \"display\": \"Severe\"\n      }\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "6f606759-9ab8-45b7-a48a-1c814304c8ff",
+      "uuid": "8bddb74a-94e1-409c-bc24-1708e995a652",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1344,20 +1318,20 @@
       }
     },
     {
-      "id": "550ec42e-0c01-4118-bfb5-5c716f196afb",
-      "name": "Extract multiple FHIR resources from text - default",
+      "id": "aa24561b-b733-4c12-babf-69d547da8fa3",
+      "name": "Extract multiple FHIR resources from text - Full Patient Record",
       "request": {
         "urlPathTemplate": "/lang2fhir/create/multi",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Smith\"\n            }\n          ],\n          \"gender\": \"male\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "550ec42e-0c01-4118-bfb5-5c716f196afb",
+      "uuid": "aa24561b-b733-4c12-babf-69d547da8fa3",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1370,20 +1344,20 @@
       }
     },
     {
-      "id": "3a86a25a-c0ae-4181-be7a-b8242ec3a5e9",
-      "name": "Generate FHIR search parameters from text - default",
+      "id": "a4009a79-53e8-4b63-bbed-b88901a91ade",
+      "name": "Generate FHIR search parameters from text - Search Appointments",
       "request": {
         "urlPathTemplate": "/lang2fhir/search",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"AllergyIntolerance\",\n  \"searchParams\": \"date=ge2025-03-02&date=le2025-03-09\"\n}",
+        "body": "{\n  \"resource_type\": \"AllergyIntolerance\",\n  \"search_params\": \"date=ge2025-03-02&date=le2025-03-09\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "3a86a25a-c0ae-4181-be7a-b8242ec3a5e9",
+      "uuid": "a4009a79-53e8-4b63-bbed-b88901a91ade",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1430,7 +1404,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"key\": \"value\"\n}",
+        "body": "{\n  \"resourceType\": \"Questionnaire\",\n  \"status\": \"active\",\n  \"title\": \"Patient Intake Form\",\n  \"item\": [\n    {\n      \"linkId\": \"1\",\n      \"text\": \"What is your name?\",\n      \"type\": \"string\"\n    },\n    {\n      \"linkId\": \"2\",\n      \"text\": \"What is your date of birth?\",\n      \"type\": \"date\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1456,7 +1430,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"reason\": \"clinical notes with diagnoses\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Doe\"\n            }\n          ],\n          \"gender\": \"male\",\n          \"birthDate\": \"1979-03-15\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes Mellitus\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:patient-001\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Doe, born 1979-03-15\",\n      \"originalText\": \"John Doe, DOB 1979-03-15\"\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-001\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes Mellitus diagnosis\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-001\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg prescription\",\n      \"originalText\": \"Prescribed Metformin 500mg\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"reason\": \"clinical notes with diagnoses\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1482,7 +1456,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"templates\": [\n    {\n      \"id\": \"id\",\n      \"name\": \"name\",\n      \"description\": \"description\",\n      \"template\": \"template\",\n      \"target_resources\": [\n        \"target_resources\"\n      ],\n      \"mode\": \"mode\",\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"templates\": [\n    {\n      \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"name\": \"Discharge Summary\",\n      \"description\": \"description\",\n      \"template\": \"Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.\",\n      \"target_resources\": [\n        \"Patient\",\n        \"Condition\",\n        \"MedicationRequest\"\n      ],\n      \"mode\": \"narrative\",\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-01-15T10:30:00Z\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1501,20 +1475,20 @@
       "postServeActions": []
     },
     {
-      "id": "be929cb4-0e14-4d9d-a7a7-0e8f04096ba5",
-      "name": "Create a new summary template - default",
+      "id": "c52593c3-df16-4c84-875f-a758aa2015d6",
+      "name": "Create a new summary template - Discharge Summary Template",
       "request": {
         "urlPathTemplate": "/fhir2summary/template",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"message\",\n  \"template_id\": \"template_id\",\n  \"template\": {\n    \"id\": \"id\",\n    \"name\": \"name\",\n    \"description\": \"description\",\n    \"template\": \"template\",\n    \"target_resources\": [\n      \"target_resources\"\n    ],\n    \"mode\": \"mode\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Template created successfully\",\n  \"template_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"template\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Discharge Summary\",\n    \"description\": \"description\",\n    \"template\": \"Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>. Discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.\",\n    \"target_resources\": [\n      \"Patient\",\n      \"Condition\",\n      \"MedicationRequest\"\n    ],\n    \"mode\": \"narrative\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T10:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "be929cb4-0e14-4d9d-a7a7-0e8f04096ba5",
+      "uuid": "c52593c3-df16-4c84-875f-a758aa2015d6",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1540,7 +1514,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"template\": {\n    \"id\": \"id\",\n    \"name\": \"name\",\n    \"description\": \"description\",\n    \"template\": \"template\",\n    \"target_resources\": [\n      \"target_resources\"\n    ],\n    \"mode\": \"mode\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"template\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Discharge Summary\",\n    \"description\": \"description\",\n    \"template\": \"Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.\",\n    \"target_resources\": [\n      \"Patient\",\n      \"Condition\",\n      \"MedicationRequest\"\n    ],\n    \"mode\": \"narrative\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T10:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1571,7 +1545,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"message\",\n  \"template\": {\n    \"id\": \"id\",\n    \"name\": \"name\",\n    \"description\": \"description\",\n    \"template\": \"template\",\n    \"target_resources\": [\n      \"target_resources\"\n    ],\n    \"mode\": \"mode\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Template updated successfully\",\n  \"template\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Discharge Summary\",\n    \"description\": \"description\",\n    \"template\": \"Patient <<Patient.name[0].text>> was discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.\",\n    \"target_resources\": [\n      \"Patient\",\n      \"Encounter\",\n      \"MedicationRequest\"\n    ],\n    \"mode\": \"narrative\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-02-20T11:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1602,7 +1576,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"message\"\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Template deleted successfully\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1620,20 +1594,20 @@
       }
     },
     {
-      "id": "f1ad3b11-98a9-4c5a-acbe-8958f3a11477",
-      "name": "Generate a summary from FHIR resources - default",
+      "id": "245bb28a-bc81-40de-8a0f-2656e8853cb6",
+      "name": "Generate a summary from FHIR resources - Narrative Summary",
       "request": {
         "urlPathTemplate": "/fhir2summary/create",
         "method": "POST"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"message\",\n  \"summary\": \"summary\",\n  \"warnings\": [\n    \"warnings\"\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"message\",\n  \"summary\": \"Patient John Doe is a 45-year-old male diagnosed with Type 2 Diabetes Mellitus on January 15, 2024. Current treatment plan includes lifestyle modifications and medication management.\",\n  \"warnings\": [\n    \"warnings\"\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "f1ad3b11-98a9-4c5a-acbe-8958f3a11477",
+      "uuid": "245bb28a-bc81-40de-8a0f-2656e8853cb6",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1654,7 +1628,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"fhir_resource\": {\n    \"resourceType\": \"Condition\",\n    \"id\": \"condition-123\",\n    \"code\": {\n      \"coding\": [\n        {\n          \"system\": \"http://snomed.info/sct\",\n          \"code\": \"195967001\",\n          \"display\": \"Asthma\"\n        }\n      ]\n    },\n    \"subject\": {\n      \"reference\": \"Patient/patient-123\",\n      \"display\": \"John Doe\"\n    }\n  },\n  \"fhir_id\": \"condition-123\",\n  \"success\": true,\n  \"message\": \"FHIR resource created and stored in FHIR server successfully\"\n}",
+        "body": "{\n  \"fhir_resource\": {\n    \"resourceType\": \"Condition\",\n    \"id\": \"condition-123\",\n    \"clinicalStatus\": {\n      \"coding\": [\n        {\n          \"system\": \"http://terminology.hl7.org/CodeSystem/condition-clinical\",\n          \"code\": \"active\"\n        }\n      ]\n    },\n    \"verificationStatus\": {\n      \"coding\": [\n        {\n          \"system\": \"http://terminology.hl7.org/CodeSystem/condition-ver-status\",\n          \"code\": \"confirmed\"\n        }\n      ]\n    },\n    \"category\": [\n      {\n        \"coding\": [\n          {\n            \"system\": \"http://terminology.hl7.org/CodeSystem/condition-category\",\n            \"code\": \"encounter-diagnosis\"\n          }\n        ]\n      }\n    ],\n    \"code\": {\n      \"coding\": [\n        {\n          \"system\": \"http://snomed.info/sct\",\n          \"code\": \"195967001\",\n          \"display\": \"Asthma\"\n        }\n      ],\n      \"text\": \"Severe persistent asthma with acute exacerbation\"\n    },\n    \"subject\": {\n      \"reference\": \"Patient/patient-123\"\n    }\n  },\n  \"fhir_id\": \"condition-123\",\n  \"success\": true,\n  \"message\": \"FHIR resource created successfully\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1680,7 +1654,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Created 3 resources\",\n  \"response_bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction-response\",\n    \"entry\": [\n      {\n        \"key\": \"value\"\n      }\n    ]\n  },\n  \"resource_info\": [\n    {\n      \"tempId\": \"urn:uuid:patient-abc123\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith, 45-year-old male\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Created 3 resources\",\n  \"response_bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction-response\",\n    \"entry\": [\n      {\n        \"response\": {\n          \"status\": \"201 Created\",\n          \"location\": \"Patient/patient-001\"\n        }\n      },\n      {\n        \"response\": {\n          \"status\": \"201 Created\",\n          \"location\": \"Condition/condition-001\"\n        }\n      },\n      {\n        \"response\": {\n          \"status\": \"201 Created\",\n          \"location\": \"MedicationRequest/medication-001\"\n        }\n      }\n    ]\n  },\n  \"resource_info\": [\n    {\n      \"tempId\": \"urn:uuid:patient-abc123\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith, 45-year-old male\"\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-abc123\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes diagnosis\"\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-abc123\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg twice daily\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1732,7 +1706,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Cohort analysis completed successfully. Found 33 patients from 2 search concepts.\",\n  \"patientIds\": [\n    \"patient-123\",\n    \"patient-456\",\n    \"patient-789\"\n  ],\n  \"patientCount\": 33,\n  \"queries\": [\n    {\n      \"resource_type\": \"Patient\",\n      \"search_params\": \"gender=female&birthdate=le2004-01-01\",\n      \"concept\": \"female patients over 20\",\n      \"exclude\": false\n    },\n    {\n      \"resource_type\": \"Condition\",\n      \"search_params\": \"code=55822004\",\n      \"concept\": \"hyperlipidemia\",\n      \"exclude\": false\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Cohort analysis completed successfully. Found 33 patients from 2 search concepts.\",\n  \"patientIds\": [\n    \"patient-123\",\n    \"patient-456\",\n    \"patient-789\"\n  ],\n  \"patientCount\": 33,\n  \"queries\": [\n    {\n      \"resource_type\": \"Patient\",\n      \"search_params\": \"gender=female&birthdate=le2004-01-01\",\n      \"concept\": \"female patients over 20\",\n      \"exclude\": false\n    },\n    {\n      \"resource_type\": \"Condition\",\n      \"search_params\": \"code=44054006\",\n      \"concept\": \"diabetes\",\n      \"exclude\": false\n    },\n    {\n      \"resource_type\": \"Condition\",\n      \"search_params\": \"code=38341003\",\n      \"concept\": \"hypertension\",\n      \"exclude\": true\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1758,7 +1732,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server and Tools created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"tool-001\",\n      \"name\": \"search_endpoints\",\n      \"description\": \"Search across the documented endpoints\",\n      \"input_schema\": {\n        \"query\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"tool-002\",\n      \"name\": \"get_endpoint\",\n      \"description\": \"Fetch a single endpoint by ID\",\n      \"input_schema\": {\n        \"endpoint_id\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1784,7 +1758,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Servers retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"456\",\n      \"name\": \"Another MCP Server\",\n      \"description\": \"A second MCP server\",\n      \"mcp_server_url\": \"https://other.mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1816,7 +1790,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1847,7 +1821,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server Configuration and Tools deleted successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1878,7 +1852,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server tool created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server tools retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"tool-001\",\n      \"name\": \"search_endpoints\",\n      \"description\": \"Search across the documented endpoints\",\n      \"input_schema\": {\n        \"query\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"tool-002\",\n      \"name\": \"get_endpoint\",\n      \"description\": \"Fetch a single endpoint by ID\",\n      \"input_schema\": {\n        \"endpoint_id\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1909,7 +1883,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server tool created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server tool retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1940,7 +1914,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server tool created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server tool deleted successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server Tool\",\n    \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n    \"input_schema\": {\n      \"name\": \"string\",\n      \"age\": \"number\"\n    },\n    \"mcp_server_id\": \"123\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2002,7 +1976,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Workflows retrieved successfully\",\n  \"workflows\": [\n    {\n      \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n      \"name\": \"Patient Data Mapping Workflow\",\n      \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n      \"sample_data\": {\n        \"diagnosis_code\": \"I10\",\n        \"diagnosis_date\": \"2025-01-01\",\n        \"patient_first_name\": \"Clay\",\n        \"patient_last_name\": \"Rippin\"\n      },\n      \"config\": {\n        \"fhir_provider_ids\": [\n          \"550e8400-e29b-41d4-a716-446655440000\"\n        ],\n        \"dynamic_generation\": false\n      },\n      \"graph\": {\n        \"steps\": [\n          {\n            \"id\": \"step_1_id\",\n            \"name\": \"Find Patient\",\n            \"description\": \"Search for an existing patient by first name and last name\",\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n          }\n        ]\n      },\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-01-15T15:45:00Z\"\n    }\n  ],\n  \"workflow_details\": [\n    {\n      \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n      \"name\": \"Patient Data Mapping Workflow\",\n      \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n      \"sample_data\": {\n        \"diagnosis_code\": \"I10\",\n        \"diagnosis_date\": \"2025-01-01\",\n        \"patient_first_name\": \"Clay\",\n        \"patient_last_name\": \"Rippin\"\n      },\n      \"config\": {\n        \"fhir_provider_ids\": [\n          \"550e8400-e29b-41d4-a716-446655440000\"\n        ],\n        \"dynamic_generation\": false\n      },\n      \"graph\": {\n        \"steps\": [\n          {\n            \"id\": \"1\",\n            \"name\": \"Create Patient Resource\",\n            \"description\": \"Create a FHIR Patient resource from input data\",\n            \"operation\": {\n              \"search_definition\": {\n                \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n                \"resource_type\": \"Patient\",\n                \"search_parameters\": {\n                  \"family\": \"{{patient_last_name}}\",\n                  \"given\": \"{{patient_first_name}}\"\n                },\n                \"required_fields\": [\n                  \"id\",\n                  \"name\",\n                  \"identifier\"\n                ],\n                \"runtime_placeholders\": {\n                  \"{{patient_first_name}}\": \"input.patient_first_name\",\n                  \"{{patient_last_name}}\": \"input.patient_last_name\"\n                }\n              },\n              \"create_definition\": {\n                \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n                \"resource_type\": \"Condition\",\n                \"resource_template\": {\n                  \"resourceType\": \"Condition\",\n                  \"code\": {\n                    \"coding\": [\n                      {\n                        \"code\": \"{{diagnosis_code}}\",\n                        \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                      }\n                    ]\n                  },\n                  \"subject\": {\n                    \"reference\": \"Patient/{{step_1_id}}\"\n                  }\n                },\n                \"runtime_placeholders\": {\n                  \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                  \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n                }\n              },\n              \"workflow_definition\": {\n                \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n                \"input\": {\n                  \"patient_id\": \"{{step_1_id}}\",\n                  \"additional_context\": \"laboratory_results\"\n                },\n                \"runtime_placeholders\": {\n                  \"{{step_1_id}}\": \"step_1.result.id\",\n                  \"{{patient_data}}\": \"input.patient_data\"\n                }\n              },\n              \"decision_definition\": {\n                \"expression\": \"input.patient_age >= 18\",\n                \"paths\": {\n                  \"true\": \"step_adult_workflow\",\n                  \"false\": \"step_pediatric_workflow\",\n                  \"default\": \"step_error_handler\"\n                },\n                \"runtime_placeholders\": {\n                  \"{{patient_age}}\": \"input.patient_age\",\n                  \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n                }\n              }\n            },\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"dependencies\": [\n              \"dependencies\"\n            ],\n            \"dynamic_generation\": false\n          }\n        ]\n      },\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-01-15T15:45:00Z\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Workflows retrieved successfully\",\n  \"workflows\": [\n    {\n      \"id\": \"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n      \"name\": \"Patient Data Mapping Workflow\",\n      \"workflow_instructions\": \"Given diagnosis data, find the patient and create a condition record\",\n      \"sample_data\": {\n        \"patient_last_name\": \"Rippin\",\n        \"patient_first_name\": \"Clay\",\n        \"diagnosis_code\": \"I10\",\n        \"encounter_date\": \"2024-01-15\"\n      },\n      \"config\": {\n        \"fhir_provider_ids\": [\n          \"550e8400-e29b-41d4-a716-446655440000\"\n        ],\n        \"dynamic_generation\": false\n      },\n      \"graph\": {\n        \"steps\": [\n          {\n            \"id\": \"step_1_id\",\n            \"name\": \"Find Patient\",\n            \"description\": \"Search for an existing patient by first name and last name\",\n            \"type\": \"search\",\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n          },\n          {\n            \"id\": \"step_2_id\",\n            \"name\": \"Create Condition\",\n            \"description\": \"Create a FHIR Condition resource for the patient\",\n            \"type\": \"create\",\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n          }\n        ]\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"workflow_details\": [\n    {\n      \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n      \"name\": \"Patient Data Mapping Workflow\",\n      \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n      \"sample_data\": {\n        \"diagnosis_code\": \"I10\",\n        \"diagnosis_date\": \"2025-01-01\",\n        \"patient_first_name\": \"Clay\",\n        \"patient_last_name\": \"Rippin\"\n      },\n      \"config\": {\n        \"fhir_provider_ids\": [\n          \"550e8400-e29b-41d4-a716-446655440000\"\n        ],\n        \"dynamic_generation\": false\n      },\n      \"graph\": {\n        \"steps\": [\n          {\n            \"id\": \"1\",\n            \"name\": \"Create Patient Resource\",\n            \"description\": \"Create a FHIR Patient resource from input data\",\n            \"operation\": {\n              \"search_definition\": {\n                \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n                \"resource_type\": \"Patient\",\n                \"search_parameters\": {\n                  \"family\": \"{{patient_last_name}}\",\n                  \"given\": \"{{patient_first_name}}\"\n                },\n                \"required_fields\": [\n                  \"id\",\n                  \"name\",\n                  \"identifier\"\n                ],\n                \"runtime_placeholders\": {\n                  \"{{patient_first_name}}\": \"input.patient_first_name\",\n                  \"{{patient_last_name}}\": \"input.patient_last_name\"\n                }\n              },\n              \"create_definition\": {\n                \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n                \"resource_type\": \"Condition\",\n                \"resource_template\": {\n                  \"resourceType\": \"Condition\",\n                  \"code\": {\n                    \"coding\": [\n                      {\n                        \"code\": \"{{diagnosis_code}}\",\n                        \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                      }\n                    ]\n                  },\n                  \"subject\": {\n                    \"reference\": \"Patient/{{step_1_id}}\"\n                  }\n                },\n                \"runtime_placeholders\": {\n                  \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                  \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n                }\n              },\n              \"workflow_definition\": {\n                \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n                \"input\": {\n                  \"patient_id\": \"{{step_1_id}}\",\n                  \"additional_context\": \"laboratory_results\"\n                },\n                \"runtime_placeholders\": {\n                  \"{{step_1_id}}\": \"step_1.result.id\",\n                  \"{{patient_data}}\": \"input.patient_data\"\n                }\n              },\n              \"decision_definition\": {\n                \"expression\": \"input.patient_age >= 18\",\n                \"paths\": {\n                  \"true\": \"step_adult_workflow\",\n                  \"false\": \"step_pediatric_workflow\",\n                  \"default\": \"step_error_handler\"\n                },\n                \"runtime_placeholders\": {\n                  \"{{patient_age}}\": \"input.patient_age\",\n                  \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n                }\n              }\n            },\n            \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n            \"dependencies\": [\n              \"dependencies\"\n            ],\n            \"dynamic_generation\": false\n          }\n        ]\n      },\n      \"created_at\": \"2024-01-15T10:30:00Z\",\n      \"updated_at\": \"2024-01-15T15:45:00Z\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2021,8 +1995,8 @@
       "postServeActions": []
     },
     {
-      "id": "4d724b91-a19d-4650-a7c6-ee8f2c43a058",
-      "name": "Create new workflow - default",
+      "id": "ac9aa71c-0b91-423d-81ee-eaa0e40d2650",
+      "name": "Create new workflow - Patient Data Mapping",
       "request": {
         "urlPathTemplate": "/workflows",
         "method": "POST",
@@ -2034,12 +2008,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow created successfully\",\n  \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440001\",\n  \"workflow\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow created successfully\",\n  \"workflow_id\": \"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n  \"workflow\": {\n    \"id\": \"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n    \"sample_data\": {\n      \"patient_last_name\": \"Rippin\",\n      \"patient_first_name\": \"Clay\",\n      \"diagnosis_code\": \"I10\",\n      \"encounter_date\": \"2024-01-15\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "4d724b91-a19d-4650-a7c6-ee8f2c43a058",
+      "uuid": "ac9aa71c-0b91-423d-81ee-eaa0e40d2650",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -2070,7 +2044,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"workflow\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"workflow\": {\n    \"id\": \"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create a condition record\",\n    \"sample_data\": {\n      \"patient_last_name\": \"Rippin\",\n      \"patient_first_name\": \"Clay\",\n      \"diagnosis_code\": \"I10\",\n      \"encounter_date\": \"2024-01-15\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"type\": \"search\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        },\n        {\n          \"id\": \"step_2_id\",\n          \"name\": \"Create Condition\",\n          \"description\": \"Create a FHIR Condition resource for the patient\",\n          \"type\": \"create\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-01-15T09:30:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2106,7 +2080,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow updated successfully\",\n  \"workflow\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow updated successfully\",\n  \"workflow\": {\n    \"id\": \"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n    \"name\": \"Patient Data Mapping Workflow (v2)\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n    \"sample_data\": {\n      \"patient_last_name\": \"Rippin\",\n      \"patient_first_name\": \"Clay\",\n      \"diagnosis_code\": \"I10\",\n      \"encounter_date\": \"2024-01-15\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"step_1_id\",\n          \"name\": \"Find Patient\",\n          \"description\": \"Search for an existing patient by first name and last name\",\n          \"type\": \"search\",\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T09:30:00Z\",\n    \"updated_at\": \"2024-02-20T11:00:00Z\"\n  },\n  \"workflow_details\": {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440001\",\n    \"name\": \"Patient Data Mapping Workflow\",\n    \"workflow_instructions\": \"Given diagnosis data, find the patient and create condition record\",\n    \"sample_data\": {\n      \"diagnosis_code\": \"I10\",\n      \"diagnosis_date\": \"2025-01-01\",\n      \"patient_first_name\": \"Clay\",\n      \"patient_last_name\": \"Rippin\"\n    },\n    \"config\": {\n      \"fhir_provider_ids\": [\n        \"550e8400-e29b-41d4-a716-446655440000\"\n      ],\n      \"dynamic_generation\": false\n    },\n    \"graph\": {\n      \"steps\": [\n        {\n          \"id\": \"1\",\n          \"name\": \"Create Patient Resource\",\n          \"description\": \"Create a FHIR Patient resource from input data\",\n          \"operation\": {\n            \"search_definition\": {\n              \"original_query\": \"find patient {{patient_first_name}} {{patient_last_name}} by first name and last name\",\n              \"resource_type\": \"Patient\",\n              \"search_parameters\": {\n                \"family\": \"{{patient_last_name}}\",\n                \"given\": \"{{patient_first_name}}\"\n              },\n              \"required_fields\": [\n                \"id\",\n                \"name\",\n                \"identifier\"\n              ],\n              \"runtime_placeholders\": {\n                \"{{patient_first_name}}\": \"input.patient_first_name\",\n                \"{{patient_last_name}}\": \"input.patient_last_name\"\n              }\n            },\n            \"create_definition\": {\n              \"original_description\": \"create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01\",\n              \"resource_type\": \"Condition\",\n              \"resource_template\": {\n                \"resourceType\": \"Condition\",\n                \"code\": {\n                  \"coding\": [\n                    {\n                      \"code\": \"{{diagnosis_code}}\",\n                      \"system\": \"http://hl7.org/fhir/sid/icd-10\"\n                    }\n                  ]\n                },\n                \"subject\": {\n                  \"reference\": \"Patient/{{step_1_id}}\"\n                }\n              },\n              \"runtime_placeholders\": {\n                \"{{diagnosis_code}}\": \"input.diagnosis_code\",\n                \"{{diagnosis_date}}\": \"input.diagnosis_date\"\n              }\n            },\n            \"workflow_definition\": {\n              \"workflow_id\": \"550e8400-e29b-41d4-a716-446655440002\",\n              \"input\": {\n                \"patient_id\": \"{{step_1_id}}\",\n                \"additional_context\": \"laboratory_results\"\n              },\n              \"runtime_placeholders\": {\n                \"{{step_1_id}}\": \"step_1.result.id\",\n                \"{{patient_data}}\": \"input.patient_data\"\n              }\n            },\n            \"decision_definition\": {\n              \"expression\": \"input.patient_age >= 18\",\n              \"paths\": {\n                \"true\": \"step_adult_workflow\",\n                \"false\": \"step_pediatric_workflow\",\n                \"default\": \"step_error_handler\"\n              },\n              \"runtime_placeholders\": {\n                \"{{patient_age}}\": \"input.patient_age\",\n                \"{{diagnosis_type}}\": \"step_2.result.diagnosis_category\"\n              }\n            }\n          },\n          \"provider_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n          \"dependencies\": [\n            \"dependencies\"\n          ],\n          \"dynamic_generation\": false\n        }\n      ]\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T15:45:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -2155,25 +2129,25 @@
       }
     },
     {
-      "id": "1d260191-692a-4f48-bdea-8b268fb62d5e",
-      "name": "Execute workflow - default",
+      "id": "b770cc45-9cb5-4d27-b841-9a26d0e5d0cf",
+      "name": "Execute workflow - Execute with Live Data",
       "request": {
         "urlPathTemplate": "/workflows/{id}/execute",
         "method": "POST",
         "pathParameters": {
           "id": {
-            "equalTo": "id"
+            "equalTo": "7a8b9c0d-1234-5678-abcd-ef9876543210"
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow executed successfully\",\n  \"results\": {\n    \"steps\": {\n      \"key\": \"value\"\n    }\n  },\n  \"preview\": false\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Workflow executed successfully\",\n  \"results\": {\n    \"steps\": {\n      \"step_1_id\": {\n        \"type\": \"search_result\",\n        \"original_query\": \"find patient by first name Mary and last name Johnson\",\n        \"resource_type\": \"Patient\",\n        \"search_params\": {\n          \"family\": \"Johnson\",\n          \"given\": \"Mary\"\n        },\n        \"results\": [\n          {\n            \"resourceType\": \"Patient\",\n            \"id\": \"patient-123\",\n            \"name\": [\n              {\n                \"family\": \"Johnson\",\n                \"given\": [\n                  \"Mary\"\n                ],\n                \"use\": \"usual\"\n              }\n            ],\n            \"gender\": \"female\",\n            \"birthDate\": \"1961-01-01\"\n          }\n        ]\n      },\n      \"step_2_id\": {\n        \"type\": \"create_result\",\n        \"id\": \"condition-456\",\n        \"resource_type\": \"Condition\",\n        \"original_desc\": \"create condition with diagnosis code M79.3 for the patient from step_1_id\",\n        \"preview\": false,\n        \"created_resource\": {\n          \"resourceType\": \"Condition\",\n          \"id\": \"condition-456\",\n          \"clinicalStatus\": {\n            \"coding\": [\n              {\n                \"system\": \"http://terminology.hl7.org/CodeSystem/condition-clinical\",\n                \"code\": \"active\"\n              }\n            ]\n          },\n          \"code\": {\n            \"coding\": [\n              {\n                \"system\": \"http://hl7.org/fhir/sid/icd-10\",\n                \"code\": \"M79.3\",\n                \"display\": \"Panniculitis, unspecified\"\n              }\n            ]\n          },\n          \"subject\": {\n            \"reference\": \"Patient/patient-123\"\n          }\n        }\n      }\n    }\n  },\n  \"preview\": false\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "1d260191-692a-4f48-bdea-8b268fb62d5e",
+      "uuid": "b770cc45-9cb5-4d27-b841-9a26d0e5d0cf",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -2187,6 +2161,6 @@
     }
   ],
   "meta": {
-    "total": 72
+    "total": 71
   }
 }

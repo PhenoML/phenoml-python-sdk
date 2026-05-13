@@ -10,13 +10,11 @@ from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from .errors.bad_request_error import BadRequestError
 from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.unauthorized_error import UnauthorizedError
-from .types.create_summary_request_fhir_resources import CreateSummaryRequestFhirResources
 from .types.create_summary_request_mode import CreateSummaryRequestMode
 from .types.create_summary_response import CreateSummaryResponse
 from .types.create_summary_template_response import CreateSummaryTemplateResponse
@@ -513,7 +511,7 @@ class RawSummaryClient:
     def create(
         self,
         *,
-        fhir_resources: CreateSummaryRequestFhirResources,
+        fhir_resources: typing.Dict[str, typing.Any],
         mode: typing.Optional[CreateSummaryRequestMode] = OMIT,
         template_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -526,7 +524,7 @@ class RawSummaryClient:
 
         Parameters
         ----------
-        fhir_resources : CreateSummaryRequestFhirResources
+        fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle).
             For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
             identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
@@ -556,9 +554,7 @@ class RawSummaryClient:
             json={
                 "mode": mode,
                 "template_id": template_id,
-                "fhir_resources": convert_and_respect_annotation_metadata(
-                    object_=fhir_resources, annotation=CreateSummaryRequestFhirResources, direction="write"
-                ),
+                "fhir_resources": fhir_resources,
             },
             headers={
                 "content-type": "application/json",
@@ -1124,7 +1120,7 @@ class AsyncRawSummaryClient:
     async def create(
         self,
         *,
-        fhir_resources: CreateSummaryRequestFhirResources,
+        fhir_resources: typing.Dict[str, typing.Any],
         mode: typing.Optional[CreateSummaryRequestMode] = OMIT,
         template_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1137,7 +1133,7 @@ class AsyncRawSummaryClient:
 
         Parameters
         ----------
-        fhir_resources : CreateSummaryRequestFhirResources
+        fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle).
             For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
             identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
@@ -1167,9 +1163,7 @@ class AsyncRawSummaryClient:
             json={
                 "mode": mode,
                 "template_id": template_id,
-                "fhir_resources": convert_and_respect_annotation_metadata(
-                    object_=fhir_resources, annotation=CreateSummaryRequestFhirResources, direction="write"
-                ),
+                "fhir_resources": fhir_resources,
             },
             headers={
                 "content-type": "application/json",

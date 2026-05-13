@@ -67,7 +67,10 @@ class AuthClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.authtoken.auth.get_token()
+        client.authtoken.auth.get_token(
+            client_id="your_client_id",
+            client_secret="your_client_secret",
+        )
         """
         _response = self._raw_client.get_token(
             grant_type=grant_type, client_id=client_id, client_secret=client_secret, request_options=request_options
@@ -136,7 +139,10 @@ class AsyncAuthClient:
 
 
         async def main() -> None:
-            await client.authtoken.auth.get_token()
+            await client.authtoken.auth.get_token(
+                client_id="your_client_id",
+                client_secret="your_client_secret",
+            )
 
 
         asyncio.run(main())

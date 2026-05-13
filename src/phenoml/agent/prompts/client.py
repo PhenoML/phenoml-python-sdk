@@ -6,7 +6,6 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from ..types.agent_prompts_response import AgentPromptsResponse
 from ..types.json_patch import JsonPatch
-from ..types.success_response import SuccessResponse
 from .raw_client import AsyncRawPromptsClient, RawPromptsClient
 from .types.prompts_delete_response import PromptsDeleteResponse
 from .types.prompts_list_response import PromptsListResponse
@@ -78,7 +77,10 @@ class PromptsClient:
         )
         client.agent.prompts.create(
             name="Medical Assistant System Prompt",
-            content="You are a helpful medical assistant specialized in FHIR data processing...",
+            description="System prompt for medical assistant agent",
+            content="You are a helpful medical assistant specialized in FHIR data processing.",
+            is_default=False,
+            tags=["medical", "system"],
         )
         """
         _response = self._raw_client.create(
@@ -202,6 +204,11 @@ class PromptsClient:
         )
         client.agent.prompts.update(
             id="id",
+            name="Medical Assistant System Prompt",
+            description="Updated system prompt",
+            content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+            is_default=False,
+            tags=["medical", "system", "updated"],
         )
         """
         _response = self._raw_client.update(
@@ -282,49 +289,13 @@ class PromptsClient:
             request=[
                 JsonPatchOperation(
                     op="replace",
-                    path="/name",
-                    value="Updated Agent Name",
-                ),
-                JsonPatchOperation(
-                    op="add",
-                    path="/tags/-",
-                    value="new-tag",
-                ),
-                JsonPatchOperation(
-                    op="remove",
-                    path="/description",
-                ),
+                    path="/content",
+                    value="Updated prompt content.",
+                )
             ],
         )
         """
         _response = self._raw_client.patch(id, request=request, request_options=request_options)
-        return _response.data
-
-    def load_defaults(self, *, request_options: typing.Optional[RequestOptions] = None) -> SuccessResponse:
-        """
-        Loads default agent prompts for the authenticated user
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SuccessResponse
-            Default prompts loaded successfully
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.agent.prompts.load_defaults()
-        """
-        _response = self._raw_client.load_defaults(request_options=request_options)
         return _response.data
 
 
@@ -396,7 +367,10 @@ class AsyncPromptsClient:
         async def main() -> None:
             await client.agent.prompts.create(
                 name="Medical Assistant System Prompt",
-                content="You are a helpful medical assistant specialized in FHIR data processing...",
+                description="System prompt for medical assistant agent",
+                content="You are a helpful medical assistant specialized in FHIR data processing.",
+                is_default=False,
+                tags=["medical", "system"],
             )
 
 
@@ -544,6 +518,11 @@ class AsyncPromptsClient:
         async def main() -> None:
             await client.agent.prompts.update(
                 id="id",
+                name="Medical Assistant System Prompt",
+                description="Updated system prompt",
+                content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+                is_default=False,
+                tags=["medical", "system", "updated"],
             )
 
 
@@ -642,18 +621,9 @@ class AsyncPromptsClient:
                 request=[
                     JsonPatchOperation(
                         op="replace",
-                        path="/name",
-                        value="Updated Agent Name",
-                    ),
-                    JsonPatchOperation(
-                        op="add",
-                        path="/tags/-",
-                        value="new-tag",
-                    ),
-                    JsonPatchOperation(
-                        op="remove",
-                        path="/description",
-                    ),
+                        path="/content",
+                        value="Updated prompt content.",
+                    )
                 ],
             )
 
@@ -661,39 +631,4 @@ class AsyncPromptsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.patch(id, request=request, request_options=request_options)
-        return _response.data
-
-    async def load_defaults(self, *, request_options: typing.Optional[RequestOptions] = None) -> SuccessResponse:
-        """
-        Loads default agent prompts for the authenticated user
-
-        Parameters
-        ----------
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SuccessResponse
-            Default prompts loaded successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.agent.prompts.load_defaults()
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.load_defaults(request_options=request_options)
         return _response.data

@@ -112,6 +112,7 @@ class ConstrueClient:
         Examples
         --------
         from phenoml import PhenomlClient
+        from phenoml.construe import CodeResponse
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -120,7 +121,17 @@ class ConstrueClient:
         client.construe.upload_code_system(
             name="CUSTOM_CODES",
             version="1.0",
-            format="csv",
+            format="json",
+            codes=[
+                CodeResponse(
+                    code="X001",
+                    description="Example custom code 1",
+                ),
+                CodeResponse(
+                    code="X002",
+                    description="Example custom code 2",
+                ),
+            ],
         )
         """
         _response = self._raw_client.upload_code_system(
@@ -171,13 +182,18 @@ class ConstrueClient:
         Examples
         --------
         from phenoml import PhenomlClient
+        from phenoml.construe import ExtractRequestSystem
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.construe.extract_codes(
-            text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
+            text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
+            system=ExtractRequestSystem(
+                name="ICD-10-CM",
+                version="2025",
+            ),
         )
         """
         _response = self._raw_client.extract_codes(
@@ -424,7 +440,8 @@ class ConstrueClient:
             Code system name
 
         code_id : str
-            The code identifier
+            The code identifier. ICD-10-CM codes are stored without their
+            cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
             Specific version of the code system
@@ -447,7 +464,7 @@ class ConstrueClient:
         )
         client.construe.get_a_specific_code(
             codesystem="ICD-10-CM",
-            code_id="E11.65",
+            code_id="E1165",
             version="version",
         )
         """
@@ -577,25 +594,32 @@ class ConstrueClient:
         client.construe.submit_feedback_on_extraction_results(
             text="Patient has type 2 diabetes with hyperglycemia",
             received_result=ExtractCodesResult(
-                system=ExtractRequestSystem(),
+                system=ExtractRequestSystem(
+                    name="ICD-10-CM",
+                    version="2025",
+                ),
                 codes=[
                     ExtractedCodeResult(
-                        code="195967001",
-                        description="Asthma",
+                        code="E11.9",
+                        description="Type 2 diabetes mellitus without complications",
                         valid=True,
                     )
                 ],
             ),
             expected_result=ExtractCodesResult(
-                system=ExtractRequestSystem(),
+                system=ExtractRequestSystem(
+                    name="ICD-10-CM",
+                    version="2025",
+                ),
                 codes=[
                     ExtractedCodeResult(
-                        code="195967001",
-                        description="Asthma",
+                        code="E11.65",
+                        description="Type 2 diabetes mellitus with hyperglycemia",
                         valid=True,
                     )
                 ],
             ),
+            detail="Expected code E11.65 because the text mentions hyperglycemia",
         )
         """
         _response = self._raw_client.submit_feedback_on_extraction_results(
@@ -774,6 +798,7 @@ class AsyncConstrueClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
+        from phenoml.construe import CodeResponse
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -785,7 +810,17 @@ class AsyncConstrueClient:
             await client.construe.upload_code_system(
                 name="CUSTOM_CODES",
                 version="1.0",
-                format="csv",
+                format="json",
+                codes=[
+                    CodeResponse(
+                        code="X001",
+                        description="Example custom code 1",
+                    ),
+                    CodeResponse(
+                        code="X002",
+                        description="Example custom code 2",
+                    ),
+                ],
             )
 
 
@@ -841,6 +876,7 @@ class AsyncConstrueClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
+        from phenoml.construe import ExtractRequestSystem
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -850,7 +886,11 @@ class AsyncConstrueClient:
 
         async def main() -> None:
             await client.construe.extract_codes(
-                text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney",
+                text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
+                system=ExtractRequestSystem(
+                    name="ICD-10-CM",
+                    version="2025",
+                ),
             )
 
 
@@ -1140,7 +1180,8 @@ class AsyncConstrueClient:
             Code system name
 
         code_id : str
-            The code identifier
+            The code identifier. ICD-10-CM codes are stored without their
+            cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
             Specific version of the code system
@@ -1168,7 +1209,7 @@ class AsyncConstrueClient:
         async def main() -> None:
             await client.construe.get_a_specific_code(
                 codesystem="ICD-10-CM",
-                code_id="E11.65",
+                code_id="E1165",
                 version="version",
             )
 
@@ -1314,25 +1355,32 @@ class AsyncConstrueClient:
             await client.construe.submit_feedback_on_extraction_results(
                 text="Patient has type 2 diabetes with hyperglycemia",
                 received_result=ExtractCodesResult(
-                    system=ExtractRequestSystem(),
+                    system=ExtractRequestSystem(
+                        name="ICD-10-CM",
+                        version="2025",
+                    ),
                     codes=[
                         ExtractedCodeResult(
-                            code="195967001",
-                            description="Asthma",
+                            code="E11.9",
+                            description="Type 2 diabetes mellitus without complications",
                             valid=True,
                         )
                     ],
                 ),
                 expected_result=ExtractCodesResult(
-                    system=ExtractRequestSystem(),
+                    system=ExtractRequestSystem(
+                        name="ICD-10-CM",
+                        version="2025",
+                    ),
                     codes=[
                         ExtractedCodeResult(
-                            code="195967001",
-                            description="Asthma",
+                            code="E11.65",
+                            description="Type 2 diabetes mellitus with hyperglycemia",
                             valid=True,
                         )
                     ],
                 ),
+                detail="Expected code E11.65 because the text mentions hyperglycemia",
             )
 
 
