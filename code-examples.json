@@ -1,0 +1,4087 @@
+{
+  "metadata": {
+    "language": "python",
+    "packageName": "phenoml",
+    "sdkVersion": "12.0.0",
+    "specCommit": "2193fc57ed98e5c912a35f90c07e9a4f00da0af8",
+    "generatorName": "fernapi/fern-python-sdk"
+  },
+  "examples": {
+    "POST /agent/create": {
+      "httpMethod": "POST",
+      "httpPath": "/agent/create",
+      "sdkMethodChain": [
+        "agent",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "name": "Medical Assistant",
+          "description": "An AI assistant for medical information processing",
+          "prompts": [
+            "prompt_123"
+          ],
+          "tags": [
+            "medical",
+            "fhir"
+          ],
+          "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "Medical Assistant"
+          },
+          {
+            "name": "description",
+            "value": "An AI assistant for medical information processing"
+          },
+          {
+            "name": "prompts",
+            "value": [
+              "prompt_123"
+            ]
+          },
+          {
+            "name": "tags",
+            "value": [
+              "medical",
+              "fhir"
+            ]
+          },
+          {
+            "name": "provider",
+            "value": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agent created successfully",
+          "data": {
+            "id": "agent_123",
+            "name": "Medical Assistant",
+            "description": "An AI assistant for medical information processing",
+            "prompts": [
+              "prompt_123",
+              "prompt_456"
+            ],
+            "tools": [
+              "mcp_server_123",
+              "mcp_server_456"
+            ],
+            "workflows": [
+              "workflow_123",
+              "workflow_456"
+            ],
+            "tags": [
+              "medical",
+              "fhir"
+            ],
+            "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.create(\n        name=\"Medical Assistant\",\n        description=\"An AI assistant for medical information processing\",\n        prompts=[\"prompt_123\"],\n        tags=[\"medical\", \"fhir\"],\n        provider=\"7002b0b4-8d09-445a-bf65-0fafdaf26c35\",\n    )"
+    },
+    "GET /agent/list": {
+      "httpMethod": "GET",
+      "httpPath": "/agent/list",
+      "sdkMethodChain": [
+        "agent",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "tags",
+            "value": "tags"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agents retrieved successfully",
+          "agents": [
+            {
+              "id": "agent_123",
+              "name": "Medical Assistant",
+              "description": "An AI assistant for medical information processing",
+              "prompts": [
+                "prompt_123"
+              ],
+              "tools": [
+                "mcp_server_123",
+                "mcp_server_456"
+              ],
+              "workflows": [
+                "workflow_123",
+                "workflow_456"
+              ],
+              "tags": [
+                "medical",
+                "fhir"
+              ],
+              "provider": [
+                "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+              ]
+            },
+            {
+              "id": "agent_456",
+              "name": "Clinical Coding Assistant",
+              "description": "Helps with ICD-10 and SNOMED coding",
+              "prompts": [
+                "prompt_456"
+              ],
+              "tools": [
+                "mcp_server_123",
+                "mcp_server_456"
+              ],
+              "workflows": [
+                "workflow_123",
+                "workflow_456"
+              ],
+              "tags": [
+                "coding"
+              ],
+              "provider": [
+                "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+              ]
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.agent.list(\n        tags=\"tags\",\n    )"
+    },
+    "GET /agent/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/agent/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agent retrieved successfully",
+          "data": {
+            "id": "agent_123",
+            "name": "Medical Assistant",
+            "description": "An AI assistant for medical information processing",
+            "prompts": [
+              "prompt_123",
+              "prompt_456"
+            ],
+            "tools": [
+              "mcp_server_123",
+              "mcp_server_456"
+            ],
+            "workflows": [
+              "workflow_123",
+              "workflow_456"
+            ],
+            "tags": [
+              "medical",
+              "fhir"
+            ],
+            "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.get(\n        id=\"id\",\n    )"
+    },
+    "PUT /agent/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/agent/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "update"
+      ],
+      "sdkMethodName": "update",
+      "request": {
+        "body": {
+          "name": "Medical Assistant",
+          "description": "Updated description for the medical assistant",
+          "prompts": [
+            "prompt_123"
+          ],
+          "tags": [
+            "medical",
+            "fhir",
+            "updated"
+          ],
+          "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "name",
+            "value": "Medical Assistant"
+          },
+          {
+            "name": "description",
+            "value": "Updated description for the medical assistant"
+          },
+          {
+            "name": "prompts",
+            "value": [
+              "prompt_123"
+            ]
+          },
+          {
+            "name": "tags",
+            "value": [
+              "medical",
+              "fhir",
+              "updated"
+            ]
+          },
+          {
+            "name": "provider",
+            "value": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agent updated successfully",
+          "data": {
+            "id": "agent_123",
+            "name": "Medical Assistant",
+            "description": "An AI assistant for medical information processing",
+            "prompts": [
+              "prompt_123",
+              "prompt_456"
+            ],
+            "tools": [
+              "mcp_server_123",
+              "mcp_server_456"
+            ],
+            "workflows": [
+              "workflow_123",
+              "workflow_456"
+            ],
+            "tags": [
+              "medical",
+              "fhir"
+            ],
+            "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.update(\n        id=\"id\",\n        name=\"Medical Assistant\",\n        description=\"Updated description for the medical assistant\",\n        prompts=[\"prompt_123\"],\n        tags=[\"medical\", \"fhir\", \"updated\"],\n        provider=\"7002b0b4-8d09-445a-bf65-0fafdaf26c35\",\n    )"
+    },
+    "DELETE /agent/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/agent/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agent deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.agent.delete(\n        id=\"id\",\n    )"
+    },
+    "PATCH /agent/{id}": {
+      "httpMethod": "PATCH",
+      "httpPath": "/agent/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "patch"
+      ],
+      "sdkMethodName": "patch",
+      "request": {
+        "body": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ]>",
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "request",
+            "value": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ]>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Agent patched successfully",
+          "data": {
+            "id": "agent_123",
+            "name": "Medical Assistant",
+            "description": "An AI assistant for medical information processing",
+            "prompts": [
+              "prompt_123",
+              "prompt_456"
+            ],
+            "tools": [
+              "mcp_server_123",
+              "mcp_server_456"
+            ],
+            "workflows": [
+              "workflow_123",
+              "workflow_456"
+            ],
+            "tags": [
+              "medical",
+              "fhir"
+            ],
+            "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.patch(\n        id=\"id\",\n        request=[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ],\n    )"
+    },
+    "POST /agent/chat": {
+      "httpMethod": "POST",
+      "httpPath": "/agent/chat",
+      "sdkMethodChain": [
+        "agent",
+        "chat"
+      ],
+      "sdkMethodName": "chat",
+      "request": {
+        "body": {
+          "message": "What is the patient's current condition?",
+          "session_id": "session-abc123",
+          "agent_id": "agent-123"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "message",
+            "value": "What is the patient's current condition?"
+          },
+          {
+            "name": "session_id",
+            "value": "session-abc123"
+          },
+          {
+            "name": "agent_id",
+            "value": "agent-123"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "response": "Based on the patient records, they have been diagnosed with Type 2 Diabetes Mellitus (ICD-10: E11.65) and Essential Hypertension (ICD-10: I10). Current medications include Metformin 500mg BID and Lisinopril 10mg daily. Most recent HbA1c was 7.2% on 2024-12-15.",
+          "success": true,
+          "message": "Response generated successfully",
+          "session_id": "session-abc123"
+        }
+      },
+      "sdkCallSource": "client.agent.chat(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        message=\"What is the patient's current condition?\",\n        session_id=\"session-abc123\",\n        agent_id=\"agent-123\",\n    )"
+    },
+    "POST /agent/stream-chat": {
+      "httpMethod": "POST",
+      "httpPath": "/agent/stream-chat",
+      "sdkMethodChain": [
+        "agent",
+        "stream_chat"
+      ],
+      "sdkMethodName": "stream_chat",
+      "request": {
+        "body": {
+          "message": "What is the patient's current condition?",
+          "session_id": "session-abc123",
+          "agent_id": "agent-123"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "message",
+            "value": "What is the patient's current condition?"
+          },
+          {
+            "name": "session_id",
+            "value": "session-abc123"
+          },
+          {
+            "name": "agent_id",
+            "value": "agent-123"
+          }
+        ]
+      },
+      "response": {
+        "body": null,
+        "streaming": true
+      },
+      "sdkCallSource": "client.agent.stream_chat(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        message=\"What is the patient's current condition?\",\n        session_id=\"session-abc123\",\n        agent_id=\"agent-123\",\n    )"
+    },
+    "POST /agent/prompts": {
+      "httpMethod": "POST",
+      "httpPath": "/agent/prompts",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "name": "Medical Assistant System Prompt",
+          "description": "System prompt for medical assistant agent",
+          "content": "You are a helpful medical assistant specialized in FHIR data processing.",
+          "is_default": false,
+          "tags": [
+            "medical",
+            "system"
+          ]
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "Medical Assistant System Prompt"
+          },
+          {
+            "name": "description",
+            "value": "System prompt for medical assistant agent"
+          },
+          {
+            "name": "content",
+            "value": "You are a helpful medical assistant specialized in FHIR data processing."
+          },
+          {
+            "name": "is_default",
+            "value": false
+          },
+          {
+            "name": "tags",
+            "value": [
+              "medical",
+              "system"
+            ]
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompt created successfully",
+          "data": {
+            "id": "prompt_123",
+            "name": "Medical Assistant System Prompt",
+            "description": "System prompt for medical assistant agent",
+            "content": "You are a helpful medical assistant...",
+            "is_default": false,
+            "tags": [
+              "medical",
+              "system"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.create(\n        name=\"Medical Assistant System Prompt\",\n        description=\"System prompt for medical assistant agent\",\n        content=\"You are a helpful medical assistant specialized in FHIR data processing.\",\n        is_default=False,\n        tags=[\"medical\", \"system\"],\n    )"
+    },
+    "GET /agent/prompts/list": {
+      "httpMethod": "GET",
+      "httpPath": "/agent/prompts/list",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": []
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompts retrieved successfully",
+          "prompts": [
+            {
+              "id": "prompt_123",
+              "name": "Medical Assistant System Prompt",
+              "description": "System prompt for medical assistant agent",
+              "content": "You are a helpful medical assistant...",
+              "is_default": false,
+              "tags": [
+                "medical",
+                "system"
+              ]
+            },
+            {
+              "id": "prompt_456",
+              "name": "Clinical Coding Prompt",
+              "description": "Prompt for ICD-10 / SNOMED coding tasks",
+              "content": "You assist with mapping clinical text to standard codes...",
+              "is_default": false,
+              "tags": [
+                "coding"
+              ]
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.list()"
+    },
+    "GET /agent/prompts/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/agent/prompts/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompt retrieved successfully",
+          "data": {
+            "id": "prompt_123",
+            "name": "Medical Assistant System Prompt",
+            "description": "System prompt for medical assistant agent",
+            "content": "You are a helpful medical assistant...",
+            "is_default": false,
+            "tags": [
+              "medical",
+              "system"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.get(\n        id=\"id\",\n    )"
+    },
+    "PUT /agent/prompts/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/agent/prompts/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "update"
+      ],
+      "sdkMethodName": "update",
+      "request": {
+        "body": {
+          "name": "Medical Assistant System Prompt",
+          "description": "Updated system prompt",
+          "content": "You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+          "is_default": false,
+          "tags": [
+            "medical",
+            "system",
+            "updated"
+          ]
+        },
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "name",
+            "value": "Medical Assistant System Prompt"
+          },
+          {
+            "name": "description",
+            "value": "Updated system prompt"
+          },
+          {
+            "name": "content",
+            "value": "You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses."
+          },
+          {
+            "name": "is_default",
+            "value": false
+          },
+          {
+            "name": "tags",
+            "value": [
+              "medical",
+              "system",
+              "updated"
+            ]
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompt updated successfully",
+          "data": {
+            "id": "prompt_123",
+            "name": "Medical Assistant System Prompt",
+            "description": "System prompt for medical assistant agent",
+            "content": "You are a helpful medical assistant...",
+            "is_default": false,
+            "tags": [
+              "medical",
+              "system"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.update(\n        id=\"id\",\n        name=\"Medical Assistant System Prompt\",\n        description=\"Updated system prompt\",\n        content=\"You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.\",\n        is_default=False,\n        tags=[\"medical\", \"system\", \"updated\"],\n    )"
+    },
+    "DELETE /agent/prompts/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/agent/prompts/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompt deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.delete(\n        id=\"id\",\n    )"
+    },
+    "PATCH /agent/prompts/{id}": {
+      "httpMethod": "PATCH",
+      "httpPath": "/agent/prompts/{id}",
+      "sdkMethodChain": [
+        "agent",
+        "prompts",
+        "patch"
+      ],
+      "sdkMethodName": "patch",
+      "request": {
+        "body": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ]>",
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "request",
+            "value": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ]>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Prompt patched successfully",
+          "data": {
+            "id": "prompt_123",
+            "name": "Medical Assistant System Prompt",
+            "description": "System prompt for medical assistant agent",
+            "content": "You are a helpful medical assistant...",
+            "is_default": false,
+            "tags": [
+              "medical",
+              "system"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.agent.prompts.patch(\n        id=\"id\",\n        request=[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ],\n    )"
+    },
+    "POST /v2/auth/token": {
+      "httpMethod": "POST",
+      "httpPath": "/v2/auth/token",
+      "sdkMethodChain": [
+        "authtoken",
+        "auth",
+        "get_token"
+      ],
+      "sdkMethodName": "get_token",
+      "request": {
+        "body": {
+          "client_id": "your_client_id",
+          "client_secret": "your_client_secret"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "client_id",
+            "value": "your_client_id"
+          },
+          {
+            "name": "client_secret",
+            "value": "your_client_secret"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "token_type": "Bearer",
+          "expires_in": 172800
+        }
+      },
+      "sdkCallSource": "client.authtoken.auth.get_token(\n        client_id=\"your_client_id\",\n        client_secret=\"your_client_secret\",\n    )"
+    },
+    "POST /cohort": {
+      "httpMethod": "POST",
+      "httpPath": "/cohort",
+      "sdkMethodChain": [
+        "cohort",
+        "analyze"
+      ],
+      "sdkMethodName": "analyze",
+      "request": {
+        "body": {
+          "text": "female patients over 65 with diabetes but not hypertension"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "text",
+            "value": "female patients over 65 with diabetes but not hypertension"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Cohort analysis completed successfully. Generated 3 search queries from 3 concepts.",
+          "queries": [
+            {
+              "resource_type": "Patient",
+              "search_params": "gender=female&birthdate=le1959-01-01",
+              "concept": "female patients over 65",
+              "exclude": false
+            },
+            {
+              "resource_type": "Condition",
+              "search_params": "code=44054006",
+              "concept": "diabetes",
+              "exclude": false
+            },
+            {
+              "resource_type": "Condition",
+              "search_params": "code=38341003",
+              "concept": "hypertension",
+              "exclude": true
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.cohort.analyze(\n        text=\"female patients over 65 with diabetes but not hypertension\",\n    )"
+    },
+    "POST /construe/upload": {
+      "httpMethod": "POST",
+      "httpPath": "/construe/upload",
+      "sdkMethodChain": [
+        "construe",
+        "upload_code_system"
+      ],
+      "sdkMethodName": "upload_code_system",
+      "request": {
+        "body": {
+          "name": "CUSTOM_CODES",
+          "version": "1.0",
+          "format": "json",
+          "codes": "<expr:[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ]>"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "CUSTOM_CODES"
+          },
+          {
+            "name": "version",
+            "value": "1.0"
+          },
+          {
+            "name": "format",
+            "value": "json"
+          },
+          {
+            "name": "codes",
+            "value": "<expr:[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ]>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "status": "processing",
+          "name": "CUSTOM_CODES",
+          "version": "1.0"
+        }
+      },
+      "sdkCallSource": "client.construe.upload_code_system(\n        name=\"CUSTOM_CODES\",\n        version=\"1.0\",\n        format=\"json\",\n        codes=[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ],\n    )"
+    },
+    "POST /construe/extract": {
+      "httpMethod": "POST",
+      "httpPath": "/construe/extract",
+      "sdkMethodChain": [
+        "construe",
+        "extract_codes"
+      ],
+      "sdkMethodName": "extract_codes",
+      "request": {
+        "body": {
+          "text": "Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
+          "system": "<expr:ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        )>"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "text",
+            "value": "Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney."
+          },
+          {
+            "name": "system",
+            "value": "<expr:ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        )>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          },
+          "codes": [
+            {
+              "code": "Q60.3",
+              "description": "Renal hypoplasia, unspecified",
+              "valid": true,
+              "reason": "reason",
+              "is_ancestor": true,
+              "citations": [
+                {
+                  "text": "Patient has type 2 diabetes",
+                  "begin_offset": 0,
+                  "end_offset": 27
+                }
+              ],
+              "categories": [
+                {
+                  "uri": "HP:0025142",
+                  "label": "Constitutional symptom"
+                }
+              ]
+            },
+            {
+              "code": "R93.42",
+              "description": "Abnormal findings on diagnostic imaging of kidney",
+              "valid": true,
+              "reason": "reason",
+              "is_ancestor": true,
+              "citations": [
+                {
+                  "text": "Patient has type 2 diabetes",
+                  "begin_offset": 0,
+                  "end_offset": 27
+                }
+              ],
+              "categories": [
+                {
+                  "uri": "HP:0025142",
+                  "label": "Constitutional symptom"
+                }
+              ]
+            },
+            {
+              "code": "N28.1",
+              "description": "Cyst of kidney, acquired",
+              "valid": true,
+              "reason": "reason",
+              "is_ancestor": true,
+              "citations": [
+                {
+                  "text": "Patient has type 2 diabetes",
+                  "begin_offset": 0,
+                  "end_offset": 27
+                }
+              ],
+              "categories": [
+                {
+                  "uri": "HP:0025142",
+                  "label": "Constitutional symptom"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.construe.extract_codes(\n        text=\"Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.\",\n        system=ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        ),\n    )"
+    },
+    "GET /construe/codes/systems": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/systems",
+      "sdkMethodChain": [
+        "construe",
+        "list_available_code_systems"
+      ],
+      "sdkMethodName": "list_available_code_systems",
+      "request": {
+        "body": null,
+        "sdkCallArgs": []
+      },
+      "response": {
+        "body": {
+          "systems": [
+            {
+              "name": "ICD-10-CM",
+              "version": "2025",
+              "code_count": 97584,
+              "builtin": true
+            },
+            {
+              "name": "SNOMED_CT_US_LITE",
+              "version": "20240901",
+              "code_count": 102837,
+              "builtin": true
+            },
+            {
+              "name": "RXNORM",
+              "version": "11042024",
+              "code_count": 257619,
+              "builtin": true
+            },
+            {
+              "name": "LOINC",
+              "version": "2.78",
+              "code_count": 98123,
+              "builtin": true
+            },
+            {
+              "name": "HPO",
+              "version": "2025",
+              "code_count": 19542,
+              "builtin": true
+            },
+            {
+              "name": "CPT",
+              "version": "2025",
+              "code_count": 10192,
+              "builtin": true
+            },
+            {
+              "name": "ICD-10-PCS",
+              "version": "2025",
+              "code_count": 78717,
+              "builtin": true
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.construe.list_available_code_systems()"
+    },
+    "GET /construe/codes/systems/{codesystem}": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/systems/{codesystem}",
+      "sdkMethodChain": [
+        "construe",
+        "get_code_system_detail"
+      ],
+      "sdkMethodName": "get_code_system_detail",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "ICD-10-CM"
+          },
+          {
+            "name": "version",
+            "value": "2025"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "name": "ICD-10-CM",
+          "version": "2025",
+          "code_count": 97584,
+          "builtin": true,
+          "status": "ready",
+          "created_at": "2026-02-10T18:33:23Z",
+          "updated_at": "2026-02-10T18:33:23Z"
+        }
+      },
+      "sdkCallSource": "client.construe.get_code_system_detail(\n        codesystem=\"ICD-10-CM\",\n        version=\"2025\",\n    )"
+    },
+    "DELETE /construe/codes/systems/{codesystem}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/construe/codes/systems/{codesystem}",
+      "sdkMethodChain": [
+        "construe",
+        "delete_custom_code_system"
+      ],
+      "sdkMethodName": "delete_custom_code_system",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "CUSTOM_CODES"
+          },
+          {
+            "name": "version",
+            "value": "version"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "message": "code system deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.construe.delete_custom_code_system(\n        codesystem=\"CUSTOM_CODES\",\n        version=\"version\",\n    )"
+    },
+    "GET /construe/codes/systems/{codesystem}/export": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/systems/{codesystem}/export",
+      "sdkMethodChain": [
+        "construe",
+        "export_custom_code_system"
+      ],
+      "sdkMethodName": "export_custom_code_system",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "CUSTOM_CODES"
+          },
+          {
+            "name": "version",
+            "value": "version"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "name": "CUSTOM_CODES",
+          "version": "1.0",
+          "format": "json",
+          "codes": [
+            {
+              "code": "X001",
+              "description": "Example custom code 1",
+              "definition": "definition"
+            },
+            {
+              "code": "X002",
+              "description": "Example custom code 2",
+              "definition": "definition"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.construe.export_custom_code_system(\n        codesystem=\"CUSTOM_CODES\",\n        version=\"version\",\n    )"
+    },
+    "GET /construe/codes/{codesystem}/{code_id}": {
+      "httpMethod": "GET",
+      "httpPath": "/construe/codes/{codesystem}/{code_id}",
+      "sdkMethodChain": [
+        "construe",
+        "get_a_specific_code"
+      ],
+      "sdkMethodName": "get_a_specific_code",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "codesystem",
+            "value": "ICD-10-CM"
+          },
+          {
+            "name": "code_id",
+            "value": "E1165"
+          },
+          {
+            "name": "version",
+            "value": "version"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          },
+          "code": "E1165",
+          "description": "Type 2 diabetes mellitus with hyperglycemia",
+          "definition": "definition"
+        }
+      },
+      "sdkCallSource": "client.construe.get_a_specific_code(\n        codesystem=\"ICD-10-CM\",\n        code_id=\"E1165\",\n        version=\"version\",\n    )"
+    },
+    "POST /construe/feedback": {
+      "httpMethod": "POST",
+      "httpPath": "/construe/feedback",
+      "sdkMethodChain": [
+        "construe",
+        "submit_feedback_on_extraction_results"
+      ],
+      "sdkMethodName": "submit_feedback_on_extraction_results",
+      "request": {
+        "body": {
+          "text": "Patient has type 2 diabetes with hyperglycemia",
+          "received_result": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        )>",
+          "expected_result": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        )>",
+          "detail": "Expected code E11.65 because the text mentions hyperglycemia"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "text",
+            "value": "Patient has type 2 diabetes with hyperglycemia"
+          },
+          {
+            "name": "received_result",
+            "value": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        )>"
+          },
+          {
+            "name": "expected_result",
+            "value": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        )>"
+          },
+          {
+            "name": "detail",
+            "value": "Expected code E11.65 because the text mentions hyperglycemia"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "id": "abc123def456"
+        }
+      },
+      "sdkCallSource": "client.construe.submit_feedback_on_extraction_results(\n        text=\"Patient has type 2 diabetes with hyperglycemia\",\n        received_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        ),\n        expected_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        ),\n        detail=\"Expected code E11.65 because the text mentions hyperglycemia\",\n    )"
+    },
+    "GET /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
+      "sdkMethodChain": [
+        "fhir",
+        "search"
+      ],
+      "sdkMethodName": "search",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "fhir_path",
+            "value": "Patient"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Bundle",
+          "total": 2,
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "id": "123",
+                "name": [
+                  {
+                    "family": "Doe",
+                    "given": [
+                      "John"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.fhir.search(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n    )"
+    },
+    "POST /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
+      "sdkMethodChain": [
+        "fhir",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "resourceType": "Patient"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "fhir_path",
+            "value": "Patient"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "resource_type",
+            "value": "Patient"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Patient",
+          "id": "456",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2024-01-15T10:30:00Z",
+            "profile": [
+              "profile"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir.create(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource_type=\"Patient\",\n    )"
+    },
+    "PUT /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
+      "httpMethod": "PUT",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
+      "sdkMethodChain": [
+        "fhir",
+        "upsert"
+      ],
+      "sdkMethodName": "upsert",
+      "request": {
+        "body": {
+          "resourceType": "Patient",
+          "id": "123"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "fhir_path",
+            "value": "Patient"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "resource_type",
+            "value": "Patient"
+          },
+          {
+            "name": "id",
+            "value": "123"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Patient",
+          "id": "123",
+          "meta": {
+            "versionId": "2",
+            "lastUpdated": "2024-02-20T11:00:00Z",
+            "profile": [
+              "profile"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir.upsert(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource_type=\"Patient\",\n        id=\"123\",\n    )"
+    },
+    "DELETE /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
+      "sdkMethodChain": [
+        "fhir",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "fhir_path",
+            "value": "Patient"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "OperationOutcome",
+          "issue": [
+            {
+              "severity": "information",
+              "code": "informational",
+              "details": {
+                "text": "Resource deleted successfully"
+              }
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.fhir.delete(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n    )"
+    },
+    "PATCH /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
+      "httpMethod": "PATCH",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
+      "sdkMethodChain": [
+        "fhir",
+        "patch"
+      ],
+      "sdkMethodName": "patch",
+      "request": {
+        "body": "<expr:[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ]>",
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "fhir_path",
+            "value": "Patient"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "request",
+            "value": "<expr:[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ]>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Patient",
+          "id": "123",
+          "meta": {
+            "versionId": "3",
+            "lastUpdated": "2024-02-20T11:30:00Z",
+            "profile": [
+              "profile"
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir.patch(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        request=[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ],\n    )"
+    },
+    "POST /fhir-provider/{fhir_provider_id}/fhir": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir-provider/{fhir_provider_id}/fhir",
+      "sdkMethodChain": [
+        "fhir",
+        "execute_bundle"
+      ],
+      "sdkMethodName": "execute_bundle",
+      "request": {
+        "body": {
+          "resourceType": "Bundle",
+          "entry": "<expr:[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ]>"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "entry",
+            "value": "<expr:[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ]>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Bundle",
+          "total": 1,
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "id": "456"
+              },
+              "response": {
+                "status": "201 Created",
+                "location": "Patient/456"
+              }
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.fhir.execute_bundle(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        entry=[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ],\n    )"
+    },
+    "POST /fhir-provider": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir-provider",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "name": "Epic Sandbox",
+          "description": "Epic sandbox environment for testing",
+          "provider": "epic",
+          "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+          "auth": "<expr:FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "Epic Sandbox"
+          },
+          {
+            "name": "description",
+            "value": "Epic sandbox environment for testing"
+          },
+          {
+            "name": "provider",
+            "value": "epic"
+          },
+          {
+            "name": "base_url",
+            "value": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4"
+          },
+          {
+            "name": "auth",
+            "value": "<expr:FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir provider created successfully",
+          "data": {
+            "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+            "name": "Epic Sandbox",
+            "description": "Epic sandbox environment for testing",
+            "provider": "epic",
+            "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+            "auth_configs": {
+              "auth-config-123": {
+                "auth_config_id": "auth-config-123",
+                "auth_method": "client_secret",
+                "is_active_auth_config": true,
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-01-15T10:30:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read system/Observation.read",
+                "client_id": "your-client-id"
+              }
+            },
+            "last_updated": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.create(\n        name=\"Epic Sandbox\",\n        description=\"Epic sandbox environment for testing\",\n        provider=\"epic\",\n        base_url=\"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n        auth=FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        ),\n    )"
+    },
+    "GET /fhir-provider/list": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir-provider/list",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": []
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir providers retrieved successfully",
+          "fhir_providers": [
+            {
+              "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+              "name": "Epic Sandbox",
+              "description": "Epic sandbox environment for testing",
+              "provider": "epic",
+              "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+              "auth_configs": {
+                "auth-config-123": {
+                  "auth_config_id": "auth-config-123",
+                  "auth_method": "jwt",
+                  "is_active_auth_config": true,
+                  "created_at": "2024-01-15T10:30:00Z",
+                  "updated_at": "2024-01-15T10:30:00Z",
+                  "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                  "json_web_key": {
+                    "kty": "RSA",
+                    "use": "sig",
+                    "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                    "alg": "RS384",
+                    "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                    "e": "AQAB"
+                  },
+                  "credential_expiry": "2024-12-31T23:59:59Z",
+                  "smart_configuration": {
+                    "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                    "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                    "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                    "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                    "scopes_supported": [
+                      "patient/*.read",
+                      "system/*.read"
+                    ]
+                  },
+                  "service_account_metadata": {
+                    "type": "service_account",
+                    "project_id": "my-gcp-project",
+                    "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                    "client_id": "123456789012345678901"
+                  },
+                  "scopes": "system/Patient.read system/Observation.read",
+                  "client_id": "your-client-id"
+                }
+              },
+              "last_updated": "2024-01-15T10:30:00Z"
+            },
+            {
+              "id": "4da196da-5cf1-4574-9e65-f97d7ea20b38",
+              "name": "PhenoML Sandbox",
+              "description": "Shared sandbox environment for experimentation",
+              "provider": "sandbox"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.list()"
+    },
+    "GET /fhir-provider/{fhir_provider_id}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir-provider/{fhir_provider_id}",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "fhir_provider_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir provider retrieved successfully",
+          "data": {
+            "id": "1716d214-de93-43a4-aa6b-a878d864e2ad",
+            "name": "Epic Sandbox",
+            "description": "Epic sandbox environment for testing",
+            "provider": "epic",
+            "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
+            "auth_configs": {
+              "auth-config-123": {
+                "auth_config_id": "auth-config-123",
+                "auth_method": "jwt",
+                "is_active_auth_config": true,
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-01-15T14:45:00Z",
+                "public_key_cert_pem": "-----BEGIN CERTIFICATE-----\n...",
+                "json_web_key": {
+                  "kty": "RSA",
+                  "use": "sig",
+                  "kid": "FHIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx7agoeb",
+                  "alg": "RS384",
+                  "n": "0vx7agoebGcQSuuPiLJXZptN9nndrQmbXEps2aiAFbWhM78LhWx4cbbfAAtVT86zwu1RK7aPFFxuhDR1L6tSoc_BJECPebWKRXjBZCiFV4n3oknjhMstn64tZ_2W-5JsGY4Hc5n9yBXArwl93lqt7_RN5w6Cf0h4QyQ5v-65YGjQR0_FDW2QvzqY368QQMicAtaSqzs8KJZgnYb9c7d0zgdAZHzu6qMQvRL5hajrn1n91CbOpbIS",
+                  "e": "AQAB"
+                },
+                "credential_expiry": "2024-12-31T23:59:59Z",
+                "smart_configuration": {
+                  "authorization_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize",
+                  "token_endpoint": "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token",
+                  "issuer": "https://fhir.epic.com/interconnect-fhir-oauth",
+                  "jwks_uri": "https://fhir.epic.com/interconnect-fhir-oauth/.well-known/jwks",
+                  "scopes_supported": [
+                    "patient/*.read",
+                    "system/*.read"
+                  ]
+                },
+                "service_account_metadata": {
+                  "type": "service_account",
+                  "project_id": "my-gcp-project",
+                  "client_email": "service-account@my-gcp-project.iam.gserviceaccount.com",
+                  "client_id": "123456789012345678901"
+                },
+                "scopes": "system/Patient.read system/Observation.read",
+                "client_id": "your-client-id"
+              }
+            },
+            "last_updated": "2024-01-15T14:45:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.get(\n        fhir_provider_id=\"fhir_provider_id\",\n    )"
+    },
+    "DELETE /fhir-provider/{fhir_provider_id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir-provider/{fhir_provider_id}",
+      "sdkMethodChain": [
+        "fhir_provider",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "fhir_provider_id",
+            "value": "fhir_provider_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Fhir provider deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.fhir_provider.delete(\n        fhir_provider_id=\"fhir_provider_id\",\n    )"
+    },
+    "POST /lang2fhir/create": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/create",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "version": "R4",
+          "resource": "condition-encounter-diagnosis",
+          "text": "Patient has severe persistent asthma with acute exacerbation"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "version",
+            "value": "R4"
+          },
+          {
+            "name": "resource",
+            "value": "condition-encounter-diagnosis"
+          },
+          {
+            "name": "text",
+            "value": "Patient has severe persistent asthma with acute exacerbation"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Condition",
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "active"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "195967001",
+                "display": "Asthma"
+              }
+            ],
+            "text": "Severe persistent asthma with acute exacerbation"
+          },
+          "severity": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "24484000",
+                "display": "Severe"
+              }
+            ]
+          }
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.create(\n        version=\"R4\",\n        resource=\"condition-encounter-diagnosis\",\n        text=\"Patient has severe persistent asthma with acute exacerbation\",\n    )"
+    },
+    "POST /lang2fhir/create/multi": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/create/multi",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "create_multi"
+      ],
+      "sdkMethodName": "create_multi",
+      "request": {
+        "body": {
+          "text": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90.",
+          "version": "R4"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "text",
+            "value": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90."
+          },
+          {
+            "name": "version",
+            "value": "R4"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Successfully extracted 3 resources",
+          "bundle": {
+            "resourceType": "Bundle",
+            "type": "transaction",
+            "entry": [
+              {
+                "fullUrl": "urn:uuid:patient-001",
+                "resource": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "given": [
+                        "John"
+                      ],
+                      "family": "Smith"
+                    }
+                  ],
+                  "gender": "male"
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Patient"
+                }
+              },
+              {
+                "fullUrl": "urn:uuid:condition-001",
+                "resource": {
+                  "resourceType": "Condition",
+                  "code": {
+                    "text": "Type 2 Diabetes"
+                  }
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Condition"
+                }
+              },
+              {
+                "fullUrl": "urn:uuid:medication-001",
+                "resource": {
+                  "resourceType": "MedicationRequest",
+                  "medicationCodeableConcept": {
+                    "text": "Metformin 500mg"
+                  }
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "MedicationRequest"
+                }
+              }
+            ]
+          },
+          "resources": [
+            {
+              "tempId": "urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8",
+              "resourceType": "Patient",
+              "description": "John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen",
+              "originalText": "diagnosed with Type 2 Diabetes"
+            }
+          ],
+          "validation": {
+            "passes": [
+              {}
+            ],
+            "fixed": true,
+            "attempts": 1,
+            "summary": "summary"
+          }
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.create_multi(\n        text=\"John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90.\",\n        version=\"R4\",\n    )"
+    },
+    "POST /lang2fhir/search": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/search",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "search"
+      ],
+      "sdkMethodName": "search",
+      "request": {
+        "body": {
+          "text": "Appointments between March 2-9, 2025"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "text",
+            "value": "Appointments between March 2-9, 2025"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resource_type": "AllergyIntolerance",
+          "search_params": "date=ge2025-03-02&date=le2025-03-09"
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.search(\n        text=\"Appointments between March 2-9, 2025\",\n    )"
+    },
+    "POST /lang2fhir/profile/upload": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/profile/upload",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "upload_profile"
+      ],
+      "sdkMethodName": "upload_profile",
+      "request": {
+        "body": {
+          "profile": "eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg==",
+          "implementation_guide": "acme-cardiology",
+          "profile_context": "When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition."
+        },
+        "sdkCallArgs": [
+          {
+            "name": "profile",
+            "value": "eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg=="
+          },
+          {
+            "name": "implementation_guide",
+            "value": "acme-cardiology"
+          },
+          {
+            "name": "profile_context",
+            "value": "When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition."
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "message": "Profile uploaded successfully",
+          "id": "custom-patient",
+          "type": "Patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient"
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.upload_profile(\n        profile=\"eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg==\",\n        implementation_guide=\"acme-cardiology\",\n        profile_context=\"When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition.\",\n    )"
+    },
+    "POST /lang2fhir/document": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/document",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "document"
+      ],
+      "sdkMethodName": "document",
+      "request": {
+        "body": {
+          "version": "R4",
+          "resource": "questionnaire",
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "version",
+            "value": "R4"
+          },
+          {
+            "name": "resource",
+            "value": "questionnaire"
+          },
+          {
+            "name": "content",
+            "value": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resourceType": "Questionnaire",
+          "status": "active",
+          "title": "Patient Intake Form",
+          "item": [
+            {
+              "linkId": "1",
+              "text": "What is your name?",
+              "type": "string"
+            },
+            {
+              "linkId": "2",
+              "text": "What is your date of birth?",
+              "type": "date"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.document(\n        version=\"R4\",\n        resource=\"questionnaire\",\n        content=\"JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)\",\n    )"
+    },
+    "POST /lang2fhir/document/multi": {
+      "httpMethod": "POST",
+      "httpPath": "/lang2fhir/document/multi",
+      "sdkMethodChain": [
+        "lang2fhir",
+        "extract_multiple_fhir_resources_from_a_document"
+      ],
+      "sdkMethodName": "extract_multiple_fhir_resources_from_a_document",
+      "request": {
+        "body": {
+          "version": "R4",
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+          "provider": "medplum"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "version",
+            "value": "R4"
+          },
+          {
+            "name": "content",
+            "value": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+          },
+          {
+            "name": "provider",
+            "value": "medplum"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Successfully extracted 3 resources",
+          "bundle": {
+            "resourceType": "Bundle",
+            "type": "transaction",
+            "entry": [
+              {
+                "fullUrl": "urn:uuid:patient-001",
+                "resource": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "given": [
+                        "John"
+                      ],
+                      "family": "Doe"
+                    }
+                  ],
+                  "gender": "male",
+                  "birthDate": "1979-03-15"
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Patient"
+                }
+              },
+              {
+                "fullUrl": "urn:uuid:condition-001",
+                "resource": {
+                  "resourceType": "Condition",
+                  "code": {
+                    "text": "Type 2 Diabetes Mellitus"
+                  },
+                  "subject": {
+                    "reference": "urn:uuid:patient-001"
+                  }
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Condition"
+                }
+              },
+              {
+                "fullUrl": "urn:uuid:medication-001",
+                "resource": {
+                  "resourceType": "MedicationRequest",
+                  "medicationCodeableConcept": {
+                    "text": "Metformin 500mg"
+                  },
+                  "subject": {
+                    "reference": "urn:uuid:patient-001"
+                  }
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "MedicationRequest"
+                }
+              }
+            ]
+          },
+          "resources": [
+            {
+              "tempId": "urn:uuid:patient-001",
+              "resourceType": "Patient",
+              "description": "John Doe, born 1979-03-15",
+              "originalText": "John Doe, DOB 1979-03-15"
+            },
+            {
+              "tempId": "urn:uuid:condition-001",
+              "resourceType": "Condition",
+              "description": "Type 2 Diabetes Mellitus diagnosis",
+              "originalText": "diagnosed with Type 2 Diabetes"
+            },
+            {
+              "tempId": "urn:uuid:medication-001",
+              "resourceType": "MedicationRequest",
+              "description": "Metformin 500mg prescription",
+              "originalText": "Prescribed Metformin 500mg"
+            }
+          ],
+          "validation": {
+            "passes": [
+              {}
+            ],
+            "fixed": true,
+            "attempts": 1,
+            "summary": "summary"
+          },
+          "page_classifications": [
+            {
+              "page_number": 1,
+              "include": true,
+              "reason": "clinical notes with diagnoses"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.lang2fhir.extract_multiple_fhir_resources_from_a_document(\n        version=\"R4\",\n        content=\"JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)\",\n        provider=\"medplum\",\n    )"
+    },
+    "GET /fhir2summary/templates": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir2summary/templates",
+      "sdkMethodChain": [
+        "summary",
+        "list_templates"
+      ],
+      "sdkMethodName": "list_templates",
+      "request": {
+        "body": null,
+        "sdkCallArgs": []
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "templates": [
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+              "name": "Discharge Summary",
+              "description": "description",
+              "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
+              "target_resources": [
+                "Patient",
+                "Condition",
+                "MedicationRequest"
+              ],
+              "mode": "narrative",
+              "metadata": {
+                "key": "value"
+              },
+              "created_at": "2024-01-15T10:30:00Z",
+              "updated_at": "2024-01-15T10:30:00Z"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.summary.list_templates()"
+    },
+    "POST /fhir2summary/template": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir2summary/template",
+      "sdkMethodChain": [
+        "summary",
+        "create_template"
+      ],
+      "sdkMethodName": "create_template",
+      "request": {
+        "body": {
+          "name": "Discharge Summary",
+          "example_summary": "Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+          "target_resources": [
+            "Patient",
+            "Condition",
+            "MedicationRequest"
+          ],
+          "mode": "narrative"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "Discharge Summary"
+          },
+          {
+            "name": "example_summary",
+            "value": "Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID."
+          },
+          {
+            "name": "target_resources",
+            "value": [
+              "Patient",
+              "Condition",
+              "MedicationRequest"
+            ]
+          },
+          {
+            "name": "mode",
+            "value": "narrative"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template created successfully",
+          "template_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>. Discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
+            "target_resources": [
+              "Patient",
+              "Condition",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.summary.create_template(\n        name=\"Discharge Summary\",\n        example_summary=\"Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.\",\n        target_resources=[\"Patient\", \"Condition\", \"MedicationRequest\"],\n        mode=\"narrative\",\n    )"
+    },
+    "GET /fhir2summary/template/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir2summary/template/{id}",
+      "sdkMethodChain": [
+        "summary",
+        "get_template"
+      ],
+      "sdkMethodName": "get_template",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
+            "target_resources": [
+              "Patient",
+              "Condition",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.summary.get_template(\n        id=\"id\",\n    )"
+    },
+    "PUT /fhir2summary/template/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/fhir2summary/template/{id}",
+      "sdkMethodChain": [
+        "summary",
+        "update_template"
+      ],
+      "sdkMethodName": "update_template",
+      "request": {
+        "body": {
+          "name": "Discharge Summary",
+          "template": "Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+          "target_resources": [
+            "Patient",
+            "Encounter",
+            "MedicationRequest"
+          ],
+          "mode": "narrative"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "name",
+            "value": "Discharge Summary"
+          },
+          {
+            "name": "template",
+            "value": "Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}."
+          },
+          {
+            "name": "target_resources",
+            "value": [
+              "Patient",
+              "Encounter",
+              "MedicationRequest"
+            ]
+          },
+          {
+            "name": "mode",
+            "value": "narrative"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template updated successfully",
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>> was discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
+            "target_resources": [
+              "Patient",
+              "Encounter",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-02-20T11:00:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.summary.update_template(\n        id=\"id\",\n        name=\"Discharge Summary\",\n        template=\"Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.\",\n        target_resources=[\"Patient\", \"Encounter\", \"MedicationRequest\"],\n        mode=\"narrative\",\n    )"
+    },
+    "DELETE /fhir2summary/template/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir2summary/template/{id}",
+      "sdkMethodChain": [
+        "summary",
+        "delete_template"
+      ],
+      "sdkMethodName": "delete_template",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.summary.delete_template(\n        id=\"id\",\n    )"
+    },
+    "POST /fhir2summary/create": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir2summary/create",
+      "sdkMethodChain": [
+        "summary",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "mode": "narrative",
+          "template_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "fhir_resources": {
+            "resourceType": "Bundle",
+            "type": "collection",
+            "entry": [
+              {
+                "resource": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "given": [
+                        "John"
+                      ],
+                      "family": "Doe"
+                    }
+                  ],
+                  "gender": "male",
+                  "birthDate": "1979-03-15"
+                }
+              },
+              {
+                "resource": {
+                  "resourceType": "Condition",
+                  "code": {
+                    "text": "Type 2 Diabetes Mellitus"
+                  },
+                  "onsetDateTime": "2024-01-15"
+                }
+              }
+            ]
+          }
+        },
+        "sdkCallArgs": [
+          {
+            "name": "mode",
+            "value": "narrative"
+          },
+          {
+            "name": "template_id",
+            "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+          },
+          {
+            "name": "fhir_resources",
+            "value": {
+              "resourceType": "Bundle",
+              "type": "collection",
+              "entry": [
+                {
+                  "resource": {
+                    "resourceType": "Patient",
+                    "name": [
+                      {
+                        "given": [
+                          "John"
+                        ],
+                        "family": "Doe"
+                      }
+                    ],
+                    "gender": "male",
+                    "birthDate": "1979-03-15"
+                  }
+                },
+                {
+                  "resource": {
+                    "resourceType": "Condition",
+                    "code": {
+                      "text": "Type 2 Diabetes Mellitus"
+                    },
+                    "onsetDateTime": "2024-01-15"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "message",
+          "summary": "Patient John Doe is a 45-year-old male diagnosed with Type 2 Diabetes Mellitus on January 15, 2024. Current treatment plan includes lifestyle modifications and medication management.",
+          "warnings": [
+            "warnings"
+          ]
+        }
+      },
+      "sdkCallSource": "client.summary.create(\n        mode=\"narrative\",\n        template_id=\"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n        fhir_resources={\n            \"resourceType\": \"Bundle\",\n            \"type\": \"collection\",\n            \"entry\": [\n                {\n                    \"resource\": {\n                        \"resourceType\": \"Patient\",\n                        \"name\": [{\"given\": [\"John\"], \"family\": \"Doe\"}],\n                        \"gender\": \"male\",\n                        \"birthDate\": \"1979-03-15\",\n                    }\n                },\n                {\n                    \"resource\": {\n                        \"resourceType\": \"Condition\",\n                        \"code\": {\"text\": \"Type 2 Diabetes Mellitus\"},\n                        \"onsetDateTime\": \"2024-01-15\",\n                    }\n                },\n            ],\n        },\n    )"
+    },
+    "POST /tools/lang2fhir-and-create": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/lang2fhir-and-create",
+      "sdkMethodChain": [
+        "tools",
+        "create_fhir_resource"
+      ],
+      "sdkMethodName": "create_fhir_resource",
+      "request": {
+        "body": {
+          "resource": "condition-encounter-diagnosis",
+          "text": "Patient has severe persistent asthma with acute exacerbation",
+          "provider": "550e8400-e29b-41d4-a716-446655440000"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "resource",
+            "value": "condition-encounter-diagnosis"
+          },
+          {
+            "name": "text",
+            "value": "Patient has severe persistent asthma with acute exacerbation"
+          },
+          {
+            "name": "provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "fhir_resource": {
+            "resourceType": "Condition",
+            "id": "condition-123",
+            "clinicalStatus": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                  "code": "active"
+                }
+              ]
+            },
+            "verificationStatus": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                  "code": "confirmed"
+                }
+              ]
+            },
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                    "code": "encounter-diagnosis"
+                  }
+                ]
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "195967001",
+                  "display": "Asthma"
+                }
+              ],
+              "text": "Severe persistent asthma with acute exacerbation"
+            },
+            "subject": {
+              "reference": "Patient/patient-123"
+            }
+          },
+          "fhir_id": "condition-123",
+          "success": true,
+          "message": "FHIR resource created successfully"
+        }
+      },
+      "sdkCallSource": "client.tools.create_fhir_resource(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource=\"condition-encounter-diagnosis\",\n        text=\"Patient has severe persistent asthma with acute exacerbation\",\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+    },
+    "POST /tools/lang2fhir-and-create-multi": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/lang2fhir-and-create-multi",
+      "sdkMethodChain": [
+        "tools",
+        "create_fhir_resources_multi"
+      ],
+      "sdkMethodName": "create_fhir_resources_multi",
+      "request": {
+        "body": {
+          "text": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
+          "version": "R4",
+          "provider": "medplum"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "text",
+            "value": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily."
+          },
+          {
+            "name": "version",
+            "value": "R4"
+          },
+          {
+            "name": "provider",
+            "value": "medplum"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Created 3 resources",
+          "response_bundle": {
+            "resourceType": "Bundle",
+            "type": "transaction-response",
+            "entry": [
+              {
+                "response": {
+                  "status": "201 Created",
+                  "location": "Patient/patient-001"
+                }
+              },
+              {
+                "response": {
+                  "status": "201 Created",
+                  "location": "Condition/condition-001"
+                }
+              },
+              {
+                "response": {
+                  "status": "201 Created",
+                  "location": "MedicationRequest/medication-001"
+                }
+              }
+            ]
+          },
+          "resource_info": [
+            {
+              "tempId": "urn:uuid:patient-abc123",
+              "resourceType": "Patient",
+              "description": "John Smith, 45-year-old male"
+            },
+            {
+              "tempId": "urn:uuid:condition-abc123",
+              "resourceType": "Condition",
+              "description": "Type 2 Diabetes diagnosis"
+            },
+            {
+              "tempId": "urn:uuid:medication-abc123",
+              "resourceType": "MedicationRequest",
+              "description": "Metformin 500mg twice daily"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.create_fhir_resources_multi(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.\",\n        version=\"R4\",\n        provider=\"medplum\",\n    )"
+    },
+    "POST /tools/lang2fhir-and-search": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/lang2fhir-and-search",
+      "sdkMethodChain": [
+        "tools",
+        "search_fhir_resources"
+      ],
+      "sdkMethodName": "search_fhir_resources",
+      "request": {
+        "body": {
+          "text": "Find all appointments for patient John Doe next week",
+          "count": 10,
+          "provider": "550e8400-e29b-41d4-a716-446655440000"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "text",
+            "value": "Find all appointments for patient John Doe next week"
+          },
+          {
+            "name": "count",
+            "value": 10
+          },
+          {
+            "name": "provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "resource_type": "Appointment",
+          "search_params": "patient=Patient/patient-123&date=ge2024-01-15&date=le2024-01-22",
+          "fhir_results": [
+            {
+              "resourceType": "Appointment",
+              "id": "appointment-123",
+              "status": "booked",
+              "start": "2024-01-16T10:00:00Z",
+              "end": "2024-01-16T11:00:00Z",
+              "participant": [
+                {
+                  "actor": {
+                    "reference": "Patient/patient-123",
+                    "display": "John Doe"
+                  }
+                }
+              ]
+            }
+          ],
+          "success": true,
+          "message": "Search query generated and executed in FHIR server successfully. Found 1 results."
+        }
+      },
+      "sdkCallSource": "client.tools.search_fhir_resources(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"Find all appointments for patient John Doe next week\",\n        count=10,\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+    },
+    "POST /tools/cohort": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/cohort",
+      "sdkMethodChain": [
+        "tools",
+        "analyze_cohort"
+      ],
+      "sdkMethodName": "analyze_cohort",
+      "request": {
+        "body": {
+          "text": "female patients over 20 with diabetes but not hypertension",
+          "provider": "550e8400-e29b-41d4-a716-446655440000"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "phenoml_on_behalf_of",
+            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
+          },
+          {
+            "name": "phenoml_fhir_provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
+          },
+          {
+            "name": "text",
+            "value": "female patients over 20 with diabetes but not hypertension"
+          },
+          {
+            "name": "provider",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Cohort analysis completed successfully. Found 33 patients from 2 search concepts.",
+          "patientIds": [
+            "patient-123",
+            "patient-456",
+            "patient-789"
+          ],
+          "patientCount": 33,
+          "queries": [
+            {
+              "resource_type": "Patient",
+              "search_params": "gender=female&birthdate=le2004-01-01",
+              "concept": "female patients over 20",
+              "exclude": false
+            },
+            {
+              "resource_type": "Condition",
+              "search_params": "code=44054006",
+              "concept": "diabetes",
+              "exclude": false
+            },
+            {
+              "resource_type": "Condition",
+              "search_params": "code=38341003",
+              "concept": "hypertension",
+              "exclude": true
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.analyze_cohort(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"female patients over 20 with diabetes but not hypertension\",\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+    },
+    "POST /tools/mcp-server/create": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/mcp-server/create",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "name": "My MCP Server",
+          "mcp_server_url": "https://mcp.example.com"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "name",
+            "value": "My MCP Server"
+          },
+          {
+            "name": "mcp_server_url",
+            "value": "https://mcp.example.com"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server and Tools created successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server",
+            "description": "My MCP Server is a server that provides MCP services",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_servers": [
+            {
+              "id": "123",
+              "name": "My MCP Server",
+              "description": "My MCP Server is a server that provides MCP services",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ],
+          "mcp_server_tools": [
+            {
+              "id": "tool-001",
+              "name": "search_endpoints",
+              "description": "Search across the documented endpoints",
+              "input_schema": {
+                "query": "string"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            },
+            {
+              "id": "tool-002",
+              "name": "get_endpoint",
+              "description": "Fetch a single endpoint by ID",
+              "input_schema": {
+                "endpoint_id": "string"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.create(\n        name=\"My MCP Server\",\n        mcp_server_url=\"https://mcp.example.com\",\n    )"
+    },
+    "GET /tools/mcp-server/list": {
+      "httpMethod": "GET",
+      "httpPath": "/tools/mcp-server/list",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": []
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Servers retrieved successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server",
+            "description": "My MCP Server is a server that provides MCP services",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_servers": [
+            {
+              "id": "123",
+              "name": "My MCP Server",
+              "description": "My MCP Server is a server that provides MCP services",
+              "mcp_server_url": "https://mcp.example.com"
+            },
+            {
+              "id": "456",
+              "name": "Another MCP Server",
+              "description": "A second MCP server",
+              "mcp_server_url": "https://other.mcp.example.com"
+            }
+          ],
+          "mcp_server_tools": [
+            {
+              "id": "123",
+              "name": "My MCP Server Tool",
+              "description": "My MCP Server Tool is a tool that provides MCP services",
+              "input_schema": {
+                "name": "string",
+                "age": "number"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.list()"
+    },
+    "GET /tools/mcp-server/{mcp_server_id}": {
+      "httpMethod": "GET",
+      "httpPath": "/tools/mcp-server/{mcp_server_id}",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_id",
+            "value": "mcp_server_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server retrieved successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server",
+            "description": "My MCP Server is a server that provides MCP services",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_servers": [
+            {
+              "id": "123",
+              "name": "My MCP Server",
+              "description": "My MCP Server is a server that provides MCP services",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ],
+          "mcp_server_tools": [
+            {
+              "id": "123",
+              "name": "My MCP Server Tool",
+              "description": "My MCP Server Tool is a tool that provides MCP services",
+              "input_schema": {
+                "name": "string",
+                "age": "number"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.get(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+    },
+    "DELETE /tools/mcp-server/{mcp_server_id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/tools/mcp-server/{mcp_server_id}",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_id",
+            "value": "mcp_server_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server Configuration and Tools deleted successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server",
+            "description": "My MCP Server is a server that provides MCP services",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_servers": [
+            {
+              "id": "123",
+              "name": "My MCP Server",
+              "description": "My MCP Server is a server that provides MCP services",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ],
+          "mcp_server_tools": [
+            {
+              "id": "123",
+              "name": "My MCP Server Tool",
+              "description": "My MCP Server Tool is a tool that provides MCP services",
+              "input_schema": {
+                "name": "string",
+                "age": "number"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.delete(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+    },
+    "GET /tools/mcp-server/{mcp_server_id}/list": {
+      "httpMethod": "GET",
+      "httpPath": "/tools/mcp-server/{mcp_server_id}/list",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "tools",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_id",
+            "value": "mcp_server_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server tools retrieved successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server Tool",
+            "description": "My MCP Server Tool is a tool that provides MCP services",
+            "input_schema": {
+              "name": "string",
+              "age": "number"
+            },
+            "mcp_server_id": "123",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_server_tools": [
+            {
+              "id": "tool-001",
+              "name": "search_endpoints",
+              "description": "Search across the documented endpoints",
+              "input_schema": {
+                "query": "string"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            },
+            {
+              "id": "tool-002",
+              "name": "get_endpoint",
+              "description": "Fetch a single endpoint by ID",
+              "input_schema": {
+                "endpoint_id": "string"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.tools.list(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+    },
+    "GET /tools/mcp-server/tool/{mcp_server_tool_id}": {
+      "httpMethod": "GET",
+      "httpPath": "/tools/mcp-server/tool/{mcp_server_tool_id}",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "tools",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_tool_id",
+            "value": "mcp_server_tool_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server tool retrieved successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server Tool",
+            "description": "My MCP Server Tool is a tool that provides MCP services",
+            "input_schema": {
+              "name": "string",
+              "age": "number"
+            },
+            "mcp_server_id": "123",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_server_tools": [
+            {
+              "id": "123",
+              "name": "My MCP Server Tool",
+              "description": "My MCP Server Tool is a tool that provides MCP services",
+              "input_schema": {
+                "name": "string",
+                "age": "number"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.tools.get(\n        mcp_server_tool_id=\"mcp_server_tool_id\",\n    )"
+    },
+    "DELETE /tools/mcp-server/tool/{mcp_server_tool_id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/tools/mcp-server/tool/{mcp_server_tool_id}",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "tools",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_tool_id",
+            "value": "mcp_server_tool_id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP Server tool deleted successfully",
+          "data": {
+            "id": "123",
+            "name": "My MCP Server Tool",
+            "description": "My MCP Server Tool is a tool that provides MCP services",
+            "input_schema": {
+              "name": "string",
+              "age": "number"
+            },
+            "mcp_server_id": "123",
+            "mcp_server_url": "https://mcp.example.com"
+          },
+          "mcp_server_tools": [
+            {
+              "id": "123",
+              "name": "My MCP Server Tool",
+              "description": "My MCP Server Tool is a tool that provides MCP services",
+              "input_schema": {
+                "name": "string",
+                "age": "number"
+              },
+              "mcp_server_id": "123",
+              "mcp_server_url": "https://mcp.example.com"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.tools.delete(\n        mcp_server_tool_id=\"mcp_server_tool_id\",\n    )"
+    },
+    "POST /tools/mcp-server/tool/{mcp_server_tool_id}/call": {
+      "httpMethod": "POST",
+      "httpPath": "/tools/mcp-server/tool/{mcp_server_tool_id}/call",
+      "sdkMethodChain": [
+        "tools",
+        "mcp_server",
+        "tools",
+        "call"
+      ],
+      "sdkMethodName": "call",
+      "request": {
+        "body": {
+          "arguments": {
+            "title": "PhenoML Agent API"
+          }
+        },
+        "sdkCallArgs": [
+          {
+            "name": "mcp_server_tool_id",
+            "value": "mcp_server_tool_id"
+          },
+          {
+            "name": "arguments",
+            "value": {
+              "title": "PhenoML Agent API"
+            }
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "MCP server tool called successfully",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\"endpoint_data\": \"example\"}"
+              }
+            ]
+          },
+          "error": "Failed to call MCP server tool"
+        }
+      },
+      "sdkCallSource": "client.tools.mcp_server.tools.call(\n        mcp_server_tool_id=\"mcp_server_tool_id\",\n        arguments={\"title\": \"PhenoML Agent API\"},\n    )"
+    },
+    "GET /workflows": {
+      "httpMethod": "GET",
+      "httpPath": "/workflows",
+      "sdkMethodChain": [
+        "workflows",
+        "list"
+      ],
+      "sdkMethodName": "list",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "verbose",
+            "value": true
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Workflows retrieved successfully",
+          "workflows": [
+            {
+              "id": "7a8b9c0d-1234-5678-abcd-ef9876543210",
+              "name": "Patient Data Mapping Workflow",
+              "workflow_instructions": "Given diagnosis data, find the patient and create a condition record",
+              "sample_data": {
+                "patient_last_name": "Rippin",
+                "patient_first_name": "Clay",
+                "diagnosis_code": "I10",
+                "encounter_date": "2024-01-15"
+              },
+              "config": {
+                "fhir_provider_ids": [
+                  "550e8400-e29b-41d4-a716-446655440000"
+                ],
+                "dynamic_generation": false
+              },
+              "graph": {
+                "steps": [
+                  {
+                    "id": "step_1_id",
+                    "name": "Find Patient",
+                    "description": "Search for an existing patient by first name and last name",
+                    "type": "search",
+                    "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                  },
+                  {
+                    "id": "step_2_id",
+                    "name": "Create Condition",
+                    "description": "Create a FHIR Condition resource for the patient",
+                    "type": "create",
+                    "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                  }
+                ]
+              },
+              "created_at": "2024-01-15T09:30:00Z",
+              "updated_at": "2024-01-15T09:30:00Z"
+            }
+          ],
+          "workflow_details": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440001",
+              "name": "Patient Data Mapping Workflow",
+              "workflow_instructions": "Given diagnosis data, find the patient and create condition record",
+              "sample_data": {
+                "diagnosis_code": "I10",
+                "diagnosis_date": "2025-01-01",
+                "patient_first_name": "Clay",
+                "patient_last_name": "Rippin"
+              },
+              "config": {
+                "fhir_provider_ids": [
+                  "550e8400-e29b-41d4-a716-446655440000"
+                ],
+                "dynamic_generation": false
+              },
+              "graph": {
+                "steps": [
+                  {
+                    "id": "1",
+                    "name": "Create Patient Resource",
+                    "description": "Create a FHIR Patient resource from input data",
+                    "operation": {
+                      "search_definition": {
+                        "original_query": "find patient {{patient_first_name}} {{patient_last_name}} by first name and last name",
+                        "resource_type": "Patient",
+                        "search_parameters": {
+                          "family": "{{patient_last_name}}",
+                          "given": "{{patient_first_name}}"
+                        },
+                        "required_fields": [
+                          "id",
+                          "name",
+                          "identifier"
+                        ],
+                        "runtime_placeholders": {
+                          "{{patient_first_name}}": "input.patient_first_name",
+                          "{{patient_last_name}}": "input.patient_last_name"
+                        }
+                      },
+                      "create_definition": {
+                        "original_description": "create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01",
+                        "resource_type": "Condition",
+                        "resource_template": {
+                          "resourceType": "Condition",
+                          "code": {
+                            "coding": [
+                              {
+                                "code": "{{diagnosis_code}}",
+                                "system": "http://hl7.org/fhir/sid/icd-10"
+                              }
+                            ]
+                          },
+                          "subject": {
+                            "reference": "Patient/{{step_1_id}}"
+                          }
+                        },
+                        "runtime_placeholders": {
+                          "{{diagnosis_code}}": "input.diagnosis_code",
+                          "{{diagnosis_date}}": "input.diagnosis_date"
+                        }
+                      },
+                      "workflow_definition": {
+                        "workflow_id": "550e8400-e29b-41d4-a716-446655440002",
+                        "input": {
+                          "patient_id": "{{step_1_id}}",
+                          "additional_context": "laboratory_results"
+                        },
+                        "runtime_placeholders": {
+                          "{{step_1_id}}": "step_1.result.id",
+                          "{{patient_data}}": "input.patient_data"
+                        }
+                      },
+                      "decision_definition": {
+                        "expression": "input.patient_age >= 18",
+                        "paths": {
+                          "true": "step_adult_workflow",
+                          "false": "step_pediatric_workflow",
+                          "default": "step_error_handler"
+                        },
+                        "runtime_placeholders": {
+                          "{{patient_age}}": "input.patient_age",
+                          "{{diagnosis_type}}": "step_2.result.diagnosis_category"
+                        }
+                      }
+                    },
+                    "provider_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "dependencies": [
+                      "dependencies"
+                    ],
+                    "dynamic_generation": false
+                  }
+                ]
+              },
+              "created_at": "2024-01-15T10:30:00Z",
+              "updated_at": "2024-01-15T15:45:00Z"
+            }
+          ]
+        }
+      },
+      "sdkCallSource": "client.workflows.list(\n        verbose=True,\n    )"
+    },
+    "POST /workflows": {
+      "httpMethod": "POST",
+      "httpPath": "/workflows",
+      "sdkMethodChain": [
+        "workflows",
+        "create"
+      ],
+      "sdkMethodName": "create",
+      "request": {
+        "body": {
+          "name": "Patient Data Mapping Workflow",
+          "workflow_instructions": "Given diagnosis data, find the patient and create a condition record linked to their encounter",
+          "sample_data": {
+            "patient_last_name": "Rippin",
+            "patient_first_name": "Clay",
+            "diagnosis_code": "I10",
+            "encounter_date": "2024-01-15"
+          },
+          "fhir_provider_id": "550e8400-e29b-41d4-a716-446655440000"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "verbose",
+            "value": true
+          },
+          {
+            "name": "name",
+            "value": "Patient Data Mapping Workflow"
+          },
+          {
+            "name": "workflow_instructions",
+            "value": "Given diagnosis data, find the patient and create a condition record linked to their encounter"
+          },
+          {
+            "name": "sample_data",
+            "value": {
+              "patient_last_name": "Rippin",
+              "patient_first_name": "Clay",
+              "diagnosis_code": "I10",
+              "encounter_date": "2024-01-15"
+            }
+          },
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Workflow created successfully",
+          "workflow_id": "7a8b9c0d-1234-5678-abcd-ef9876543210",
+          "workflow": {
+            "id": "7a8b9c0d-1234-5678-abcd-ef9876543210",
+            "name": "Patient Data Mapping Workflow",
+            "workflow_instructions": "Given diagnosis data, find the patient and create a condition record linked to their encounter",
+            "sample_data": {
+              "patient_last_name": "Rippin",
+              "patient_first_name": "Clay",
+              "diagnosis_code": "I10",
+              "encounter_date": "2024-01-15"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "step_1_id",
+                  "name": "Find Patient",
+                  "description": "Search for an existing patient by first name and last name",
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              ]
+            },
+            "created_at": "2024-01-15T09:30:00Z",
+            "updated_at": "2024-01-15T09:30:00Z"
+          },
+          "workflow_details": {
+            "id": "550e8400-e29b-41d4-a716-446655440001",
+            "name": "Patient Data Mapping Workflow",
+            "workflow_instructions": "Given diagnosis data, find the patient and create condition record",
+            "sample_data": {
+              "diagnosis_code": "I10",
+              "diagnosis_date": "2025-01-01",
+              "patient_first_name": "Clay",
+              "patient_last_name": "Rippin"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "1",
+                  "name": "Create Patient Resource",
+                  "description": "Create a FHIR Patient resource from input data",
+                  "operation": {
+                    "search_definition": {
+                      "original_query": "find patient {{patient_first_name}} {{patient_last_name}} by first name and last name",
+                      "resource_type": "Patient",
+                      "search_parameters": {
+                        "family": "{{patient_last_name}}",
+                        "given": "{{patient_first_name}}"
+                      },
+                      "required_fields": [
+                        "id",
+                        "name",
+                        "identifier"
+                      ],
+                      "runtime_placeholders": {
+                        "{{patient_first_name}}": "input.patient_first_name",
+                        "{{patient_last_name}}": "input.patient_last_name"
+                      }
+                    },
+                    "create_definition": {
+                      "original_description": "create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01",
+                      "resource_type": "Condition",
+                      "resource_template": {
+                        "resourceType": "Condition",
+                        "code": {
+                          "coding": [
+                            {
+                              "code": "{{diagnosis_code}}",
+                              "system": "http://hl7.org/fhir/sid/icd-10"
+                            }
+                          ]
+                        },
+                        "subject": {
+                          "reference": "Patient/{{step_1_id}}"
+                        }
+                      },
+                      "runtime_placeholders": {
+                        "{{diagnosis_code}}": "input.diagnosis_code",
+                        "{{diagnosis_date}}": "input.diagnosis_date"
+                      }
+                    },
+                    "workflow_definition": {
+                      "workflow_id": "550e8400-e29b-41d4-a716-446655440002",
+                      "input": {
+                        "patient_id": "{{step_1_id}}",
+                        "additional_context": "laboratory_results"
+                      },
+                      "runtime_placeholders": {
+                        "{{step_1_id}}": "step_1.result.id",
+                        "{{patient_data}}": "input.patient_data"
+                      }
+                    },
+                    "decision_definition": {
+                      "expression": "input.patient_age >= 18",
+                      "paths": {
+                        "true": "step_adult_workflow",
+                        "false": "step_pediatric_workflow",
+                        "default": "step_error_handler"
+                      },
+                      "runtime_placeholders": {
+                        "{{patient_age}}": "input.patient_age",
+                        "{{diagnosis_type}}": "step_2.result.diagnosis_category"
+                      }
+                    }
+                  },
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000",
+                  "dependencies": [
+                    "dependencies"
+                  ],
+                  "dynamic_generation": false
+                }
+              ]
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T15:45:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.workflows.create(\n        verbose=True,\n        name=\"Patient Data Mapping Workflow\",\n        workflow_instructions=\"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n        sample_data={\n            \"patient_last_name\": \"Rippin\",\n            \"patient_first_name\": \"Clay\",\n            \"diagnosis_code\": \"I10\",\n            \"encounter_date\": \"2024-01-15\",\n        },\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+    },
+    "GET /workflows/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/workflows/{id}",
+      "sdkMethodChain": [
+        "workflows",
+        "get"
+      ],
+      "sdkMethodName": "get",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "verbose",
+            "value": true
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "workflow": {
+            "id": "7a8b9c0d-1234-5678-abcd-ef9876543210",
+            "name": "Patient Data Mapping Workflow",
+            "workflow_instructions": "Given diagnosis data, find the patient and create a condition record",
+            "sample_data": {
+              "patient_last_name": "Rippin",
+              "patient_first_name": "Clay",
+              "diagnosis_code": "I10",
+              "encounter_date": "2024-01-15"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "step_1_id",
+                  "name": "Find Patient",
+                  "description": "Search for an existing patient by first name and last name",
+                  "type": "search",
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                {
+                  "id": "step_2_id",
+                  "name": "Create Condition",
+                  "description": "Create a FHIR Condition resource for the patient",
+                  "type": "create",
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              ]
+            },
+            "created_at": "2024-01-15T09:30:00Z",
+            "updated_at": "2024-01-15T09:30:00Z"
+          },
+          "workflow_details": {
+            "id": "550e8400-e29b-41d4-a716-446655440001",
+            "name": "Patient Data Mapping Workflow",
+            "workflow_instructions": "Given diagnosis data, find the patient and create condition record",
+            "sample_data": {
+              "diagnosis_code": "I10",
+              "diagnosis_date": "2025-01-01",
+              "patient_first_name": "Clay",
+              "patient_last_name": "Rippin"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "1",
+                  "name": "Create Patient Resource",
+                  "description": "Create a FHIR Patient resource from input data",
+                  "operation": {
+                    "search_definition": {
+                      "original_query": "find patient {{patient_first_name}} {{patient_last_name}} by first name and last name",
+                      "resource_type": "Patient",
+                      "search_parameters": {
+                        "family": "{{patient_last_name}}",
+                        "given": "{{patient_first_name}}"
+                      },
+                      "required_fields": [
+                        "id",
+                        "name",
+                        "identifier"
+                      ],
+                      "runtime_placeholders": {
+                        "{{patient_first_name}}": "input.patient_first_name",
+                        "{{patient_last_name}}": "input.patient_last_name"
+                      }
+                    },
+                    "create_definition": {
+                      "original_description": "create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01",
+                      "resource_type": "Condition",
+                      "resource_template": {
+                        "resourceType": "Condition",
+                        "code": {
+                          "coding": [
+                            {
+                              "code": "{{diagnosis_code}}",
+                              "system": "http://hl7.org/fhir/sid/icd-10"
+                            }
+                          ]
+                        },
+                        "subject": {
+                          "reference": "Patient/{{step_1_id}}"
+                        }
+                      },
+                      "runtime_placeholders": {
+                        "{{diagnosis_code}}": "input.diagnosis_code",
+                        "{{diagnosis_date}}": "input.diagnosis_date"
+                      }
+                    },
+                    "workflow_definition": {
+                      "workflow_id": "550e8400-e29b-41d4-a716-446655440002",
+                      "input": {
+                        "patient_id": "{{step_1_id}}",
+                        "additional_context": "laboratory_results"
+                      },
+                      "runtime_placeholders": {
+                        "{{step_1_id}}": "step_1.result.id",
+                        "{{patient_data}}": "input.patient_data"
+                      }
+                    },
+                    "decision_definition": {
+                      "expression": "input.patient_age >= 18",
+                      "paths": {
+                        "true": "step_adult_workflow",
+                        "false": "step_pediatric_workflow",
+                        "default": "step_error_handler"
+                      },
+                      "runtime_placeholders": {
+                        "{{patient_age}}": "input.patient_age",
+                        "{{diagnosis_type}}": "step_2.result.diagnosis_category"
+                      }
+                    }
+                  },
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000",
+                  "dependencies": [
+                    "dependencies"
+                  ],
+                  "dynamic_generation": false
+                }
+              ]
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T15:45:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.workflows.get(\n        id=\"id\",\n        verbose=True,\n    )"
+    },
+    "PUT /workflows/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/workflows/{id}",
+      "sdkMethodChain": [
+        "workflows",
+        "update"
+      ],
+      "sdkMethodName": "update",
+      "request": {
+        "body": {
+          "name": "Patient Data Mapping Workflow (v2)",
+          "workflow_instructions": "Given diagnosis data, find the patient and create a condition record linked to their encounter",
+          "sample_data": {
+            "patient_last_name": "Rippin",
+            "patient_first_name": "Clay",
+            "diagnosis_code": "I10",
+            "encounter_date": "2024-01-15"
+          },
+          "fhir_provider_id": "550e8400-e29b-41d4-a716-446655440000"
+        },
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          },
+          {
+            "name": "verbose",
+            "value": true
+          },
+          {
+            "name": "name",
+            "value": "Patient Data Mapping Workflow (v2)"
+          },
+          {
+            "name": "workflow_instructions",
+            "value": "Given diagnosis data, find the patient and create a condition record linked to their encounter"
+          },
+          {
+            "name": "sample_data",
+            "value": {
+              "patient_last_name": "Rippin",
+              "patient_first_name": "Clay",
+              "diagnosis_code": "I10",
+              "encounter_date": "2024-01-15"
+            }
+          },
+          {
+            "name": "fhir_provider_id",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Workflow updated successfully",
+          "workflow": {
+            "id": "7a8b9c0d-1234-5678-abcd-ef9876543210",
+            "name": "Patient Data Mapping Workflow (v2)",
+            "workflow_instructions": "Given diagnosis data, find the patient and create a condition record linked to their encounter",
+            "sample_data": {
+              "patient_last_name": "Rippin",
+              "patient_first_name": "Clay",
+              "diagnosis_code": "I10",
+              "encounter_date": "2024-01-15"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "step_1_id",
+                  "name": "Find Patient",
+                  "description": "Search for an existing patient by first name and last name",
+                  "type": "search",
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              ]
+            },
+            "created_at": "2024-01-15T09:30:00Z",
+            "updated_at": "2024-02-20T11:00:00Z"
+          },
+          "workflow_details": {
+            "id": "550e8400-e29b-41d4-a716-446655440001",
+            "name": "Patient Data Mapping Workflow",
+            "workflow_instructions": "Given diagnosis data, find the patient and create condition record",
+            "sample_data": {
+              "diagnosis_code": "I10",
+              "diagnosis_date": "2025-01-01",
+              "patient_first_name": "Clay",
+              "patient_last_name": "Rippin"
+            },
+            "config": {
+              "fhir_provider_ids": [
+                "550e8400-e29b-41d4-a716-446655440000"
+              ],
+              "dynamic_generation": false
+            },
+            "graph": {
+              "steps": [
+                {
+                  "id": "1",
+                  "name": "Create Patient Resource",
+                  "description": "Create a FHIR Patient resource from input data",
+                  "operation": {
+                    "search_definition": {
+                      "original_query": "find patient {{patient_first_name}} {{patient_last_name}} by first name and last name",
+                      "resource_type": "Patient",
+                      "search_parameters": {
+                        "family": "{{patient_last_name}}",
+                        "given": "{{patient_first_name}}"
+                      },
+                      "required_fields": [
+                        "id",
+                        "name",
+                        "identifier"
+                      ],
+                      "runtime_placeholders": {
+                        "{{patient_first_name}}": "input.patient_first_name",
+                        "{{patient_last_name}}": "input.patient_last_name"
+                      }
+                    },
+                    "create_definition": {
+                      "original_description": "create condition with diagnosis code {{diagnosis_code}} and diagnosis date 2025-01-01",
+                      "resource_type": "Condition",
+                      "resource_template": {
+                        "resourceType": "Condition",
+                        "code": {
+                          "coding": [
+                            {
+                              "code": "{{diagnosis_code}}",
+                              "system": "http://hl7.org/fhir/sid/icd-10"
+                            }
+                          ]
+                        },
+                        "subject": {
+                          "reference": "Patient/{{step_1_id}}"
+                        }
+                      },
+                      "runtime_placeholders": {
+                        "{{diagnosis_code}}": "input.diagnosis_code",
+                        "{{diagnosis_date}}": "input.diagnosis_date"
+                      }
+                    },
+                    "workflow_definition": {
+                      "workflow_id": "550e8400-e29b-41d4-a716-446655440002",
+                      "input": {
+                        "patient_id": "{{step_1_id}}",
+                        "additional_context": "laboratory_results"
+                      },
+                      "runtime_placeholders": {
+                        "{{step_1_id}}": "step_1.result.id",
+                        "{{patient_data}}": "input.patient_data"
+                      }
+                    },
+                    "decision_definition": {
+                      "expression": "input.patient_age >= 18",
+                      "paths": {
+                        "true": "step_adult_workflow",
+                        "false": "step_pediatric_workflow",
+                        "default": "step_error_handler"
+                      },
+                      "runtime_placeholders": {
+                        "{{patient_age}}": "input.patient_age",
+                        "{{diagnosis_type}}": "step_2.result.diagnosis_category"
+                      }
+                    }
+                  },
+                  "provider_id": "550e8400-e29b-41d4-a716-446655440000",
+                  "dependencies": [
+                    "dependencies"
+                  ],
+                  "dynamic_generation": false
+                }
+              ]
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T15:45:00Z"
+          }
+        }
+      },
+      "sdkCallSource": "client.workflows.update(\n        id=\"id\",\n        verbose=True,\n        name=\"Patient Data Mapping Workflow (v2)\",\n        workflow_instructions=\"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n        sample_data={\n            \"patient_last_name\": \"Rippin\",\n            \"patient_first_name\": \"Clay\",\n            \"diagnosis_code\": \"I10\",\n            \"encounter_date\": \"2024-01-15\",\n        },\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+    },
+    "DELETE /workflows/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/workflows/{id}",
+      "sdkMethodChain": [
+        "workflows",
+        "delete"
+      ],
+      "sdkMethodName": "delete",
+      "request": {
+        "body": null,
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "id"
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Workflow deleted successfully"
+        }
+      },
+      "sdkCallSource": "client.workflows.delete(\n        id=\"id\",\n    )"
+    },
+    "POST /workflows/{id}/execute": {
+      "httpMethod": "POST",
+      "httpPath": "/workflows/{id}/execute",
+      "sdkMethodChain": [
+        "workflows",
+        "execute"
+      ],
+      "sdkMethodName": "execute",
+      "request": {
+        "body": {
+          "input_data": {
+            "patient_last_name": "Johnson",
+            "patient_first_name": "Mary",
+            "diagnosis_code": "M79.3",
+            "encounter_date": "2024-03-20"
+          }
+        },
+        "sdkCallArgs": [
+          {
+            "name": "id",
+            "value": "7a8b9c0d-1234-5678-abcd-ef9876543210"
+          },
+          {
+            "name": "input_data",
+            "value": {
+              "patient_last_name": "Johnson",
+              "patient_first_name": "Mary",
+              "diagnosis_code": "M79.3",
+              "encounter_date": "2024-03-20"
+            }
+          }
+        ]
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Workflow executed successfully",
+          "results": {
+            "steps": {
+              "step_1_id": {
+                "type": "search_result",
+                "original_query": "find patient by first name Mary and last name Johnson",
+                "resource_type": "Patient",
+                "search_params": {
+                  "family": "Johnson",
+                  "given": "Mary"
+                },
+                "results": [
+                  {
+                    "resourceType": "Patient",
+                    "id": "patient-123",
+                    "name": [
+                      {
+                        "family": "Johnson",
+                        "given": [
+                          "Mary"
+                        ],
+                        "use": "usual"
+                      }
+                    ],
+                    "gender": "female",
+                    "birthDate": "1961-01-01"
+                  }
+                ]
+              },
+              "step_2_id": {
+                "type": "create_result",
+                "id": "condition-456",
+                "resource_type": "Condition",
+                "original_desc": "create condition with diagnosis code M79.3 for the patient from step_1_id",
+                "preview": false,
+                "created_resource": {
+                  "resourceType": "Condition",
+                  "id": "condition-456",
+                  "clinicalStatus": {
+                    "coding": [
+                      {
+                        "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                        "code": "active"
+                      }
+                    ]
+                  },
+                  "code": {
+                    "coding": [
+                      {
+                        "system": "http://hl7.org/fhir/sid/icd-10",
+                        "code": "M79.3",
+                        "display": "Panniculitis, unspecified"
+                      }
+                    ]
+                  },
+                  "subject": {
+                    "reference": "Patient/patient-123"
+                  }
+                }
+              }
+            }
+          },
+          "preview": false
+        }
+      },
+      "sdkCallSource": "client.workflows.execute(\n        id=\"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n        input_data={\n            \"patient_last_name\": \"Johnson\",\n            \"patient_first_name\": \"Mary\",\n            \"diagnosis_code\": \"M79.3\",\n            \"encounter_date\": \"2024-03-20\",\n        },\n    )"
+    }
+  }
+}
