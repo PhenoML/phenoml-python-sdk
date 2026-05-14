@@ -324,7 +324,18 @@
       ],
       "sdkMethodName": "patch",
       "request": {
-        "body": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ]>",
+        "body": [
+          {
+            "op": "replace",
+            "path": "/description",
+            "value": "patched description"
+          },
+          {
+            "op": "add",
+            "path": "/tags/-",
+            "value": "updated"
+          }
+        ],
         "sdkCallArgs": [
           {
             "name": "id",
@@ -332,7 +343,18 @@
           },
           {
             "name": "request",
-            "value": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ]>"
+            "value": [
+              {
+                "op": "replace",
+                "path": "/description",
+                "value": "patched description"
+              },
+              {
+                "op": "add",
+                "path": "/tags/-",
+                "value": "updated"
+              }
+            ]
           }
         ]
       },
@@ -780,7 +802,13 @@
       ],
       "sdkMethodName": "patch",
       "request": {
-        "body": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ]>",
+        "body": [
+          {
+            "op": "replace",
+            "path": "/content",
+            "value": "Updated prompt content."
+          }
+        ],
         "sdkCallArgs": [
           {
             "name": "id",
@@ -788,7 +816,13 @@
           },
           {
             "name": "request",
-            "value": "<expr:[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ]>"
+            "value": [
+              {
+                "op": "replace",
+                "path": "/content",
+                "value": "Updated prompt content."
+              }
+            ]
           }
         ]
       },
@@ -905,7 +939,16 @@
           "name": "CUSTOM_CODES",
           "version": "1.0",
           "format": "json",
-          "codes": "<expr:[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ]>"
+          "codes": [
+            {
+              "code": "X001",
+              "description": "Example custom code 1"
+            },
+            {
+              "code": "X002",
+              "description": "Example custom code 2"
+            }
+          ]
         },
         "sdkCallArgs": [
           {
@@ -922,7 +965,16 @@
           },
           {
             "name": "codes",
-            "value": "<expr:[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ]>"
+            "value": [
+              {
+                "code": "X001",
+                "description": "Example custom code 1"
+              },
+              {
+                "code": "X002",
+                "description": "Example custom code 2"
+              }
+            ]
           }
         ]
       },
@@ -946,7 +998,10 @@
       "request": {
         "body": {
           "text": "Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
-          "system": "<expr:ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        )>"
+          "system": {
+            "name": "ICD-10-CM",
+            "version": "2025"
+          }
         },
         "sdkCallArgs": [
           {
@@ -955,7 +1010,10 @@
           },
           {
             "name": "system",
-            "value": "<expr:ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        )>"
+            "value": {
+              "name": "ICD-10-CM",
+              "version": "2025"
+            }
           }
         ]
       },
@@ -1375,8 +1433,32 @@
       "request": {
         "body": {
           "text": "Patient has type 2 diabetes with hyperglycemia",
-          "received_result": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        )>",
-          "expected_result": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        )>",
+          "received_result": {
+            "system": {
+              "name": "ICD-10-CM",
+              "version": "2025"
+            },
+            "codes": [
+              {
+                "code": "E11.9",
+                "description": "Type 2 diabetes mellitus without complications",
+                "valid": true
+              }
+            ]
+          },
+          "expected_result": {
+            "system": {
+              "name": "ICD-10-CM",
+              "version": "2025"
+            },
+            "codes": [
+              {
+                "code": "E11.65",
+                "description": "Type 2 diabetes mellitus with hyperglycemia",
+                "valid": true
+              }
+            ]
+          },
           "detail": "Expected code E11.65 because the text mentions hyperglycemia"
         },
         "sdkCallArgs": [
@@ -1386,11 +1468,35 @@
           },
           {
             "name": "received_result",
-            "value": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        )>"
+            "value": {
+              "system": {
+                "name": "ICD-10-CM",
+                "version": "2025"
+              },
+              "codes": [
+                {
+                  "code": "E11.9",
+                  "description": "Type 2 diabetes mellitus without complications",
+                  "valid": true
+                }
+              ]
+            }
           },
           {
             "name": "expected_result",
-            "value": "<expr:ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        )>"
+            "value": {
+              "system": {
+                "name": "ICD-10-CM",
+                "version": "2025"
+              },
+              "codes": [
+                {
+                  "code": "E11.65",
+                  "description": "Type 2 diabetes mellitus with hyperglycemia",
+                  "valid": true
+                }
+              ]
+            }
           },
           {
             "name": "detail",
@@ -1671,7 +1777,13 @@
       ],
       "sdkMethodName": "patch",
       "request": {
-        "body": "<expr:[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ]>",
+        "body": [
+          {
+            "op": "replace",
+            "path": "/name/0/family",
+            "value": "NewFamilyName"
+          }
+        ],
         "sdkCallArgs": [
           {
             "name": "fhir_provider_id",
@@ -1691,7 +1803,13 @@
           },
           {
             "name": "request",
-            "value": "<expr:[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ]>"
+            "value": [
+              {
+                "op": "replace",
+                "path": "/name/0/family",
+                "value": "NewFamilyName"
+              }
+            ]
           }
         ]
       },
@@ -1721,7 +1839,38 @@
       "request": {
         "body": {
           "resourceType": "Bundle",
-          "entry": "<expr:[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ]>"
+          "entry": [
+            {
+              "resource": {
+                "resourceType": "Patient",
+                "name": [
+                  {
+                    "family": "Doe",
+                    "given": [
+                      "John"
+                    ]
+                  }
+                ]
+              },
+              "request": {
+                "method": "POST",
+                "url": "Patient"
+              }
+            },
+            {
+              "resource": {
+                "resourceType": "Observation",
+                "status": "final",
+                "subject": {
+                  "reference": "Patient/123"
+                }
+              },
+              "request": {
+                "method": "POST",
+                "url": "Observation"
+              }
+            }
+          ]
         },
         "sdkCallArgs": [
           {
@@ -1738,7 +1887,38 @@
           },
           {
             "name": "entry",
-            "value": "<expr:[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ]>"
+            "value": [
+              {
+                "resource": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "family": "Doe",
+                      "given": [
+                        "John"
+                      ]
+                    }
+                  ]
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Patient"
+                }
+              },
+              {
+                "resource": {
+                  "resourceType": "Observation",
+                  "status": "final",
+                  "subject": {
+                    "reference": "Patient/123"
+                  }
+                },
+                "request": {
+                  "method": "POST",
+                  "url": "Observation"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1776,7 +1956,10 @@
           "description": "Epic sandbox environment for testing",
           "provider": "epic",
           "base_url": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4",
-          "auth": "<expr:FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+          "auth": {
+            "client_id": "your-client-id",
+            "client_secret": "your-client-secret"
+          }
         },
         "sdkCallArgs": [
           {
@@ -1797,7 +1980,10 @@
           },
           {
             "name": "auth",
-            "value": "<expr:FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+            "value": {
+              "client_id": "your-client-id",
+              "client_secret": "your-client-secret"
+            }
           }
         ]
       },
@@ -2031,7 +2217,10 @@
       ],
       "sdkMethodName": "add_auth_config",
       "request": {
-        "body": "<expr:FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>",
+        "body": {
+          "client_id": "your-client-id",
+          "client_secret": "your-client-secret"
+        },
         "sdkCallArgs": [
           {
             "name": "fhir_provider_id",
@@ -2039,7 +2228,10 @@
           },
           {
             "name": "request",
-            "value": "<expr:FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        )>"
+            "value": {
+              "client_id": "your-client-id",
+              "client_secret": "your-client-secret"
+            }
           }
         ]
       },
