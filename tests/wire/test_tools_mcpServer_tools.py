@@ -29,14 +29,3 @@ def test_tools_mcpServer_tools_delete() -> None:
         mcp_server_tool_id="mcp_server_tool_id",
     )
     verify_request_count(test_id, "DELETE", "/tools/mcp-server/tool/mcp_server_tool_id", None, 1)
-
-
-def test_tools_mcpServer_tools_call() -> None:
-    """Test call endpoint with WireMock"""
-    test_id = "tools.mcp_server.tools.call.0"
-    client = get_client(test_id)
-    client.tools.mcp_server.tools.call(
-        mcp_server_tool_id="mcp_server_tool_id",
-        arguments={"title": "PhenoML Agent API"},
-    )
-    verify_request_count(test_id, "POST", "/tools/mcp-server/tool/mcp_server_tool_id/call", None, 1)
