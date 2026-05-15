@@ -382,7 +382,7 @@ class AgentClient:
             Optional session ID for conversation continuity
 
         enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -460,7 +460,7 @@ class AgentClient:
             Optional session ID for conversation continuity
 
         enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -982,7 +982,7 @@ class AsyncAgentClient:
             Optional session ID for conversation continuity
 
         enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1068,7 +1068,7 @@ class AsyncAgentClient:
             Optional session ID for conversation continuity
 
         enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

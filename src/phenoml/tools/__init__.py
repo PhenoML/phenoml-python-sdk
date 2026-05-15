@@ -17,7 +17,6 @@ if typing.TYPE_CHECKING:
         McpServer,
         McpServerResponse,
         McpServerTool,
-        McpServerToolCallResponse,
         McpServerToolResponse,
         SearchConcept,
     )
@@ -38,7 +37,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServer": ".types",
     "McpServerResponse": ".types",
     "McpServerTool": ".types",
-    "McpServerToolCallResponse": ".types",
     "McpServerToolResponse": ".types",
     "SearchConcept": ".types",
     "UnauthorizedError": ".errors",
@@ -82,7 +80,6 @@ __all__ = [
     "McpServer",
     "McpServerResponse",
     "McpServerTool",
-    "McpServerToolCallResponse",
     "McpServerToolResponse",
     "SearchConcept",
     "UnauthorizedError",

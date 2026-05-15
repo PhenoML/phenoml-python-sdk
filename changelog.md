@@ -1,3 +1,8 @@
+## 13.0.0 - 2026-05-15
+### Breaking Changes
+* **`call()`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the method for calling an MCP server tool has been removed; delete any call sites using `client.tools.mcp_server.tools.call(...)`.
+* **`McpServerToolCallResponse`** — type removed from `phenoml.tools` and `phenoml.tools.types`; remove any imports or type annotations that reference it.
+
 ## 12.0.0 - 2026-05-13
 ### Breaking Changes
 * **`load_defaults`** — method removed from `PromptsClient`, `AsyncPromptsClient`, `RawPromptsClient`, and `AsyncRawPromptsClient`; delete any call sites using `agent.prompts.load_defaults()`.

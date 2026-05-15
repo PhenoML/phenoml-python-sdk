@@ -605,7 +605,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dl>
 <dd>
 
-**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
     
 </dd>
 </dl>
@@ -739,7 +739,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dl>
 <dd>
 
-**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
     
 </dd>
 </dl>
@@ -6309,91 +6309,6 @@ client.tools.mcp_server.tools.delete(
 <dd>
 
 **mcp_server_tool_id:** `str` — ID of the MCP server tool to delete
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">call</a>(...) -> McpServerToolCallResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Calls a MCP server tool
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.tools.mcp_server.tools.call(
-    mcp_server_tool_id="mcp_server_tool_id",
-    arguments={
-        "title": "PhenoML Agent API"
-    },
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` — ID of the MCP server tool to call
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**arguments:** `typing.Dict[str, typing.Any]` — Arguments to pass to the MCP server tool
     
 </dd>
 </dl>

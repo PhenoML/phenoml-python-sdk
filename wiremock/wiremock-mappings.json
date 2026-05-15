@@ -1932,37 +1932,6 @@
       }
     },
     {
-      "id": "fdc9c01b-e38a-43cf-bb7c-8caa3a24593c",
-      "name": "Call MCP server tool - default",
-      "request": {
-        "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}/call",
-        "method": "POST",
-        "pathParameters": {
-          "mcp_server_tool_id": {
-            "equalTo": "mcp_server_tool_id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP server tool called successfully\",\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"{\\\"endpoint_data\\\": \\\"example\\\"}\"\n      }\n    ]\n  },\n  \"error\": \"Failed to call MCP server tool\"\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "fdc9c01b-e38a-43cf-bb7c-8caa3a24593c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
       "id": "8bf6700d-7fd9-4525-8af2-8fc90ec1874d",
       "name": "List all workflows - default",
       "request": {
@@ -2161,6 +2130,6 @@
     }
   ],
   "meta": {
-    "total": 71
+    "total": 70
   }
 }
