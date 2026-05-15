@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "2193fc57ed98e5c912a35f90c07e9a4f00da0af8"
+    "version": "0cb0b6e9a5e9580e8311ea4fa304ccfd37b4b147"
   },
   "paths": {
     "/agent/create": {
@@ -4293,79 +4293,6 @@
         ]
       }
     },
-    "/tools/mcp-server/tool/{mcp_server_tool_id}/call": {
-      "post": {
-        "summary": "Call MCP server tool",
-        "description": "Calls a MCP server tool",
-        "parameters": [
-          {
-            "name": "mcp_server_tool_id",
-            "in": "path",
-            "required": true,
-            "description": "ID of the MCP server tool to call",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/tools_MCPServerToolCallRequest"
-              },
-              "example": {
-                "arguments": {
-                  "title": "PhenoML Agent API"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully called MCP server tool",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/tools_MCPServerToolCallResponse"
-                },
-                "example": {
-                  "success": true,
-                  "message": "MCP server tool called successfully",
-                  "result": {
-                    "content": [
-                      {
-                        "type": "text",
-                        "text": "{\"endpoint_data\": \"example\"}"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden - requires develop tier access"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
     "/fhir-provider": {
       "post": {
         "summary": "Create FHIR provider",
@@ -7106,7 +7033,7 @@
           },
           "enhanced_reasoning": {
             "type": "boolean",
-            "description": "Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.",
+            "description": "Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.",
             "default": false,
             "example": false
           }
@@ -7142,7 +7069,7 @@
           },
           "enhanced_reasoning": {
             "type": "boolean",
-            "description": "Enable enhanced reasoning capabilities, will increase latency but will also improve response quality and reliability.",
+            "description": "Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.",
             "default": false,
             "example": false
           }
@@ -9237,53 +9164,6 @@
           }
         }
       },
-      "tools_MCPServerToolCallRequest": {
-        "type": "object",
-        "required": [
-          "arguments"
-        ],
-        "properties": {
-          "arguments": {
-            "type": "object",
-            "description": "Arguments to pass to the MCP server tool",
-            "example": {
-              "title": "PhenoML Agent API"
-            }
-          }
-        }
-      },
-      "tools_MCPServerToolCallResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "Whether the MCP server tool was called successfully",
-            "example": true
-          },
-          "message": {
-            "type": "string",
-            "description": "Status message",
-            "example": "MCP server tool called successfully"
-          },
-          "result": {
-            "type": "object",
-            "description": "Result of the MCP server tool call",
-            "example": {
-              "content": [
-                {
-                  "type": "text",
-                  "text": "{\"endpoint_data\": \"example\"}"
-                }
-              ]
-            }
-          },
-          "error": {
-            "type": "string",
-            "description": "Error message if the call failed",
-            "example": "Failed to call MCP server tool"
-          }
-        }
-      },
       "tools_MCPServerToolResponse": {
         "type": "object",
         "properties": {
@@ -9426,12 +9306,12 @@
             "discriminator": {
               "propertyName": "auth_method",
               "mapping": {
-                "jwt": "#/components/schemas/JwtAuth",
-                "client_secret": "#/components/schemas/ClientSecretAuth",
-                "on_behalf_of": "#/components/schemas/OnBehalfOfAuth",
-                "google_healthcare": "#/components/schemas/GoogleHealthcareAuth",
-                "token_passthrough": "#/components/schemas/TokenPassthroughAuth",
-                "none": "#/components/schemas/NoAuth"
+                "jwt": "#/components/schemas/fhir_provider_JwtAuth",
+                "client_secret": "#/components/schemas/fhir_provider_ClientSecretAuth",
+                "on_behalf_of": "#/components/schemas/fhir_provider_OnBehalfOfAuth",
+                "google_healthcare": "#/components/schemas/fhir_provider_GoogleHealthcareAuth",
+                "token_passthrough": "#/components/schemas/fhir_provider_TokenPassthroughAuth",
+                "none": "#/components/schemas/fhir_provider_NoAuth"
               }
             }
           }
@@ -9877,12 +9757,12 @@
         "discriminator": {
           "propertyName": "auth_method",
           "mapping": {
-            "jwt": "#/components/schemas/JwtAuth",
-            "client_secret": "#/components/schemas/ClientSecretAuth",
-            "on_behalf_of": "#/components/schemas/OnBehalfOfAuth",
-            "google_healthcare": "#/components/schemas/GoogleHealthcareAuth",
-            "token_passthrough": "#/components/schemas/TokenPassthroughAuth",
-            "none": "#/components/schemas/NoAuth"
+            "jwt": "#/components/schemas/fhir_provider_JwtAuth",
+            "client_secret": "#/components/schemas/fhir_provider_ClientSecretAuth",
+            "on_behalf_of": "#/components/schemas/fhir_provider_OnBehalfOfAuth",
+            "google_healthcare": "#/components/schemas/fhir_provider_GoogleHealthcareAuth",
+            "token_passthrough": "#/components/schemas/fhir_provider_TokenPassthroughAuth",
+            "none": "#/components/schemas/fhir_provider_NoAuth"
           }
         }
       },
