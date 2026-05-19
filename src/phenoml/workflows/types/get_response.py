@@ -4,13 +4,17 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .fhir_provider_template import FhirProviderTemplate
+from .workflow_definition import WorkflowDefinition
+from .workflow_response import WorkflowResponse
 
 
-class FhirProviderRemoveAuthConfigResponse(UniversalBaseModel):
+class GetResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
-    message: typing.Optional[str] = None
-    data: typing.Optional[FhirProviderTemplate] = None
+    workflow: typing.Optional[WorkflowResponse] = None
+    workflow_details: typing.Optional[WorkflowDefinition] = pydantic.Field(default=None)
+    """
+    Only included when verbose=true - contains full implementation details
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

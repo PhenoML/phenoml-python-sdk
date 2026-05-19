@@ -6,15 +6,15 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import OAuthError, OAuthErrorError, TokenResponse
-    from .errors import BadRequestError, InternalServerError, UnauthorizedError
+    from .templates_delete_response import TemplatesDeleteResponse
+    from .templates_get_response import TemplatesGetResponse
+    from .templates_list_response import TemplatesListResponse
+    from .templates_update_response import TemplatesUpdateResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "BadRequestError": ".errors",
-    "InternalServerError": ".errors",
-    "OAuthError": ".types",
-    "OAuthErrorError": ".types",
-    "TokenResponse": ".types",
-    "UnauthorizedError": ".errors",
+    "TemplatesDeleteResponse": ".templates_delete_response",
+    "TemplatesGetResponse": ".templates_get_response",
+    "TemplatesListResponse": ".templates_list_response",
+    "TemplatesUpdateResponse": ".templates_update_response",
 }
 
 
@@ -39,11 +39,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "BadRequestError",
-    "InternalServerError",
-    "OAuthError",
-    "OAuthErrorError",
-    "TokenResponse",
-    "UnauthorizedError",
-]
+__all__ = ["TemplatesDeleteResponse", "TemplatesGetResponse", "TemplatesListResponse", "TemplatesUpdateResponse"]

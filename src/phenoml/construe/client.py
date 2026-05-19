@@ -6,7 +6,6 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawConstrueClient, RawConstrueClient
 from .types.code_response import CodeResponse
-from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.export_code_system_response import ExportCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
@@ -19,6 +18,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
+from .types.upload_code_system_response import UploadCodeSystemResponse
 from .types.upload_request_format import UploadRequestFormat
 
 # this is used as the default value for optional parameters
@@ -54,7 +54,7 @@ class ConstrueClient:
         codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
         replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConstrueUploadCodeSystemResponse:
+    ) -> UploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Returns 202 immediately; embedding generation runs asynchronously. Poll
@@ -106,7 +106,7 @@ class ConstrueClient:
 
         Returns
         -------
-        ConstrueUploadCodeSystemResponse
+        UploadCodeSystemResponse
             Upload accepted for asynchronous processing
 
         Examples
@@ -201,9 +201,7 @@ class ConstrueClient:
         )
         return _response.data
 
-    def list_available_code_systems(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ListCodeSystemsResponse:
+    def list_code_systems(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListCodeSystemsResponse:
         """
         Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 
@@ -225,12 +223,12 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.list_available_code_systems()
+        client.construe.list_code_systems()
         """
-        _response = self._raw_client.list_available_code_systems(request_options=request_options)
+        _response = self._raw_client.list_code_systems(request_options=request_options)
         return _response.data
 
-    def get_code_system_detail(
+    def get_code_system(
         self,
         codesystem: str,
         *,
@@ -264,17 +262,15 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.get_code_system_detail(
+        client.construe.get_code_system(
             codesystem="ICD-10-CM",
             version="2025",
         )
         """
-        _response = self._raw_client.get_code_system_detail(
-            codesystem, version=version, request_options=request_options
-        )
+        _response = self._raw_client.get_code_system(codesystem, version=version, request_options=request_options)
         return _response.data
 
-    def delete_custom_code_system(
+    def delete_code_system(
         self,
         codesystem: str,
         *,
@@ -309,17 +305,15 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.delete_custom_code_system(
+        client.construe.delete_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
         )
         """
-        _response = self._raw_client.delete_custom_code_system(
-            codesystem, version=version, request_options=request_options
-        )
+        _response = self._raw_client.delete_code_system(codesystem, version=version, request_options=request_options)
         return _response.data
 
-    def export_custom_code_system(
+    def export_code_system(
         self,
         codesystem: str,
         *,
@@ -355,17 +349,15 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.export_custom_code_system(
+        client.construe.export_code_system(
             codesystem="CUSTOM_CODES",
             version="version",
         )
         """
-        _response = self._raw_client.export_custom_code_system(
-            codesystem, version=version, request_options=request_options
-        )
+        _response = self._raw_client.export_code_system(codesystem, version=version, request_options=request_options)
         return _response.data
 
-    def list_codes_in_a_code_system(
+    def list_codes(
         self,
         codesystem: str,
         *,
@@ -409,19 +401,19 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.list_codes_in_a_code_system(
+        client.construe.list_codes(
             codesystem="ICD-10-CM",
             version="2025",
             cursor="cursor",
             limit=1,
         )
         """
-        _response = self._raw_client.list_codes_in_a_code_system(
+        _response = self._raw_client.list_codes(
             codesystem, version=version, cursor=cursor, limit=limit, request_options=request_options
         )
         return _response.data
 
-    def get_a_specific_code(
+    def get_code(
         self,
         codesystem: str,
         code_id: str,
@@ -462,18 +454,16 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.get_a_specific_code(
+        client.construe.get_code(
             codesystem="ICD-10-CM",
             code_id="E1165",
             version="version",
         )
         """
-        _response = self._raw_client.get_a_specific_code(
-            codesystem, code_id, version=version, request_options=request_options
-        )
+        _response = self._raw_client.get_code(codesystem, code_id, version=version, request_options=request_options)
         return _response.data
 
-    def semantic_search_embedding_based(
+    def search_semantic(
         self,
         codesystem: str,
         *,
@@ -533,19 +523,19 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.semantic_search_embedding_based(
+        client.construe.search_semantic(
             codesystem="ICD-10-CM",
             text="patient has trouble breathing at night and wakes up gasping",
             version="version",
             limit=1,
         )
         """
-        _response = self._raw_client.semantic_search_embedding_based(
+        _response = self._raw_client.search_semantic(
             codesystem, text=text, version=version, limit=limit, request_options=request_options
         )
         return _response.data
 
-    def submit_feedback_on_extraction_results(
+    def submit_feedback(
         self,
         *,
         text: str,
@@ -591,7 +581,7 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.submit_feedback_on_extraction_results(
+        client.construe.submit_feedback(
             text="Patient has type 2 diabetes with hyperglycemia",
             received_result=ExtractCodesResult(
                 system=ExtractRequestSystem(
@@ -622,7 +612,7 @@ class ConstrueClient:
             detail="Expected code E11.65 because the text mentions hyperglycemia",
         )
         """
-        _response = self._raw_client.submit_feedback_on_extraction_results(
+        _response = self._raw_client.submit_feedback(
             text=text,
             received_result=received_result,
             expected_result=expected_result,
@@ -631,7 +621,7 @@ class ConstrueClient:
         )
         return _response.data
 
-    def terminology_server_text_search(
+    def search_text(
         self,
         codesystem: str,
         *,
@@ -696,14 +686,14 @@ class ConstrueClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.construe.terminology_server_text_search(
+        client.construe.search_text(
             codesystem="ICD-10-CM",
             q="E11.65",
             version="version",
             limit=1,
         )
         """
-        _response = self._raw_client.terminology_server_text_search(
+        _response = self._raw_client.search_text(
             codesystem, q=q, version=version, limit=limit, request_options=request_options
         )
         return _response.data
@@ -738,7 +728,7 @@ class AsyncConstrueClient:
         codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
         replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConstrueUploadCodeSystemResponse:
+    ) -> UploadCodeSystemResponse:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Returns 202 immediately; embedding generation runs asynchronously. Poll
@@ -790,7 +780,7 @@ class AsyncConstrueClient:
 
         Returns
         -------
-        ConstrueUploadCodeSystemResponse
+        UploadCodeSystemResponse
             Upload accepted for asynchronous processing
 
         Examples
@@ -901,7 +891,7 @@ class AsyncConstrueClient:
         )
         return _response.data
 
-    async def list_available_code_systems(
+    async def list_code_systems(
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> ListCodeSystemsResponse:
         """
@@ -930,15 +920,15 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.list_available_code_systems()
+            await client.construe.list_code_systems()
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_available_code_systems(request_options=request_options)
+        _response = await self._raw_client.list_code_systems(request_options=request_options)
         return _response.data
 
-    async def get_code_system_detail(
+    async def get_code_system(
         self,
         codesystem: str,
         *,
@@ -977,7 +967,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.get_code_system_detail(
+            await client.construe.get_code_system(
                 codesystem="ICD-10-CM",
                 version="2025",
             )
@@ -985,12 +975,10 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_code_system_detail(
-            codesystem, version=version, request_options=request_options
-        )
+        _response = await self._raw_client.get_code_system(codesystem, version=version, request_options=request_options)
         return _response.data
 
-    async def delete_custom_code_system(
+    async def delete_code_system(
         self,
         codesystem: str,
         *,
@@ -1030,7 +1018,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.delete_custom_code_system(
+            await client.construe.delete_code_system(
                 codesystem="CUSTOM_CODES",
                 version="version",
             )
@@ -1038,12 +1026,12 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_custom_code_system(
+        _response = await self._raw_client.delete_code_system(
             codesystem, version=version, request_options=request_options
         )
         return _response.data
 
-    async def export_custom_code_system(
+    async def export_code_system(
         self,
         codesystem: str,
         *,
@@ -1084,7 +1072,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.export_custom_code_system(
+            await client.construe.export_code_system(
                 codesystem="CUSTOM_CODES",
                 version="version",
             )
@@ -1092,12 +1080,12 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.export_custom_code_system(
+        _response = await self._raw_client.export_code_system(
             codesystem, version=version, request_options=request_options
         )
         return _response.data
 
-    async def list_codes_in_a_code_system(
+    async def list_codes(
         self,
         codesystem: str,
         *,
@@ -1146,7 +1134,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.list_codes_in_a_code_system(
+            await client.construe.list_codes(
                 codesystem="ICD-10-CM",
                 version="2025",
                 cursor="cursor",
@@ -1156,12 +1144,12 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list_codes_in_a_code_system(
+        _response = await self._raw_client.list_codes(
             codesystem, version=version, cursor=cursor, limit=limit, request_options=request_options
         )
         return _response.data
 
-    async def get_a_specific_code(
+    async def get_code(
         self,
         codesystem: str,
         code_id: str,
@@ -1207,7 +1195,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.get_a_specific_code(
+            await client.construe.get_code(
                 codesystem="ICD-10-CM",
                 code_id="E1165",
                 version="version",
@@ -1216,12 +1204,12 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_a_specific_code(
+        _response = await self._raw_client.get_code(
             codesystem, code_id, version=version, request_options=request_options
         )
         return _response.data
 
-    async def semantic_search_embedding_based(
+    async def search_semantic(
         self,
         codesystem: str,
         *,
@@ -1286,7 +1274,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.semantic_search_embedding_based(
+            await client.construe.search_semantic(
                 codesystem="ICD-10-CM",
                 text="patient has trouble breathing at night and wakes up gasping",
                 version="version",
@@ -1296,12 +1284,12 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.semantic_search_embedding_based(
+        _response = await self._raw_client.search_semantic(
             codesystem, text=text, version=version, limit=limit, request_options=request_options
         )
         return _response.data
 
-    async def submit_feedback_on_extraction_results(
+    async def submit_feedback(
         self,
         *,
         text: str,
@@ -1352,7 +1340,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.submit_feedback_on_extraction_results(
+            await client.construe.submit_feedback(
                 text="Patient has type 2 diabetes with hyperglycemia",
                 received_result=ExtractCodesResult(
                     system=ExtractRequestSystem(
@@ -1386,7 +1374,7 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.submit_feedback_on_extraction_results(
+        _response = await self._raw_client.submit_feedback(
             text=text,
             received_result=received_result,
             expected_result=expected_result,
@@ -1395,7 +1383,7 @@ class AsyncConstrueClient:
         )
         return _response.data
 
-    async def terminology_server_text_search(
+    async def search_text(
         self,
         codesystem: str,
         *,
@@ -1465,7 +1453,7 @@ class AsyncConstrueClient:
 
 
         async def main() -> None:
-            await client.construe.terminology_server_text_search(
+            await client.construe.search_text(
                 codesystem="ICD-10-CM",
                 q="E11.65",
                 version="version",
@@ -1475,7 +1463,7 @@ class AsyncConstrueClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.terminology_server_text_search(
+        _response = await self._raw_client.search_text(
             codesystem, q=q, version=version, limit=limit, request_options=request_options
         )
         return _response.data

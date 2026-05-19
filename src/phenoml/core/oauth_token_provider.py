@@ -7,7 +7,7 @@ import typing
 from asyncio import Lock as asyncio_Lock
 from threading import Lock as threading_Lock
 
-from ..authtoken.auth.client import AsyncAuthClient, AuthClient
+from ..authtoken.client import AsyncAuthtokenClient, AuthtokenClient
 from .client_wrapper import AsyncClientWrapper, SyncClientWrapper
 
 
@@ -19,7 +19,7 @@ class OAuthTokenProvider:
         self._client_secret = client_secret
         self._access_token: typing.Optional[str] = None
         self._expires_at: dt.datetime = dt.datetime.now()
-        self._auth_client = AuthClient(client_wrapper=client_wrapper)
+        self._auth_client = AuthtokenClient(client_wrapper=client_wrapper)
         self._lock: threading_Lock = threading.Lock()
 
     def get_token(self) -> str:
@@ -50,7 +50,7 @@ class AsyncOAuthTokenProvider:
         self._client_secret = client_secret
         self._access_token: typing.Optional[str] = None
         self._expires_at: dt.datetime = dt.datetime.now()
-        self._auth_client = AsyncAuthClient(client_wrapper=client_wrapper)
+        self._auth_client = AsyncAuthtokenClient(client_wrapper=client_wrapper)
         self._lock: asyncio_Lock = asyncio.Lock()
 
     async def get_token(self) -> str:

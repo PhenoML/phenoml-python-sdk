@@ -5,13 +5,13 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawFhirProviderClient, RawFhirProviderClient
+from .types.delete_response import DeleteResponse
 from .types.fhir_provider_add_auth_config_request import FhirProviderAddAuthConfigRequest
 from .types.fhir_provider_create_request_auth import FhirProviderCreateRequestAuth
-from .types.fhir_provider_delete_response import FhirProviderDeleteResponse
 from .types.fhir_provider_list_response import FhirProviderListResponse
-from .types.fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
 from .types.fhir_provider_response import FhirProviderResponse
 from .types.provider import Provider
+from .types.remove_auth_config_response import RemoveAuthConfigResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -169,7 +169,7 @@ class FhirProviderClient:
 
     def delete(
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderDeleteResponse:
+    ) -> DeleteResponse:
         """
         Deletes a FHIR provider.
 
@@ -185,7 +185,7 @@ class FhirProviderClient:
 
         Returns
         -------
-        FhirProviderDeleteResponse
+        DeleteResponse
             FHIR provider deleted successfully
 
         Examples
@@ -300,7 +300,7 @@ class FhirProviderClient:
 
     def remove_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderRemoveAuthConfigResponse:
+    ) -> RemoveAuthConfigResponse:
         """
         Removes an authentication configuration from a FHIR provider.
         Cannot remove the currently active auth configuration.
@@ -320,7 +320,7 @@ class FhirProviderClient:
 
         Returns
         -------
-        FhirProviderRemoveAuthConfigResponse
+        RemoveAuthConfigResponse
             Auth configuration removed successfully
 
         Examples
@@ -518,7 +518,7 @@ class AsyncFhirProviderClient:
 
     async def delete(
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderDeleteResponse:
+    ) -> DeleteResponse:
         """
         Deletes a FHIR provider.
 
@@ -534,7 +534,7 @@ class AsyncFhirProviderClient:
 
         Returns
         -------
-        FhirProviderDeleteResponse
+        DeleteResponse
             FHIR provider deleted successfully
 
         Examples
@@ -675,7 +675,7 @@ class AsyncFhirProviderClient:
 
     async def remove_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> FhirProviderRemoveAuthConfigResponse:
+    ) -> RemoveAuthConfigResponse:
         """
         Removes an authentication configuration from a FHIR provider.
         Cannot remove the currently active auth configuration.
@@ -695,7 +695,7 @@ class AsyncFhirProviderClient:
 
         Returns
         -------
-        FhirProviderRemoveAuthConfigResponse
+        RemoveAuthConfigResponse
             Auth configuration removed successfully
 
         Examples

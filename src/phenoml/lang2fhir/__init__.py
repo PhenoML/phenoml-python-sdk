@@ -25,11 +25,11 @@ if typing.TYPE_CHECKING:
         DocumentMultiRequestValidationMethod,
         DocumentMultiResponse,
         FhirResource,
-        Lang2FhirUploadProfileResponse,
         PageClassification,
         PageFilter,
         SearchResponse,
         SearchResponseResourceType,
+        UploadProfileResponse,
     )
     from .errors import (
         BadRequestError,
@@ -62,13 +62,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirResource": ".types",
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
-    "Lang2FhirUploadProfileResponse": ".types",
     "PageClassification": ".types",
     "PageFilter": ".types",
     "SearchResponse": ".types",
     "SearchResponseResourceType": ".types",
     "UnauthorizedError": ".errors",
     "UnprocessableEntityError": ".errors",
+    "UploadProfileResponse": ".types",
 }
 
 
@@ -116,11 +116,11 @@ __all__ = [
     "FhirResource",
     "ForbiddenError",
     "InternalServerError",
-    "Lang2FhirUploadProfileResponse",
     "PageClassification",
     "PageFilter",
     "SearchResponse",
     "SearchResponseResourceType",
     "UnauthorizedError",
     "UnprocessableEntityError",
+    "UploadProfileResponse",
 ]

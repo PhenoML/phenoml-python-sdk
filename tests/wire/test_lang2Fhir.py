@@ -58,11 +58,11 @@ def test_lang2Fhir_document() -> None:
     verify_request_count(test_id, "POST", "/lang2fhir/document", None, 1)
 
 
-def test_lang2Fhir_extract_multiple_fhir_resources_from_a_document() -> None:
-    """Test extractMultipleFhirResourcesFromADocument endpoint with WireMock"""
-    test_id = "lang2fhir.extract_multiple_fhir_resources_from_a_document.0"
+def test_lang2Fhir_document_multi() -> None:
+    """Test documentMulti endpoint with WireMock"""
+    test_id = "lang2fhir.document_multi.0"
     client = get_client(test_id)
-    client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+    client.lang2fhir.document_multi(
         version="R4",
         content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
         provider="medplum",
