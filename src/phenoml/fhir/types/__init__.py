@@ -12,11 +12,8 @@ if typing.TYPE_CHECKING:
     from .fhir_bundle_entry_item_request import FhirBundleEntryItemRequest
     from .fhir_bundle_entry_item_request_method import FhirBundleEntryItemRequestMethod
     from .fhir_bundle_entry_item_response import FhirBundleEntryItemResponse
-    from .fhir_patch_request_body_item import FhirPatchRequestBodyItem
-    from .fhir_patch_request_body_item_op import FhirPatchRequestBodyItemOp
     from .fhir_resource import FhirResource
     from .fhir_resource_meta import FhirResourceMeta
-    from .fhir_search_response import FhirSearchResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "ErrorResponse": ".error_response",
     "FhirBundle": ".fhir_bundle",
@@ -24,11 +21,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirBundleEntryItemRequest": ".fhir_bundle_entry_item_request",
     "FhirBundleEntryItemRequestMethod": ".fhir_bundle_entry_item_request_method",
     "FhirBundleEntryItemResponse": ".fhir_bundle_entry_item_response",
-    "FhirPatchRequestBodyItem": ".fhir_patch_request_body_item",
-    "FhirPatchRequestBodyItemOp": ".fhir_patch_request_body_item_op",
     "FhirResource": ".fhir_resource",
     "FhirResourceMeta": ".fhir_resource_meta",
-    "FhirSearchResponse": ".fhir_search_response",
 }
 
 
@@ -60,9 +54,6 @@ __all__ = [
     "FhirBundleEntryItemRequest",
     "FhirBundleEntryItemRequestMethod",
     "FhirBundleEntryItemResponse",
-    "FhirPatchRequestBodyItem",
-    "FhirPatchRequestBodyItemOp",
     "FhirResource",
     "FhirResourceMeta",
-    "FhirSearchResponse",
 ]

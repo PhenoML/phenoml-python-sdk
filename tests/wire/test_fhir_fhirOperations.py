@@ -1,13 +1,14 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest, FhirPatchRequestBodyItem
+from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
+from phenoml.fhir.fhir_operations import PatchRequestBodyItem
 
 
-def test_fhir_search() -> None:
+def test_fhir_fhirOperations_search() -> None:
     """Test search endpoint with WireMock"""
-    test_id = "fhir.search.0"
+    test_id = "fhir.fhir_operations.search.0"
     client = get_client(test_id)
-    client.fhir.search(
+    client.fhir.fhir_operations.search(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -16,11 +17,11 @@ def test_fhir_search() -> None:
     verify_request_count(test_id, "GET", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
-def test_fhir_create() -> None:
+def test_fhir_fhirOperations_create() -> None:
     """Test create endpoint with WireMock"""
-    test_id = "fhir.create.0"
+    test_id = "fhir.fhir_operations.create.0"
     client = get_client(test_id)
-    client.fhir.create(
+    client.fhir.fhir_operations.create(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -30,11 +31,11 @@ def test_fhir_create() -> None:
     verify_request_count(test_id, "POST", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
-def test_fhir_upsert() -> None:
+def test_fhir_fhirOperations_upsert() -> None:
     """Test upsert endpoint with WireMock"""
-    test_id = "fhir.upsert.0"
+    test_id = "fhir.fhir_operations.upsert.0"
     client = get_client(test_id)
-    client.fhir.upsert(
+    client.fhir.fhir_operations.upsert(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -45,11 +46,11 @@ def test_fhir_upsert() -> None:
     verify_request_count(test_id, "PUT", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
-def test_fhir_delete() -> None:
+def test_fhir_fhirOperations_delete() -> None:
     """Test delete endpoint with WireMock"""
-    test_id = "fhir.delete.0"
+    test_id = "fhir.fhir_operations.delete.0"
     client = get_client(test_id)
-    client.fhir.delete(
+    client.fhir.fhir_operations.delete(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
@@ -58,17 +59,17 @@ def test_fhir_delete() -> None:
     verify_request_count(test_id, "DELETE", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
-def test_fhir_patch() -> None:
+def test_fhir_fhirOperations_patch() -> None:
     """Test patch endpoint with WireMock"""
-    test_id = "fhir.patch.0"
+    test_id = "fhir.fhir_operations.patch.0"
     client = get_client(test_id)
-    client.fhir.patch(
+    client.fhir.fhir_operations.patch(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
         request=[
-            FhirPatchRequestBodyItem(
+            PatchRequestBodyItem(
                 op="replace",
                 path="/name/0/family",
                 value="NewFamilyName",
@@ -78,11 +79,11 @@ def test_fhir_patch() -> None:
     verify_request_count(test_id, "PATCH", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
-def test_fhir_execute_bundle() -> None:
+def test_fhir_fhirOperations_execute_bundle() -> None:
     """Test executeBundle endpoint with WireMock"""
-    test_id = "fhir.execute_bundle.0"
+    test_id = "fhir.fhir_operations.execute_bundle.0"
     client = get_client(test_id)
-    client.fhir.execute_bundle(
+    client.fhir.fhir_operations.execute_bundle(
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",

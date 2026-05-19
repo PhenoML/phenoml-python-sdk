@@ -4,13 +4,13 @@ import typing
 
 import pydantic
 import typing_extensions
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ...core.serialization import FieldMetadata
-from .fhir_patch_request_body_item_op import FhirPatchRequestBodyItemOp
+from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ....core.serialization import FieldMetadata
+from .patch_request_body_item_op import PatchRequestBodyItemOp
 
 
-class FhirPatchRequestBodyItem(UniversalBaseModel):
-    op: FhirPatchRequestBodyItemOp = pydantic.Field()
+class PatchRequestBodyItem(UniversalBaseModel):
+    op: PatchRequestBodyItemOp = pydantic.Field()
     """
     The operation to perform
     """

@@ -16,13 +16,13 @@ from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.not_found_error import NotFoundError
 from .errors.unauthorized_error import UnauthorizedError
+from .types.delete_response import DeleteResponse
 from .types.fhir_provider_add_auth_config_request import FhirProviderAddAuthConfigRequest
 from .types.fhir_provider_create_request_auth import FhirProviderCreateRequestAuth
-from .types.fhir_provider_delete_response import FhirProviderDeleteResponse
 from .types.fhir_provider_list_response import FhirProviderListResponse
-from .types.fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
 from .types.fhir_provider_response import FhirProviderResponse
 from .types.provider import Provider
+from .types.remove_auth_config_response import RemoveAuthConfigResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -298,7 +298,7 @@ class RawFhirProviderClient:
 
     def delete(
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[FhirProviderDeleteResponse]:
+    ) -> HttpResponse[DeleteResponse]:
         """
         Deletes a FHIR provider.
 
@@ -314,7 +314,7 @@ class RawFhirProviderClient:
 
         Returns
         -------
-        HttpResponse[FhirProviderDeleteResponse]
+        HttpResponse[DeleteResponse]
             FHIR provider deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -325,9 +325,9 @@ class RawFhirProviderClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirProviderDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=FhirProviderDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -616,7 +616,7 @@ class RawFhirProviderClient:
 
     def remove_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[FhirProviderRemoveAuthConfigResponse]:
+    ) -> HttpResponse[RemoveAuthConfigResponse]:
         """
         Removes an authentication configuration from a FHIR provider.
         Cannot remove the currently active auth configuration.
@@ -636,7 +636,7 @@ class RawFhirProviderClient:
 
         Returns
         -------
-        HttpResponse[FhirProviderRemoveAuthConfigResponse]
+        HttpResponse[RemoveAuthConfigResponse]
             Auth configuration removed successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -654,9 +654,9 @@ class RawFhirProviderClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirProviderRemoveAuthConfigResponse,
+                    RemoveAuthConfigResponse,
                     parse_obj_as(
-                        type_=FhirProviderRemoveAuthConfigResponse,  # type: ignore
+                        type_=RemoveAuthConfigResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -995,7 +995,7 @@ class AsyncRawFhirProviderClient:
 
     async def delete(
         self, fhir_provider_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[FhirProviderDeleteResponse]:
+    ) -> AsyncHttpResponse[DeleteResponse]:
         """
         Deletes a FHIR provider.
 
@@ -1011,7 +1011,7 @@ class AsyncRawFhirProviderClient:
 
         Returns
         -------
-        AsyncHttpResponse[FhirProviderDeleteResponse]
+        AsyncHttpResponse[DeleteResponse]
             FHIR provider deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1022,9 +1022,9 @@ class AsyncRawFhirProviderClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirProviderDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=FhirProviderDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1313,7 +1313,7 @@ class AsyncRawFhirProviderClient:
 
     async def remove_auth_config(
         self, fhir_provider_id: str, *, auth_config_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[FhirProviderRemoveAuthConfigResponse]:
+    ) -> AsyncHttpResponse[RemoveAuthConfigResponse]:
         """
         Removes an authentication configuration from a FHIR provider.
         Cannot remove the currently active auth configuration.
@@ -1333,7 +1333,7 @@ class AsyncRawFhirProviderClient:
 
         Returns
         -------
-        AsyncHttpResponse[FhirProviderRemoveAuthConfigResponse]
+        AsyncHttpResponse[RemoveAuthConfigResponse]
             Auth configuration removed successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1351,9 +1351,9 @@ class AsyncRawFhirProviderClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirProviderRemoveAuthConfigResponse,
+                    RemoveAuthConfigResponse,
                     parse_obj_as(
-                        type_=FhirProviderRemoveAuthConfigResponse,  # type: ignore
+                        type_=RemoveAuthConfigResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

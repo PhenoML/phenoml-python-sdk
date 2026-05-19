@@ -1,3 +1,7 @@
+## 13.0.1 - 2026-05-19
+* SDK regeneration
+* Unable to analyze changes with AI, incrementing PATCH version.
+
 ## 13.0.0 - 2026-05-15
 ### Breaking Changes
 * **`call()`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the method for calling an MCP server tool has been removed; delete any call sites using `client.tools.mcp_server.tools.call(...)`.

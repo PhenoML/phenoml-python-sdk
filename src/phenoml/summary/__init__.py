@@ -6,31 +6,32 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import (
-        CreateSummaryRequestMode,
-        CreateSummaryResponse,
-        CreateSummaryTemplateResponse,
-        SummaryDeleteTemplateResponse,
-        SummaryGetTemplateResponse,
-        SummaryListTemplatesResponse,
-        SummaryTemplate,
-        SummaryUpdateTemplateResponse,
-    )
+    from .types import CreateSummaryResponse, CreateSummaryTemplateResponse, SummaryTemplate
     from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from . import summary_generation, summary_templates
+    from .summary_generation import CreateSummaryRequestMode
+    from .summary_templates import (
+        DeleteTemplateResponse,
+        GetTemplateResponse,
+        ListTemplatesResponse,
+        UpdateTemplateResponse,
+    )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
-    "CreateSummaryRequestMode": ".types",
+    "CreateSummaryRequestMode": ".summary_generation",
     "CreateSummaryResponse": ".types",
     "CreateSummaryTemplateResponse": ".types",
+    "DeleteTemplateResponse": ".summary_templates",
     "ForbiddenError": ".errors",
+    "GetTemplateResponse": ".summary_templates",
     "InternalServerError": ".errors",
+    "ListTemplatesResponse": ".summary_templates",
     "NotFoundError": ".errors",
-    "SummaryDeleteTemplateResponse": ".types",
-    "SummaryGetTemplateResponse": ".types",
-    "SummaryListTemplatesResponse": ".types",
     "SummaryTemplate": ".types",
-    "SummaryUpdateTemplateResponse": ".types",
     "UnauthorizedError": ".errors",
+    "UpdateTemplateResponse": ".summary_templates",
+    "summary_generation": ".summary_generation",
+    "summary_templates": ".summary_templates",
 }
 
 
@@ -60,13 +61,15 @@ __all__ = [
     "CreateSummaryRequestMode",
     "CreateSummaryResponse",
     "CreateSummaryTemplateResponse",
+    "DeleteTemplateResponse",
     "ForbiddenError",
+    "GetTemplateResponse",
     "InternalServerError",
+    "ListTemplatesResponse",
     "NotFoundError",
-    "SummaryDeleteTemplateResponse",
-    "SummaryGetTemplateResponse",
-    "SummaryListTemplatesResponse",
     "SummaryTemplate",
-    "SummaryUpdateTemplateResponse",
     "UnauthorizedError",
+    "UpdateTemplateResponse",
+    "summary_generation",
+    "summary_templates",
 ]

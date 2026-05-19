@@ -6,19 +6,15 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .bad_request_error import BadRequestError
-    from .forbidden_error import ForbiddenError
-    from .gateway_timeout_error import GatewayTimeoutError
-    from .internal_server_error import InternalServerError
-    from .not_found_error import NotFoundError
-    from .unauthorized_error import UnauthorizedError
+    from .delete_template_response import DeleteTemplateResponse
+    from .get_template_response import GetTemplateResponse
+    from .list_templates_response import ListTemplatesResponse
+    from .update_template_response import UpdateTemplateResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "BadRequestError": ".bad_request_error",
-    "ForbiddenError": ".forbidden_error",
-    "GatewayTimeoutError": ".gateway_timeout_error",
-    "InternalServerError": ".internal_server_error",
-    "NotFoundError": ".not_found_error",
-    "UnauthorizedError": ".unauthorized_error",
+    "DeleteTemplateResponse": ".delete_template_response",
+    "GetTemplateResponse": ".get_template_response",
+    "ListTemplatesResponse": ".list_templates_response",
+    "UpdateTemplateResponse": ".update_template_response",
 }
 
 
@@ -43,11 +39,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "BadRequestError",
-    "ForbiddenError",
-    "GatewayTimeoutError",
-    "InternalServerError",
-    "NotFoundError",
-    "UnauthorizedError",
-]
+__all__ = ["DeleteTemplateResponse", "GetTemplateResponse", "ListTemplatesResponse", "UpdateTemplateResponse"]

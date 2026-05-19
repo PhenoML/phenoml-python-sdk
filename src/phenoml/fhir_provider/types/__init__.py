@@ -8,6 +8,7 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .auth_method import AuthMethod
     from .client_secret_auth import ClientSecretAuth
+    from .delete_response import DeleteResponse
     from .fhir_provider_add_auth_config_request import (
         FhirProviderAddAuthConfigRequest,
         FhirProviderAddAuthConfigRequest_ClientSecret,
@@ -27,10 +28,8 @@ if typing.TYPE_CHECKING:
         FhirProviderCreateRequestAuth_OnBehalfOf,
         FhirProviderCreateRequestAuth_TokenPassthrough,
     )
-    from .fhir_provider_delete_response import FhirProviderDeleteResponse
     from .fhir_provider_list_response import FhirProviderListResponse
     from .fhir_provider_list_response_fhir_providers_item import FhirProviderListResponseFhirProvidersItem
-    from .fhir_provider_remove_auth_config_response import FhirProviderRemoveAuthConfigResponse
     from .fhir_provider_response import FhirProviderResponse
     from .fhir_provider_response_data import FhirProviderResponseData
     from .fhir_provider_sandbox_info import FhirProviderSandboxInfo
@@ -43,6 +42,7 @@ if typing.TYPE_CHECKING:
     from .no_auth import NoAuth
     from .on_behalf_of_auth import OnBehalfOfAuth
     from .provider import Provider
+    from .remove_auth_config_response import RemoveAuthConfigResponse
     from .role import Role
     from .service_account_key import ServiceAccountKey
     from .service_account_metadata import ServiceAccountMetadata
@@ -51,6 +51,7 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "AuthMethod": ".auth_method",
     "ClientSecretAuth": ".client_secret_auth",
+    "DeleteResponse": ".delete_response",
     "FhirProviderAddAuthConfigRequest": ".fhir_provider_add_auth_config_request",
     "FhirProviderAddAuthConfigRequest_ClientSecret": ".fhir_provider_add_auth_config_request",
     "FhirProviderAddAuthConfigRequest_GoogleHealthcare": ".fhir_provider_add_auth_config_request",
@@ -66,10 +67,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirProviderCreateRequestAuth_None": ".fhir_provider_create_request_auth",
     "FhirProviderCreateRequestAuth_OnBehalfOf": ".fhir_provider_create_request_auth",
     "FhirProviderCreateRequestAuth_TokenPassthrough": ".fhir_provider_create_request_auth",
-    "FhirProviderDeleteResponse": ".fhir_provider_delete_response",
     "FhirProviderListResponse": ".fhir_provider_list_response",
     "FhirProviderListResponseFhirProvidersItem": ".fhir_provider_list_response_fhir_providers_item",
-    "FhirProviderRemoveAuthConfigResponse": ".fhir_provider_remove_auth_config_response",
     "FhirProviderResponse": ".fhir_provider_response",
     "FhirProviderResponseData": ".fhir_provider_response_data",
     "FhirProviderSandboxInfo": ".fhir_provider_sandbox_info",
@@ -82,6 +81,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "NoAuth": ".no_auth",
     "OnBehalfOfAuth": ".on_behalf_of_auth",
     "Provider": ".provider",
+    "RemoveAuthConfigResponse": ".remove_auth_config_response",
     "Role": ".role",
     "ServiceAccountKey": ".service_account_key",
     "ServiceAccountMetadata": ".service_account_metadata",
@@ -114,6 +114,7 @@ def __dir__():
 __all__ = [
     "AuthMethod",
     "ClientSecretAuth",
+    "DeleteResponse",
     "FhirProviderAddAuthConfigRequest",
     "FhirProviderAddAuthConfigRequest_ClientSecret",
     "FhirProviderAddAuthConfigRequest_GoogleHealthcare",
@@ -129,10 +130,8 @@ __all__ = [
     "FhirProviderCreateRequestAuth_None",
     "FhirProviderCreateRequestAuth_OnBehalfOf",
     "FhirProviderCreateRequestAuth_TokenPassthrough",
-    "FhirProviderDeleteResponse",
     "FhirProviderListResponse",
     "FhirProviderListResponseFhirProvidersItem",
-    "FhirProviderRemoveAuthConfigResponse",
     "FhirProviderResponse",
     "FhirProviderResponseData",
     "FhirProviderSandboxInfo",
@@ -145,6 +144,7 @@ __all__ = [
     "NoAuth",
     "OnBehalfOfAuth",
     "Provider",
+    "RemoveAuthConfigResponse",
     "Role",
     "ServiceAccountKey",
     "ServiceAccountMetadata",

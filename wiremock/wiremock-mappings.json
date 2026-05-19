@@ -27,8 +27,8 @@
       }
     },
     {
-      "id": "7cd41dee-5c41-4d61-9a24-ee1ffc8e4e1c",
-      "name": "List user's agents - default",
+      "id": "c2c59d8b-d686-4aec-938a-9442c2837751",
+      "name": "List agents - default",
       "request": {
         "urlPathTemplate": "/agent/list",
         "method": "GET",
@@ -45,7 +45,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "7cd41dee-5c41-4d61-9a24-ee1ffc8e4e1c",
+      "uuid": "c2c59d8b-d686-4aec-938a-9442c2837751",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -557,7 +557,7 @@
       }
     },
     {
-      "id": "90d699f8-3488-4266-b64e-99586bb9102d",
+      "id": "ad73e857-f825-4c59-ab41-2e783be515c1",
       "name": "List available code systems - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems",
@@ -570,7 +570,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "90d699f8-3488-4266-b64e-99586bb9102d",
+      "uuid": "ad73e857-f825-4c59-ab41-2e783be515c1",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -584,7 +584,7 @@
       "postServeActions": []
     },
     {
-      "id": "669724ae-a821-46ef-8015-1a98b9d1376a",
+      "id": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
       "name": "Get code system detail - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -607,7 +607,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "669724ae-a821-46ef-8015-1a98b9d1376a",
+      "uuid": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -620,7 +620,7 @@
       }
     },
     {
-      "id": "99c9b87a-2490-44e8-9ea8-54e959db16d3",
+      "id": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
       "name": "Delete custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -643,7 +643,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "99c9b87a-2490-44e8-9ea8-54e959db16d3",
+      "uuid": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -656,7 +656,7 @@
       }
     },
     {
-      "id": "e3d99059-412c-40b9-8230-3137a7c69e47",
+      "id": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
       "name": "Export custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}/export",
@@ -679,7 +679,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e3d99059-412c-40b9-8230-3137a7c69e47",
+      "uuid": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -692,7 +692,7 @@
       }
     },
     {
-      "id": "5fdb8dbd-4872-4039-b1f5-367d13e5d207",
+      "id": "3553709f-8cbf-4576-8919-9e8efd3a0161",
       "name": "List codes in a code system - Browse ICD-10-CM",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}",
@@ -721,7 +721,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "5fdb8dbd-4872-4039-b1f5-367d13e5d207",
+      "uuid": "3553709f-8cbf-4576-8919-9e8efd3a0161",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -734,7 +734,7 @@
       }
     },
     {
-      "id": "9d0ec275-a631-42e2-a219-282bf98a1fc9",
+      "id": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
       "name": "Get a specific code - Look Up ICD-10 Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
@@ -760,7 +760,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "9d0ec275-a631-42e2-a219-282bf98a1fc9",
+      "uuid": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -773,7 +773,7 @@
       }
     },
     {
-      "id": "8024d675-7be3-415a-99a3-00c8d8260daa",
+      "id": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
       "name": "Semantic search (embedding-based) - Respiratory Symptoms",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
@@ -802,7 +802,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "8024d675-7be3-415a-99a3-00c8d8260daa",
+      "uuid": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -815,7 +815,7 @@
       }
     },
     {
-      "id": "4d2203c1-6f7f-4ee5-bcdb-2f7f2a66212b",
+      "id": "9cd67363-ab61-487d-9190-8a2a57b2fb63",
       "name": "Submit feedback on extraction results - default",
       "request": {
         "urlPathTemplate": "/construe/feedback",
@@ -828,7 +828,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "4d2203c1-6f7f-4ee5-bcdb-2f7f2a66212b",
+      "uuid": "9cd67363-ab61-487d-9190-8a2a57b2fb63",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -841,8 +841,8 @@
       }
     },
     {
-      "id": "42d17eab-057d-4a17-8887-3ab0031c0f0a",
-      "name": "Terminology server text search - Search by Code",
+      "id": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
+      "name": "Text search (keyword-based) - Search by Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
         "method": "GET",
@@ -870,7 +870,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "42d17eab-057d-4a17-8887-3ab0031c0f0a",
+      "uuid": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -883,8 +883,8 @@
       }
     },
     {
-      "id": "03372c39-458a-494e-b589-275c36616f9f",
-      "name": "Search or Get FHIR Resources - Search results as FHIR Bundle",
+      "id": "83050a38-7934-4df3-8577-e5550c3113d8",
+      "name": "Read or search FHIR resources - Search results as FHIR Bundle",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "GET",
@@ -904,7 +904,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "03372c39-458a-494e-b589-275c36616f9f",
+      "uuid": "83050a38-7934-4df3-8577-e5550c3113d8",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -917,8 +917,8 @@
       }
     },
     {
-      "id": "177116aa-b6a5-4c98-89f1-35bbe95877e7",
-      "name": "Create FHIR Resource - Create a new patient",
+      "id": "d8de9b3b-7fa7-4287-93cd-5faceec81d2b",
+      "name": "Create FHIR resource - Create a new patient",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "POST",
@@ -938,7 +938,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "177116aa-b6a5-4c98-89f1-35bbe95877e7",
+      "uuid": "d8de9b3b-7fa7-4287-93cd-5faceec81d2b",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -951,8 +951,8 @@
       }
     },
     {
-      "id": "ed620004-9f03-4461-9996-b82c610e3488",
-      "name": "Upsert FHIR Resource - Create or update a patient",
+      "id": "e821a877-4602-4c71-846a-746d77019a47",
+      "name": "Upsert FHIR resource - Create or update a patient",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PUT",
@@ -972,7 +972,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ed620004-9f03-4461-9996-b82c610e3488",
+      "uuid": "e821a877-4602-4c71-846a-746d77019a47",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -985,8 +985,8 @@
       }
     },
     {
-      "id": "de5b5e0e-6c38-461d-87cd-c2a903d7b190",
-      "name": "Delete FHIR Resource - default",
+      "id": "2de29dac-3919-436c-a075-697380cc5506",
+      "name": "Delete FHIR resource - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "DELETE",
@@ -1006,7 +1006,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "de5b5e0e-6c38-461d-87cd-c2a903d7b190",
+      "uuid": "2de29dac-3919-436c-a075-697380cc5506",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1019,8 +1019,8 @@
       }
     },
     {
-      "id": "a698d642-ad35-4b21-8360-5be27589da06",
-      "name": "Patch FHIR Resource - Replace patient's family name",
+      "id": "0f7f791b-ab42-425e-b8b2-d9b39407a707",
+      "name": "Patch FHIR resource - Replace patient's family name",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PATCH",
@@ -1040,7 +1040,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "a698d642-ad35-4b21-8360-5be27589da06",
+      "uuid": "0f7f791b-ab42-425e-b8b2-d9b39407a707",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1053,8 +1053,8 @@
       }
     },
     {
-      "id": "5aebd955-58eb-462d-b975-0fcc6b052117",
-      "name": "Execute FHIR Bundle Operation - Bundle execution response",
+      "id": "16d1a366-6342-4d6b-8d29-70be266b1537",
+      "name": "Execute FHIR bundle operation - Bundle execution response",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir",
         "method": "POST",
@@ -1071,7 +1071,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "5aebd955-58eb-462d-b975-0fcc6b052117",
+      "uuid": "16d1a366-6342-4d6b-8d29-70be266b1537",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1199,8 +1199,8 @@
       }
     },
     {
-      "id": "de6f5c38-d957-4d08-804a-72f77250d0ed",
-      "name": "Add authentication configuration to existing FHIR provider - default",
+      "id": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
+      "name": "Add authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/add-auth-config",
         "method": "PATCH",
@@ -1217,7 +1217,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "de6f5c38-d957-4d08-804a-72f77250d0ed",
+      "uuid": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1422,7 +1422,7 @@
       }
     },
     {
-      "id": "b100b9eb-fd86-438f-abf8-450c882a498c",
+      "id": "b56fde3c-97b6-472e-919f-ddc714cd2705",
       "name": "Extract multiple FHIR resources from a document - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/document/multi",
@@ -1435,7 +1435,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "b100b9eb-fd86-438f-abf8-450c882a498c",
+      "uuid": "b56fde3c-97b6-472e-919f-ddc714cd2705",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1448,7 +1448,7 @@
       }
     },
     {
-      "id": "4123bd18-b035-458b-ac3d-4931608223d4",
+      "id": "0a6b53ae-963a-4e87-913e-29ee66c35515",
       "name": "List all summary templates - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/templates",
@@ -1461,7 +1461,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "4123bd18-b035-458b-ac3d-4931608223d4",
+      "uuid": "0a6b53ae-963a-4e87-913e-29ee66c35515",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1475,7 +1475,7 @@
       "postServeActions": []
     },
     {
-      "id": "c52593c3-df16-4c84-875f-a758aa2015d6",
+      "id": "d894fa2d-4aca-462a-bc38-6eb073228b89",
       "name": "Create a new summary template - Discharge Summary Template",
       "request": {
         "urlPathTemplate": "/fhir2summary/template",
@@ -1488,7 +1488,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "c52593c3-df16-4c84-875f-a758aa2015d6",
+      "uuid": "d894fa2d-4aca-462a-bc38-6eb073228b89",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1501,7 +1501,7 @@
       }
     },
     {
-      "id": "aa9807bc-10d6-4c9c-8e54-1333c5ffab09",
+      "id": "0d80fec2-db23-4644-80f6-9760101644d3",
       "name": "Get a summary template by ID - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
@@ -1519,7 +1519,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "aa9807bc-10d6-4c9c-8e54-1333c5ffab09",
+      "uuid": "0d80fec2-db23-4644-80f6-9760101644d3",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1532,7 +1532,7 @@
       }
     },
     {
-      "id": "c0bf87a0-e716-49ba-ad2e-794ad31380c0",
+      "id": "0110a4a6-a1a9-42dd-854d-09cae60f8ddb",
       "name": "Update a summary template - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
@@ -1550,7 +1550,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "c0bf87a0-e716-49ba-ad2e-794ad31380c0",
+      "uuid": "0110a4a6-a1a9-42dd-854d-09cae60f8ddb",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1563,7 +1563,7 @@
       }
     },
     {
-      "id": "e7a90a09-c0d3-4d57-bae7-ea5542014440",
+      "id": "806d8577-c8f5-4635-ba41-722e3f627bc3",
       "name": "Delete a summary template - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
@@ -1581,7 +1581,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e7a90a09-c0d3-4d57-bae7-ea5542014440",
+      "uuid": "806d8577-c8f5-4635-ba41-722e3f627bc3",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1594,7 +1594,7 @@
       }
     },
     {
-      "id": "245bb28a-bc81-40de-8a0f-2656e8853cb6",
+      "id": "c07dd7e6-9ae3-420f-b600-6bf3672d6047",
       "name": "Generate a summary from FHIR resources - Narrative Summary",
       "request": {
         "urlPathTemplate": "/fhir2summary/create",
@@ -1607,7 +1607,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "245bb28a-bc81-40de-8a0f-2656e8853cb6",
+      "uuid": "c07dd7e6-9ae3-420f-b600-6bf3672d6047",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1620,8 +1620,8 @@
       }
     },
     {
-      "id": "887ad511-6840-4330-a0ae-0b20b9b22189",
-      "name": "Create and store FHIR resource - default",
+      "id": "8f4f0311-db13-495a-b8b0-a771b3dafe16",
+      "name": "Create FHIR resource from text and store it - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-create",
         "method": "POST"
@@ -1633,7 +1633,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "887ad511-6840-4330-a0ae-0b20b9b22189",
+      "uuid": "8f4f0311-db13-495a-b8b0-a771b3dafe16",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1672,8 +1672,8 @@
       }
     },
     {
-      "id": "4231d1ba-6f0d-4d6d-a6ee-ee019f19feee",
-      "name": "Search FHIR resources - default",
+      "id": "3ef3fb22-ce8d-4ff8-8f2f-0fc746a283c1",
+      "name": "Search FHIR resources from natural language - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-search",
         "method": "POST"
@@ -1685,7 +1685,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "4231d1ba-6f0d-4d6d-a6ee-ee019f19feee",
+      "uuid": "3ef3fb22-ce8d-4ff8-8f2f-0fc746a283c1",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1750,8 +1750,8 @@
       }
     },
     {
-      "id": "fca60f96-382c-4bdb-96a7-90e942548b13",
-      "name": "List MCP servers for a specific user - default",
+      "id": "6ff92961-ff91-4045-ad7b-91688d4188e7",
+      "name": "List MCP servers - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/list",
         "method": "GET"
@@ -1763,7 +1763,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "fca60f96-382c-4bdb-96a7-90e942548b13",
+      "uuid": "6ff92961-ff91-4045-ad7b-91688d4188e7",
       "persistent": true,
       "priority": 3,
       "metadata": {

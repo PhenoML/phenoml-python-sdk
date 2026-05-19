@@ -22,13 +22,13 @@ from .errors.unauthorized_error import UnauthorizedError
 from .types.agent_chat_response import AgentChatResponse
 from .types.agent_chat_stream_event import AgentChatStreamEvent
 from .types.agent_create_request_provider import AgentCreateRequestProvider
-from .types.agent_delete_response import AgentDeleteResponse
-from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
-from .types.agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
-from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
-from .types.agent_list_response import AgentListResponse
 from .types.agent_response import AgentResponse
+from .types.delete_response import DeleteResponse
+from .types.get_chat_messages_request_order import GetChatMessagesRequestOrder
+from .types.get_chat_messages_request_role import GetChatMessagesRequestRole
+from .types.get_chat_messages_response import GetChatMessagesResponse
 from .types.json_patch import JsonPatch
+from .types.list_response import ListResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -171,7 +171,7 @@ class RawAgentClient:
 
     def list(
         self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AgentListResponse]:
+    ) -> HttpResponse[ListResponse]:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
@@ -185,7 +185,7 @@ class RawAgentClient:
 
         Returns
         -------
-        HttpResponse[AgentListResponse]
+        HttpResponse[ListResponse]
             Agents retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -199,9 +199,9 @@ class RawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentListResponse,
+                    ListResponse,
                     parse_obj_as(
-                        type_=AgentListResponse,  # type: ignore
+                        type_=ListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -480,7 +480,7 @@ class RawAgentClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AgentDeleteResponse]:
+    ) -> HttpResponse[DeleteResponse]:
         """
         Deletes an existing agent
 
@@ -494,7 +494,7 @@ class RawAgentClient:
 
         Returns
         -------
-        HttpResponse[AgentDeleteResponse]
+        HttpResponse[DeleteResponse]
             Agent deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -505,9 +505,9 @@ class RawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=AgentDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -967,10 +967,10 @@ class RawAgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        role: typing.Optional[GetChatMessagesRequestRole] = None,
+        order: typing.Optional[GetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AgentGetChatMessagesResponse]:
+    ) -> HttpResponse[GetChatMessagesResponse]:
         """
         Retrieves a list of chat messages for a given chat session
 
@@ -982,7 +982,7 @@ class RawAgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[AgentGetChatMessagesRequestRole]
+        role : typing.Optional[GetChatMessagesRequestRole]
             Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
             If not specified, messages with all roles are returned.
 
@@ -992,7 +992,7 @@ class RawAgentClient:
             - `model` - Function/tool call requests from the model
             - `function` - Function/tool call results
 
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+        order : typing.Optional[GetChatMessagesRequestOrder]
             Order of messages
 
         request_options : typing.Optional[RequestOptions]
@@ -1000,7 +1000,7 @@ class RawAgentClient:
 
         Returns
         -------
-        HttpResponse[AgentGetChatMessagesResponse]
+        HttpResponse[GetChatMessagesResponse]
             Chat messages retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -1017,9 +1017,9 @@ class RawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentGetChatMessagesResponse,
+                    GetChatMessagesResponse,
                     parse_obj_as(
-                        type_=AgentGetChatMessagesResponse,  # type: ignore
+                        type_=GetChatMessagesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1203,7 +1203,7 @@ class AsyncRawAgentClient:
 
     async def list(
         self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AgentListResponse]:
+    ) -> AsyncHttpResponse[ListResponse]:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
@@ -1217,7 +1217,7 @@ class AsyncRawAgentClient:
 
         Returns
         -------
-        AsyncHttpResponse[AgentListResponse]
+        AsyncHttpResponse[ListResponse]
             Agents retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1231,9 +1231,9 @@ class AsyncRawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentListResponse,
+                    ListResponse,
                     parse_obj_as(
-                        type_=AgentListResponse,  # type: ignore
+                        type_=ListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1514,7 +1514,7 @@ class AsyncRawAgentClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AgentDeleteResponse]:
+    ) -> AsyncHttpResponse[DeleteResponse]:
         """
         Deletes an existing agent
 
@@ -1528,7 +1528,7 @@ class AsyncRawAgentClient:
 
         Returns
         -------
-        AsyncHttpResponse[AgentDeleteResponse]
+        AsyncHttpResponse[DeleteResponse]
             Agent deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1539,9 +1539,9 @@ class AsyncRawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=AgentDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -2001,10 +2001,10 @@ class AsyncRawAgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        role: typing.Optional[GetChatMessagesRequestRole] = None,
+        order: typing.Optional[GetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AgentGetChatMessagesResponse]:
+    ) -> AsyncHttpResponse[GetChatMessagesResponse]:
         """
         Retrieves a list of chat messages for a given chat session
 
@@ -2016,7 +2016,7 @@ class AsyncRawAgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[AgentGetChatMessagesRequestRole]
+        role : typing.Optional[GetChatMessagesRequestRole]
             Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
             If not specified, messages with all roles are returned.
 
@@ -2026,7 +2026,7 @@ class AsyncRawAgentClient:
             - `model` - Function/tool call requests from the model
             - `function` - Function/tool call results
 
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+        order : typing.Optional[GetChatMessagesRequestOrder]
             Order of messages
 
         request_options : typing.Optional[RequestOptions]
@@ -2034,7 +2034,7 @@ class AsyncRawAgentClient:
 
         Returns
         -------
-        AsyncHttpResponse[AgentGetChatMessagesResponse]
+        AsyncHttpResponse[GetChatMessagesResponse]
             Chat messages retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -2051,9 +2051,9 @@ class AsyncRawAgentClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AgentGetChatMessagesResponse,
+                    GetChatMessagesResponse,
                     parse_obj_as(
-                        type_=AgentGetChatMessagesResponse,  # type: ignore
+                        type_=GetChatMessagesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

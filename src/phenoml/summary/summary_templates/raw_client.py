@@ -3,88 +3,66 @@
 import typing
 from json.decoder import JSONDecodeError
 
-from ..core.api_error import ApiError
-from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import encode_path_param
-from ..core.parse_error import ParsingError
-from ..core.pydantic_utilities import parse_obj_as
-from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
-from .errors.bad_request_error import BadRequestError
-from .errors.forbidden_error import ForbiddenError
-from .errors.gateway_timeout_error import GatewayTimeoutError
-from .errors.internal_server_error import InternalServerError
-from .errors.not_found_error import NotFoundError
-from .errors.unauthorized_error import UnauthorizedError
-from .types.create_workflow_request_fhir_provider_id import CreateWorkflowRequestFhirProviderId
-from .types.create_workflow_response import CreateWorkflowResponse
-from .types.delete_response import DeleteResponse
-from .types.execute_workflow_response import ExecuteWorkflowResponse
-from .types.get_response import GetResponse
-from .types.list_workflows_response import ListWorkflowsResponse
-from .types.update_response import UpdateResponse
-from .types.update_workflow_request_fhir_provider_id import UpdateWorkflowRequestFhirProviderId
+from ...core.api_error import ApiError
+from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ...core.http_response import AsyncHttpResponse, HttpResponse
+from ...core.jsonable_encoder import encode_path_param
+from ...core.parse_error import ParsingError
+from ...core.pydantic_utilities import parse_obj_as
+from ...core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
+from ..errors.forbidden_error import ForbiddenError
+from ..errors.internal_server_error import InternalServerError
+from ..errors.not_found_error import NotFoundError
+from ..errors.unauthorized_error import UnauthorizedError
+from ..types.create_summary_template_response import CreateSummaryTemplateResponse
+from .types.delete_template_response import DeleteTemplateResponse
+from .types.get_template_response import GetTemplateResponse
+from .types.list_templates_response import ListTemplatesResponse
+from .types.update_template_response import UpdateTemplateResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class RawWorkflowsClient:
+class RawSummaryTemplatesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(
-        self, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ListWorkflowsResponse]:
+    def list_templates(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ListTemplatesResponse]:
         """
-        Retrieves all workflow definitions for the authenticated user
+        Retrieves all summary templates for the authenticated user
 
         Parameters
         ----------
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[ListWorkflowsResponse]
-            Successfully retrieved workflows
+        HttpResponse[ListTemplatesResponse]
+            Templates retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            "workflows",
+            "fhir2summary/templates",
             method="GET",
-            params={
-                "verbose": verbose,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListWorkflowsResponse,
+                    ListTemplatesResponse,
                     parse_obj_as(
-                        type_=ListWorkflowsResponse,  # type: ignore
+                        type_=ListTemplatesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -114,62 +92,58 @@ class RawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create(
+    def create_template(
         self,
         *,
         name: str,
-        workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Any],
-        fhir_provider_id: CreateWorkflowRequestFhirProviderId,
-        verbose: typing.Optional[bool] = None,
-        dynamic_generation: typing.Optional[bool] = OMIT,
+        example_summary: str,
+        target_resources: typing.Sequence[str],
+        mode: str,
+        description: typing.Optional[str] = OMIT,
+        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateWorkflowResponse]:
+    ) -> HttpResponse[CreateSummaryTemplateResponse]:
         """
-        Creates a new workflow definition with graph generation from workflow instructions
+        Creates a summary template from an example using LLM function calling
 
         Parameters
         ----------
         name : str
-            Human-readable name for the workflow
+            Name of the template
 
-        workflow_instructions : str
-            Natural language instructions that define the workflow logic
+        example_summary : str
+            Example summary note to generate template from
 
-        sample_data : typing.Dict[str, typing.Any]
-            Sample data to use for workflow graph generation
+        target_resources : typing.Sequence[str]
+            List of target FHIR resources
 
-        fhir_provider_id : CreateWorkflowRequestFhirProviderId
-            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+        mode : str
+            Template mode (stored with the template)
 
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
+        description : typing.Optional[str]
+            Description of the template
 
-        dynamic_generation : typing.Optional[bool]
-            Enable dynamic lang2fhir calls instead of pre-populated templates
+        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
+            Optional example FHIR data that corresponds to the example summary
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[CreateWorkflowResponse]
-            Successfully created workflow
+        HttpResponse[CreateSummaryTemplateResponse]
+            Template created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            "workflows",
+            "fhir2summary/template",
             method="POST",
-            params={
-                "verbose": verbose,
-            },
             json={
                 "name": name,
-                "workflow_instructions": workflow_instructions,
-                "sample_data": sample_data,
-                "fhir_provider_id": convert_and_respect_annotation_metadata(
-                    object_=fhir_provider_id, annotation=CreateWorkflowRequestFhirProviderId, direction="write"
-                ),
-                "dynamic_generation": dynamic_generation,
+                "description": description,
+                "example_summary": example_summary,
+                "target_resources": target_resources,
+                "example_fhir_data": example_fhir_data,
+                "mode": mode,
             },
             headers={
                 "content-type": "application/json",
@@ -180,9 +154,9 @@ class RawWorkflowsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateWorkflowResponse,
+                    CreateSummaryTemplateResponse,
                     parse_obj_as(
-                        type_=CreateWorkflowResponse,  # type: ignore
+                        type_=CreateSummaryTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -209,17 +183,6 @@ class RawWorkflowsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -240,42 +203,36 @@ class RawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(
-        self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GetResponse]:
+    def get_template(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[GetTemplateResponse]:
         """
-        Retrieves a workflow definition by its ID
+        Retrieves a specific summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to retrieve
-
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
+            Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[GetResponse]
-            Successfully retrieved workflow
+        HttpResponse[GetTemplateResponse]
+            Template retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="GET",
-            params={
-                "verbose": verbose,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetResponse,
+                    GetTemplateResponse,
                     parse_obj_as(
-                        type_=GetResponse,  # type: ignore
+                        type_=GetTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -333,66 +290,54 @@ class RawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update(
+    def update_template(
         self,
         id: str,
         *,
         name: str,
-        workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Any],
-        fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
-        verbose: typing.Optional[bool] = None,
-        dynamic_generation: typing.Optional[bool] = OMIT,
+        template: str,
+        target_resources: typing.Sequence[str],
+        mode: str,
+        description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[UpdateResponse]:
+    ) -> HttpResponse[UpdateTemplateResponse]:
         """
-        Updates an existing workflow definition
+        Updates an existing summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to update
+            Template ID
 
         name : str
-            Human-readable name for the workflow
 
-        workflow_instructions : str
-            Natural language instructions that define the workflow logic
+        template : str
+            Updated template with placeholders
 
-        sample_data : typing.Dict[str, typing.Any]
-            Sample data to use for workflow graph generation
+        target_resources : typing.Sequence[str]
 
-        fhir_provider_id : UpdateWorkflowRequestFhirProviderId
-            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+        mode : str
+            Template mode
 
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
-
-        dynamic_generation : typing.Optional[bool]
-            Enable dynamic lang2fhir calls instead of pre-populated templates
+        description : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[UpdateResponse]
-            Successfully updated workflow
+        HttpResponse[UpdateTemplateResponse]
+            Template updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="PUT",
-            params={
-                "verbose": verbose,
-            },
             json={
                 "name": name,
-                "workflow_instructions": workflow_instructions,
-                "sample_data": sample_data,
-                "fhir_provider_id": convert_and_respect_annotation_metadata(
-                    object_=fhir_provider_id, annotation=UpdateWorkflowRequestFhirProviderId, direction="write"
-                ),
-                "dynamic_generation": dynamic_generation,
+                "description": description,
+                "template": template,
+                "target_resources": target_resources,
+                "mode": mode,
             },
             headers={
                 "content-type": "application/json",
@@ -403,9 +348,9 @@ class RawWorkflowsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    UpdateResponse,
+                    UpdateTemplateResponse,
                     parse_obj_as(
-                        type_=UpdateResponse,  # type: ignore
+                        type_=UpdateTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -474,36 +419,36 @@ class RawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def delete(
+    def delete_template(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[DeleteResponse]:
+    ) -> HttpResponse[DeleteTemplateResponse]:
         """
-        Deletes a workflow definition by its ID
+        Deletes a summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to delete
+            Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[DeleteResponse]
-            Successfully deleted workflow
+        HttpResponse[DeleteTemplateResponse]
+            Template deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DeleteResponse,
+                    DeleteTemplateResponse,
                     parse_obj_as(
-                        type_=DeleteResponse,  # type: ignore
+                        type_=DeleteTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -561,189 +506,44 @@ class RawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def execute(
-        self,
-        id: str,
-        *,
-        input_data: typing.Dict[str, typing.Any],
-        preview: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ExecuteWorkflowResponse]:
-        """
-        Executes a workflow with provided input data and returns results
 
-        Parameters
-        ----------
-        id : str
-            ID of the workflow to execute
-
-        input_data : typing.Dict[str, typing.Any]
-            Input data for workflow execution
-
-        preview : typing.Optional[bool]
-            If true, create operations return mock resources instead of persisting to the FHIR server
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ExecuteWorkflowResponse]
-            Successfully executed workflow
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}/execute",
-            method="POST",
-            json={
-                "input_data": input_data,
-                "preview": preview,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ExecuteWorkflowResponse,
-                    parse_obj_as(
-                        type_=ExecuteWorkflowResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 504:
-                raise GatewayTimeoutError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-
-class AsyncRawWorkflowsClient:
+class AsyncRawSummaryTemplatesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def list(
-        self, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ListWorkflowsResponse]:
+    async def list_templates(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ListTemplatesResponse]:
         """
-        Retrieves all workflow definitions for the authenticated user
+        Retrieves all summary templates for the authenticated user
 
         Parameters
         ----------
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[ListWorkflowsResponse]
-            Successfully retrieved workflows
+        AsyncHttpResponse[ListTemplatesResponse]
+            Templates retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "workflows",
+            "fhir2summary/templates",
             method="GET",
-            params={
-                "verbose": verbose,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ListWorkflowsResponse,
+                    ListTemplatesResponse,
                     parse_obj_as(
-                        type_=ListWorkflowsResponse,  # type: ignore
+                        type_=ListTemplatesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -773,62 +573,58 @@ class AsyncRawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def create(
+    async def create_template(
         self,
         *,
         name: str,
-        workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Any],
-        fhir_provider_id: CreateWorkflowRequestFhirProviderId,
-        verbose: typing.Optional[bool] = None,
-        dynamic_generation: typing.Optional[bool] = OMIT,
+        example_summary: str,
+        target_resources: typing.Sequence[str],
+        mode: str,
+        description: typing.Optional[str] = OMIT,
+        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateWorkflowResponse]:
+    ) -> AsyncHttpResponse[CreateSummaryTemplateResponse]:
         """
-        Creates a new workflow definition with graph generation from workflow instructions
+        Creates a summary template from an example using LLM function calling
 
         Parameters
         ----------
         name : str
-            Human-readable name for the workflow
+            Name of the template
 
-        workflow_instructions : str
-            Natural language instructions that define the workflow logic
+        example_summary : str
+            Example summary note to generate template from
 
-        sample_data : typing.Dict[str, typing.Any]
-            Sample data to use for workflow graph generation
+        target_resources : typing.Sequence[str]
+            List of target FHIR resources
 
-        fhir_provider_id : CreateWorkflowRequestFhirProviderId
-            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+        mode : str
+            Template mode (stored with the template)
 
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
+        description : typing.Optional[str]
+            Description of the template
 
-        dynamic_generation : typing.Optional[bool]
-            Enable dynamic lang2fhir calls instead of pre-populated templates
+        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
+            Optional example FHIR data that corresponds to the example summary
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[CreateWorkflowResponse]
-            Successfully created workflow
+        AsyncHttpResponse[CreateSummaryTemplateResponse]
+            Template created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "workflows",
+            "fhir2summary/template",
             method="POST",
-            params={
-                "verbose": verbose,
-            },
             json={
                 "name": name,
-                "workflow_instructions": workflow_instructions,
-                "sample_data": sample_data,
-                "fhir_provider_id": convert_and_respect_annotation_metadata(
-                    object_=fhir_provider_id, annotation=CreateWorkflowRequestFhirProviderId, direction="write"
-                ),
-                "dynamic_generation": dynamic_generation,
+                "description": description,
+                "example_summary": example_summary,
+                "target_resources": target_resources,
+                "example_fhir_data": example_fhir_data,
+                "mode": mode,
             },
             headers={
                 "content-type": "application/json",
@@ -839,9 +635,9 @@ class AsyncRawWorkflowsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    CreateWorkflowResponse,
+                    CreateSummaryTemplateResponse,
                     parse_obj_as(
-                        type_=CreateWorkflowResponse,  # type: ignore
+                        type_=CreateSummaryTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -868,17 +664,6 @@ class AsyncRawWorkflowsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -899,42 +684,36 @@ class AsyncRawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def get(
-        self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetResponse]:
+    async def get_template(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[GetTemplateResponse]:
         """
-        Retrieves a workflow definition by its ID
+        Retrieves a specific summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to retrieve
-
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
+            Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[GetResponse]
-            Successfully retrieved workflow
+        AsyncHttpResponse[GetTemplateResponse]
+            Template retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="GET",
-            params={
-                "verbose": verbose,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetResponse,
+                    GetTemplateResponse,
                     parse_obj_as(
-                        type_=GetResponse,  # type: ignore
+                        type_=GetTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -992,66 +771,54 @@ class AsyncRawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def update(
+    async def update_template(
         self,
         id: str,
         *,
         name: str,
-        workflow_instructions: str,
-        sample_data: typing.Dict[str, typing.Any],
-        fhir_provider_id: UpdateWorkflowRequestFhirProviderId,
-        verbose: typing.Optional[bool] = None,
-        dynamic_generation: typing.Optional[bool] = OMIT,
+        template: str,
+        target_resources: typing.Sequence[str],
+        mode: str,
+        description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[UpdateResponse]:
+    ) -> AsyncHttpResponse[UpdateTemplateResponse]:
         """
-        Updates an existing workflow definition
+        Updates an existing summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to update
+            Template ID
 
         name : str
-            Human-readable name for the workflow
 
-        workflow_instructions : str
-            Natural language instructions that define the workflow logic
+        template : str
+            Updated template with placeholders
 
-        sample_data : typing.Dict[str, typing.Any]
-            Sample data to use for workflow graph generation
+        target_resources : typing.Sequence[str]
 
-        fhir_provider_id : UpdateWorkflowRequestFhirProviderId
-            FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
+        mode : str
+            Template mode
 
-        verbose : typing.Optional[bool]
-            If true, includes full workflow implementation details in workflow_details field
-
-        dynamic_generation : typing.Optional[bool]
-            Enable dynamic lang2fhir calls instead of pre-populated templates
+        description : typing.Optional[str]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[UpdateResponse]
-            Successfully updated workflow
+        AsyncHttpResponse[UpdateTemplateResponse]
+            Template updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="PUT",
-            params={
-                "verbose": verbose,
-            },
             json={
                 "name": name,
-                "workflow_instructions": workflow_instructions,
-                "sample_data": sample_data,
-                "fhir_provider_id": convert_and_respect_annotation_metadata(
-                    object_=fhir_provider_id, annotation=UpdateWorkflowRequestFhirProviderId, direction="write"
-                ),
-                "dynamic_generation": dynamic_generation,
+                "description": description,
+                "template": template,
+                "target_resources": target_resources,
+                "mode": mode,
             },
             headers={
                 "content-type": "application/json",
@@ -1062,9 +829,9 @@ class AsyncRawWorkflowsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    UpdateResponse,
+                    UpdateTemplateResponse,
                     parse_obj_as(
-                        type_=UpdateResponse,  # type: ignore
+                        type_=UpdateTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1133,36 +900,36 @@ class AsyncRawWorkflowsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def delete(
+    async def delete_template(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[DeleteResponse]:
+    ) -> AsyncHttpResponse[DeleteTemplateResponse]:
         """
-        Deletes a workflow definition by its ID
+        Deletes a summary template
 
         Parameters
         ----------
         id : str
-            ID of the workflow to delete
+            Template ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[DeleteResponse]
-            Successfully deleted workflow
+        AsyncHttpResponse[DeleteTemplateResponse]
+            Template deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}",
+            f"fhir2summary/template/{encode_path_param(id)}",
             method="DELETE",
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    DeleteResponse,
+                    DeleteTemplateResponse,
                     parse_obj_as(
-                        type_=DeleteResponse,  # type: ignore
+                        type_=DeleteTemplateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1202,134 +969,6 @@ class AsyncRawWorkflowsClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def execute(
-        self,
-        id: str,
-        *,
-        input_data: typing.Dict[str, typing.Any],
-        preview: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ExecuteWorkflowResponse]:
-        """
-        Executes a workflow with provided input data and returns results
-
-        Parameters
-        ----------
-        id : str
-            ID of the workflow to execute
-
-        input_data : typing.Dict[str, typing.Any]
-            Input data for workflow execution
-
-        preview : typing.Optional[bool]
-            If true, create operations return mock resources instead of persisting to the FHIR server
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ExecuteWorkflowResponse]
-            Successfully executed workflow
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"workflows/{encode_path_param(id)}/execute",
-            method="POST",
-            json={
-                "input_data": input_data,
-                "preview": preview,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ExecuteWorkflowResponse,
-                    parse_obj_as(
-                        type_=ExecuteWorkflowResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 504:
-                raise GatewayTimeoutError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,

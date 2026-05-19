@@ -7,12 +7,12 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawWorkflowsClient, RawWorkflowsClient
 from .types.create_workflow_request_fhir_provider_id import CreateWorkflowRequestFhirProviderId
 from .types.create_workflow_response import CreateWorkflowResponse
+from .types.delete_response import DeleteResponse
 from .types.execute_workflow_response import ExecuteWorkflowResponse
+from .types.get_response import GetResponse
 from .types.list_workflows_response import ListWorkflowsResponse
+from .types.update_response import UpdateResponse
 from .types.update_workflow_request_fhir_provider_id import UpdateWorkflowRequestFhirProviderId
-from .types.workflows_delete_response import WorkflowsDeleteResponse
-from .types.workflows_get_response import WorkflowsGetResponse
-from .types.workflows_update_response import WorkflowsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -143,7 +143,7 @@ class WorkflowsClient:
 
     def get(
         self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> WorkflowsGetResponse:
+    ) -> GetResponse:
         """
         Retrieves a workflow definition by its ID
 
@@ -160,7 +160,7 @@ class WorkflowsClient:
 
         Returns
         -------
-        WorkflowsGetResponse
+        GetResponse
             Successfully retrieved workflow
 
         Examples
@@ -190,7 +190,7 @@ class WorkflowsClient:
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> WorkflowsUpdateResponse:
+    ) -> UpdateResponse:
         """
         Updates an existing workflow definition
 
@@ -222,7 +222,7 @@ class WorkflowsClient:
 
         Returns
         -------
-        WorkflowsUpdateResponse
+        UpdateResponse
             Successfully updated workflow
 
         Examples
@@ -259,7 +259,7 @@ class WorkflowsClient:
         )
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> WorkflowsDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes a workflow definition by its ID
 
@@ -273,7 +273,7 @@ class WorkflowsClient:
 
         Returns
         -------
-        WorkflowsDeleteResponse
+        DeleteResponse
             Successfully deleted workflow
 
         Examples
@@ -486,7 +486,7 @@ class AsyncWorkflowsClient:
 
     async def get(
         self, id: str, *, verbose: typing.Optional[bool] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> WorkflowsGetResponse:
+    ) -> GetResponse:
         """
         Retrieves a workflow definition by its ID
 
@@ -503,7 +503,7 @@ class AsyncWorkflowsClient:
 
         Returns
         -------
-        WorkflowsGetResponse
+        GetResponse
             Successfully retrieved workflow
 
         Examples
@@ -541,7 +541,7 @@ class AsyncWorkflowsClient:
         verbose: typing.Optional[bool] = None,
         dynamic_generation: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> WorkflowsUpdateResponse:
+    ) -> UpdateResponse:
         """
         Updates an existing workflow definition
 
@@ -573,7 +573,7 @@ class AsyncWorkflowsClient:
 
         Returns
         -------
-        WorkflowsUpdateResponse
+        UpdateResponse
             Successfully updated workflow
 
         Examples
@@ -618,9 +618,7 @@ class AsyncWorkflowsClient:
         )
         return _response.data
 
-    async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> WorkflowsDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes a workflow definition by its ID
 
@@ -634,7 +632,7 @@ class AsyncWorkflowsClient:
 
         Returns
         -------
-        WorkflowsDeleteResponse
+        DeleteResponse
             Successfully deleted workflow
 
         Examples

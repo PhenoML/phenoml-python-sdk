@@ -13,11 +13,8 @@ if typing.TYPE_CHECKING:
         FhirBundleEntryItemRequest,
         FhirBundleEntryItemRequestMethod,
         FhirBundleEntryItemResponse,
-        FhirPatchRequestBodyItem,
-        FhirPatchRequestBodyItemOp,
         FhirResource,
         FhirResourceMeta,
-        FhirSearchResponse,
     )
     from .errors import (
         BadGatewayError,
@@ -28,6 +25,8 @@ if typing.TYPE_CHECKING:
         TooManyRequestsError,
         UnauthorizedError,
     )
+    from . import fhir_operations
+    from .fhir_operations import PatchRequestBodyItem, PatchRequestBodyItemOp, SearchResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "BadGatewayError": ".errors",
     "BadRequestError": ".errors",
@@ -37,16 +36,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirBundleEntryItemRequest": ".types",
     "FhirBundleEntryItemRequestMethod": ".types",
     "FhirBundleEntryItemResponse": ".types",
-    "FhirPatchRequestBodyItem": ".types",
-    "FhirPatchRequestBodyItemOp": ".types",
     "FhirResource": ".types",
     "FhirResourceMeta": ".types",
-    "FhirSearchResponse": ".types",
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
+    "PatchRequestBodyItem": ".fhir_operations",
+    "PatchRequestBodyItemOp": ".fhir_operations",
+    "SearchResponse": ".fhir_operations",
     "ServiceUnavailableError": ".errors",
     "TooManyRequestsError": ".errors",
     "UnauthorizedError": ".errors",
+    "fhir_operations": ".fhir_operations",
 }
 
 
@@ -80,14 +80,15 @@ __all__ = [
     "FhirBundleEntryItemRequest",
     "FhirBundleEntryItemRequestMethod",
     "FhirBundleEntryItemResponse",
-    "FhirPatchRequestBodyItem",
-    "FhirPatchRequestBodyItemOp",
     "FhirResource",
     "FhirResourceMeta",
-    "FhirSearchResponse",
     "InternalServerError",
     "NotFoundError",
+    "PatchRequestBodyItem",
+    "PatchRequestBodyItemOp",
+    "SearchResponse",
     "ServiceUnavailableError",
     "TooManyRequestsError",
     "UnauthorizedError",
+    "fhir_operations",
 ]
