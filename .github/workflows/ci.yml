@@ -62,6 +62,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Verify before tagging: a bad spec discovered later would leave the
+      # version tagged but unpublished, and subsequent runs would skip
+      # publish because the tag already exists.
+      - name: Verify bundled OpenAPI spec
+        uses: PhenoML/sdk-shared-actions/verify-openapi-spec@main
+        with:
+          spec-path: src/phenoml/openapi/openapi.json
+
       - name: Extract version and check tag
         id: check
         run: |
