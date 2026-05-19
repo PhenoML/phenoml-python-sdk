@@ -1,3 +1,7 @@
+## 13.1.0 - 2026-05-19
+### Added
+* **`GatewayTimeoutError`** — new exception class in `phenoml.workflows.errors` raised when a workflows API call receives an HTTP 504 Gateway Timeout response; catch it specifically to handle timeout scenarios distinct from other API errors.
+
 ## 13.0.0 - 2026-05-15
 ### Breaking Changes
 * **`call()`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the method for calling an MCP server tool has been removed; delete any call sites using `client.tools.mcp_server.tools.call(...)`.

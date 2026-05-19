@@ -31,7 +31,14 @@ if typing.TYPE_CHECKING:
         WorkflowsGetResponse,
         WorkflowsUpdateResponse,
     )
-    from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from .errors import (
+        BadRequestError,
+        ForbiddenError,
+        GatewayTimeoutError,
+        InternalServerError,
+        NotFoundError,
+        UnauthorizedError,
+    )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "CreateWorkflowRequestFhirProviderId": ".types",
@@ -40,6 +47,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ExecuteWorkflowResponse": ".types",
     "ExecuteWorkflowResponseResults": ".types",
     "ForbiddenError": ".errors",
+    "GatewayTimeoutError": ".errors",
     "InternalServerError": ".errors",
     "Lang2FhirCreateDefinition": ".types",
     "Lang2FhirSearchDefinition": ".types",
@@ -93,6 +101,7 @@ __all__ = [
     "ExecuteWorkflowResponse",
     "ExecuteWorkflowResponseResults",
     "ForbiddenError",
+    "GatewayTimeoutError",
     "InternalServerError",
     "Lang2FhirCreateDefinition",
     "Lang2FhirSearchDefinition",
