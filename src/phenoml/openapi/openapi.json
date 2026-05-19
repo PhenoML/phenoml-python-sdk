@@ -2,11 +2,12 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "0cb0b6e9a5e9580e8311ea4fa304ccfd37b4b147"
+    "version": "40a46d6a821a15ea309b71aefb9f5cff0deb6d82"
   },
   "paths": {
     "/agent/create": {
       "post": {
+        "operationId": "create",
         "summary": "Create a new agent",
         "description": "Creates a new PhenoAgent with specified configuration",
         "requestBody": {
@@ -90,7 +91,8 @@
     },
     "/agent/list": {
       "get": {
-        "summary": "List user's agents",
+        "operationId": "list",
+        "summary": "List agents",
         "description": "Retrieves a list of PhenoAgents belonging to the authenticated user",
         "parameters": [
           {
@@ -184,6 +186,7 @@
     },
     "/agent/{id}": {
       "get": {
+        "operationId": "get",
         "summary": "Get agent by ID",
         "description": "Retrieves a specific agent by its ID",
         "parameters": [
@@ -254,6 +257,7 @@
         ]
       },
       "put": {
+        "operationId": "update",
         "summary": "Update agent",
         "description": "Updates an existing agent's configuration",
         "parameters": [
@@ -350,6 +354,7 @@
         ]
       },
       "delete": {
+        "operationId": "delete",
         "summary": "Delete agent",
         "description": "Deletes an existing agent",
         "parameters": [
@@ -408,6 +413,7 @@
         ]
       },
       "patch": {
+        "operationId": "patch",
         "summary": "Patch agent",
         "description": "Patches an existing agent's configuration",
         "parameters": [
@@ -505,6 +511,7 @@
     },
     "/agent/chat": {
       "post": {
+        "operationId": "chat",
         "summary": "Chat with agent",
         "description": "Send a message to an agent and receive a JSON response.",
         "parameters": [
@@ -599,6 +606,7 @@
     },
     "/agent/stream-chat": {
       "post": {
+        "operationId": "streamChat",
         "summary": "Chat with agent (streaming)",
         "description": "Send a message to an agent and receive the response as a Server-Sent Events\n(SSE) stream. Events include message_start, content_delta, tool_use,\ntool_result, message_end, and error.\n",
         "parameters": [
@@ -662,6 +670,7 @@
     },
     "/agent/chat/messages": {
       "get": {
+        "operationId": "getChatMessages",
         "summary": "Get chat messages",
         "description": "Retrieves a list of chat messages for a given chat session",
         "parameters": [
@@ -798,6 +807,7 @@
     },
     "/agent/prompts": {
       "post": {
+        "operationId": "promptsCreate",
         "summary": "Create agent prompt",
         "description": "Creates a new agent prompt",
         "requestBody": {
@@ -868,6 +878,7 @@
     },
     "/agent/prompts/list": {
       "get": {
+        "operationId": "promptsList",
         "summary": "List agent prompts",
         "description": "Retrieves a list of agent prompts belonging to the authenticated user",
         "responses": {
@@ -943,6 +954,7 @@
     },
     "/agent/prompts/{id}": {
       "get": {
+        "operationId": "promptsGet",
         "summary": "Get prompt by ID",
         "description": "Retrieves a specific prompt by its ID",
         "parameters": [
@@ -1002,6 +1014,7 @@
         ]
       },
       "put": {
+        "operationId": "promptsUpdate",
         "summary": "Update prompt",
         "description": "Updates an existing prompt",
         "parameters": [
@@ -1085,6 +1098,7 @@
         ]
       },
       "patch": {
+        "operationId": "promptsPatch",
         "summary": "Patch prompt",
         "description": "Patches an existing prompt",
         "parameters": [
@@ -1164,6 +1178,7 @@
         ]
       },
       "delete": {
+        "operationId": "promptsDelete",
         "summary": "Delete prompt",
         "description": "Deletes a prompt",
         "parameters": [
@@ -1224,15 +1239,13 @@
     },
     "/auth/token": {
       "post": {
+        "operationId": "getLegacyToken",
         "summary": "Generate authentication token",
         "description": "Generates a JWT token using Basic Authentication with API credential client ID and secret.\n",
         "security": [
           {
             "BasicAuth": []
           }
-        ],
-        "tags": [
-          "Authentication"
         ],
         "responses": {
           "200": {
@@ -1307,11 +1320,9 @@
     },
     "/v2/auth/token": {
       "post": {
+        "operationId": "getToken",
         "summary": "Request an access token",
         "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with expiration information.\n",
-        "tags": [
-          "Authentication"
-        ],
         "security": [
           {
             "BasicAuth": []
@@ -1421,6 +1432,7 @@
     },
     "/cohort": {
       "post": {
+        "operationId": "analyze",
         "summary": "Analyze text for patient cohort criteria",
         "description": "Converts natural language text into structured FHIR search queries for patient cohort analysis",
         "requestBody": {
@@ -1490,6 +1502,7 @@
     },
     "/construe/upload": {
       "post": {
+        "operationId": "uploadCodeSystem",
         "summary": "Upload custom code system",
         "description": "Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.\nReturns 202 immediately; embedding generation runs asynchronously. Poll\nGET /construe/codes/systems/{codesystem}?version={version} to check when status\ntransitions from \"processing\" to \"ready\" or \"failed\".\n",
         "requestBody": {
@@ -1606,6 +1619,7 @@
     },
     "/construe/extract": {
       "post": {
+        "operationId": "extractCodes",
         "summary": "Extract medical codes from text",
         "description": "Converts natural language text into structured medical codes.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "requestBody": {
@@ -1942,6 +1956,7 @@
     },
     "/construe/codes/systems": {
       "get": {
+        "operationId": "listCodeSystems",
         "summary": "List available code systems",
         "description": "Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.\n",
         "responses": {
@@ -2017,6 +2032,7 @@
     },
     "/construe/codes/systems/{codesystem}": {
       "get": {
+        "operationId": "getCodeSystem",
         "summary": "Get code system detail",
         "description": "Returns full metadata for a single code system, including timestamps and builtin status.\n",
         "parameters": [
@@ -2081,6 +2097,7 @@
         ]
       },
       "delete": {
+        "operationId": "deleteCodeSystem",
         "summary": "Delete custom code system",
         "description": "Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.\nOnly available on dedicated instances. Large systems may take up to a minute to delete.\n",
         "parameters": [
@@ -2143,6 +2160,7 @@
     },
     "/construe/codes/systems/{codesystem}/export": {
       "get": {
+        "operationId": "exportCodeSystem",
         "summary": "Export custom code system",
         "description": "Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.\nThe exported file can be re-uploaded directly via POST /construe/upload with format \"json\".\nOnly available on dedicated instances. Builtin systems cannot be exported.\n",
         "parameters": [
@@ -2231,6 +2249,7 @@
     },
     "/construe/codes/{codesystem}": {
       "get": {
+        "operationId": "listCodes",
         "summary": "List codes in a code system",
         "description": "Returns a paginated list of all codes in the specified code system from the terminology server.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2405,6 +2424,7 @@
     },
     "/construe/codes/{codesystem}/{codeID}": {
       "get": {
+        "operationId": "getCode",
         "summary": "Get a specific code",
         "description": "Looks up a specific code in the terminology server and returns its details.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2515,6 +2535,7 @@
     },
     "/construe/codes/{codesystem}/search/semantic": {
       "get": {
+        "operationId": "searchSemantic",
         "summary": "Semantic search (embedding-based)",
         "description": "Performs semantic similarity search using vector embeddings.\n\n**Availability**: This endpoint works for both **built-in and custom** code systems.\n\n**When to use**: Best for natural language queries where you want to find conceptually\nrelated codes, even when different terminology is used. The search understands meaning,\nnot just keywords.\n\n**Examples**:\n- Query \"trouble breathing at night\" finds codes like \"Sleep apnea\", \"Orthopnea\",\n  \"Nocturnal dyspnea\" \u2014 semantically related but no exact keyword matches\n- Query \"heart problems\" finds \"Myocardial infarction\", \"Cardiac arrest\", \"Arrhythmia\"\n\n**Trade-offs**: Slower than text search (requires embedding generation), but finds\nconceptually similar results that keyword search would miss.\n\nSee also: `/search/text` for faster keyword-based lookup with typo tolerance.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2679,6 +2700,7 @@
     },
     "/construe/feedback": {
       "post": {
+        "operationId": "submitFeedback",
         "summary": "Submit feedback on extraction results",
         "description": "Submits user feedback on results from the Construe extraction endpoint.\nFeedback includes the full extraction result received and the result the user expected.\n",
         "requestBody": {
@@ -2757,7 +2779,8 @@
     },
     "/construe/codes/{codesystem}/search/text": {
       "get": {
-        "summary": "Terminology server text search",
+        "operationId": "searchText",
+        "summary": "Text search (keyword-based)",
         "description": "Performs fast full-text search over code IDs and descriptions.\n\n**Availability**: This endpoint is only available for **built-in code systems**.\nCustom code systems uploaded via `/construe/upload` are not indexed for full-text search\nand will return empty results. Use `/search/semantic` to search custom code systems.\n\n**When to use**: Best for autocomplete UIs, code lookup, or when users know part of\nthe code ID or specific keywords. Fast response times suitable for typeahead interfaces.\n\n**Features**:\n- Substring matching on code IDs (e.g., \"11.65\" finds \"E11.65\")\n- Typo tolerance on descriptions (not on code IDs)\n- Fast response times (~10-50ms)\n\n**Examples**:\n- Query \"E11\" finds all codes starting with E11 (diabetes codes)\n- Query \"diabtes\" (typo) still finds \"diabetes\" codes\n\n**Trade-offs**: Faster than semantic search, but only matches keywords/substrings.\nWon't find conceptually related codes with different terminology.\n\nSee also: `/search/semantic` for finding conceptually similar codes.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
           {
@@ -2918,6 +2941,7 @@
     },
     "/lang2fhir/create": {
       "post": {
+        "operationId": "create",
         "summary": "Create FHIR resource from text",
         "description": "Converts natural language text into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -3058,6 +3082,7 @@
     },
     "/lang2fhir/create/multi": {
       "post": {
+        "operationId": "createMulti",
         "summary": "Extract multiple FHIR resources from text",
         "description": "Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -3170,6 +3195,7 @@
     },
     "/lang2fhir/search": {
       "post": {
+        "operationId": "search",
         "summary": "Generate FHIR search parameters from text",
         "description": "Converts natural language text into FHIR search parameters.\nAutomatically identifies the appropriate FHIR resource type and generates valid search query parameters.\n\nSupported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,\nCoverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,\nMedication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,\nPractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,\nSchedule, ServiceRequest, Slot, and Specimen.\n",
         "requestBody": {
@@ -3233,6 +3259,7 @@
     },
     "/lang2fhir/profile/upload": {
       "post": {
+        "operationId": "uploadProfile",
         "summary": "Upload custom FHIR profile",
         "description": "Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.\n\nAll metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field\nfrom the StructureDefinition is used as the profile's unique identifier and lookup key.\nTo use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.\n\nUploads will be rejected if:\n- A built-in US Core or R4 base profile already exists with the same id\n- A custom profile with the same id has already been uploaded\n- A custom profile with the same url has already been uploaded\n",
         "requestBody": {
@@ -3310,6 +3337,7 @@
     },
     "/lang2fhir/document": {
       "post": {
+        "operationId": "document",
         "summary": "Convert document to FHIR resource",
         "description": "Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -3374,6 +3402,7 @@
     },
     "/lang2fhir/document/multi": {
       "post": {
+        "operationId": "documentMulti",
         "summary": "Extract multiple FHIR resources from a document",
         "description": "Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -3506,7 +3535,8 @@
     },
     "/tools/lang2fhir-and-create": {
       "post": {
-        "summary": "Create and store FHIR resource",
+        "operationId": "createFhirResource",
+        "summary": "Create FHIR resource from text and store it",
         "description": "Converts natural language to FHIR resource and optionally stores it in a FHIR server",
         "parameters": [
           {
@@ -3615,6 +3645,7 @@
     },
     "/tools/lang2fhir-and-create-multi": {
       "post": {
+        "operationId": "createFhirResourcesMulti",
         "summary": "Extract and store multiple FHIR resources",
         "description": "Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references and submitted as a transaction bundle.\nFor FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically\nresolve them via PUT requests after the initial bundle creation.\n",
         "parameters": [
@@ -3721,7 +3752,8 @@
     },
     "/tools/lang2fhir-and-search": {
       "post": {
-        "summary": "Search FHIR resources",
+        "operationId": "searchFhirResources",
+        "summary": "Search FHIR resources from natural language",
         "description": "Converts natural language to FHIR search parameters and executes search in FHIR server",
         "parameters": [
           {
@@ -3805,6 +3837,7 @@
     },
     "/tools/cohort": {
       "post": {
+        "operationId": "analyzeCohort",
         "summary": "Analyze patient cohorts",
         "description": "Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria",
         "parameters": [
@@ -3892,6 +3925,7 @@
     },
     "/tools/mcp-server/create": {
       "post": {
+        "operationId": "mcpServerCreate",
         "summary": "Create MCP server",
         "description": "Creates a new MCP server",
         "requestBody": {
@@ -3975,7 +4009,8 @@
     },
     "/tools/mcp-server/list": {
       "get": {
-        "summary": "List MCP servers for a specific user",
+        "operationId": "mcpServerList",
+        "summary": "List MCP servers",
         "description": "Lists all MCP servers for a specific user",
         "responses": {
           "200": {
@@ -4025,6 +4060,7 @@
     },
     "/tools/mcp-server/{mcp_server_id}": {
       "get": {
+        "operationId": "mcpServerGet",
         "summary": "Get MCP server by ID",
         "description": "Gets a MCP server by ID",
         "parameters": [
@@ -4076,6 +4112,7 @@
         ]
       },
       "delete": {
+        "operationId": "mcpServerDelete",
         "summary": "Delete MCP server by ID",
         "description": "Deletes a MCP server by ID",
         "parameters": [
@@ -4123,6 +4160,7 @@
     },
     "/tools/mcp-server/{mcp_server_id}/list": {
       "get": {
+        "operationId": "mcpServerToolsList",
         "summary": "List MCP server tools",
         "description": "Lists all MCP server tools for a specific MCP server",
         "parameters": [
@@ -4192,6 +4230,7 @@
     },
     "/tools/mcp-server/tool/{mcp_server_tool_id}": {
       "get": {
+        "operationId": "mcpServerToolsGet",
         "summary": "Get MCP server tool by ID",
         "description": "Gets a MCP server tool by ID",
         "parameters": [
@@ -4248,6 +4287,7 @@
         ]
       },
       "delete": {
+        "operationId": "mcpServerToolsDelete",
         "summary": "Delete MCP server tool by ID",
         "description": "Deletes a MCP server tool by ID",
         "parameters": [
@@ -4295,6 +4335,7 @@
     },
     "/fhir-provider": {
       "post": {
+        "operationId": "create",
         "summary": "Create FHIR provider",
         "description": "Creates a new FHIR provider configuration with authentication credentials.\n\nNote: The \"sandbox\" provider type cannot be created via this API - it is managed internally.\n",
         "requestBody": {
@@ -4375,6 +4416,7 @@
     },
     "/fhir-provider/list": {
       "get": {
+        "operationId": "list",
         "summary": "List FHIR providers",
         "description": "Retrieves a list of all active FHIR providers for the authenticated user.\n\nOn shared instances, only sandbox providers are returned.\nSandbox providers return FhirProviderSandboxInfo.\n",
         "responses": {
@@ -4435,6 +4477,7 @@
     },
     "/fhir-provider/{fhir_provider_id}": {
       "get": {
+        "operationId": "get",
         "summary": "Get FHIR provider by ID",
         "description": "Retrieves a specific FHIR provider configuration by its ID.\n\nSandbox providers return FhirProviderSandboxInfo.\nOn shared instances, only sandbox providers can be accessed.\n",
         "parameters": [
@@ -4499,6 +4542,7 @@
         ]
       },
       "delete": {
+        "operationId": "delete",
         "summary": "Delete FHIR provider",
         "description": "Deletes a FHIR provider.\n\nNote: Sandbox providers cannot be deleted.\n",
         "parameters": [
@@ -4559,7 +4603,8 @@
     },
     "/fhir-provider/{fhir_provider_id}/add-auth-config": {
       "patch": {
-        "summary": "Add authentication configuration to existing FHIR provider",
+        "operationId": "addAuthConfig",
+        "summary": "Add authentication configuration",
         "description": "Adds a new authentication configuration to an existing FHIR provider.\nThis enables key rotation and multiple auth configurations per provider.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
           {
@@ -4657,6 +4702,7 @@
     },
     "/fhir-provider/{fhir_provider_id}/set-active-auth-config": {
       "patch": {
+        "operationId": "setActiveAuthConfig",
         "summary": "Set active authentication configuration",
         "description": "Sets which authentication configuration should be active for a FHIR provider.\nOnly one auth config can be active at a time.\n\nIf the specified auth config is already active, the request succeeds without\nmaking any changes and returns a message indicating the config is already active.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
@@ -4752,6 +4798,7 @@
     },
     "/fhir-provider/{fhir_provider_id}/remove-auth-config": {
       "patch": {
+        "operationId": "removeAuthConfig",
         "summary": "Remove authentication configuration",
         "description": "Removes an authentication configuration from a FHIR provider.\nCannot remove the currently active auth configuration.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
@@ -4850,12 +4897,9 @@
     },
     "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "get": {
-        "summary": "Search or Get FHIR Resources",
+        "summary": "Read or search FHIR resources",
         "description": "Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "searchFhirResources",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "search",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5009,12 +5053,9 @@
         ]
       },
       "post": {
-        "summary": "Create FHIR Resource",
+        "summary": "Create FHIR resource",
         "description": "Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "createFhirResource",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "create",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5093,12 +5134,9 @@
         ]
       },
       "put": {
-        "summary": "Upsert FHIR Resource",
+        "summary": "Upsert FHIR resource",
         "description": "Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "upsertFhirResource",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "upsert",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5178,12 +5216,9 @@
         ]
       },
       "patch": {
-        "summary": "Patch FHIR Resource",
+        "summary": "Patch FHIR resource",
         "description": "Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.\n\nThe request body should contain an array of JSON Patch operations. Each operation specifies:\n- `op`: The operation type (add, remove, replace, move, copy, test)\n- `path`: JSON Pointer to the target location in the resource\n- `value`: The value to use (required for add, replace, and test operations)\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "patchFhirResource",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "patch",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5374,12 +5409,9 @@
         ]
       },
       "delete": {
-        "summary": "Delete FHIR Resource",
+        "summary": "Delete FHIR resource",
         "description": "Deletes a FHIR resource from the specified provider.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "deleteFhirResource",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "delete",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5449,12 +5481,9 @@
     },
     "/fhir-provider/{fhir_provider_id}/fhir": {
       "post": {
-        "summary": "Execute FHIR Bundle Operation",
+        "summary": "Execute FHIR bundle operation",
         "description": "Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.\n\nThe request body should contain a valid FHIR Bundle resource with transaction or batch type.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "executeFhirBundle",
-        "tags": [
-          "FHIR Operations"
-        ],
+        "operationId": "executeBundle",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -5578,6 +5607,7 @@
     },
     "/workflows": {
       "get": {
+        "operationId": "list",
         "summary": "List all workflows",
         "description": "Retrieves all workflow definitions for the authenticated user",
         "parameters": [
@@ -5663,6 +5693,7 @@
         ]
       },
       "post": {
+        "operationId": "create",
         "summary": "Create new workflow",
         "description": "Creates a new workflow definition with graph generation from workflow instructions",
         "parameters": [
@@ -5760,6 +5791,7 @@
     },
     "/workflows/{id}": {
       "get": {
+        "operationId": "get",
         "summary": "Get workflow by ID",
         "description": "Retrieves a workflow definition by its ID",
         "parameters": [
@@ -5868,6 +5900,7 @@
         ]
       },
       "put": {
+        "operationId": "update",
         "summary": "Update workflow",
         "description": "Updates an existing workflow definition",
         "parameters": [
@@ -5999,6 +6032,7 @@
         ]
       },
       "delete": {
+        "operationId": "delete",
         "summary": "Delete workflow",
         "description": "Deletes a workflow definition by its ID",
         "parameters": [
@@ -6060,6 +6094,7 @@
     },
     "/workflows/{id}/execute": {
       "post": {
+        "operationId": "execute",
         "summary": "Execute workflow",
         "description": "Executes a workflow with provided input data and returns results",
         "parameters": [
@@ -6283,6 +6318,9 @@
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Workflow execution exceeded the server-side time budget"
           }
         },
         "security": [
@@ -6294,11 +6332,9 @@
     },
     "/fhir2summary/templates": {
       "get": {
+        "operationId": "listTemplates",
         "summary": "List all summary templates",
         "description": "Retrieves all summary templates for the authenticated user",
-        "tags": [
-          "Summary Templates"
-        ],
         "responses": {
           "200": {
             "description": "Templates retrieved successfully",
@@ -6355,11 +6391,9 @@
     },
     "/fhir2summary/template": {
       "post": {
+        "operationId": "createTemplate",
         "summary": "Create a new summary template",
         "description": "Creates a summary template from an example using LLM function calling",
-        "tags": [
-          "Summary Templates"
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6439,11 +6473,9 @@
     },
     "/fhir2summary/template/{id}": {
       "get": {
+        "operationId": "getTemplate",
         "summary": "Get a summary template by ID",
         "description": "Retrieves a specific summary template",
-        "tags": [
-          "Summary Templates"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -6510,11 +6542,9 @@
         ]
       },
       "put": {
+        "operationId": "updateTemplate",
         "summary": "Update a summary template",
         "description": "Updates an existing summary template",
-        "tags": [
-          "Summary Templates"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -6608,11 +6638,9 @@
         ]
       },
       "delete": {
+        "operationId": "deleteTemplate",
         "summary": "Delete a summary template",
         "description": "Deletes a summary template",
-        "tags": [
-          "Summary Templates"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -6669,11 +6697,9 @@
     },
     "/fhir2summary/create": {
       "post": {
+        "operationId": "create",
         "summary": "Generate a summary from FHIR resources",
         "description": "Creates a summary from FHIR resources using one of three modes:\n- **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)\n- **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)\n- **ips**: Generates an International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG. Requires a Bundle with exactly one Patient resource (returns 400 error if no Patient or multiple Patients are present). Automatically filters resources to those referencing the patient and generates sections for allergies, medications, problems, immunizations, procedures, and vital signs.\n",
-        "tags": [
-          "Summary Generation"
-        ],
         "requestBody": {
           "required": true,
           "content": {
