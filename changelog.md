@@ -24,8 +24,6 @@
 * **`client.summary.templates`** — new sub-client (`TemplatesClient` / `AsyncTemplatesClient`) exposing `list()`, `create()`, `get()`, `update()`, `delete()` for summary templates.
 * **`phenoml.summary.templates`** — new submodule exporting `TemplatesListResponse`, `TemplatesGetResponse`, `TemplatesUpdateResponse`, `TemplatesDeleteResponse` (also re-exported from `phenoml.summary`).
 * **`phenoml.workflows.GatewayTimeoutError`** — new error class (HTTP 504) raised by `client.workflows.execute()` / async equivalent (and corresponding raw clients) when the upstream workflow execution times out.
-### Changed
-* **`pyproject.toml`** — `[tool.poetry] include` entry for `src/phenoml/openapi/openapi.json` removed; the bundled OpenAPI spec is no longer shipped in the published sdist/wheel.
 
 ## 13.0.0 - 2026-05-15
 ### Breaking Changes
