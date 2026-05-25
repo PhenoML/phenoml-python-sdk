@@ -10,13 +10,13 @@ from .raw_client import AsyncRawAgentClient, RawAgentClient
 from .types.agent_chat_response import AgentChatResponse
 from .types.agent_chat_stream_event import AgentChatStreamEvent
 from .types.agent_create_request_provider import AgentCreateRequestProvider
-from .types.agent_delete_response import AgentDeleteResponse
-from .types.agent_get_chat_messages_request_order import AgentGetChatMessagesRequestOrder
-from .types.agent_get_chat_messages_request_role import AgentGetChatMessagesRequestRole
-from .types.agent_get_chat_messages_response import AgentGetChatMessagesResponse
-from .types.agent_list_response import AgentListResponse
 from .types.agent_response import AgentResponse
+from .types.delete_response import DeleteResponse
+from .types.get_chat_messages_request_order import GetChatMessagesRequestOrder
+from .types.get_chat_messages_request_role import GetChatMessagesRequestRole
+from .types.get_chat_messages_response import GetChatMessagesResponse
 from .types.json_patch import JsonPatch
+from .types.list_response import ListResponse
 
 if typing.TYPE_CHECKING:
     from .prompts.client import AsyncPromptsClient, PromptsClient
@@ -118,7 +118,7 @@ class AgentClient:
 
     def list(
         self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AgentListResponse:
+    ) -> ListResponse:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
@@ -132,7 +132,7 @@ class AgentClient:
 
         Returns
         -------
-        AgentListResponse
+        ListResponse
             Agents retrieved successfully
 
         Examples
@@ -263,7 +263,7 @@ class AgentClient:
         )
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes an existing agent
 
@@ -277,7 +277,7 @@ class AgentClient:
 
         Returns
         -------
-        AgentDeleteResponse
+        DeleteResponse
             Agent deleted successfully
 
         Examples
@@ -507,10 +507,10 @@ class AgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        role: typing.Optional[GetChatMessagesRequestRole] = None,
+        order: typing.Optional[GetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentGetChatMessagesResponse:
+    ) -> GetChatMessagesResponse:
         """
         Retrieves a list of chat messages for a given chat session
 
@@ -522,7 +522,7 @@ class AgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[AgentGetChatMessagesRequestRole]
+        role : typing.Optional[GetChatMessagesRequestRole]
             Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
             If not specified, messages with all roles are returned.
 
@@ -532,7 +532,7 @@ class AgentClient:
             - `model` - Function/tool call requests from the model
             - `function` - Function/tool call results
 
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+        order : typing.Optional[GetChatMessagesRequestOrder]
             Order of messages
 
         request_options : typing.Optional[RequestOptions]
@@ -540,7 +540,7 @@ class AgentClient:
 
         Returns
         -------
-        AgentGetChatMessagesResponse
+        GetChatMessagesResponse
             Chat messages retrieved successfully
 
         Examples
@@ -678,7 +678,7 @@ class AsyncAgentClient:
 
     async def list(
         self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AgentListResponse:
+    ) -> ListResponse:
         """
         Retrieves a list of PhenoAgents belonging to the authenticated user
 
@@ -692,7 +692,7 @@ class AsyncAgentClient:
 
         Returns
         -------
-        AgentListResponse
+        ListResponse
             Agents retrieved successfully
 
         Examples
@@ -847,7 +847,7 @@ class AsyncAgentClient:
         )
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes an existing agent
 
@@ -861,7 +861,7 @@ class AsyncAgentClient:
 
         Returns
         -------
-        AgentDeleteResponse
+        DeleteResponse
             Agent deleted successfully
 
         Examples
@@ -1124,10 +1124,10 @@ class AsyncAgentClient:
         *,
         chat_session_id: str,
         num_messages: typing.Optional[int] = None,
-        role: typing.Optional[AgentGetChatMessagesRequestRole] = None,
-        order: typing.Optional[AgentGetChatMessagesRequestOrder] = None,
+        role: typing.Optional[GetChatMessagesRequestRole] = None,
+        order: typing.Optional[GetChatMessagesRequestOrder] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentGetChatMessagesResponse:
+    ) -> GetChatMessagesResponse:
         """
         Retrieves a list of chat messages for a given chat session
 
@@ -1139,7 +1139,7 @@ class AsyncAgentClient:
         num_messages : typing.Optional[int]
             Number of messages to return
 
-        role : typing.Optional[AgentGetChatMessagesRequestRole]
+        role : typing.Optional[GetChatMessagesRequestRole]
             Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
             If not specified, messages with all roles are returned.
 
@@ -1149,7 +1149,7 @@ class AsyncAgentClient:
             - `model` - Function/tool call requests from the model
             - `function` - Function/tool call results
 
-        order : typing.Optional[AgentGetChatMessagesRequestOrder]
+        order : typing.Optional[GetChatMessagesRequestOrder]
             Order of messages
 
         request_options : typing.Optional[RequestOptions]
@@ -1157,7 +1157,7 @@ class AsyncAgentClient:
 
         Returns
         -------
-        AgentGetChatMessagesResponse
+        GetChatMessagesResponse
             Chat messages retrieved successfully
 
         Examples

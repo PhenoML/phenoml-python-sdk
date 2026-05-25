@@ -4,17 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .workflow_definition import WorkflowDefinition
-from .workflow_response import WorkflowResponse
 
 
-class WorkflowsGetResponse(UniversalBaseModel):
-    success: typing.Optional[bool] = None
-    workflow: typing.Optional[WorkflowResponse] = None
-    workflow_details: typing.Optional[WorkflowDefinition] = pydantic.Field(default=None)
-    """
-    Only included when verbose=true - contains full implementation details
-    """
+class UploadCodeSystemResponse(UniversalBaseModel):
+    status: typing.Optional[str] = None
+    name: typing.Optional[str] = None
+    version: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

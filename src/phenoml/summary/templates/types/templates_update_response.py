@@ -3,11 +3,11 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .summary_template import SummaryTemplate
+from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.summary_template import SummaryTemplate
 
 
-class SummaryUpdateTemplateResponse(UniversalBaseModel):
+class TemplatesUpdateResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
     template: typing.Optional[SummaryTemplate] = None

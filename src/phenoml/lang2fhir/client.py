@@ -14,8 +14,8 @@ from .types.document_multi_request_detection_effort import DocumentMultiRequestD
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
 from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
-from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
+from .types.upload_profile_response import UploadProfileResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -211,7 +211,7 @@ class Lang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         profile_context: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Lang2FhirUploadProfileResponse:
+    ) -> UploadProfileResponse:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
@@ -240,7 +240,7 @@ class Lang2FhirClient:
 
         Returns
         -------
-        Lang2FhirUploadProfileResponse
+        UploadProfileResponse
             Profile successfully uploaded
 
         Examples
@@ -321,7 +321,7 @@ class Lang2FhirClient:
         )
         return _response.data
 
-    def extract_multiple_fhir_resources_from_a_document(
+    def document_multi(
         self,
         *,
         version: str,
@@ -381,13 +381,13 @@ class Lang2FhirClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+        client.lang2fhir.document_multi(
             version="R4",
             content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
             provider="medplum",
         )
         """
-        _response = self._raw_client.extract_multiple_fhir_resources_from_a_document(
+        _response = self._raw_client.document_multi(
             version=version,
             content=content,
             provider=provider,
@@ -614,7 +614,7 @@ class AsyncLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         profile_context: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Lang2FhirUploadProfileResponse:
+    ) -> UploadProfileResponse:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
@@ -643,7 +643,7 @@ class AsyncLang2FhirClient:
 
         Returns
         -------
-        Lang2FhirUploadProfileResponse
+        UploadProfileResponse
             Profile successfully uploaded
 
         Examples
@@ -740,7 +740,7 @@ class AsyncLang2FhirClient:
         )
         return _response.data
 
-    async def extract_multiple_fhir_resources_from_a_document(
+    async def document_multi(
         self,
         *,
         version: str,
@@ -805,7 +805,7 @@ class AsyncLang2FhirClient:
 
 
         async def main() -> None:
-            await client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+            await client.lang2fhir.document_multi(
                 version="R4",
                 content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
                 provider="medplum",
@@ -814,7 +814,7 @@ class AsyncLang2FhirClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.extract_multiple_fhir_resources_from_a_document(
+        _response = await self._raw_client.document_multi(
             version=version,
             content=content,
             provider=provider,

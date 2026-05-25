@@ -1,6 +1,6 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest, FhirPatchRequestBodyItem
+from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest, PatchRequestBodyItem
 
 
 def test_fhir_search() -> None:
@@ -68,7 +68,7 @@ def test_fhir_patch() -> None:
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
         request=[
-            FhirPatchRequestBodyItem(
+            PatchRequestBodyItem(
                 op="replace",
                 path="/name/0/family",
                 value="NewFamilyName",

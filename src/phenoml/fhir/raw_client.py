@@ -21,10 +21,10 @@ from .errors.unauthorized_error import UnauthorizedError
 from .types.error_response import ErrorResponse
 from .types.fhir_bundle import FhirBundle
 from .types.fhir_bundle_entry_item import FhirBundleEntryItem
-from .types.fhir_patch_request_body_item import FhirPatchRequestBodyItem
 from .types.fhir_resource import FhirResource
 from .types.fhir_resource_meta import FhirResourceMeta
-from .types.fhir_search_response import FhirSearchResponse
+from .types.patch_request_body_item import PatchRequestBodyItem
+from .types.search_response import SearchResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -44,7 +44,7 @@ class RawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FhirSearchResponse]:
+    ) -> HttpResponse[SearchResponse]:
         """
         Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
 
@@ -84,7 +84,7 @@ class RawFhirClient:
 
         Returns
         -------
-        HttpResponse[FhirSearchResponse]
+        HttpResponse[SearchResponse]
             Successfully retrieved FHIR resource(s)
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -102,9 +102,9 @@ class RawFhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirSearchResponse,
+                    SearchResponse,
                     parse_obj_as(
-                        type_=FhirSearchResponse,  # type: ignore
+                        type_=SearchResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -667,7 +667,7 @@ class RawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        request: typing.Sequence[FhirPatchRequestBodyItem],
+        request: typing.Sequence[PatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -696,7 +696,7 @@ class RawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        request : typing.Sequence[FhirPatchRequestBodyItem]
+        request : typing.Sequence[PatchRequestBodyItem]
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -718,7 +718,7 @@ class RawFhirClient:
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
+                object_=request, annotation=typing.Sequence[PatchRequestBodyItem], direction="write"
             ),
             headers={
                 "content-type": "application/json-patch+json",
@@ -988,7 +988,7 @@ class AsyncRawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FhirSearchResponse]:
+    ) -> AsyncHttpResponse[SearchResponse]:
         """
         Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
 
@@ -1028,7 +1028,7 @@ class AsyncRawFhirClient:
 
         Returns
         -------
-        AsyncHttpResponse[FhirSearchResponse]
+        AsyncHttpResponse[SearchResponse]
             Successfully retrieved FHIR resource(s)
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1046,9 +1046,9 @@ class AsyncRawFhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirSearchResponse,
+                    SearchResponse,
                     parse_obj_as(
-                        type_=FhirSearchResponse,  # type: ignore
+                        type_=SearchResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1611,7 +1611,7 @@ class AsyncRawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        request: typing.Sequence[FhirPatchRequestBodyItem],
+        request: typing.Sequence[PatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1640,7 +1640,7 @@ class AsyncRawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        request : typing.Sequence[FhirPatchRequestBodyItem]
+        request : typing.Sequence[PatchRequestBodyItem]
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -1662,7 +1662,7 @@ class AsyncRawFhirClient:
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PATCH",
             json=convert_and_respect_annotation_metadata(
-                object_=request, annotation=typing.Sequence[FhirPatchRequestBodyItem], direction="write"
+                object_=request, annotation=typing.Sequence[PatchRequestBodyItem], direction="write"
             ),
             headers={
                 "content-type": "application/json-patch+json",

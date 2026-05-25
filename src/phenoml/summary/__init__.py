@@ -6,17 +6,10 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import (
-        CreateSummaryRequestMode,
-        CreateSummaryResponse,
-        CreateSummaryTemplateResponse,
-        SummaryDeleteTemplateResponse,
-        SummaryGetTemplateResponse,
-        SummaryListTemplatesResponse,
-        SummaryTemplate,
-        SummaryUpdateTemplateResponse,
-    )
+    from .types import CreateSummaryRequestMode, CreateSummaryResponse, CreateSummaryTemplateResponse, SummaryTemplate
     from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from . import templates
+    from .templates import TemplatesDeleteResponse, TemplatesGetResponse, TemplatesListResponse, TemplatesUpdateResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "CreateSummaryRequestMode": ".types",
@@ -25,12 +18,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
-    "SummaryDeleteTemplateResponse": ".types",
-    "SummaryGetTemplateResponse": ".types",
-    "SummaryListTemplatesResponse": ".types",
     "SummaryTemplate": ".types",
-    "SummaryUpdateTemplateResponse": ".types",
+    "TemplatesDeleteResponse": ".templates",
+    "TemplatesGetResponse": ".templates",
+    "TemplatesListResponse": ".templates",
+    "TemplatesUpdateResponse": ".templates",
     "UnauthorizedError": ".errors",
+    "templates": ".templates",
 }
 
 
@@ -63,10 +57,11 @@ __all__ = [
     "ForbiddenError",
     "InternalServerError",
     "NotFoundError",
-    "SummaryDeleteTemplateResponse",
-    "SummaryGetTemplateResponse",
-    "SummaryListTemplatesResponse",
     "SummaryTemplate",
-    "SummaryUpdateTemplateResponse",
+    "TemplatesDeleteResponse",
+    "TemplatesGetResponse",
+    "TemplatesListResponse",
+    "TemplatesUpdateResponse",
     "UnauthorizedError",
+    "templates",
 ]

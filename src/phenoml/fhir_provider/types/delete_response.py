@@ -6,7 +6,7 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class SummaryDeleteTemplateResponse(UniversalBaseModel):
+class DeleteResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
 
