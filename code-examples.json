@@ -2,19 +2,23 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "13.0.0",
-    "specCommit": "0cb0b6e9a5e9580e8311ea4fa304ccfd37b4b147",
+    "sdkVersion": "13.0.1",
+    "specCommit": "0be22a22f76bdd8d90a4f341dcd435fd5590ef7e",
     "generatorName": "fernapi/fern-python-sdk"
+  },
+  "renderRules": {
+    "stringLiteral": "\"{{value}}\"",
+    "numberLiteral": "{{value}}",
+    "trueLiteral": "True",
+    "falseLiteral": "False",
+    "nullLiteral": "None",
+    "listLiteral": "[{{items}}]",
+    "listSeparator": ", "
   },
   "examples": {
     "POST /agent/create": {
       "httpMethod": "POST",
       "httpPath": "/agent/create",
-      "sdkMethodChain": [
-        "agent",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "name": "Medical Assistant",
@@ -27,34 +31,7 @@
             "fhir"
           ],
           "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "Medical Assistant"
-          },
-          {
-            "name": "description",
-            "value": "An AI assistant for medical information processing"
-          },
-          {
-            "name": "prompts",
-            "value": [
-              "prompt_123"
-            ]
-          },
-          {
-            "name": "tags",
-            "value": [
-              "medical",
-              "fhir"
-            ]
-          },
-          {
-            "name": "provider",
-            "value": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -84,24 +61,87 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.create(\n        name=\"Medical Assistant\",\n        description=\"An AI assistant for medical information processing\",\n        prompts=[\"prompt_123\"],\n        tags=[\"medical\", \"fhir\"],\n        provider=\"7002b0b4-8d09-445a-bf65-0fafdaf26c35\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "prompts",
+              "fieldTemplate": "prompts={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "tools",
+              "fieldTemplate": "tools={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "workflows",
+              "fieldTemplate": "workflows={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "tags",
+              "fieldTemplate": "tags={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            }
+          ]
+        }
+      }
     },
     "GET /agent/list": {
       "httpMethod": "GET",
       "httpPath": "/agent/list",
-      "sdkMethodChain": [
-        "agent",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "tags",
-            "value": "tags"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -156,24 +196,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.agent.list(\n        tags=\"tags\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.list({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "tags",
+              "fieldTemplate": "tags={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /agent/{id}": {
       "httpMethod": "GET",
       "httpPath": "/agent/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -203,16 +246,25 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.get(\n        id=\"id\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PUT /agent/{id}": {
       "httpMethod": "PUT",
       "httpPath": "/agent/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "update"
-      ],
-      "sdkMethodName": "update",
       "request": {
         "body": {
           "name": "Medical Assistant",
@@ -226,39 +278,7 @@
             "updated"
           ],
           "provider": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "name",
-            "value": "Medical Assistant"
-          },
-          {
-            "name": "description",
-            "value": "Updated description for the medical assistant"
-          },
-          {
-            "name": "prompts",
-            "value": [
-              "prompt_123"
-            ]
-          },
-          {
-            "name": "tags",
-            "value": [
-              "medical",
-              "fhir",
-              "updated"
-            ]
-          },
-          {
-            "name": "provider",
-            "value": "7002b0b4-8d09-445a-bf65-0fafdaf26c35"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -288,24 +308,93 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.update(\n        id=\"id\",\n        name=\"Medical Assistant\",\n        description=\"Updated description for the medical assistant\",\n        prompts=[\"prompt_123\"],\n        tags=[\"medical\", \"fhir\", \"updated\"],\n        provider=\"7002b0b4-8d09-445a-bf65-0fafdaf26c35\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.update({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "prompts",
+              "fieldTemplate": "prompts={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "tools",
+              "fieldTemplate": "tools={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "workflows",
+              "fieldTemplate": "workflows={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "tags",
+              "fieldTemplate": "tags={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            }
+          ]
+        }
+      }
     },
     "DELETE /agent/{id}": {
       "httpMethod": "DELETE",
       "httpPath": "/agent/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -313,16 +402,25 @@
           "message": "Agent deleted successfully"
         }
       },
-      "sdkCallSource": "client.agent.delete(\n        id=\"id\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /agent/{id}": {
       "httpMethod": "PATCH",
       "httpPath": "/agent/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "patch"
-      ],
-      "sdkMethodName": "patch",
       "request": {
         "body": [
           {
@@ -334,27 +432,6 @@
             "op": "add",
             "path": "/tags/-",
             "value": "updated"
-          }
-        ],
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "request",
-            "value": [
-              {
-                "op": "replace",
-                "path": "/description",
-                "value": "patched description"
-              },
-              {
-                "op": "add",
-                "path": "/tags/-",
-                "value": "updated"
-              }
-            ]
           }
         ]
       },
@@ -386,44 +463,38 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.patch(\n        id=\"id\",\n        request=[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/description\",\n                value=\"patched description\",\n            ),\n            JsonPatchOperation(\n                op=\"add\",\n                path=\"/tags/-\",\n                value=\"updated\",\n            ),\n        ],\n    )"
+      "render": {
+        "callTemplate": "client.agent.patch({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "request",
+              "fieldTemplate": "request={{value}}",
+              "kind": "object",
+              "required": true,
+              "passthroughBody": true
+            }
+          ]
+        }
+      }
     },
     "POST /agent/chat": {
       "httpMethod": "POST",
       "httpPath": "/agent/chat",
-      "sdkMethodChain": [
-        "agent",
-        "chat"
-      ],
-      "sdkMethodName": "chat",
       "request": {
         "body": {
           "message": "What is the patient's current condition?",
           "session_id": "session-abc123",
           "agent_id": "agent-123"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "message",
-            "value": "What is the patient's current condition?"
-          },
-          {
-            "name": "session_id",
-            "value": "session-abc123"
-          },
-          {
-            "name": "agent_id",
-            "value": "agent-123"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -433,79 +504,105 @@
           "session_id": "session-abc123"
         }
       },
-      "sdkCallSource": "client.agent.chat(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        message=\"What is the patient's current condition?\",\n        session_id=\"session-abc123\",\n        agent_id=\"agent-123\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.chat({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "message",
+              "fieldTemplate": "message={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "agent_id",
+              "fieldTemplate": "agent_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "context",
+              "fieldTemplate": "context={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "session_id",
+              "fieldTemplate": "session_id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "enhanced_reasoning",
+              "fieldTemplate": "enhanced_reasoning={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /agent/stream-chat": {
       "httpMethod": "POST",
       "httpPath": "/agent/stream-chat",
-      "sdkMethodChain": [
-        "agent",
-        "stream_chat"
-      ],
-      "sdkMethodName": "stream_chat",
       "request": {
         "body": {
           "message": "What is the patient's current condition?",
           "session_id": "session-abc123",
           "agent_id": "agent-123"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "message",
-            "value": "What is the patient's current condition?"
-          },
-          {
-            "name": "session_id",
-            "value": "session-abc123"
-          },
-          {
-            "name": "agent_id",
-            "value": "agent-123"
-          }
-        ]
+        }
       },
       "response": {
         "body": null,
         "streaming": true
       },
-      "sdkCallSource": "client.agent.stream_chat(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        message=\"What is the patient's current condition?\",\n        session_id=\"session-abc123\",\n        agent_id=\"agent-123\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.stream_chat({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "message",
+              "fieldTemplate": "message={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "agent_id",
+              "fieldTemplate": "agent_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "context",
+              "fieldTemplate": "context={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "session_id",
+              "fieldTemplate": "session_id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "enhanced_reasoning",
+              "fieldTemplate": "enhanced_reasoning={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /agent/chat/messages": {
       "httpMethod": "GET",
       "httpPath": "/agent/chat/messages",
-      "sdkMethodChain": [
-        "agent",
-        "get_chat_messages"
-      ],
-      "sdkMethodName": "get_chat_messages",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "chat_session_id",
-            "value": "chat_session_id"
-          },
-          {
-            "name": "num_messages",
-            "value": 1
-          },
-          {
-            "name": "role",
-            "value": "user"
-          },
-          {
-            "name": "order",
-            "value": "asc"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -547,17 +644,43 @@
           "session_id": "session_123"
         }
       },
-      "sdkCallSource": "client.agent.get_chat_messages(\n        chat_session_id=\"chat_session_id\",\n        num_messages=1,\n        role=\"user\",\n        order=\"asc\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.get_chat_messages({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "chat_session_id",
+              "fieldTemplate": "chat_session_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "num_messages",
+              "fieldTemplate": "num_messages={{value}}",
+              "kind": "number",
+              "required": false
+            },
+            {
+              "jsonKey": "role",
+              "fieldTemplate": "role={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "order",
+              "fieldTemplate": "order={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /agent/prompts": {
       "httpMethod": "POST",
       "httpPath": "/agent/prompts",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "name": "Medical Assistant System Prompt",
@@ -568,32 +691,7 @@
             "medical",
             "system"
           ]
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "Medical Assistant System Prompt"
-          },
-          {
-            "name": "description",
-            "value": "System prompt for medical assistant agent"
-          },
-          {
-            "name": "content",
-            "value": "You are a helpful medical assistant specialized in FHIR data processing."
-          },
-          {
-            "name": "is_default",
-            "value": false
-          },
-          {
-            "name": "tags",
-            "value": [
-              "medical",
-              "system"
-            ]
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -612,20 +710,57 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.prompts.create(\n        name=\"Medical Assistant System Prompt\",\n        description=\"System prompt for medical assistant agent\",\n        content=\"You are a helpful medical assistant specialized in FHIR data processing.\",\n        is_default=False,\n        tags=[\"medical\", \"system\"],\n    )"
+      "render": {
+        "callTemplate": "client.agent.prompts.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "content",
+              "fieldTemplate": "content={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "is_default",
+              "fieldTemplate": "is_default={{value}}",
+              "kind": "boolean",
+              "required": false
+            },
+            {
+              "jsonKey": "tags",
+              "fieldTemplate": "tags={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            }
+          ]
+        }
+      }
     },
     "GET /agent/prompts/list": {
       "httpMethod": "GET",
       "httpPath": "/agent/prompts/list",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": []
+        "body": null
       },
       "response": {
         "body": {
@@ -656,25 +791,16 @@
           ]
         }
       },
-      "sdkCallSource": "client.agent.prompts.list()"
+      "render": {
+        "callTemplate": "client.agent.prompts.list({{__body__}})",
+        "params": []
+      }
     },
     "GET /agent/prompts/{id}": {
       "httpMethod": "GET",
       "httpPath": "/agent/prompts/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -693,17 +819,25 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.prompts.get(\n        id=\"id\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.prompts.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PUT /agent/prompts/{id}": {
       "httpMethod": "PUT",
       "httpPath": "/agent/prompts/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "update"
-      ],
-      "sdkMethodName": "update",
       "request": {
         "body": {
           "name": "Medical Assistant System Prompt",
@@ -715,37 +849,7 @@
             "system",
             "updated"
           ]
-        },
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "name",
-            "value": "Medical Assistant System Prompt"
-          },
-          {
-            "name": "description",
-            "value": "Updated system prompt"
-          },
-          {
-            "name": "content",
-            "value": "You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses."
-          },
-          {
-            "name": "is_default",
-            "value": false
-          },
-          {
-            "name": "tags",
-            "value": [
-              "medical",
-              "system",
-              "updated"
-            ]
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -764,25 +868,63 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.prompts.update(\n        id=\"id\",\n        name=\"Medical Assistant System Prompt\",\n        description=\"Updated system prompt\",\n        content=\"You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.\",\n        is_default=False,\n        tags=[\"medical\", \"system\", \"updated\"],\n    )"
+      "render": {
+        "callTemplate": "client.agent.prompts.update({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "content",
+              "fieldTemplate": "content={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "is_default",
+              "fieldTemplate": "is_default={{value}}",
+              "kind": "boolean",
+              "required": false
+            },
+            {
+              "jsonKey": "tags",
+              "fieldTemplate": "tags={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            }
+          ]
+        }
+      }
     },
     "DELETE /agent/prompts/{id}": {
       "httpMethod": "DELETE",
       "httpPath": "/agent/prompts/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -790,39 +932,31 @@
           "message": "Prompt deleted successfully"
         }
       },
-      "sdkCallSource": "client.agent.prompts.delete(\n        id=\"id\",\n    )"
+      "render": {
+        "callTemplate": "client.agent.prompts.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /agent/prompts/{id}": {
       "httpMethod": "PATCH",
       "httpPath": "/agent/prompts/{id}",
-      "sdkMethodChain": [
-        "agent",
-        "prompts",
-        "patch"
-      ],
-      "sdkMethodName": "patch",
       "request": {
         "body": [
           {
             "op": "replace",
             "path": "/content",
             "value": "Updated prompt content."
-          }
-        ],
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "request",
-            "value": [
-              {
-                "op": "replace",
-                "path": "/content",
-                "value": "Updated prompt content."
-              }
-            ]
           }
         ]
       },
@@ -843,32 +977,37 @@
           }
         }
       },
-      "sdkCallSource": "client.agent.prompts.patch(\n        id=\"id\",\n        request=[\n            JsonPatchOperation(\n                op=\"replace\",\n                path=\"/content\",\n                value=\"Updated prompt content.\",\n            )\n        ],\n    )"
+      "render": {
+        "callTemplate": "client.agent.prompts.patch({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "request",
+              "fieldTemplate": "request={{value}}",
+              "kind": "object",
+              "required": true,
+              "passthroughBody": true
+            }
+          ]
+        }
+      }
     },
     "POST /v2/auth/token": {
       "httpMethod": "POST",
       "httpPath": "/v2/auth/token",
-      "sdkMethodChain": [
-        "authtoken",
-        "auth",
-        "get_token"
-      ],
-      "sdkMethodName": "get_token",
       "request": {
         "body": {
           "client_id": "your_client_id",
           "client_secret": "your_client_secret"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "client_id",
-            "value": "your_client_id"
-          },
-          {
-            "name": "client_secret",
-            "value": "your_client_secret"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -877,26 +1016,41 @@
           "expires_in": 172800
         }
       },
-      "sdkCallSource": "client.authtoken.auth.get_token(\n        client_id=\"your_client_id\",\n        client_secret=\"your_client_secret\",\n    )"
+      "render": {
+        "callTemplate": "client.authtoken.get_token({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "grant_type",
+              "fieldTemplate": "grant_type={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "client_id",
+              "fieldTemplate": "client_id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "client_secret",
+              "fieldTemplate": "client_secret={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /cohort": {
       "httpMethod": "POST",
       "httpPath": "/cohort",
-      "sdkMethodChain": [
-        "cohort",
-        "analyze"
-      ],
-      "sdkMethodName": "analyze",
       "request": {
         "body": {
           "text": "female patients over 65 with diabetes but not hypertension"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "text",
-            "value": "female patients over 65 with diabetes but not hypertension"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -924,16 +1078,25 @@
           ]
         }
       },
-      "sdkCallSource": "client.cohort.analyze(\n        text=\"female patients over 65 with diabetes but not hypertension\",\n    )"
+      "render": {
+        "callTemplate": "client.cohort.analyze({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /construe/upload": {
       "httpMethod": "POST",
       "httpPath": "/construe/upload",
-      "sdkMethodChain": [
-        "construe",
-        "upload_code_system"
-      ],
-      "sdkMethodName": "upload_code_system",
       "request": {
         "body": {
           "name": "CUSTOM_CODES",
@@ -949,34 +1112,7 @@
               "description": "Example custom code 2"
             }
           ]
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "CUSTOM_CODES"
-          },
-          {
-            "name": "version",
-            "value": "1.0"
-          },
-          {
-            "name": "format",
-            "value": "json"
-          },
-          {
-            "name": "codes",
-            "value": [
-              {
-                "code": "X001",
-                "description": "Example custom code 1"
-              },
-              {
-                "code": "X002",
-                "description": "Example custom code 2"
-              }
-            ]
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -985,16 +1121,85 @@
           "version": "1.0"
         }
       },
-      "sdkCallSource": "client.construe.upload_code_system(\n        name=\"CUSTOM_CODES\",\n        version=\"1.0\",\n        format=\"json\",\n        codes=[\n            CodeResponse(\n                code=\"X001\",\n                description=\"Example custom code 1\",\n            ),\n            CodeResponse(\n                code=\"X002\",\n                description=\"Example custom code 2\",\n            ),\n        ],\n    )"
+      "render": {
+        "callTemplate": "client.construe.upload_code_system({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "format",
+              "fieldTemplate": "format={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "revision",
+              "fieldTemplate": "revision={{value}}",
+              "kind": "number",
+              "required": false
+            },
+            {
+              "jsonKey": "file",
+              "fieldTemplate": "file={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "code_col",
+              "fieldTemplate": "code_col={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "desc_col",
+              "fieldTemplate": "desc_col={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "defn_col",
+              "fieldTemplate": "defn_col={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "codes",
+              "fieldTemplate": "codes={{value}}",
+              "kind": "list",
+              "required": false,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "object",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "replace",
+              "fieldTemplate": "replace={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /construe/extract": {
       "httpMethod": "POST",
       "httpPath": "/construe/extract",
-      "sdkMethodChain": [
-        "construe",
-        "extract_codes"
-      ],
-      "sdkMethodName": "extract_codes",
       "request": {
         "body": {
           "text": "Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
@@ -1002,20 +1207,7 @@
             "name": "ICD-10-CM",
             "version": "2025"
           }
-        },
-        "sdkCallArgs": [
-          {
-            "name": "text",
-            "value": "Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney."
-          },
-          {
-            "name": "system",
-            "value": {
-              "name": "ICD-10-CM",
-              "version": "2025"
-            }
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -1087,19 +1279,39 @@
           ]
         }
       },
-      "sdkCallSource": "client.construe.extract_codes(\n        text=\"Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.\",\n        system=ExtractRequestSystem(\n            name=\"ICD-10-CM\",\n            version=\"2025\",\n        ),\n    )"
+      "render": {
+        "callTemplate": "client.construe.extract_codes({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "system",
+              "fieldTemplate": "system={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "config",
+              "fieldTemplate": "config={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/systems": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/systems",
-      "sdkMethodChain": [
-        "construe",
-        "list_available_code_systems"
-      ],
-      "sdkMethodName": "list_available_code_systems",
       "request": {
-        "body": null,
-        "sdkCallArgs": []
+        "body": null
       },
       "response": {
         "body": {
@@ -1149,28 +1361,16 @@
           ]
         }
       },
-      "sdkCallSource": "client.construe.list_available_code_systems()"
+      "render": {
+        "callTemplate": "client.construe.list_code_systems({{__body__}})",
+        "params": []
+      }
     },
     "GET /construe/codes/systems/{codesystem}": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/systems/{codesystem}",
-      "sdkMethodChain": [
-        "construe",
-        "get_code_system_detail"
-      ],
-      "sdkMethodName": "get_code_system_detail",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "ICD-10-CM"
-          },
-          {
-            "name": "version",
-            "value": "2025"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1183,56 +1383,66 @@
           "updated_at": "2026-02-10T18:33:23Z"
         }
       },
-      "sdkCallSource": "client.construe.get_code_system_detail(\n        codesystem=\"ICD-10-CM\",\n        version=\"2025\",\n    )"
+      "render": {
+        "callTemplate": "client.construe.get_code_system({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "DELETE /construe/codes/systems/{codesystem}": {
       "httpMethod": "DELETE",
       "httpPath": "/construe/codes/systems/{codesystem}",
-      "sdkMethodChain": [
-        "construe",
-        "delete_custom_code_system"
-      ],
-      "sdkMethodName": "delete_custom_code_system",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "CUSTOM_CODES"
-          },
-          {
-            "name": "version",
-            "value": "version"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
           "message": "code system deleted successfully"
         }
       },
-      "sdkCallSource": "client.construe.delete_custom_code_system(\n        codesystem=\"CUSTOM_CODES\",\n        version=\"version\",\n    )"
+      "render": {
+        "callTemplate": "client.construe.delete_code_system({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/systems/{codesystem}/export": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/systems/{codesystem}/export",
-      "sdkMethodChain": [
-        "construe",
-        "export_custom_code_system"
-      ],
-      "sdkMethodName": "export_custom_code_system",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "CUSTOM_CODES"
-          },
-          {
-            "name": "version",
-            "value": "version"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1253,36 +1463,33 @@
           ]
         }
       },
-      "sdkCallSource": "client.construe.export_custom_code_system(\n        codesystem=\"CUSTOM_CODES\",\n        version=\"version\",\n    )"
+      "render": {
+        "callTemplate": "client.construe.export_code_system({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/{codesystem}": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/{codesystem}",
-      "sdkMethodChain": [
-        "construe",
-        "list_codes_in_a_code_system"
-      ],
-      "sdkMethodName": "list_codes_in_a_code_system",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "ICD-10-CM"
-          },
-          {
-            "name": "version",
-            "value": "2025"
-          },
-          {
-            "name": "cursor",
-            "value": "cursor"
-          },
-          {
-            "name": "limit",
-            "value": 1
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1321,32 +1528,45 @@
           "has_more": true
         }
       },
-      "sdkCallSource": "client.construe.list_codes_in_a_code_system(\n        codesystem=\"ICD-10-CM\",\n        version=\"2025\",\n        cursor=\"cursor\",\n        limit=1,\n    )"
+      "render": {
+        "callTemplate": "client.construe.list_codes({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "cursor",
+              "fieldTemplate": "cursor={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "limit",
+              "fieldTemplate": "limit={{value}}",
+              "kind": "number",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/{codesystem}/{code_id}": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/{codesystem}/{code_id}",
-      "sdkMethodChain": [
-        "construe",
-        "get_a_specific_code"
-      ],
-      "sdkMethodName": "get_a_specific_code",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "ICD-10-CM"
-          },
-          {
-            "name": "code_id",
-            "value": "E1165"
-          },
-          {
-            "name": "version",
-            "value": "version"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1359,36 +1579,39 @@
           "definition": "definition"
         }
       },
-      "sdkCallSource": "client.construe.get_a_specific_code(\n        codesystem=\"ICD-10-CM\",\n        code_id=\"E1165\",\n        version=\"version\",\n    )"
+      "render": {
+        "callTemplate": "client.construe.get_code({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "code_id",
+              "fieldTemplate": "code_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/{codesystem}/search/semantic": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/{codesystem}/search/semantic",
-      "sdkMethodChain": [
-        "construe",
-        "semantic_search_embedding_based"
-      ],
-      "sdkMethodName": "semantic_search_embedding_based",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "ICD-10-CM"
-          },
-          {
-            "name": "text",
-            "value": "patient has trouble breathing at night and wakes up gasping"
-          },
-          {
-            "name": "version",
-            "value": "version"
-          },
-          {
-            "name": "limit",
-            "value": 1
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1420,16 +1643,43 @@
           ]
         }
       },
-      "sdkCallSource": "client.construe.semantic_search_embedding_based(\n        codesystem=\"ICD-10-CM\",\n        text=\"patient has trouble breathing at night and wakes up gasping\",\n        version=\"version\",\n        limit=1,\n    )"
+      "render": {
+        "callTemplate": "client.construe.search_semantic({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "limit",
+              "fieldTemplate": "limit={{value}}",
+              "kind": "number",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /construe/feedback": {
       "httpMethod": "POST",
       "httpPath": "/construe/feedback",
-      "sdkMethodChain": [
-        "construe",
-        "submit_feedback_on_extraction_results"
-      ],
-      "sdkMethodName": "submit_feedback_on_extraction_results",
       "request": {
         "body": {
           "text": "Patient has type 2 diabetes with hyperglycemia",
@@ -1460,85 +1710,52 @@
             ]
           },
           "detail": "Expected code E11.65 because the text mentions hyperglycemia"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "text",
-            "value": "Patient has type 2 diabetes with hyperglycemia"
-          },
-          {
-            "name": "received_result",
-            "value": {
-              "system": {
-                "name": "ICD-10-CM",
-                "version": "2025"
-              },
-              "codes": [
-                {
-                  "code": "E11.9",
-                  "description": "Type 2 diabetes mellitus without complications",
-                  "valid": true
-                }
-              ]
-            }
-          },
-          {
-            "name": "expected_result",
-            "value": {
-              "system": {
-                "name": "ICD-10-CM",
-                "version": "2025"
-              },
-              "codes": [
-                {
-                  "code": "E11.65",
-                  "description": "Type 2 diabetes mellitus with hyperglycemia",
-                  "valid": true
-                }
-              ]
-            }
-          },
-          {
-            "name": "detail",
-            "value": "Expected code E11.65 because the text mentions hyperglycemia"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
           "id": "abc123def456"
         }
       },
-      "sdkCallSource": "client.construe.submit_feedback_on_extraction_results(\n        text=\"Patient has type 2 diabetes with hyperglycemia\",\n        received_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.9\",\n                    description=\"Type 2 diabetes mellitus without complications\",\n                    valid=True,\n                )\n            ],\n        ),\n        expected_result=ExtractCodesResult(\n            system=ExtractRequestSystem(\n                name=\"ICD-10-CM\",\n                version=\"2025\",\n            ),\n            codes=[\n                ExtractedCodeResult(\n                    code=\"E11.65\",\n                    description=\"Type 2 diabetes mellitus with hyperglycemia\",\n                    valid=True,\n                )\n            ],\n        ),\n        detail=\"Expected code E11.65 because the text mentions hyperglycemia\",\n    )"
+      "render": {
+        "callTemplate": "client.construe.submit_feedback({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "received_result",
+              "fieldTemplate": "received_result={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "expected_result",
+              "fieldTemplate": "expected_result={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "detail",
+              "fieldTemplate": "detail={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /construe/codes/{codesystem}/search/text": {
       "httpMethod": "GET",
       "httpPath": "/construe/codes/{codesystem}/search/text",
-      "sdkMethodChain": [
-        "construe",
-        "terminology_server_text_search"
-      ],
-      "sdkMethodName": "terminology_server_text_search",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "codesystem",
-            "value": "ICD-10-CM"
-          },
-          {
-            "name": "q",
-            "value": "E11.65"
-          },
-          {
-            "name": "version",
-            "value": "version"
-          },
-          {
-            "name": "limit",
-            "value": 1
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1563,36 +1780,45 @@
           "found": 3
         }
       },
-      "sdkCallSource": "client.construe.terminology_server_text_search(\n        codesystem=\"ICD-10-CM\",\n        q=\"E11.65\",\n        version=\"version\",\n        limit=1,\n    )"
+      "render": {
+        "callTemplate": "client.construe.search_text({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "codesystem",
+              "fieldTemplate": "codesystem={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "q",
+              "fieldTemplate": "q={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "limit",
+              "fieldTemplate": "limit={{value}}",
+              "kind": "number",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "GET",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
-      "sdkMethodChain": [
-        "fhir",
-        "search"
-      ],
-      "sdkMethodName": "search",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "fhir_path",
-            "value": "Patient"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1616,42 +1842,41 @@
           ]
         }
       },
-      "sdkCallSource": "client.fhir.search(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir.search({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_path",
+              "fieldTemplate": "fhir_path={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "query_parameters",
+              "fieldTemplate": "query_parameters={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "POST",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
-      "sdkMethodChain": [
-        "fhir",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "resourceType": "Patient"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "fhir_path",
-            "value": "Patient"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "resource_type",
-            "value": "Patient"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -1666,47 +1891,54 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir.create(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource_type=\"Patient\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_path",
+              "fieldTemplate": "fhir_path={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "resourceType",
+              "fieldTemplate": "resource_type={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "meta",
+              "fieldTemplate": "meta={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "PUT /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "PUT",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
-      "sdkMethodChain": [
-        "fhir",
-        "upsert"
-      ],
-      "sdkMethodName": "upsert",
       "request": {
         "body": {
           "resourceType": "Patient",
           "id": "123"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "fhir_path",
-            "value": "Patient"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "resource_type",
-            "value": "Patient"
-          },
-          {
-            "name": "id",
-            "value": "123"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -1721,36 +1953,51 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir.upsert(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource_type=\"Patient\",\n        id=\"123\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir.upsert({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_path",
+              "fieldTemplate": "fhir_path={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "resourceType",
+              "fieldTemplate": "resource_type={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "meta",
+              "fieldTemplate": "meta={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "DELETE /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "DELETE",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
-      "sdkMethodChain": [
-        "fhir",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "fhir_path",
-            "value": "Patient"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -1766,50 +2013,37 @@
           ]
         }
       },
-      "sdkCallSource": "client.fhir.delete(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_path",
+              "fieldTemplate": "fhir_path={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "httpMethod": "PATCH",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
-      "sdkMethodChain": [
-        "fhir",
-        "patch"
-      ],
-      "sdkMethodName": "patch",
       "request": {
         "body": [
           {
             "op": "replace",
             "path": "/name/0/family",
             "value": "NewFamilyName"
-          }
-        ],
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "fhir_path",
-            "value": "Patient"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "request",
-            "value": [
-              {
-                "op": "replace",
-                "path": "/name/0/family",
-                "value": "NewFamilyName"
-              }
-            ]
           }
         ]
       },
@@ -1826,16 +2060,44 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir.patch(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        fhir_path=\"Patient\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        request=[\n            FhirPatchRequestBodyItem(\n                op=\"replace\",\n                path=\"/name/0/family\",\n                value=\"NewFamilyName\",\n            )\n        ],\n    )"
+      "render": {
+        "callTemplate": "client.fhir.patch({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_path",
+              "fieldTemplate": "fhir_path={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "request",
+              "fieldTemplate": "request={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "object",
+                "required": true
+              },
+              "passthroughBody": true
+            }
+          ]
+        }
+      }
     },
     "POST /fhir-provider/{fhir_provider_id}/fhir": {
       "httpMethod": "POST",
       "httpPath": "/fhir-provider/{fhir_provider_id}/fhir",
-      "sdkMethodChain": [
-        "fhir",
-        "execute_bundle"
-      ],
-      "sdkMethodName": "execute_bundle",
       "request": {
         "body": {
           "resourceType": "Bundle",
@@ -1871,56 +2133,7 @@
               }
             }
           ]
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "entry",
-            "value": [
-              {
-                "resource": {
-                  "resourceType": "Patient",
-                  "name": [
-                    {
-                      "family": "Doe",
-                      "given": [
-                        "John"
-                      ]
-                    }
-                  ]
-                },
-                "request": {
-                  "method": "POST",
-                  "url": "Patient"
-                }
-              },
-              {
-                "resource": {
-                  "resourceType": "Observation",
-                  "status": "final",
-                  "subject": {
-                    "reference": "Patient/123"
-                  }
-                },
-                "request": {
-                  "method": "POST",
-                  "url": "Observation"
-                }
-              }
-            ]
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -1940,16 +2153,43 @@
           ]
         }
       },
-      "sdkCallSource": "client.fhir.execute_bundle(\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        entry=[\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Patient\", \"name\": [{\"family\": \"Doe\", \"given\": [\"John\"]}]},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Patient\",\n                ),\n            ),\n            FhirBundleEntryItem(\n                resource={\"resourceType\": \"Observation\", \"status\": \"final\", \"subject\": {\"reference\": \"Patient/123\"}},\n                request=FhirBundleEntryItemRequest(\n                    method=\"POST\",\n                    url=\"Observation\",\n                ),\n            ),\n        ],\n    )"
+      "render": {
+        "callTemplate": "client.fhir.execute_bundle({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "entry",
+              "fieldTemplate": "entry={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "object",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "total",
+              "fieldTemplate": "total={{value}}",
+              "kind": "number",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /fhir-provider": {
       "httpMethod": "POST",
       "httpPath": "/fhir-provider",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "name": "Epic Sandbox",
@@ -1960,32 +2200,7 @@
             "client_id": "your-client-id",
             "client_secret": "your-client-secret"
           }
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "Epic Sandbox"
-          },
-          {
-            "name": "description",
-            "value": "Epic sandbox environment for testing"
-          },
-          {
-            "name": "provider",
-            "value": "epic"
-          },
-          {
-            "name": "base_url",
-            "value": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4"
-          },
-          {
-            "name": "auth",
-            "value": {
-              "client_id": "your-client-id",
-              "client_secret": "your-client-secret"
-            }
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2038,19 +2253,51 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir_provider.create(\n        name=\"Epic Sandbox\",\n        description=\"Epic sandbox environment for testing\",\n        provider=\"epic\",\n        base_url=\"https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4\",\n        auth=FhirProviderCreateRequestAuth_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        ),\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "base_url",
+              "fieldTemplate": "base_url={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "auth",
+              "fieldTemplate": "auth={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /fhir-provider/list": {
       "httpMethod": "GET",
       "httpPath": "/fhir-provider/list",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": []
+        "body": null
       },
       "response": {
         "body": {
@@ -2111,24 +2358,16 @@
           ]
         }
       },
-      "sdkCallSource": "client.fhir_provider.list()"
+      "render": {
+        "callTemplate": "client.fhir_provider.list({{__body__}})",
+        "params": []
+      }
     },
     "GET /fhir-provider/{fhir_provider_id}": {
       "httpMethod": "GET",
       "httpPath": "/fhir-provider/{fhir_provider_id}",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "fhir_provider_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -2181,24 +2420,27 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir_provider.get(\n        fhir_provider_id=\"fhir_provider_id\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "DELETE /fhir-provider/{fhir_provider_id}": {
       "httpMethod": "DELETE",
       "httpPath": "/fhir-provider/{fhir_provider_id}",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "fhir_provider_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -2206,34 +2448,30 @@
           "message": "Fhir provider deleted successfully"
         }
       },
-      "sdkCallSource": "client.fhir_provider.delete(\n        fhir_provider_id=\"fhir_provider_id\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /fhir-provider/{fhir_provider_id}/add-auth-config": {
       "httpMethod": "PATCH",
       "httpPath": "/fhir-provider/{fhir_provider_id}/add-auth-config",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "add_auth_config"
-      ],
-      "sdkMethodName": "add_auth_config",
       "request": {
         "body": {
           "client_id": "your-client-id",
           "client_secret": "your-client-secret"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
-          },
-          {
-            "name": "request",
-            "value": {
-              "client_id": "your-client-id",
-              "client_secret": "your-client-secret"
-            }
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2321,30 +2559,36 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir_provider.add_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        request=FhirProviderAddAuthConfigRequest_ClientSecret(\n            client_id=\"your-client-id\",\n            client_secret=\"your-client-secret\",\n        ),\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.add_auth_config({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "request",
+              "fieldTemplate": "request={{value}}",
+              "kind": "object",
+              "required": true,
+              "passthroughBody": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /fhir-provider/{fhir_provider_id}/set-active-auth-config": {
       "httpMethod": "PATCH",
       "httpPath": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "set_active_auth_config"
-      ],
-      "sdkMethodName": "set_active_auth_config",
       "request": {
         "body": {
           "auth_config_id": "auth-config-456"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
-          },
-          {
-            "name": "auth_config_id",
-            "value": "auth-config-456"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2432,30 +2676,35 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir_provider.set_active_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        auth_config_id=\"auth-config-456\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.set_active_auth_config({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "auth_config_id",
+              "fieldTemplate": "auth_config_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "PATCH /fhir-provider/{fhir_provider_id}/remove-auth-config": {
       "httpMethod": "PATCH",
       "httpPath": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
-      "sdkMethodChain": [
-        "fhir_provider",
-        "remove_auth_config"
-      ],
-      "sdkMethodName": "remove_auth_config",
       "request": {
         "body": {
           "auth_config_id": "auth-config-456"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "fhir_provider_id",
-            "value": "1716d214-de93-43a4-aa6b-a878d864e2ad"
-          },
-          {
-            "name": "auth_config_id",
-            "value": "auth-config-456"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2508,36 +2757,37 @@
           }
         }
       },
-      "sdkCallSource": "client.fhir_provider.remove_auth_config(\n        fhir_provider_id=\"1716d214-de93-43a4-aa6b-a878d864e2ad\",\n        auth_config_id=\"auth-config-456\",\n    )"
+      "render": {
+        "callTemplate": "client.fhir_provider.remove_auth_config({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "auth_config_id",
+              "fieldTemplate": "auth_config_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/create": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/create",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "version": "R4",
           "resource": "condition-encounter-diagnosis",
           "text": "Patient has severe persistent asthma with acute exacerbation"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "version",
-            "value": "R4"
-          },
-          {
-            "name": "resource",
-            "value": "condition-encounter-diagnosis"
-          },
-          {
-            "name": "text",
-            "value": "Patient has severe persistent asthma with acute exacerbation"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2571,31 +2821,42 @@
           }
         }
       },
-      "sdkCallSource": "client.lang2fhir.create(\n        version=\"R4\",\n        resource=\"condition-encounter-diagnosis\",\n        text=\"Patient has severe persistent asthma with acute exacerbation\",\n    )"
+      "render": {
+        "callTemplate": "client.lang2fhir.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "resource",
+              "fieldTemplate": "resource={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/create/multi": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/create/multi",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "create_multi"
-      ],
-      "sdkMethodName": "create_multi",
       "request": {
         "body": {
           "text": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90.",
           "version": "R4"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "text",
-            "value": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90."
-          },
-          {
-            "name": "version",
-            "value": "R4"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2670,26 +2931,59 @@
           }
         }
       },
-      "sdkCallSource": "client.lang2fhir.create_multi(\n        text=\"John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily. Blood pressure 140/90.\",\n        version=\"R4\",\n    )"
+      "render": {
+        "callTemplate": "client.lang2fhir.create_multi({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "detection_effort",
+              "fieldTemplate": "detection_effort={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "validation_method",
+              "fieldTemplate": "validation_method={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/search": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/search",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "search"
-      ],
-      "sdkMethodName": "search",
       "request": {
         "body": {
           "text": "Appointments between March 2-9, 2025"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "text",
-            "value": "Appointments between March 2-9, 2025"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2697,36 +2991,31 @@
           "search_params": "date=ge2025-03-02&date=le2025-03-09"
         }
       },
-      "sdkCallSource": "client.lang2fhir.search(\n        text=\"Appointments between March 2-9, 2025\",\n    )"
+      "render": {
+        "callTemplate": "client.lang2fhir.search({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/profile/upload": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/profile/upload",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "upload_profile"
-      ],
-      "sdkMethodName": "upload_profile",
       "request": {
         "body": {
           "profile": "eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg==",
           "implementation_guide": "acme-cardiology",
           "profile_context": "When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition."
-        },
-        "sdkCallArgs": [
-          {
-            "name": "profile",
-            "value": "eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg=="
-          },
-          {
-            "name": "implementation_guide",
-            "value": "acme-cardiology"
-          },
-          {
-            "name": "profile_context",
-            "value": "When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition."
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2736,36 +3025,43 @@
           "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient"
         }
       },
-      "sdkCallSource": "client.lang2fhir.upload_profile(\n        profile=\"eyJyZXNvdXJjZVR5cGUiOiJTdHJ1Y3R1cmVEZWZpbml0aW9uIiwiaWQiOiJjdXN0b20tcGF0aWVudCIsInVybCI6Imh0dHA6Ly9waGVub21sLmNvbS9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vY3VzdG9tLXBhdGllbnQiLCJuYW1lIjoiQ3VzdG9tUGF0aWVudCIsInN0YXR1cyI6ImFjdGl2ZSIsImZoaXJWZXJzaW9uIjoiNC4wLjEiLCJraW5kIjoicmVzb3VyY2UiLCJhYnN0cmFjdCI6ZmFsc2UsInR5cGUiOiJQYXRpZW50IiwiYmFzZURlZmluaXRpb24iOiJodHRwOi8vaGw3Lm9yZy9maGlyL1N0cnVjdHVyZURlZmluaXRpb24vUGF0aWVudCIsImRlcml2YXRpb24iOiJjb25zdHJhaW50Iiwic25hcHNob3QiOnsiZWxlbWVudCI6W3siaWQiOiJQYXRpZW50IiwicGF0aCI6IlBhdGllbnQiLCJtaW4iOjAsIm1heCI6IioifSx7ImlkIjoiUGF0aWVudC5uYW1lIiwicGF0aCI6IlBhdGllbnQubmFtZSIsIm1pbiI6MSwibWF4IjoiKiJ9XX19Cg==\",\n        implementation_guide=\"acme-cardiology\",\n        profile_context=\"When clinical text describes cardiology-specific findings, prefer this profile over the generic US Core Condition.\",\n    )"
+      "render": {
+        "callTemplate": "client.lang2fhir.upload_profile({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "profile",
+              "fieldTemplate": "profile={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "profile_context",
+              "fieldTemplate": "profile_context={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/document": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/document",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "document"
-      ],
-      "sdkMethodName": "document",
       "request": {
         "body": {
           "version": "R4",
           "resource": "questionnaire",
           "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "version",
-            "value": "R4"
-          },
-          {
-            "name": "resource",
-            "value": "questionnaire"
-          },
-          {
-            "name": "content",
-            "value": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2786,36 +3082,49 @@
           ]
         }
       },
-      "sdkCallSource": "client.lang2fhir.document(\n        version=\"R4\",\n        resource=\"questionnaire\",\n        content=\"JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)\",\n    )"
+      "render": {
+        "callTemplate": "client.lang2fhir.document({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "resource",
+              "fieldTemplate": "resource={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "content",
+              "fieldTemplate": "content={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "config",
+              "fieldTemplate": "config={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /lang2fhir/document/multi": {
       "httpMethod": "POST",
       "httpPath": "/lang2fhir/document/multi",
-      "sdkMethodChain": [
-        "lang2fhir",
-        "extract_multiple_fhir_resources_from_a_document"
-      ],
-      "sdkMethodName": "extract_multiple_fhir_resources_from_a_document",
       "request": {
         "body": {
           "version": "R4",
           "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
           "provider": "medplum"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "version",
-            "value": "R4"
-          },
-          {
-            "name": "content",
-            "value": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
-          },
-          {
-            "name": "provider",
-            "value": "medplum"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -2916,259 +3225,61 @@
           ]
         }
       },
-      "sdkCallSource": "client.lang2fhir.extract_multiple_fhir_resources_from_a_document(\n        version=\"R4\",\n        content=\"JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)\",\n        provider=\"medplum\",\n    )"
-    },
-    "GET /fhir2summary/templates": {
-      "httpMethod": "GET",
-      "httpPath": "/fhir2summary/templates",
-      "sdkMethodChain": [
-        "summary",
-        "list_templates"
-      ],
-      "sdkMethodName": "list_templates",
-      "request": {
-        "body": null,
-        "sdkCallArgs": []
-      },
-      "response": {
+      "render": {
+        "callTemplate": "client.lang2fhir.document_multi({{__body__}})",
+        "params": [],
         "body": {
-          "success": true,
-          "templates": [
+          "fieldSeparator": ", ",
+          "fields": [
             {
-              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-              "name": "Discharge Summary",
-              "description": "description",
-              "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
-              "target_resources": [
-                "Patient",
-                "Condition",
-                "MedicationRequest"
-              ],
-              "mode": "narrative",
-              "metadata": {
-                "key": "value"
-              },
-              "created_at": "2024-01-15T10:30:00Z",
-              "updated_at": "2024-01-15T10:30:00Z"
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "content",
+              "fieldTemplate": "content={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "detection_effort",
+              "fieldTemplate": "detection_effort={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "validation_method",
+              "fieldTemplate": "validation_method={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "config",
+              "fieldTemplate": "config={{value}}",
+              "kind": "object",
+              "required": false
             }
           ]
         }
-      },
-      "sdkCallSource": "client.summary.list_templates()"
-    },
-    "POST /fhir2summary/template": {
-      "httpMethod": "POST",
-      "httpPath": "/fhir2summary/template",
-      "sdkMethodChain": [
-        "summary",
-        "create_template"
-      ],
-      "sdkMethodName": "create_template",
-      "request": {
-        "body": {
-          "name": "Discharge Summary",
-          "example_summary": "Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
-          "target_resources": [
-            "Patient",
-            "Condition",
-            "MedicationRequest"
-          ],
-          "mode": "narrative"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "Discharge Summary"
-          },
-          {
-            "name": "example_summary",
-            "value": "Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID."
-          },
-          {
-            "name": "target_resources",
-            "value": [
-              "Patient",
-              "Condition",
-              "MedicationRequest"
-            ]
-          },
-          {
-            "name": "mode",
-            "value": "narrative"
-          }
-        ]
-      },
-      "response": {
-        "body": {
-          "success": true,
-          "message": "Template created successfully",
-          "template_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-          "template": {
-            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            "name": "Discharge Summary",
-            "description": "description",
-            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>. Discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
-            "target_resources": [
-              "Patient",
-              "Condition",
-              "MedicationRequest"
-            ],
-            "mode": "narrative",
-            "metadata": {
-              "key": "value"
-            },
-            "created_at": "2024-01-15T10:30:00Z",
-            "updated_at": "2024-01-15T10:30:00Z"
-          }
-        }
-      },
-      "sdkCallSource": "client.summary.create_template(\n        name=\"Discharge Summary\",\n        example_summary=\"Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.\",\n        target_resources=[\"Patient\", \"Condition\", \"MedicationRequest\"],\n        mode=\"narrative\",\n    )"
-    },
-    "GET /fhir2summary/template/{id}": {
-      "httpMethod": "GET",
-      "httpPath": "/fhir2summary/template/{id}",
-      "sdkMethodChain": [
-        "summary",
-        "get_template"
-      ],
-      "sdkMethodName": "get_template",
-      "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
-      },
-      "response": {
-        "body": {
-          "success": true,
-          "template": {
-            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            "name": "Discharge Summary",
-            "description": "description",
-            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
-            "target_resources": [
-              "Patient",
-              "Condition",
-              "MedicationRequest"
-            ],
-            "mode": "narrative",
-            "metadata": {
-              "key": "value"
-            },
-            "created_at": "2024-01-15T10:30:00Z",
-            "updated_at": "2024-01-15T10:30:00Z"
-          }
-        }
-      },
-      "sdkCallSource": "client.summary.get_template(\n        id=\"id\",\n    )"
-    },
-    "PUT /fhir2summary/template/{id}": {
-      "httpMethod": "PUT",
-      "httpPath": "/fhir2summary/template/{id}",
-      "sdkMethodChain": [
-        "summary",
-        "update_template"
-      ],
-      "sdkMethodName": "update_template",
-      "request": {
-        "body": {
-          "name": "Discharge Summary",
-          "template": "Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
-          "target_resources": [
-            "Patient",
-            "Encounter",
-            "MedicationRequest"
-          ],
-          "mode": "narrative"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "name",
-            "value": "Discharge Summary"
-          },
-          {
-            "name": "template",
-            "value": "Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}."
-          },
-          {
-            "name": "target_resources",
-            "value": [
-              "Patient",
-              "Encounter",
-              "MedicationRequest"
-            ]
-          },
-          {
-            "name": "mode",
-            "value": "narrative"
-          }
-        ]
-      },
-      "response": {
-        "body": {
-          "success": true,
-          "message": "Template updated successfully",
-          "template": {
-            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-            "name": "Discharge Summary",
-            "description": "description",
-            "template": "Patient <<Patient.name[0].text>> was discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
-            "target_resources": [
-              "Patient",
-              "Encounter",
-              "MedicationRequest"
-            ],
-            "mode": "narrative",
-            "metadata": {
-              "key": "value"
-            },
-            "created_at": "2024-01-15T10:30:00Z",
-            "updated_at": "2024-02-20T11:00:00Z"
-          }
-        }
-      },
-      "sdkCallSource": "client.summary.update_template(\n        id=\"id\",\n        name=\"Discharge Summary\",\n        template=\"Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.\",\n        target_resources=[\"Patient\", \"Encounter\", \"MedicationRequest\"],\n        mode=\"narrative\",\n    )"
-    },
-    "DELETE /fhir2summary/template/{id}": {
-      "httpMethod": "DELETE",
-      "httpPath": "/fhir2summary/template/{id}",
-      "sdkMethodChain": [
-        "summary",
-        "delete_template"
-      ],
-      "sdkMethodName": "delete_template",
-      "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
-      },
-      "response": {
-        "body": {
-          "success": true,
-          "message": "Template deleted successfully"
-        }
-      },
-      "sdkCallSource": "client.summary.delete_template(\n        id=\"id\",\n    )"
+      }
     },
     "POST /fhir2summary/create": {
       "httpMethod": "POST",
       "httpPath": "/fhir2summary/create",
-      "sdkMethodChain": [
-        "summary",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "mode": "narrative",
@@ -3203,50 +3314,7 @@
               }
             ]
           }
-        },
-        "sdkCallArgs": [
-          {
-            "name": "mode",
-            "value": "narrative"
-          },
-          {
-            "name": "template_id",
-            "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-          },
-          {
-            "name": "fhir_resources",
-            "value": {
-              "resourceType": "Bundle",
-              "type": "collection",
-              "entry": [
-                {
-                  "resource": {
-                    "resourceType": "Patient",
-                    "name": [
-                      {
-                        "given": [
-                          "John"
-                        ],
-                        "family": "Doe"
-                      }
-                    ],
-                    "gender": "male",
-                    "birthDate": "1979-03-15"
-                  }
-                },
-                {
-                  "resource": {
-                    "resourceType": "Condition",
-                    "code": {
-                      "text": "Type 2 Diabetes Mellitus"
-                    },
-                    "onsetDateTime": "2024-01-15"
-                  }
-                }
-              ]
-            }
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3258,44 +3326,331 @@
           ]
         }
       },
-      "sdkCallSource": "client.summary.create(\n        mode=\"narrative\",\n        template_id=\"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n        fhir_resources={\n            \"resourceType\": \"Bundle\",\n            \"type\": \"collection\",\n            \"entry\": [\n                {\n                    \"resource\": {\n                        \"resourceType\": \"Patient\",\n                        \"name\": [{\"given\": [\"John\"], \"family\": \"Doe\"}],\n                        \"gender\": \"male\",\n                        \"birthDate\": \"1979-03-15\",\n                    }\n                },\n                {\n                    \"resource\": {\n                        \"resourceType\": \"Condition\",\n                        \"code\": {\"text\": \"Type 2 Diabetes Mellitus\"},\n                        \"onsetDateTime\": \"2024-01-15\",\n                    }\n                },\n            ],\n        },\n    )"
+      "render": {
+        "callTemplate": "client.summary.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_resources",
+              "fieldTemplate": "fhir_resources={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "mode",
+              "fieldTemplate": "mode={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "template_id",
+              "fieldTemplate": "template_id={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir2summary/templates": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir2summary/templates",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "templates": [
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+              "name": "Discharge Summary",
+              "description": "description",
+              "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
+              "target_resources": [
+                "Patient",
+                "Condition",
+                "MedicationRequest"
+              ],
+              "mode": "narrative",
+              "metadata": {
+                "key": "value"
+              },
+              "created_at": "2024-01-15T10:30:00Z",
+              "updated_at": "2024-01-15T10:30:00Z"
+            }
+          ]
+        }
+      },
+      "render": {
+        "callTemplate": "client.summary.templates.list({{__body__}})",
+        "params": []
+      }
+    },
+    "POST /fhir2summary/template": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir2summary/template",
+      "request": {
+        "body": {
+          "name": "Discharge Summary",
+          "example_summary": "Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
+          "target_resources": [
+            "Patient",
+            "Condition",
+            "MedicationRequest"
+          ],
+          "mode": "narrative"
+        }
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template created successfully",
+          "template_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>. Discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
+            "target_resources": [
+              "Patient",
+              "Condition",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "render": {
+        "callTemplate": "client.summary.templates.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "example_summary",
+              "fieldTemplate": "example_summary={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "target_resources",
+              "fieldTemplate": "target_resources={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "mode",
+              "fieldTemplate": "mode={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "example_fhir_data",
+              "fieldTemplate": "example_fhir_data={{value}}",
+              "kind": "object",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir2summary/template/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir2summary/template/{id}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>.",
+            "target_resources": [
+              "Patient",
+              "Condition",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "render": {
+        "callTemplate": "client.summary.templates.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
+    },
+    "PUT /fhir2summary/template/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/fhir2summary/template/{id}",
+      "request": {
+        "body": {
+          "name": "Discharge Summary",
+          "template": "Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
+          "target_resources": [
+            "Patient",
+            "Encounter",
+            "MedicationRequest"
+          ],
+          "mode": "narrative"
+        }
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template updated successfully",
+          "template": {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "name": "Discharge Summary",
+            "description": "description",
+            "template": "Patient <<Patient.name[0].text>> was discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.",
+            "target_resources": [
+              "Patient",
+              "Encounter",
+              "MedicationRequest"
+            ],
+            "mode": "narrative",
+            "metadata": {
+              "key": "value"
+            },
+            "created_at": "2024-01-15T10:30:00Z",
+            "updated_at": "2024-02-20T11:00:00Z"
+          }
+        }
+      },
+      "render": {
+        "callTemplate": "client.summary.templates.update({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "template",
+              "fieldTemplate": "template={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "target_resources",
+              "fieldTemplate": "target_resources={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "mode",
+              "fieldTemplate": "mode={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "description",
+              "fieldTemplate": "description={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "DELETE /fhir2summary/template/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir2summary/template/{id}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "Template deleted successfully"
+        }
+      },
+      "render": {
+        "callTemplate": "client.summary.templates.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /tools/lang2fhir-and-create": {
       "httpMethod": "POST",
       "httpPath": "/tools/lang2fhir-and-create",
-      "sdkMethodChain": [
-        "tools",
-        "create_fhir_resource"
-      ],
-      "sdkMethodName": "create_fhir_resource",
       "request": {
         "body": {
           "resource": "condition-encounter-diagnosis",
           "text": "Patient has severe persistent asthma with acute exacerbation",
           "provider": "550e8400-e29b-41d4-a716-446655440000"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "resource",
-            "value": "condition-encounter-diagnosis"
-          },
-          {
-            "name": "text",
-            "value": "Patient has severe persistent asthma with acute exacerbation"
-          },
-          {
-            "name": "provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3347,44 +3702,43 @@
           "message": "FHIR resource created successfully"
         }
       },
-      "sdkCallSource": "client.tools.create_fhir_resource(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        resource=\"condition-encounter-diagnosis\",\n        text=\"Patient has severe persistent asthma with acute exacerbation\",\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.create_fhir_resource({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "resource",
+              "fieldTemplate": "resource={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /tools/lang2fhir-and-create-multi": {
       "httpMethod": "POST",
       "httpPath": "/tools/lang2fhir-and-create-multi",
-      "sdkMethodChain": [
-        "tools",
-        "create_fhir_resources_multi"
-      ],
-      "sdkMethodName": "create_fhir_resources_multi",
       "request": {
         "body": {
           "text": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.",
           "version": "R4",
           "provider": "medplum"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "text",
-            "value": "John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily."
-          },
-          {
-            "name": "version",
-            "value": "R4"
-          },
-          {
-            "name": "provider",
-            "value": "medplum"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3433,44 +3787,43 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.create_fhir_resources_multi(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"John Smith, 45-year-old male, diagnosed with Type 2 Diabetes. Prescribed Metformin 500mg twice daily.\",\n        version=\"R4\",\n        provider=\"medplum\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.create_fhir_resources_multi({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "version",
+              "fieldTemplate": "version={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /tools/lang2fhir-and-search": {
       "httpMethod": "POST",
       "httpPath": "/tools/lang2fhir-and-search",
-      "sdkMethodChain": [
-        "tools",
-        "search_fhir_resources"
-      ],
-      "sdkMethodName": "search_fhir_resources",
       "request": {
         "body": {
           "text": "Find all appointments for patient John Doe next week",
           "count": 10,
           "provider": "550e8400-e29b-41d4-a716-446655440000"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "text",
-            "value": "Find all appointments for patient John Doe next week"
-          },
-          {
-            "name": "count",
-            "value": 10
-          },
-          {
-            "name": "provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3497,39 +3850,48 @@
           "message": "Search query generated and executed in FHIR server successfully. Found 1 results."
         }
       },
-      "sdkCallSource": "client.tools.search_fhir_resources(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"Find all appointments for patient John Doe next week\",\n        count=10,\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.search_fhir_resources({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "patient_id",
+              "fieldTemplate": "patient_id={{value}}",
+              "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "count",
+              "fieldTemplate": "count={{value}}",
+              "kind": "number",
+              "required": false
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /tools/cohort": {
       "httpMethod": "POST",
       "httpPath": "/tools/cohort",
-      "sdkMethodChain": [
-        "tools",
-        "analyze_cohort"
-      ],
-      "sdkMethodName": "analyze_cohort",
       "request": {
         "body": {
           "text": "female patients over 20 with diabetes but not hypertension",
           "provider": "550e8400-e29b-41d4-a716-446655440000"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "phenoml_on_behalf_of",
-            "value": "Patient/550e8400-e29b-41d4-a716-446655440000"
-          },
-          {
-            "name": "phenoml_fhir_provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c..."
-          },
-          {
-            "name": "text",
-            "value": "female patients over 20 with diabetes but not hypertension"
-          },
-          {
-            "name": "provider",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3563,32 +3925,36 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.analyze_cohort(\n        phenoml_on_behalf_of=\"Patient/550e8400-e29b-41d4-a716-446655440000\",\n        phenoml_fhir_provider=\"550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...\",\n        text=\"female patients over 20 with diabetes but not hypertension\",\n        provider=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.analyze_cohort({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "provider",
+              "fieldTemplate": "provider={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /tools/mcp-server/create": {
       "httpMethod": "POST",
       "httpPath": "/tools/mcp-server/create",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "name": "My MCP Server",
           "mcp_server_url": "https://mcp.example.com"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "name",
-            "value": "My MCP Server"
-          },
-          {
-            "name": "mcp_server_url",
-            "value": "https://mcp.example.com"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -3632,20 +3998,33 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.create(\n        name=\"My MCP Server\",\n        mcp_server_url=\"https://mcp.example.com\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "mcp_server_url",
+              "fieldTemplate": "mcp_server_url={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "GET /tools/mcp-server/list": {
       "httpMethod": "GET",
       "httpPath": "/tools/mcp-server/list",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": []
+        "body": null
       },
       "response": {
         "body": {
@@ -3686,25 +4065,16 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.list()"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.list({{__body__}})",
+        "params": []
+      }
     },
     "GET /tools/mcp-server/{mcp_server_id}": {
       "httpMethod": "GET",
       "httpPath": "/tools/mcp-server/{mcp_server_id}",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "mcp_server_id",
-            "value": "mcp_server_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -3739,25 +4109,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.get(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "mcp_server_id",
+              "fieldTemplate": "mcp_server_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "DELETE /tools/mcp-server/{mcp_server_id}": {
       "httpMethod": "DELETE",
       "httpPath": "/tools/mcp-server/{mcp_server_id}",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "mcp_server_id",
-            "value": "mcp_server_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -3792,26 +4164,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.delete(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "mcp_server_id",
+              "fieldTemplate": "mcp_server_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "GET /tools/mcp-server/{mcp_server_id}/list": {
       "httpMethod": "GET",
       "httpPath": "/tools/mcp-server/{mcp_server_id}/list",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "tools",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "mcp_server_id",
-            "value": "mcp_server_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -3852,26 +4225,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.tools.list(\n        mcp_server_id=\"mcp_server_id\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.tools.list({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "mcp_server_id",
+              "fieldTemplate": "mcp_server_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "GET /tools/mcp-server/tool/{mcp_server_tool_id}": {
       "httpMethod": "GET",
       "httpPath": "/tools/mcp-server/tool/{mcp_server_tool_id}",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "tools",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "mcp_server_tool_id",
-            "value": "mcp_server_tool_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -3903,26 +4277,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.tools.get(\n        mcp_server_tool_id=\"mcp_server_tool_id\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.tools.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "mcp_server_tool_id",
+              "fieldTemplate": "mcp_server_tool_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "DELETE /tools/mcp-server/tool/{mcp_server_tool_id}": {
       "httpMethod": "DELETE",
       "httpPath": "/tools/mcp-server/tool/{mcp_server_tool_id}",
-      "sdkMethodChain": [
-        "tools",
-        "mcp_server",
-        "tools",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "mcp_server_tool_id",
-            "value": "mcp_server_tool_id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -3954,24 +4329,27 @@
           ]
         }
       },
-      "sdkCallSource": "client.tools.mcp_server.tools.delete(\n        mcp_server_tool_id=\"mcp_server_tool_id\",\n    )"
+      "render": {
+        "callTemplate": "client.tools.mcp_server.tools.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "mcp_server_tool_id",
+              "fieldTemplate": "mcp_server_tool_id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "GET /workflows": {
       "httpMethod": "GET",
       "httpPath": "/workflows",
-      "sdkMethodChain": [
-        "workflows",
-        "list"
-      ],
-      "sdkMethodName": "list",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "verbose",
-            "value": true
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -4117,16 +4495,25 @@
           ]
         }
       },
-      "sdkCallSource": "client.workflows.list(\n        verbose=True,\n    )"
+      "render": {
+        "callTemplate": "client.workflows.list({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "verbose",
+              "fieldTemplate": "verbose={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "POST /workflows": {
       "httpMethod": "POST",
       "httpPath": "/workflows",
-      "sdkMethodChain": [
-        "workflows",
-        "create"
-      ],
-      "sdkMethodName": "create",
       "request": {
         "body": {
           "name": "Patient Data Mapping Workflow",
@@ -4138,34 +4525,7 @@
             "encounter_date": "2024-01-15"
           },
           "fhir_provider_id": "550e8400-e29b-41d4-a716-446655440000"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "verbose",
-            "value": true
-          },
-          {
-            "name": "name",
-            "value": "Patient Data Mapping Workflow"
-          },
-          {
-            "name": "workflow_instructions",
-            "value": "Given diagnosis data, find the patient and create a condition record linked to their encounter"
-          },
-          {
-            "name": "sample_data",
-            "value": {
-              "patient_last_name": "Rippin",
-              "patient_first_name": "Clay",
-              "diagnosis_code": "I10",
-              "encounter_date": "2024-01-15"
-            }
-          },
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -4300,28 +4660,57 @@
           }
         }
       },
-      "sdkCallSource": "client.workflows.create(\n        verbose=True,\n        name=\"Patient Data Mapping Workflow\",\n        workflow_instructions=\"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n        sample_data={\n            \"patient_last_name\": \"Rippin\",\n            \"patient_first_name\": \"Clay\",\n            \"diagnosis_code\": \"I10\",\n            \"encounter_date\": \"2024-01-15\",\n        },\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+      "render": {
+        "callTemplate": "client.workflows.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "workflow_instructions",
+              "fieldTemplate": "workflow_instructions={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "sample_data",
+              "fieldTemplate": "sample_data={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "verbose",
+              "fieldTemplate": "verbose={{value}}",
+              "kind": "boolean",
+              "required": false
+            },
+            {
+              "jsonKey": "dynamic_generation",
+              "fieldTemplate": "dynamic_generation={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "GET /workflows/{id}": {
       "httpMethod": "GET",
       "httpPath": "/workflows/{id}",
-      "sdkMethodChain": [
-        "workflows",
-        "get"
-      ],
-      "sdkMethodName": "get",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "verbose",
-            "value": true
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -4462,16 +4851,31 @@
           }
         }
       },
-      "sdkCallSource": "client.workflows.get(\n        id=\"id\",\n        verbose=True,\n    )"
+      "render": {
+        "callTemplate": "client.workflows.get({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "verbose",
+              "fieldTemplate": "verbose={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "PUT /workflows/{id}": {
       "httpMethod": "PUT",
       "httpPath": "/workflows/{id}",
-      "sdkMethodChain": [
-        "workflows",
-        "update"
-      ],
-      "sdkMethodName": "update",
       "request": {
         "body": {
           "name": "Patient Data Mapping Workflow (v2)",
@@ -4483,38 +4887,7 @@
             "encounter_date": "2024-01-15"
           },
           "fhir_provider_id": "550e8400-e29b-41d4-a716-446655440000"
-        },
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          },
-          {
-            "name": "verbose",
-            "value": true
-          },
-          {
-            "name": "name",
-            "value": "Patient Data Mapping Workflow (v2)"
-          },
-          {
-            "name": "workflow_instructions",
-            "value": "Given diagnosis data, find the patient and create a condition record linked to their encounter"
-          },
-          {
-            "name": "sample_data",
-            "value": {
-              "patient_last_name": "Rippin",
-              "patient_first_name": "Clay",
-              "diagnosis_code": "I10",
-              "encounter_date": "2024-01-15"
-            }
-          },
-          {
-            "name": "fhir_provider_id",
-            "value": "550e8400-e29b-41d4-a716-446655440000"
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -4649,24 +5022,63 @@
           }
         }
       },
-      "sdkCallSource": "client.workflows.update(\n        id=\"id\",\n        verbose=True,\n        name=\"Patient Data Mapping Workflow (v2)\",\n        workflow_instructions=\"Given diagnosis data, find the patient and create a condition record linked to their encounter\",\n        sample_data={\n            \"patient_last_name\": \"Rippin\",\n            \"patient_first_name\": \"Clay\",\n            \"diagnosis_code\": \"I10\",\n            \"encounter_date\": \"2024-01-15\",\n        },\n        fhir_provider_id=\"550e8400-e29b-41d4-a716-446655440000\",\n    )"
+      "render": {
+        "callTemplate": "client.workflows.update({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "name",
+              "fieldTemplate": "name={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "workflow_instructions",
+              "fieldTemplate": "workflow_instructions={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "sample_data",
+              "fieldTemplate": "sample_data={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "fhir_provider_id",
+              "fieldTemplate": "fhir_provider_id={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "verbose",
+              "fieldTemplate": "verbose={{value}}",
+              "kind": "boolean",
+              "required": false
+            },
+            {
+              "jsonKey": "dynamic_generation",
+              "fieldTemplate": "dynamic_generation={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     },
     "DELETE /workflows/{id}": {
       "httpMethod": "DELETE",
       "httpPath": "/workflows/{id}",
-      "sdkMethodChain": [
-        "workflows",
-        "delete"
-      ],
-      "sdkMethodName": "delete",
       "request": {
-        "body": null,
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "id"
-          }
-        ]
+        "body": null
       },
       "response": {
         "body": {
@@ -4674,16 +5086,25 @@
           "message": "Workflow deleted successfully"
         }
       },
-      "sdkCallSource": "client.workflows.delete(\n        id=\"id\",\n    )"
+      "render": {
+        "callTemplate": "client.workflows.delete({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            }
+          ]
+        }
+      }
     },
     "POST /workflows/{id}/execute": {
       "httpMethod": "POST",
       "httpPath": "/workflows/{id}/execute",
-      "sdkMethodChain": [
-        "workflows",
-        "execute"
-      ],
-      "sdkMethodName": "execute",
       "request": {
         "body": {
           "input_data": {
@@ -4692,22 +5113,7 @@
             "diagnosis_code": "M79.3",
             "encounter_date": "2024-03-20"
           }
-        },
-        "sdkCallArgs": [
-          {
-            "name": "id",
-            "value": "7a8b9c0d-1234-5678-abcd-ef9876543210"
-          },
-          {
-            "name": "input_data",
-            "value": {
-              "patient_last_name": "Johnson",
-              "patient_first_name": "Mary",
-              "diagnosis_code": "M79.3",
-              "encounter_date": "2024-03-20"
-            }
-          }
-        ]
+        }
       },
       "response": {
         "body": {
@@ -4777,7 +5183,33 @@
           "preview": false
         }
       },
-      "sdkCallSource": "client.workflows.execute(\n        id=\"7a8b9c0d-1234-5678-abcd-ef9876543210\",\n        input_data={\n            \"patient_last_name\": \"Johnson\",\n            \"patient_first_name\": \"Mary\",\n            \"diagnosis_code\": \"M79.3\",\n            \"encounter_date\": \"2024-03-20\",\n        },\n    )"
+      "render": {
+        "callTemplate": "client.workflows.execute({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "id",
+              "fieldTemplate": "id={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "input_data",
+              "fieldTemplate": "input_data={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "preview",
+              "fieldTemplate": "preview={{value}}",
+              "kind": "boolean",
+              "required": false
+            }
+          ]
+        }
+      }
     }
   }
 }
