@@ -5,4 +5,4 @@ import typing
 from .fhir_bundle import FhirBundle
 from .fhir_resource import FhirResource
 
-FhirSearchResponse = typing.Union[FhirBundle, FhirResource]
+SearchResponse = typing.Union[FhirBundle, FhirResource]

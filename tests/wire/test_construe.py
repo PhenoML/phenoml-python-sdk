@@ -39,52 +39,52 @@ def test_construe_extract_codes() -> None:
     verify_request_count(test_id, "POST", "/construe/extract", None, 1)
 
 
-def test_construe_list_available_code_systems() -> None:
-    """Test listAvailableCodeSystems endpoint with WireMock"""
-    test_id = "construe.list_available_code_systems.0"
+def test_construe_list_code_systems() -> None:
+    """Test listCodeSystems endpoint with WireMock"""
+    test_id = "construe.list_code_systems.0"
     client = get_client(test_id)
-    client.construe.list_available_code_systems()
+    client.construe.list_code_systems()
     verify_request_count(test_id, "GET", "/construe/codes/systems", None, 1)
 
 
-def test_construe_get_code_system_detail() -> None:
-    """Test getCodeSystemDetail endpoint with WireMock"""
-    test_id = "construe.get_code_system_detail.0"
+def test_construe_get_code_system() -> None:
+    """Test getCodeSystem endpoint with WireMock"""
+    test_id = "construe.get_code_system.0"
     client = get_client(test_id)
-    client.construe.get_code_system_detail(
+    client.construe.get_code_system(
         codesystem="ICD-10-CM",
         version="2025",
     )
     verify_request_count(test_id, "GET", "/construe/codes/systems/ICD-10-CM", {"version": "2025"}, 1)
 
 
-def test_construe_delete_custom_code_system() -> None:
-    """Test deleteCustomCodeSystem endpoint with WireMock"""
-    test_id = "construe.delete_custom_code_system.0"
+def test_construe_delete_code_system() -> None:
+    """Test deleteCodeSystem endpoint with WireMock"""
+    test_id = "construe.delete_code_system.0"
     client = get_client(test_id)
-    client.construe.delete_custom_code_system(
+    client.construe.delete_code_system(
         codesystem="CUSTOM_CODES",
         version="version",
     )
     verify_request_count(test_id, "DELETE", "/construe/codes/systems/CUSTOM_CODES", {"version": "version"}, 1)
 
 
-def test_construe_export_custom_code_system() -> None:
-    """Test exportCustomCodeSystem endpoint with WireMock"""
-    test_id = "construe.export_custom_code_system.0"
+def test_construe_export_code_system() -> None:
+    """Test exportCodeSystem endpoint with WireMock"""
+    test_id = "construe.export_code_system.0"
     client = get_client(test_id)
-    client.construe.export_custom_code_system(
+    client.construe.export_code_system(
         codesystem="CUSTOM_CODES",
         version="version",
     )
     verify_request_count(test_id, "GET", "/construe/codes/systems/CUSTOM_CODES/export", {"version": "version"}, 1)
 
 
-def test_construe_list_codes_in_a_code_system() -> None:
-    """Test listCodesInACodeSystem endpoint with WireMock"""
-    test_id = "construe.list_codes_in_a_code_system.0"
+def test_construe_list_codes() -> None:
+    """Test listCodes endpoint with WireMock"""
+    test_id = "construe.list_codes.0"
     client = get_client(test_id)
-    client.construe.list_codes_in_a_code_system(
+    client.construe.list_codes(
         codesystem="ICD-10-CM",
         version="2025",
         cursor="cursor",
@@ -95,11 +95,11 @@ def test_construe_list_codes_in_a_code_system() -> None:
     )
 
 
-def test_construe_get_a_specific_code() -> None:
-    """Test getASpecificCode endpoint with WireMock"""
-    test_id = "construe.get_a_specific_code.0"
+def test_construe_get_code() -> None:
+    """Test getCode endpoint with WireMock"""
+    test_id = "construe.get_code.0"
     client = get_client(test_id)
-    client.construe.get_a_specific_code(
+    client.construe.get_code(
         codesystem="ICD-10-CM",
         code_id="E1165",
         version="version",
@@ -107,11 +107,11 @@ def test_construe_get_a_specific_code() -> None:
     verify_request_count(test_id, "GET", "/construe/codes/ICD-10-CM/E1165", {"version": "version"}, 1)
 
 
-def test_construe_semantic_search_embedding_based() -> None:
-    """Test semanticSearchEmbeddingBased endpoint with WireMock"""
-    test_id = "construe.semantic_search_embedding_based.0"
+def test_construe_search_semantic() -> None:
+    """Test searchSemantic endpoint with WireMock"""
+    test_id = "construe.search_semantic.0"
     client = get_client(test_id)
-    client.construe.semantic_search_embedding_based(
+    client.construe.search_semantic(
         codesystem="ICD-10-CM",
         text="patient has trouble breathing at night and wakes up gasping",
         version="version",
@@ -126,11 +126,11 @@ def test_construe_semantic_search_embedding_based() -> None:
     )
 
 
-def test_construe_submit_feedback_on_extraction_results() -> None:
-    """Test submitFeedbackOnExtractionResults endpoint with WireMock"""
-    test_id = "construe.submit_feedback_on_extraction_results.0"
+def test_construe_submit_feedback() -> None:
+    """Test submitFeedback endpoint with WireMock"""
+    test_id = "construe.submit_feedback.0"
     client = get_client(test_id)
-    client.construe.submit_feedback_on_extraction_results(
+    client.construe.submit_feedback(
         text="Patient has type 2 diabetes with hyperglycemia",
         received_result=ExtractCodesResult(
             system=ExtractRequestSystem(
@@ -163,11 +163,11 @@ def test_construe_submit_feedback_on_extraction_results() -> None:
     verify_request_count(test_id, "POST", "/construe/feedback", None, 1)
 
 
-def test_construe_terminology_server_text_search() -> None:
-    """Test terminologyServerTextSearch endpoint with WireMock"""
-    test_id = "construe.terminology_server_text_search.0"
+def test_construe_search_text() -> None:
+    """Test searchText endpoint with WireMock"""
+    test_id = "construe.search_text.0"
     client = get_client(test_id)
-    client.construe.terminology_server_text_search(
+    client.construe.search_text(
         codesystem="ICD-10-CM",
         q="E11.65",
         version="version",

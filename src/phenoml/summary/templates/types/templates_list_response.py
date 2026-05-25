@@ -3,12 +3,13 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ....core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...types.summary_template import SummaryTemplate
 
 
-class AgentDeleteResponse(UniversalBaseModel):
+class TemplatesListResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
-    message: typing.Optional[str] = None
+    templates: typing.Optional[typing.List[SummaryTemplate]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

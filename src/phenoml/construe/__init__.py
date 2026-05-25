@@ -12,7 +12,6 @@ if typing.TYPE_CHECKING:
         CodeResponse,
         CodeSystemDetails,
         CodeSystemInfo,
-        ConstrueUploadCodeSystemResponse,
         DeleteCodeSystemResponse,
         ExportCodeSystemResponse,
         ExtractCodesResult,
@@ -32,6 +31,7 @@ if typing.TYPE_CHECKING:
         SemanticSearchResult,
         TextSearchResponse,
         TextSearchResult,
+        UploadCodeSystemResponse,
         UploadRequestFormat,
     )
     from .errors import (
@@ -54,7 +54,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CodeSystemDetails": ".types",
     "CodeSystemInfo": ".types",
     "ConflictError": ".errors",
-    "ConstrueUploadCodeSystemResponse": ".types",
     "DeleteCodeSystemResponse": ".types",
     "ExportCodeSystemResponse": ".types",
     "ExtractCodesResult": ".types",
@@ -82,6 +81,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TextSearchResponse": ".types",
     "TextSearchResult": ".types",
     "UnauthorizedError": ".errors",
+    "UploadCodeSystemResponse": ".types",
     "UploadRequestFormat": ".types",
 }
 
@@ -115,7 +115,6 @@ __all__ = [
     "CodeSystemDetails",
     "CodeSystemInfo",
     "ConflictError",
-    "ConstrueUploadCodeSystemResponse",
     "DeleteCodeSystemResponse",
     "ExportCodeSystemResponse",
     "ExtractCodesResult",
@@ -143,5 +142,6 @@ __all__ = [
     "TextSearchResponse",
     "TextSearchResult",
     "UnauthorizedError",
+    "UploadCodeSystemResponse",
     "UploadRequestFormat",
 ]

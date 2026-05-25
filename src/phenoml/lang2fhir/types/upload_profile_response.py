@@ -6,7 +6,7 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class Lang2FhirUploadProfileResponse(UniversalBaseModel):
+class UploadProfileResponse(UniversalBaseModel):
     message: typing.Optional[str] = None
     id: typing.Optional[str] = pydantic.Field(default=None)
     """

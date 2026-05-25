@@ -28,11 +28,11 @@ if typing.TYPE_CHECKING:
     from .document_multi_request_validation_method import DocumentMultiRequestValidationMethod
     from .document_multi_response import DocumentMultiResponse
     from .fhir_resource import FhirResource
-    from .lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
     from .page_classification import PageClassification
     from .page_filter import PageFilter
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
+    from .upload_profile_response import UploadProfileResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateMultiRequestDetectionEffort": ".create_multi_request_detection_effort",
     "CreateMultiRequestValidationMethod": ".create_multi_request_validation_method",
@@ -52,11 +52,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DocumentMultiRequestValidationMethod": ".document_multi_request_validation_method",
     "DocumentMultiResponse": ".document_multi_response",
     "FhirResource": ".fhir_resource",
-    "Lang2FhirUploadProfileResponse": ".lang2fhir_upload_profile_response",
     "PageClassification": ".page_classification",
     "PageFilter": ".page_filter",
     "SearchResponse": ".search_response",
     "SearchResponseResourceType": ".search_response_resource_type",
+    "UploadProfileResponse": ".upload_profile_response",
 }
 
 
@@ -100,9 +100,9 @@ __all__ = [
     "DocumentMultiRequestValidationMethod",
     "DocumentMultiResponse",
     "FhirResource",
-    "Lang2FhirUploadProfileResponse",
     "PageClassification",
     "PageFilter",
     "SearchResponse",
     "SearchResponseResourceType",
+    "UploadProfileResponse",
 ]

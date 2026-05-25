@@ -7,10 +7,10 @@ from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawFhirClient, RawFhirClient
 from .types.fhir_bundle import FhirBundle
 from .types.fhir_bundle_entry_item import FhirBundleEntryItem
-from .types.fhir_patch_request_body_item import FhirPatchRequestBodyItem
 from .types.fhir_resource import FhirResource
 from .types.fhir_resource_meta import FhirResourceMeta
-from .types.fhir_search_response import FhirSearchResponse
+from .types.patch_request_body_item import PatchRequestBodyItem
+from .types.search_response import SearchResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -40,7 +40,7 @@ class FhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirSearchResponse:
+    ) -> SearchResponse:
         """
         Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
 
@@ -80,7 +80,7 @@ class FhirClient:
 
         Returns
         -------
-        FhirSearchResponse
+        SearchResponse
             Successfully retrieved FHIR resource(s)
 
         Examples
@@ -350,7 +350,7 @@ class FhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        request: typing.Sequence[FhirPatchRequestBodyItem],
+        request: typing.Sequence[PatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -379,7 +379,7 @@ class FhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        request : typing.Sequence[FhirPatchRequestBodyItem]
+        request : typing.Sequence[PatchRequestBodyItem]
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -400,7 +400,7 @@ class FhirClient:
         Examples
         --------
         from phenoml import PhenomlClient
-        from phenoml.fhir import FhirPatchRequestBodyItem
+        from phenoml.fhir import PatchRequestBodyItem
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -412,7 +412,7 @@ class FhirClient:
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
             request=[
-                FhirPatchRequestBodyItem(
+                PatchRequestBodyItem(
                     op="replace",
                     path="/name/0/family",
                     value="NewFamilyName",
@@ -550,7 +550,7 @@ class AsyncFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirSearchResponse:
+    ) -> SearchResponse:
         """
         Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
 
@@ -590,7 +590,7 @@ class AsyncFhirClient:
 
         Returns
         -------
-        FhirSearchResponse
+        SearchResponse
             Successfully retrieved FHIR resource(s)
 
         Examples
@@ -892,7 +892,7 @@ class AsyncFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        request: typing.Sequence[FhirPatchRequestBodyItem],
+        request: typing.Sequence[PatchRequestBodyItem],
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -921,7 +921,7 @@ class AsyncFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        request : typing.Sequence[FhirPatchRequestBodyItem]
+        request : typing.Sequence[PatchRequestBodyItem]
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -944,7 +944,7 @@ class AsyncFhirClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
-        from phenoml.fhir import FhirPatchRequestBodyItem
+        from phenoml.fhir import PatchRequestBodyItem
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -959,7 +959,7 @@ class AsyncFhirClient:
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
                 request=[
-                    FhirPatchRequestBodyItem(
+                    PatchRequestBodyItem(
                         op="replace",
                         path="/name/0/family",
                         value="NewFamilyName",

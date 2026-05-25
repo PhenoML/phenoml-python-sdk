@@ -8,7 +8,7 @@ from .workflow_definition import WorkflowDefinition
 from .workflow_response import WorkflowResponse
 
 
-class WorkflowsUpdateResponse(UniversalBaseModel):
+class UpdateResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
     workflow: typing.Optional[WorkflowResponse] = pydantic.Field(default=None)

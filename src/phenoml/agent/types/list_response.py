@@ -4,12 +4,13 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .agent_template import AgentTemplate
 
 
-class ConstrueUploadCodeSystemResponse(UniversalBaseModel):
-    status: typing.Optional[str] = None
-    name: typing.Optional[str] = None
-    version: typing.Optional[str] = None
+class ListResponse(UniversalBaseModel):
+    success: typing.Optional[bool] = None
+    message: typing.Optional[str] = None
+    agents: typing.Optional[typing.List[AgentTemplate]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
