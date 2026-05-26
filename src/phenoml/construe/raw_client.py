@@ -22,7 +22,6 @@ from .errors.not_implemented_error import NotImplementedError
 from .errors.service_unavailable_error import ServiceUnavailableError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.code_response import CodeResponse
-from .types.construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
 from .types.delete_code_system_response import DeleteCodeSystemResponse
 from .types.export_code_system_response import ExportCodeSystemResponse
 from .types.extract_codes_result import ExtractCodesResult
@@ -35,6 +34,7 @@ from .types.list_code_systems_response import ListCodeSystemsResponse
 from .types.list_codes_response import ListCodesResponse
 from .types.semantic_search_response import SemanticSearchResponse
 from .types.text_search_response import TextSearchResponse
+from .types.upload_code_system_response import UploadCodeSystemResponse
 from .types.upload_request_format import UploadRequestFormat
 from pydantic import ValidationError
 
@@ -60,7 +60,7 @@ class RawConstrueClient:
         codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
         replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ConstrueUploadCodeSystemResponse]:
+    ) -> HttpResponse[UploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Returns 202 immediately; embedding generation runs asynchronously. Poll
@@ -112,7 +112,7 @@ class RawConstrueClient:
 
         Returns
         -------
-        HttpResponse[ConstrueUploadCodeSystemResponse]
+        HttpResponse[UploadCodeSystemResponse]
             Upload accepted for asynchronous processing
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -141,9 +141,9 @@ class RawConstrueClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConstrueUploadCodeSystemResponse,
+                    UploadCodeSystemResponse,
                     parse_obj_as(
-                        type_=ConstrueUploadCodeSystemResponse,  # type: ignore
+                        type_=UploadCodeSystemResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -356,7 +356,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def list_available_code_systems(
+    def list_code_systems(
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ListCodeSystemsResponse]:
         """
@@ -418,7 +418,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get_code_system_detail(
+    def get_code_system(
         self,
         codesystem: str,
         *,
@@ -515,7 +515,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def delete_custom_code_system(
+    def delete_code_system(
         self,
         codesystem: str,
         *,
@@ -624,7 +624,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def export_custom_code_system(
+    def export_code_system(
         self,
         codesystem: str,
         *,
@@ -756,7 +756,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def list_codes_in_a_code_system(
+    def list_codes(
         self,
         codesystem: str,
         *,
@@ -865,7 +865,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get_a_specific_code(
+    def get_code(
         self,
         codesystem: str,
         code_id: str,
@@ -969,7 +969,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def semantic_search_embedding_based(
+    def search_semantic(
         self,
         codesystem: str,
         *,
@@ -1094,7 +1094,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def submit_feedback_on_extraction_results(
+    def submit_feedback(
         self,
         *,
         text: str,
@@ -1209,7 +1209,7 @@ class RawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def terminology_server_text_search(
+    def search_text(
         self,
         codesystem: str,
         *,
@@ -1369,7 +1369,7 @@ class AsyncRawConstrueClient:
         codes: typing.Optional[typing.Sequence[CodeResponse]] = OMIT,
         replace: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ConstrueUploadCodeSystemResponse]:
+    ) -> AsyncHttpResponse[UploadCodeSystemResponse]:
         """
         Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.
         Returns 202 immediately; embedding generation runs asynchronously. Poll
@@ -1421,7 +1421,7 @@ class AsyncRawConstrueClient:
 
         Returns
         -------
-        AsyncHttpResponse[ConstrueUploadCodeSystemResponse]
+        AsyncHttpResponse[UploadCodeSystemResponse]
             Upload accepted for asynchronous processing
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1450,9 +1450,9 @@ class AsyncRawConstrueClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConstrueUploadCodeSystemResponse,
+                    UploadCodeSystemResponse,
                     parse_obj_as(
-                        type_=ConstrueUploadCodeSystemResponse,  # type: ignore
+                        type_=UploadCodeSystemResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1665,7 +1665,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def list_available_code_systems(
+    async def list_code_systems(
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ListCodeSystemsResponse]:
         """
@@ -1727,7 +1727,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def get_code_system_detail(
+    async def get_code_system(
         self,
         codesystem: str,
         *,
@@ -1824,7 +1824,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def delete_custom_code_system(
+    async def delete_code_system(
         self,
         codesystem: str,
         *,
@@ -1933,7 +1933,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def export_custom_code_system(
+    async def export_code_system(
         self,
         codesystem: str,
         *,
@@ -2065,7 +2065,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def list_codes_in_a_code_system(
+    async def list_codes(
         self,
         codesystem: str,
         *,
@@ -2174,7 +2174,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def get_a_specific_code(
+    async def get_code(
         self,
         codesystem: str,
         code_id: str,
@@ -2278,7 +2278,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def semantic_search_embedding_based(
+    async def search_semantic(
         self,
         codesystem: str,
         *,
@@ -2403,7 +2403,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def submit_feedback_on_extraction_results(
+    async def submit_feedback(
         self,
         *,
         text: str,
@@ -2518,7 +2518,7 @@ class AsyncRawConstrueClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def terminology_server_text_search(
+    async def search_text(
         self,
         codesystem: str,
         *,

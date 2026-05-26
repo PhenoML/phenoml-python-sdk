@@ -11,7 +11,6 @@ if typing.TYPE_CHECKING:
     from .code_response import CodeResponse
     from .code_system_details import CodeSystemDetails
     from .code_system_info import CodeSystemInfo
-    from .construe_upload_code_system_response import ConstrueUploadCodeSystemResponse
     from .delete_code_system_response import DeleteCodeSystemResponse
     from .export_code_system_response import ExportCodeSystemResponse
     from .extract_codes_result import ExtractCodesResult
@@ -31,6 +30,7 @@ if typing.TYPE_CHECKING:
     from .semantic_search_result import SemanticSearchResult
     from .text_search_response import TextSearchResponse
     from .text_search_result import TextSearchResult
+    from .upload_code_system_response import UploadCodeSystemResponse
     from .upload_request_format import UploadRequestFormat
 _dynamic_imports: typing.Dict[str, str] = {
     "Citation": ".citation",
@@ -38,7 +38,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CodeResponse": ".code_response",
     "CodeSystemDetails": ".code_system_details",
     "CodeSystemInfo": ".code_system_info",
-    "ConstrueUploadCodeSystemResponse": ".construe_upload_code_system_response",
     "DeleteCodeSystemResponse": ".delete_code_system_response",
     "ExportCodeSystemResponse": ".export_code_system_response",
     "ExtractCodesResult": ".extract_codes_result",
@@ -58,6 +57,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SemanticSearchResult": ".semantic_search_result",
     "TextSearchResponse": ".text_search_response",
     "TextSearchResult": ".text_search_result",
+    "UploadCodeSystemResponse": ".upload_code_system_response",
     "UploadRequestFormat": ".upload_request_format",
 }
 
@@ -89,7 +89,6 @@ __all__ = [
     "CodeResponse",
     "CodeSystemDetails",
     "CodeSystemInfo",
-    "ConstrueUploadCodeSystemResponse",
     "DeleteCodeSystemResponse",
     "ExportCodeSystemResponse",
     "ExtractCodesResult",
@@ -109,5 +108,6 @@ __all__ = [
     "SemanticSearchResult",
     "TextSearchResponse",
     "TextSearchResult",
+    "UploadCodeSystemResponse",
     "UploadRequestFormat",
 ]

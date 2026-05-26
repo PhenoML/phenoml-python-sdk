@@ -1,3 +1,30 @@
+## 14.0.0 - 2026-05-25
+### Breaking Changes
+* **`client.summary.list_templates()` / `create_template()` / `get_template()` / `update_template()` / `delete_template()`** — removed from `SummaryClient`/`AsyncSummaryClient`; the five template CRUD methods now live on a new `client.summary.templates` sub-client. Rewrite call sites as `client.summary.templates.list()` / `create()` / `get(...)` / `update(...)` / `delete(...)`. HTTP routes are unchanged.
+* **`phenoml.summary.SummaryListTemplatesResponse` / `SummaryGetTemplateResponse` / `SummaryUpdateTemplateResponse` / `SummaryDeleteTemplateResponse`** — removed; replaced by `phenoml.summary.templates.TemplatesListResponse` / `TemplatesGetResponse` / `TemplatesUpdateResponse` / `TemplatesDeleteResponse` (also re-exported from `phenoml.summary`). Update imports.
+* **`client.authtoken.auth.get_token()`** — the entire `authtoken.auth` subpackage was removed; call `client.authtoken.get_token(...)` directly (sync and async). Replace any imports of `phenoml.authtoken.auth.AuthClient` / `AsyncAuthClient` with `phenoml.authtoken.AuthtokenClient` / `AsyncAuthtokenClient`.
+* **`client.construe.list_available_code_systems()` → `list_code_systems()`** — method renamed (sync, async, and raw variants).
+* **`client.construe.get_code_system_detail()` → `get_code_system()`** — method renamed.
+* **`client.construe.delete_custom_code_system()` → `delete_code_system()`** — method renamed.
+* **`client.construe.export_custom_code_system()` → `export_code_system()`** — method renamed.
+* **`client.construe.list_codes_in_a_code_system()` → `list_codes()`** — method renamed.
+* **`client.construe.get_a_specific_code()` → `get_code()`** — method renamed.
+* **`client.construe.semantic_search_embedding_based()` → `search_semantic()`** — method renamed.
+* **`client.construe.terminology_server_text_search()` → `search_text()`** — method renamed.
+* **`client.construe.submit_feedback_on_extraction_results()` → `submit_feedback()`** — method renamed.
+* **`client.lang2fhir.extract_multiple_fhir_resources_from_a_document()` → `client.lang2fhir.document_multi()`** — method renamed (sync, async, and raw variants).
+* **`phenoml.construe.ConstrueUploadCodeSystemResponse`** — renamed to `phenoml.construe.UploadCodeSystemResponse`.
+* **`phenoml.fhir.FhirSearchResponse`** — renamed to `phenoml.fhir.SearchResponse`.
+* **`phenoml.fhir.FhirPatchRequestBodyItem` / `FhirPatchRequestBodyItemOp`** — renamed to `phenoml.fhir.PatchRequestBodyItem` / `PatchRequestBodyItemOp`.
+* **`phenoml.fhir_provider.FhirProviderDeleteResponse` / `FhirProviderRemoveAuthConfigResponse`** — renamed to `phenoml.fhir_provider.DeleteResponse` / `RemoveAuthConfigResponse`.
+* **`phenoml.lang2fhir.Lang2FhirUploadProfileResponse`** — renamed to `phenoml.lang2fhir.UploadProfileResponse`.
+* **`phenoml.agent.Agent*` request and response types** — `Agent` prefix dropped: `AgentListResponse` → `ListResponse`, `AgentDeleteResponse` → `DeleteResponse`, `AgentGetChatMessagesResponse` → `GetChatMessagesResponse`, `AgentGetChatMessagesRequestRole` → `GetChatMessagesRequestRole`, `AgentGetChatMessagesRequestOrder` → `GetChatMessagesRequestOrder` (still under `phenoml.agent`).
+* **`phenoml.workflows.WorkflowsGetResponse` / `WorkflowsUpdateResponse` / `WorkflowsDeleteResponse`** — renamed to `phenoml.workflows.GetResponse` / `UpdateResponse` / `DeleteResponse`.
+### Added
+* **`client.summary.templates`** — new sub-client (`TemplatesClient` / `AsyncTemplatesClient`) exposing `list()`, `create()`, `get()`, `update()`, `delete()` for summary templates.
+* **`phenoml.summary.templates`** — new submodule exporting `TemplatesListResponse`, `TemplatesGetResponse`, `TemplatesUpdateResponse`, `TemplatesDeleteResponse` (also re-exported from `phenoml.summary`).
+* **`phenoml.workflows.GatewayTimeoutError`** — new error class (HTTP 504) raised by `client.workflows.execute()` / async equivalent (and corresponding raw clients) when the upstream workflow execution times out.
+
 ## 13.0.0 - 2026-05-15
 ### Breaking Changes
 * **`call()`** (`ToolsClient`, `AsyncToolsClient`, `RawToolsClient`, `AsyncRawToolsClient`) — the method for calling an MCP server tool has been removed; delete any call sites using `client.tools.mcp_server.tools.call(...)`.

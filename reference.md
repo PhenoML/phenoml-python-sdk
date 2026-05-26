@@ -83,7 +83,7 @@ client.agent.create(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...) -> AgentListResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...) -> ListResponse</code></summary>
 <dl>
 <dd>
 
@@ -324,7 +324,7 @@ client.agent.update(
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -> AgentDeleteResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -> DeleteResponse</code></summary>
 <dl>
 <dd>
 
@@ -759,7 +759,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...) -> AgentGetChatMessagesResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...) -> GetChatMessagesResponse</code></summary>
 <dl>
 <dd>
 
@@ -832,7 +832,7 @@ client.agent.get_chat_messages(
 <dl>
 <dd>
 
-**role:** `typing.Optional[AgentGetChatMessagesRequestRole]` 
+**role:** `typing.Optional[GetChatMessagesRequestRole]` 
 
 Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
 If not specified, messages with all roles are returned.
@@ -849,7 +849,7 @@ If not specified, messages with all roles are returned.
 <dl>
 <dd>
 
-**order:** `typing.Optional[AgentGetChatMessagesRequestOrder]` — Order of messages
+**order:** `typing.Optional[GetChatMessagesRequestOrder]` — Order of messages
     
 </dd>
 </dl>
@@ -1408,8 +1408,8 @@ client.agent.prompts.patch(
 </dl>
 </details>
 
-## Authtoken Auth
-<details><summary><code>client.authtoken.auth.<a href="src/phenoml/authtoken/auth/client.py">get_token</a>(...) -> TokenResponse</code></summary>
+## Authtoken
+<details><summary><code>client.authtoken.<a href="src/phenoml/authtoken/client.py">get_token</a>(...) -> TokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -1448,7 +1448,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.authtoken.auth.get_token(
+client.authtoken.get_token(
     client_id="your_client_id",
     client_secret="your_client_secret",
 )
@@ -1579,7 +1579,7 @@ client.cohort.analyze(
 </details>
 
 ## Construe
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...) -> ConstrueUploadCodeSystemResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...) -> UploadCodeSystemResponse</code></summary>
 <dl>
 <dd>
 
@@ -1854,7 +1854,7 @@ client.construe.extract_codes(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_available_code_systems</a>() -> ListCodeSystemsResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_code_systems</a>() -> ListCodeSystemsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1890,7 +1890,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.list_available_code_systems()
+client.construe.list_code_systems()
 
 ```
 </dd>
@@ -1918,7 +1918,7 @@ client.construe.list_available_code_systems()
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system_detail</a>(...) -> GetCodeSystemDetailResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system</a>(...) -> GetCodeSystemDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -1954,7 +1954,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.get_code_system_detail(
+client.construe.get_code_system(
     codesystem="ICD-10-CM",
     version="2025",
 )
@@ -2001,7 +2001,7 @@ client.construe.get_code_system_detail(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_custom_code_system</a>(...) -> DeleteCodeSystemResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_code_system</a>(...) -> DeleteCodeSystemResponse</code></summary>
 <dl>
 <dd>
 
@@ -2038,7 +2038,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.delete_custom_code_system(
+client.construe.delete_code_system(
     codesystem="CUSTOM_CODES",
     version="version",
 )
@@ -2085,7 +2085,7 @@ client.construe.delete_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_custom_code_system</a>(...) -> ExportCodeSystemResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_code_system</a>(...) -> ExportCodeSystemResponse</code></summary>
 <dl>
 <dd>
 
@@ -2123,7 +2123,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.export_custom_code_system(
+client.construe.export_code_system(
     codesystem="CUSTOM_CODES",
     version="version",
 )
@@ -2170,7 +2170,7 @@ client.construe.export_custom_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes_in_a_code_system</a>(...) -> ListCodesResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes</a>(...) -> ListCodesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2208,7 +2208,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.list_codes_in_a_code_system(
+client.construe.list_codes(
     codesystem="ICD-10-CM",
     version="2025",
     cursor="cursor",
@@ -2273,7 +2273,7 @@ client.construe.list_codes_in_a_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_a_specific_code</a>(...) -> GetCodeResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code</a>(...) -> GetCodeResponse</code></summary>
 <dl>
 <dd>
 
@@ -2311,7 +2311,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.get_a_specific_code(
+client.construe.get_code(
     codesystem="ICD-10-CM",
     code_id="E1165",
     version="version",
@@ -2370,7 +2370,7 @@ cosmetic dot (use "E1165", not "E11.65").
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">semantic_search_embedding_based</a>(...) -> SemanticSearchResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">search_semantic</a>(...) -> SemanticSearchResponse</code></summary>
 <dl>
 <dd>
 
@@ -2424,7 +2424,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.semantic_search_embedding_based(
+client.construe.search_semantic(
     codesystem="ICD-10-CM",
     text="patient has trouble breathing at night and wakes up gasping",
     version="version",
@@ -2489,7 +2489,7 @@ client.construe.semantic_search_embedding_based(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback_on_extraction_results</a>(...) -> FeedbackResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback</a>(...) -> FeedbackResponse</code></summary>
 <dl>
 <dd>
 
@@ -2527,7 +2527,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.submit_feedback_on_extraction_results(
+client.construe.submit_feedback(
     text="Patient has type 2 diabetes with hyperglycemia",
     received_result=ExtractCodesResult(
         system=ExtractRequestSystem(
@@ -2616,7 +2616,7 @@ client.construe.submit_feedback_on_extraction_results(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">terminology_server_text_search</a>(...) -> TextSearchResponse</code></summary>
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">search_text</a>(...) -> TextSearchResponse</code></summary>
 <dl>
 <dd>
 
@@ -2675,7 +2675,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.terminology_server_text_search(
+client.construe.search_text(
     codesystem="ICD-10-CM",
     q="E11.65",
     version="version",
@@ -2741,7 +2741,7 @@ client.construe.terminology_server_text_search(
 </details>
 
 ## Fhir
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -> FhirSearchResponse</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -> SearchResponse</code></summary>
 <dl>
 <dd>
 
@@ -3286,7 +3286,7 @@ The request is proxied to the configured FHIR server with appropriate authentica
 ```python
 from phenoml import PhenomlClient
 from phenoml.environment import PhenomlClientEnvironment
-from phenoml.fhir import FhirPatchRequestBodyItem
+from phenoml.fhir import PatchRequestBodyItem
 
 client = PhenomlClient(
     client_id="<clientId>",
@@ -3300,7 +3300,7 @@ client.fhir.patch(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     request=[
-        FhirPatchRequestBodyItem(
+        PatchRequestBodyItem(
             op="replace",
             path="/name/0/family",
             value="NewFamilyName",
@@ -3348,7 +3348,7 @@ Examples:
 <dl>
 <dd>
 
-**request:** `typing.List[FhirPatchRequestBodyItem]` — Array of JSON Patch operations following RFC 6902
+**request:** `typing.List[PatchRequestBodyItem]` — Array of JSON Patch operations following RFC 6902
     
 </dd>
 </dl>
@@ -3789,7 +3789,7 @@ client.fhir_provider.get(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...) -> FhirProviderDeleteResponse</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">delete</a>(...) -> DeleteResponse</code></summary>
 <dl>
 <dd>
 
@@ -4044,7 +4044,7 @@ client.fhir_provider.set_active_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...) -> FhirProviderRemoveAuthConfigResponse</code></summary>
+<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...) -> RemoveAuthConfigResponse</code></summary>
 <dl>
 <dd>
 
@@ -4435,7 +4435,7 @@ Examples:
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...) -> Lang2FhirUploadProfileResponse</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">upload_profile</a>(...) -> UploadProfileResponse</code></summary>
 <dl>
 <dd>
 
@@ -4642,7 +4642,7 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">extract_multiple_fhir_resources_from_a_document</a>(...) -> DocumentMultiResponse</code></summary>
+<details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">document_multi</a>(...) -> DocumentMultiResponse</code></summary>
 <dl>
 <dd>
 
@@ -4683,7 +4683,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.lang2fhir.extract_multiple_fhir_resources_from_a_document(
+client.lang2fhir.document_multi(
     version="R4",
     content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
     provider="medplum",
@@ -4775,8 +4775,8 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-## Summary
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">list_templates</a>() -> SummaryListTemplatesResponse</code></summary>
+## Summary Templates
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">list</a>() -> TemplatesListResponse</code></summary>
 <dl>
 <dd>
 
@@ -4812,7 +4812,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.summary.list_templates()
+client.summary.templates.list()
 
 ```
 </dd>
@@ -4840,7 +4840,7 @@ client.summary.list_templates()
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create_template</a>(...) -> CreateSummaryTemplateResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">create</a>(...) -> CreateSummaryTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -4876,7 +4876,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.summary.create_template(
+client.summary.templates.create(
     name="Discharge Summary",
     example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
     target_resources=[
@@ -4961,7 +4961,7 @@ client.summary.create_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">get_template</a>(...) -> SummaryGetTemplateResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">get</a>(...) -> TemplatesGetResponse</code></summary>
 <dl>
 <dd>
 
@@ -4997,7 +4997,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.summary.get_template(
+client.summary.templates.get(
     id="id",
 )
 
@@ -5035,7 +5035,7 @@ client.summary.get_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">update_template</a>(...) -> SummaryUpdateTemplateResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">update</a>(...) -> TemplatesUpdateResponse</code></summary>
 <dl>
 <dd>
 
@@ -5071,7 +5071,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.summary.update_template(
+client.summary.templates.update(
     id="id",
     name="Discharge Summary",
     template="Patient {{Patient.name[0].text}} was discharged on {{Encounter[0].period.end}} with {{MedicationRequest[0].medicationCodeableConcept.coding[0].display}} {{MedicationRequest[0].dosageInstruction[0].text}}.",
@@ -5157,7 +5157,7 @@ client.summary.update_template(
 </dl>
 </details>
 
-<details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">delete_template</a>(...) -> SummaryDeleteTemplateResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">delete</a>(...) -> TemplatesDeleteResponse</code></summary>
 <dl>
 <dd>
 
@@ -5193,7 +5193,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.summary.delete_template(
+client.summary.templates.delete(
     id="id",
 )
 
@@ -5231,6 +5231,7 @@ client.summary.delete_template(
 </dl>
 </details>
 
+## Summary
 <details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...) -> CreateSummaryResponse</code></summary>
 <dl>
 <dd>
@@ -6526,7 +6527,7 @@ client.workflows.create(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...) -> WorkflowsGetResponse</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">get</a>(...) -> GetResponse</code></summary>
 <dl>
 <dd>
 
@@ -6609,7 +6610,7 @@ client.workflows.get(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...) -> WorkflowsUpdateResponse</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">update</a>(...) -> UpdateResponse</code></summary>
 <dl>
 <dd>
 
@@ -6741,7 +6742,7 @@ client.workflows.update(
 </dl>
 </details>
 
-<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...) -> WorkflowsDeleteResponse</code></summary>
+<details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">delete</a>(...) -> DeleteResponse</code></summary>
 <dl>
 <dd>
 

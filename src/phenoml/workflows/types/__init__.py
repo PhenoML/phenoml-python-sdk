@@ -9,13 +9,16 @@ if typing.TYPE_CHECKING:
     from .create_workflow_request_fhir_provider_id import CreateWorkflowRequestFhirProviderId
     from .create_workflow_response import CreateWorkflowResponse
     from .decision_node_definition import DecisionNodeDefinition
+    from .delete_response import DeleteResponse
     from .execute_workflow_response import ExecuteWorkflowResponse
     from .execute_workflow_response_results import ExecuteWorkflowResponseResults
+    from .get_response import GetResponse
     from .lang2fhir_create_definition import Lang2FhirCreateDefinition
     from .lang2fhir_search_definition import Lang2FhirSearchDefinition
     from .list_workflows_response import ListWorkflowsResponse
     from .step_operation import StepOperation
     from .sub_workflow_definition import SubWorkflowDefinition
+    from .update_response import UpdateResponse
     from .update_workflow_request_fhir_provider_id import UpdateWorkflowRequestFhirProviderId
     from .workflow_config import WorkflowConfig
     from .workflow_definition import WorkflowDefinition
@@ -26,20 +29,20 @@ if typing.TYPE_CHECKING:
     from .workflow_step_summary import WorkflowStepSummary
     from .workflow_step_summary_type import WorkflowStepSummaryType
     from .workflow_step_type import WorkflowStepType
-    from .workflows_delete_response import WorkflowsDeleteResponse
-    from .workflows_get_response import WorkflowsGetResponse
-    from .workflows_update_response import WorkflowsUpdateResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateWorkflowRequestFhirProviderId": ".create_workflow_request_fhir_provider_id",
     "CreateWorkflowResponse": ".create_workflow_response",
     "DecisionNodeDefinition": ".decision_node_definition",
+    "DeleteResponse": ".delete_response",
     "ExecuteWorkflowResponse": ".execute_workflow_response",
     "ExecuteWorkflowResponseResults": ".execute_workflow_response_results",
+    "GetResponse": ".get_response",
     "Lang2FhirCreateDefinition": ".lang2fhir_create_definition",
     "Lang2FhirSearchDefinition": ".lang2fhir_search_definition",
     "ListWorkflowsResponse": ".list_workflows_response",
     "StepOperation": ".step_operation",
     "SubWorkflowDefinition": ".sub_workflow_definition",
+    "UpdateResponse": ".update_response",
     "UpdateWorkflowRequestFhirProviderId": ".update_workflow_request_fhir_provider_id",
     "WorkflowConfig": ".workflow_config",
     "WorkflowDefinition": ".workflow_definition",
@@ -50,9 +53,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "WorkflowStepSummary": ".workflow_step_summary",
     "WorkflowStepSummaryType": ".workflow_step_summary_type",
     "WorkflowStepType": ".workflow_step_type",
-    "WorkflowsDeleteResponse": ".workflows_delete_response",
-    "WorkflowsGetResponse": ".workflows_get_response",
-    "WorkflowsUpdateResponse": ".workflows_update_response",
 }
 
 
@@ -81,13 +81,16 @@ __all__ = [
     "CreateWorkflowRequestFhirProviderId",
     "CreateWorkflowResponse",
     "DecisionNodeDefinition",
+    "DeleteResponse",
     "ExecuteWorkflowResponse",
     "ExecuteWorkflowResponseResults",
+    "GetResponse",
     "Lang2FhirCreateDefinition",
     "Lang2FhirSearchDefinition",
     "ListWorkflowsResponse",
     "StepOperation",
     "SubWorkflowDefinition",
+    "UpdateResponse",
     "UpdateWorkflowRequestFhirProviderId",
     "WorkflowConfig",
     "WorkflowDefinition",
@@ -98,7 +101,4 @@ __all__ = [
     "WorkflowStepSummary",
     "WorkflowStepSummaryType",
     "WorkflowStepType",
-    "WorkflowsDeleteResponse",
-    "WorkflowsGetResponse",
-    "WorkflowsUpdateResponse",
 ]

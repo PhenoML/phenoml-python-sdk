@@ -4,12 +4,13 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .summary_template import SummaryTemplate
+from .chat_message_template import ChatMessageTemplate
 
 
-class SummaryListTemplatesResponse(UniversalBaseModel):
-    success: typing.Optional[bool] = None
-    templates: typing.Optional[typing.List[SummaryTemplate]] = None
+class GetChatMessagesResponse(UniversalBaseModel):
+    messages: typing.Optional[typing.List[ChatMessageTemplate]] = None
+    total: typing.Optional[int] = None
+    session_id: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

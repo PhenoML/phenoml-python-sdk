@@ -9,20 +9,12 @@ if typing.TYPE_CHECKING:
     from .create_summary_request_mode import CreateSummaryRequestMode
     from .create_summary_response import CreateSummaryResponse
     from .create_summary_template_response import CreateSummaryTemplateResponse
-    from .summary_delete_template_response import SummaryDeleteTemplateResponse
-    from .summary_get_template_response import SummaryGetTemplateResponse
-    from .summary_list_templates_response import SummaryListTemplatesResponse
     from .summary_template import SummaryTemplate
-    from .summary_update_template_response import SummaryUpdateTemplateResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateSummaryRequestMode": ".create_summary_request_mode",
     "CreateSummaryResponse": ".create_summary_response",
     "CreateSummaryTemplateResponse": ".create_summary_template_response",
-    "SummaryDeleteTemplateResponse": ".summary_delete_template_response",
-    "SummaryGetTemplateResponse": ".summary_get_template_response",
-    "SummaryListTemplatesResponse": ".summary_list_templates_response",
     "SummaryTemplate": ".summary_template",
-    "SummaryUpdateTemplateResponse": ".summary_update_template_response",
 }
 
 
@@ -47,13 +39,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "CreateSummaryRequestMode",
-    "CreateSummaryResponse",
-    "CreateSummaryTemplateResponse",
-    "SummaryDeleteTemplateResponse",
-    "SummaryGetTemplateResponse",
-    "SummaryListTemplatesResponse",
-    "SummaryTemplate",
-    "SummaryUpdateTemplateResponse",
-]
+__all__ = ["CreateSummaryRequestMode", "CreateSummaryResponse", "CreateSummaryTemplateResponse", "SummaryTemplate"]

@@ -10,3 +10,6 @@ code-examples.json
 # OpenAPI spec bundled via PhenoML/sdk-shared-actions
 .github/workflows/bundle-openapi-spec.yml
 src/phenoml/openapi/
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

@@ -25,8 +25,8 @@ from .types.document_multi_request_detection_effort import DocumentMultiRequestD
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
 from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
-from .types.lang2fhir_upload_profile_response import Lang2FhirUploadProfileResponse
 from .types.search_response import SearchResponse
+from .types.upload_profile_response import UploadProfileResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -366,7 +366,7 @@ class RawLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         profile_context: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Lang2FhirUploadProfileResponse]:
+    ) -> HttpResponse[UploadProfileResponse]:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
@@ -395,7 +395,7 @@ class RawLang2FhirClient:
 
         Returns
         -------
-        HttpResponse[Lang2FhirUploadProfileResponse]
+        HttpResponse[UploadProfileResponse]
             Profile successfully uploaded
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -415,9 +415,9 @@ class RawLang2FhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Lang2FhirUploadProfileResponse,
+                    UploadProfileResponse,
                     parse_obj_as(
-                        type_=Lang2FhirUploadProfileResponse,  # type: ignore
+                        type_=UploadProfileResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -581,7 +581,7 @@ class RawLang2FhirClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def extract_multiple_fhir_resources_from_a_document(
+    def document_multi(
         self,
         *,
         version: str,
@@ -1050,7 +1050,7 @@ class AsyncRawLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         profile_context: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Lang2FhirUploadProfileResponse]:
+    ) -> AsyncHttpResponse[UploadProfileResponse]:
         """
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
@@ -1079,7 +1079,7 @@ class AsyncRawLang2FhirClient:
 
         Returns
         -------
-        AsyncHttpResponse[Lang2FhirUploadProfileResponse]
+        AsyncHttpResponse[UploadProfileResponse]
             Profile successfully uploaded
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1099,9 +1099,9 @@ class AsyncRawLang2FhirClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    Lang2FhirUploadProfileResponse,
+                    UploadProfileResponse,
                     parse_obj_as(
-                        type_=Lang2FhirUploadProfileResponse,  # type: ignore
+                        type_=UploadProfileResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1265,7 +1265,7 @@ class AsyncRawLang2FhirClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def extract_multiple_fhir_resources_from_a_document(
+    async def document_multi(
         self,
         *,
         version: str,
