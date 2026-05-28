@@ -1,3 +1,12 @@
+## 14.0.1 - 2026-05-28
+* chore: remove openapi.json from package distribution
+* Remove the `include` directive that bundled `src/phenoml/openapi/openapi.json`
+* into the sdist and wheel distributions. This is an internal packaging
+* cleanup with no effect on the public API surface.
+* Key changes:
+* Drop `include = [{ path = "src/phenoml/openapi/openapi.json", format = ["sdist", "wheel"] }]` from `pyproject.toml`
+* 🌿 Generated with Fern
+
 ## 14.0.0 - 2026-05-25
 ### Breaking Changes
 * **`client.summary.list_templates()` / `create_template()` / `get_template()` / `update_template()` / `delete_template()`** — removed from `SummaryClient`/`AsyncSummaryClient`; the five template CRUD methods now live on a new `client.summary.templates` sub-client. Rewrite call sites as `client.summary.templates.list()` / `create()` / `get(...)` / `update(...)` / `delete(...)`. HTTP routes are unchanged.
