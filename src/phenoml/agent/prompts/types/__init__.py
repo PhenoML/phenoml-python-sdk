@@ -6,11 +6,11 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .prompts_delete_response import PromptsDeleteResponse
-    from .prompts_list_response import PromptsListResponse
+    from .prompt_delete_response import PromptDeleteResponse
+    from .prompt_list_response import PromptListResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "PromptsDeleteResponse": ".prompts_delete_response",
-    "PromptsListResponse": ".prompts_list_response",
+    "PromptDeleteResponse": ".prompt_delete_response",
+    "PromptListResponse": ".prompt_list_response",
 }
 
 
@@ -35,4 +35,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["PromptsDeleteResponse", "PromptsListResponse"]
+__all__ = ["PromptDeleteResponse", "PromptListResponse"]

@@ -20,12 +20,11 @@ if typing.TYPE_CHECKING:
         McpServerToolResponse,
         SearchConcept,
     )
-    from .errors import BadRequestError, FailedDependencyError, ForbiddenError, InternalServerError, UnauthorizedError
-    from . import mcp_server
+    from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from . import mcp_servers, mcp_tools
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "CohortResponse": ".types",
-    "FailedDependencyError": ".errors",
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
     "Lang2FhirAndCreateMultiResponse": ".types",
@@ -38,9 +37,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServerResponse": ".types",
     "McpServerTool": ".types",
     "McpServerToolResponse": ".types",
+    "NotFoundError": ".errors",
     "SearchConcept": ".types",
     "UnauthorizedError": ".errors",
-    "mcp_server": ".mcp_server",
+    "mcp_servers": ".mcp_servers",
+    "mcp_tools": ".mcp_tools",
 }
 
 
@@ -68,7 +69,6 @@ def __dir__():
 __all__ = [
     "BadRequestError",
     "CohortResponse",
-    "FailedDependencyError",
     "ForbiddenError",
     "InternalServerError",
     "Lang2FhirAndCreateMultiResponse",
@@ -81,7 +81,9 @@ __all__ = [
     "McpServerResponse",
     "McpServerTool",
     "McpServerToolResponse",
+    "NotFoundError",
     "SearchConcept",
     "UnauthorizedError",
-    "mcp_server",
+    "mcp_servers",
+    "mcp_tools",
 ]

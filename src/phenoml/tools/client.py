@@ -14,7 +14,8 @@ from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
 
 if typing.TYPE_CHECKING:
-    from .mcp_server.client import AsyncMcpServerClient, McpServerClient
+    from .mcp_servers.client import AsyncMcpServersClient, McpServersClient
+    from .mcp_tools.client import AsyncMcpToolsClient, McpToolsClient
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -23,7 +24,8 @@ class ToolsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawToolsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._mcp_server: typing.Optional[McpServerClient] = None
+        self._mcp_servers: typing.Optional[McpServersClient] = None
+        self._mcp_tools: typing.Optional[McpToolsClient] = None
 
     @property
     def with_raw_response(self) -> RawToolsClient:
@@ -304,19 +306,28 @@ class ToolsClient:
         return _response.data
 
     @property
-    def mcp_server(self):
-        if self._mcp_server is None:
-            from .mcp_server.client import McpServerClient  # noqa: E402
+    def mcp_servers(self):
+        if self._mcp_servers is None:
+            from .mcp_servers.client import McpServersClient  # noqa: E402
 
-            self._mcp_server = McpServerClient(client_wrapper=self._client_wrapper)
-        return self._mcp_server
+            self._mcp_servers = McpServersClient(client_wrapper=self._client_wrapper)
+        return self._mcp_servers
+
+    @property
+    def mcp_tools(self):
+        if self._mcp_tools is None:
+            from .mcp_tools.client import McpToolsClient  # noqa: E402
+
+            self._mcp_tools = McpToolsClient(client_wrapper=self._client_wrapper)
+        return self._mcp_tools
 
 
 class AsyncToolsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawToolsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._mcp_server: typing.Optional[AsyncMcpServerClient] = None
+        self._mcp_servers: typing.Optional[AsyncMcpServersClient] = None
+        self._mcp_tools: typing.Optional[AsyncMcpToolsClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawToolsClient:
@@ -629,9 +640,17 @@ class AsyncToolsClient:
         return _response.data
 
     @property
-    def mcp_server(self):
-        if self._mcp_server is None:
-            from .mcp_server.client import AsyncMcpServerClient  # noqa: E402
+    def mcp_servers(self):
+        if self._mcp_servers is None:
+            from .mcp_servers.client import AsyncMcpServersClient  # noqa: E402
 
-            self._mcp_server = AsyncMcpServerClient(client_wrapper=self._client_wrapper)
-        return self._mcp_server
+            self._mcp_servers = AsyncMcpServersClient(client_wrapper=self._client_wrapper)
+        return self._mcp_servers
+
+    @property
+    def mcp_tools(self):
+        if self._mcp_tools is None:
+            from .mcp_tools.client import AsyncMcpToolsClient  # noqa: E402
+
+            self._mcp_tools = AsyncMcpToolsClient(client_wrapper=self._client_wrapper)
+        return self._mcp_tools

@@ -6,29 +6,11 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .error_response import ErrorResponse
-    from .fhir_bundle import FhirBundle
-    from .fhir_bundle_entry_item import FhirBundleEntryItem
-    from .fhir_bundle_entry_item_request import FhirBundleEntryItemRequest
-    from .fhir_bundle_entry_item_request_method import FhirBundleEntryItemRequestMethod
-    from .fhir_bundle_entry_item_response import FhirBundleEntryItemResponse
-    from .fhir_resource import FhirResource
-    from .fhir_resource_meta import FhirResourceMeta
     from .patch_request_body_item import PatchRequestBodyItem
     from .patch_request_body_item_op import PatchRequestBodyItemOp
-    from .search_response import SearchResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "ErrorResponse": ".error_response",
-    "FhirBundle": ".fhir_bundle",
-    "FhirBundleEntryItem": ".fhir_bundle_entry_item",
-    "FhirBundleEntryItemRequest": ".fhir_bundle_entry_item_request",
-    "FhirBundleEntryItemRequestMethod": ".fhir_bundle_entry_item_request_method",
-    "FhirBundleEntryItemResponse": ".fhir_bundle_entry_item_response",
-    "FhirResource": ".fhir_resource",
-    "FhirResourceMeta": ".fhir_resource_meta",
     "PatchRequestBodyItem": ".patch_request_body_item",
     "PatchRequestBodyItemOp": ".patch_request_body_item_op",
-    "SearchResponse": ".search_response",
 }
 
 
@@ -53,16 +35,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "ErrorResponse",
-    "FhirBundle",
-    "FhirBundleEntryItem",
-    "FhirBundleEntryItemRequest",
-    "FhirBundleEntryItemRequestMethod",
-    "FhirBundleEntryItemResponse",
-    "FhirResource",
-    "FhirResourceMeta",
-    "PatchRequestBodyItem",
-    "PatchRequestBodyItemOp",
-    "SearchResponse",
-]
+__all__ = ["PatchRequestBodyItem", "PatchRequestBodyItemOp"]
