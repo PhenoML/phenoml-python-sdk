@@ -1,876 +1,6 @@
 # Reference
 ## Agent
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...) -> AgentResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a new PhenoAgent with specified configuration
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.create(
-    name="Medical Assistant",
-    description="An AI assistant for medical information processing",
-    prompts=[
-        "prompt_123"
-    ],
-    tags=[
-        "medical",
-        "fhir"
-    ],
-    provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AgentCreateRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>(...) -> ListResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of PhenoAgents belonging to the authenticated user
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.list(
-    tags="tags",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**tags:** `typing.Optional[str]` — Filter by tags
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...) -> AgentResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a specific agent by its ID
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.get(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Agent ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...) -> AgentResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an existing agent's configuration
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.update(
-    id="id",
-    name="Medical Assistant",
-    description="Updated description for the medical assistant",
-    prompts=[
-        "prompt_123"
-    ],
-    tags=[
-        "medical",
-        "fhir",
-        "updated"
-    ],
-    provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Agent ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `AgentCreateRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -> DeleteResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes an existing agent
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.delete(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Agent ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...) -> AgentResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Patches an existing agent's configuration
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-from phenoml.agent import JsonPatchOperation
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.patch(
-    id="id",
-    request=[
-        JsonPatchOperation(
-            op="replace",
-            path="/description",
-            value="patched description",
-        ),
-        JsonPatchOperation(
-            op="add",
-            path="/tags/-",
-            value="updated",
-        )
-    ],
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` — Agent ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `JsonPatch` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">chat</a>(...) -> AgentChatResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send a message to an agent and receive a JSON response.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.chat(
-    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-    message="What is the patient\'s current condition?",
-    session_id="session-abc123",
-    agent_id="agent-123",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**message:** `str` — The message to send to the agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**agent_id:** `str` — The ID of the agent to chat with
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
-
-Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phenoml_fhir_provider:** `typing.Optional[str]` 
-
-Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-Multiple FHIR provider integrations can be provided as comma-separated values.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**context:** `typing.Optional[str]` — Optional context for the conversation
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">stream_chat</a>(...) -> typing.Iterator[bytes]</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Send a message to an agent and receive the response as a Server-Sent Events
-(SSE) stream. Events include message_start, content_delta, tool_use,
-tool_result, message_end, and error.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.stream_chat(
-    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-    message="What is the patient\'s current condition?",
-    session_id="session-abc123",
-    agent_id="agent-123",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**message:** `str` — The message to send to the agent
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**agent_id:** `str` — The ID of the agent to chat with
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
-
-Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**phenoml_fhir_provider:** `typing.Optional[str]` 
-
-Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-Multiple FHIR provider integrations can be provided as comma-separated values.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**context:** `typing.Optional[str]` — Optional context for the conversation
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get_chat_messages</a>(...) -> GetChatMessagesResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of chat messages for a given chat session
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.agent.get_chat_messages(
-    chat_session_id="chat_session_id",
-    num_messages=1,
-    role="user",
-    order="asc",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**chat_session_id:** `str` — Chat session ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**num_messages:** `typing.Optional[int]` — Number of messages to return
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**role:** `typing.Optional[GetChatMessagesRequestRole]` 
-
-Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
-If not specified, messages with all roles are returned.
-
-**Available roles:**
-- `user` - Messages from the user
-- `assistant` - Text responses from the AI assistant
-- `model` - Function/tool call requests from the model
-- `function` - Function/tool call results
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**order:** `typing.Optional[GetChatMessagesRequestOrder]` — Order of messages
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Agent Prompts
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...) -> AgentPromptsResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...) -> AgentPromptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -906,7 +36,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.create(
+client.agent.create(
     name="Medical Assistant System Prompt",
     description="System prompt for medical assistant agent",
     content="You are a helpful medical assistant specialized in FHIR data processing.",
@@ -983,7 +113,7 @@ client.agent.prompts.create(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">list</a>() -> PromptsListResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">list</a>() -> PromptsListResponse</code></summary>
 <dl>
 <dd>
 
@@ -1019,7 +149,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.list()
+client.agent.list()
 
 ```
 </dd>
@@ -1047,7 +177,7 @@ client.agent.prompts.list()
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">get</a>(...) -> AgentPromptsResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">get</a>(...) -> AgentPromptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1083,7 +213,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.get(
+client.agent.get(
     id="id",
 )
 
@@ -1121,7 +251,7 @@ client.agent.prompts.get(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">update</a>(...) -> AgentPromptsResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">update</a>(...) -> AgentPromptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1157,7 +287,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.update(
+client.agent.update(
     id="id",
     name="Medical Assistant System Prompt",
     description="Updated system prompt",
@@ -1244,7 +374,7 @@ client.agent.prompts.update(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">delete</a>(...) -> PromptsDeleteResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">delete</a>(...) -> PromptsDeleteResponse</code></summary>
 <dl>
 <dd>
 
@@ -1280,7 +410,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.delete(
+client.agent.delete(
     id="id",
 )
 
@@ -1318,7 +448,7 @@ client.agent.prompts.delete(
 </dl>
 </details>
 
-<details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">patch</a>(...) -> AgentPromptsResponse</code></summary>
+<details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">patch</a>(...) -> AgentPromptsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1355,7 +485,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.agent.prompts.patch(
+client.agent.patch(
     id="id",
     request=[
         JsonPatchOperation(
@@ -1389,6 +519,383 @@ client.agent.prompts.patch(
 <dd>
 
 **request:** `JsonPatch` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Chat
+<details><summary><code>client.agent.chat.<a href="src/phenoml/agent/chat/client.py">send</a>(...) -> AgentChatResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a message to an agent and receive a JSON response.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.agent.chat.send(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+    message="What is the patient\'s current condition?",
+    session_id="session-abc123",
+    agent_id="agent-123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**message:** `str` — The message to send to the agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_id:** `str` — The ID of the agent to chat with
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**context:** `typing.Optional[str]` — Optional context for the conversation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.agent.chat.<a href="src/phenoml/agent/chat/client.py">stream</a>(...) -> typing.Iterator[bytes]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Send a message to an agent and receive the response as a Server-Sent Events
+(SSE) stream. Events include message_start, content_delta, tool_use,
+tool_result, message_end, and error.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.agent.chat.stream(
+    phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+    phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+    message="What is the patient\'s current condition?",
+    session_id="session-abc123",
+    agent_id="agent-123",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**message:** `str` — The message to send to the agent
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**agent_id:** `str` — The ID of the agent to chat with
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_on_behalf_of:** `typing.Optional[str]` 
+
+Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
+Must be in the format: Patient/{uuid} or Practitioner/{uuid}
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**phenoml_fhir_provider:** `typing.Optional[str]` 
+
+Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
+Multiple FHIR provider integrations can be provided as comma-separated values.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**context:** `typing.Optional[str]` — Optional context for the conversation
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.agent.chat.<a href="src/phenoml/agent/chat/client.py">list_messages</a>(...) -> ListMessagesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a list of chat messages for a given chat session
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.agent.chat.list_messages(
+    chat_session_id="chat_session_id",
+    num_messages=1,
+    role="user",
+    order="asc",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**chat_session_id:** `str` — Chat session ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**num_messages:** `typing.Optional[int]` — Number of messages to return
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**role:** `typing.Optional[ListMessagesRequestRole]` 
+
+Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
+If not specified, messages with all roles are returned.
+
+**Available roles:**
+- `user` - Messages from the user
+- `assistant` - Text responses from the AI assistant
+- `model` - Function/tool call requests from the model
+- `function` - Function/tool call results
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**order:** `typing.Optional[ListMessagesRequestOrder]` — Order of messages
     
 </dd>
 </dl>
@@ -1578,8 +1085,8 @@ client.cohort.analyze(
 </dl>
 </details>
 
-## Construe
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">upload_code_system</a>(...) -> UploadCodeSystemResponse</code></summary>
+## Code Systems
+<details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">upload</a>(...) -> UploadResponse</code></summary>
 <dl>
 <dd>
 
@@ -1619,7 +1126,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.upload_code_system(
+client.construe.code_systems.upload(
     name="CUSTOM_CODES",
     version="1.0",
     format="json",
@@ -1757,104 +1264,7 @@ When false (default), uploading a duplicate returns 409 Conflict.
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">extract_codes</a>(...) -> ExtractCodesResult</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Converts natural language text into structured medical codes.
-
-Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-from phenoml.construe import ExtractRequestSystem
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.construe.extract_codes(
-    text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
-    system=ExtractRequestSystem(
-        name="ICD-10-CM",
-        version="2025",
-    ),
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**text:** `str` — Natural language text to extract codes from
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**system:** `typing.Optional[ExtractRequestSystem]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**config:** `typing.Optional[ExtractRequestConfig]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_code_systems</a>() -> ListCodeSystemsResponse</code></summary>
+<details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">list</a>() -> ListCodeSystemsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1890,7 +1300,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.list_code_systems()
+client.construe.code_systems.list()
 
 ```
 </dd>
@@ -1918,7 +1328,7 @@ client.construe.list_code_systems()
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code_system</a>(...) -> GetCodeSystemDetailResponse</code></summary>
+<details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">find</a>(...) -> GetCodeSystemDetailResponse</code></summary>
 <dl>
 <dd>
 
@@ -1954,7 +1364,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.get_code_system(
+client.construe.code_systems.find(
     codesystem="ICD-10-CM",
     version="2025",
 )
@@ -2001,7 +1411,7 @@ client.construe.get_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">delete_code_system</a>(...) -> DeleteCodeSystemResponse</code></summary>
+<details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">delete</a>(...) -> DeleteCodeSystemResponse</code></summary>
 <dl>
 <dd>
 
@@ -2038,7 +1448,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.delete_code_system(
+client.construe.code_systems.delete(
     codesystem="CUSTOM_CODES",
     version="version",
 )
@@ -2085,7 +1495,7 @@ client.construe.delete_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">export_code_system</a>(...) -> ExportCodeSystemResponse</code></summary>
+<details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">export</a>(...) -> ExportCodeSystemResponse</code></summary>
 <dl>
 <dd>
 
@@ -2123,7 +1533,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.export_code_system(
+client.construe.code_systems.export(
     codesystem="CUSTOM_CODES",
     version="version",
 )
@@ -2170,7 +1580,8 @@ client.construe.export_code_system(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list_codes</a>(...) -> ListCodesResponse</code></summary>
+## Construe
+<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">list</a>(...) -> ListCodesResponse</code></summary>
 <dl>
 <dd>
 
@@ -2208,7 +1619,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.list_codes(
+client.construe.list(
     codesystem="ICD-10-CM",
     version="2025",
     cursor="cursor",
@@ -2254,222 +1665,6 @@ client.construe.list_codes(
 <dd>
 
 **limit:** `typing.Optional[int]` — Maximum number of codes to return (default 20)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">get_code</a>(...) -> GetCodeResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Looks up a specific code in the terminology server and returns its details.
-
-Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.construe.get_code(
-    codesystem="ICD-10-CM",
-    code_id="E1165",
-    version="version",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**codesystem:** `str` — Code system name
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**code_id:** `str` 
-
-The code identifier. ICD-10-CM codes are stored without their
-cosmetic dot (use "E1165", not "E11.65").
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Specific version of the code system
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">search_semantic</a>(...) -> SemanticSearchResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Performs semantic similarity search using vector embeddings.
-
-**Availability**: This endpoint works for both **built-in and custom** code systems.
-
-**When to use**: Best for natural language queries where you want to find conceptually
-related codes, even when different terminology is used. The search understands meaning,
-not just keywords.
-
-**Examples**:
-- Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
-  "Nocturnal dyspnea" — semantically related but no exact keyword matches
-- Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
-
-**Trade-offs**: Slower than text search (requires embedding generation), but finds
-conceptually similar results that keyword search would miss.
-
-See also: `/search/text` for faster keyword-based lookup with typo tolerance.
-
-Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.construe.search_semantic(
-    codesystem="ICD-10-CM",
-    text="patient has trouble breathing at night and wakes up gasping",
-    version="version",
-    limit=1,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**codesystem:** `str` — Code system name
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**text:** `str` — Natural language text to find semantically similar codes for
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Specific version of the code system
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**limit:** `typing.Optional[int]` — Maximum number of results (default 10, max 50)
     
 </dd>
 </dl>
@@ -2616,7 +1811,321 @@ client.construe.submit_feedback(
 </dl>
 </details>
 
-<details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">search_text</a>(...) -> TextSearchResponse</code></summary>
+## Codes
+<details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">extract</a>(...) -> ExtractCodesResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Converts natural language text into structured medical codes.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+from phenoml.construe import ExtractRequestSystem
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.construe.codes.extract(
+    text="Patient is a 14-year-old female, previously healthy, who is here for evaluation of abnormal renal ultrasound with atrophic right kidney.",
+    system=ExtractRequestSystem(
+        name="ICD-10-CM",
+        version="2025",
+    ),
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**text:** `str` — Natural language text to extract codes from
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**system:** `typing.Optional[ExtractRequestSystem]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**config:** `typing.Optional[ExtractRequestConfig]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">lookup</a>(...) -> GetCodeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Looks up a specific code in the terminology server and returns its details.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.construe.codes.lookup(
+    codesystem="ICD-10-CM",
+    code_id="E1165",
+    version="version",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**code_id:** `str` 
+
+The code identifier. ICD-10-CM codes are stored without their
+cosmetic dot (use "E1165", not "E11.65").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">search_semantic</a>(...) -> SemanticSearchResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Performs semantic similarity search using vector embeddings.
+
+**Availability**: This endpoint works for both **built-in and custom** code systems.
+
+**When to use**: Best for natural language queries where you want to find conceptually
+related codes, even when different terminology is used. The search understands meaning,
+not just keywords.
+
+**Examples**:
+- Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
+  "Nocturnal dyspnea" — semantically related but no exact keyword matches
+- Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
+
+**Trade-offs**: Slower than text search (requires embedding generation), but finds
+conceptually similar results that keyword search would miss.
+
+See also: `/search/text` for faster keyword-based lookup with typo tolerance.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.construe.codes.search_semantic(
+    codesystem="ICD-10-CM",
+    text="patient has trouble breathing at night and wakes up gasping",
+    version="version",
+    limit=1,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**codesystem:** `str` — Code system name
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**text:** `str` — Natural language text to find semantically similar codes for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `typing.Optional[str]` — Specific version of the code system
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `typing.Optional[int]` — Maximum number of results (default 10, max 50)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">search_text</a>(...) -> TextSearchResponse</code></summary>
 <dl>
 <dd>
 
@@ -2675,7 +2184,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.construe.search_text(
+client.construe.codes.search_text(
     codesystem="ICD-10-CM",
     q="E11.65",
     version="version",
@@ -2741,7 +2250,7 @@ client.construe.search_text(
 </details>
 
 ## Fhir
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -> SearchResponse</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -2753,7 +2262,19 @@ client.construe.search_text(
 <dl>
 <dd>
 
-Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
+
+FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+- Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
+- Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
+- Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
+- Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
+
+Examples:
+- `Patient?name=John%20Doe&_count=10&_sort=family`
+- `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
+
+When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
 </dd>
@@ -2826,20 +2347,6 @@ Examples:
 <dl>
 <dd>
 
-**query_parameters:** `typing.Optional[typing.Dict[str, typing.Optional[str]]]` 
-
-FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
-- Resource-specific search parameters (e.g., name for Patient, status for Observation)
-- Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
-- Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
-- Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **phenoml_on_behalf_of:** `typing.Optional[str]` 
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -2874,7 +2381,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...) -> FhirResource</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">create</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -2917,7 +2424,7 @@ client.fhir.create(
     fhir_path="Patient",
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-    resource_type="Patient",
+    request={"resourceType": "Patient"},
 )
 
 ```
@@ -2960,7 +2467,7 @@ Examples:
 <dl>
 <dd>
 
-**request:** `FhirResource` 
+**request:** `typing.Any` 
     
 </dd>
 </dl>
@@ -3002,7 +2509,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...) -> FhirResource</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">upsert</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -3045,8 +2552,7 @@ client.fhir.upsert(
     fhir_path="Patient",
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-    resource_type="Patient",
-    id="123",
+    request={"resourceType": "Patient", "id": "123"},
 )
 
 ```
@@ -3089,7 +2595,7 @@ Examples:
 <dl>
 <dd>
 
-**request:** `FhirResource` 
+**request:** `typing.Any` 
     
 </dd>
 </dl>
@@ -3131,7 +2637,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...) -> typing.Dict[str, typing.Any]</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">delete</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -3250,7 +2756,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...) -> FhirResource</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">patch</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -3262,12 +2768,16 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dl>
 <dd>
 
-Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+Partially updates a FHIR resource on the specified provider.
 
-The request body should contain an array of JSON Patch operations. Each operation specifies:
-- `op`: The operation type (add, remove, replace, move, copy, test)
-- `path`: JSON Pointer to the target location in the resource
-- `value`: The value to use (required for add, replace, and test operations)
+Two body formats are supported, selected by request content type:
+- `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
+  - `op`: The operation type (add, remove, replace, move, copy, test)
+  - `path`: JSON Pointer to the target location in the resource
+  - `value`: The value to use (required for add, replace, and test operations)
+- `application/fhir+json` — a partial FHIR resource for merge-patch semantics.
+
+**Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
 </dd>
@@ -3390,7 +2900,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...) -> FhirBundle</code></summary>
+<details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">execute_bundle</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
 
@@ -3423,7 +2933,6 @@ The request is proxied to the configured FHIR server with appropriate authentica
 ```python
 from phenoml import PhenomlClient
 from phenoml.environment import PhenomlClientEnvironment
-from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
 client = PhenomlClient(
     client_id="<clientId>",
@@ -3435,29 +2944,7 @@ client.fhir.execute_bundle(
     fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-    entry=[
-        FhirBundleEntryItem(
-            resource={
-                "resourceType": "Patient",
-                "name": [{"family": "Doe", "given": ["John"]}]
-            },
-            request=FhirBundleEntryItemRequest(
-                method="POST",
-                url="Patient",
-            ),
-        ),
-        FhirBundleEntryItem(
-            resource={
-                "resourceType": "Observation",
-                "status": "final",
-                "subject": {"reference": "Patient/123"}
-            },
-            request=FhirBundleEntryItemRequest(
-                method="POST",
-                url="Observation",
-            ),
-        )
-    ],
+    request={"resourceType": "Bundle", "type": "transaction", "entry": [{"request": {"method": "POST", "url": "Patient"}, "resource": {"resourceType": "Patient", "name": [{"family": "Doe", "given": ["John"]}]}}, {"request": {"method": "POST", "url": "Observation"}, "resource": {"resourceType": "Observation", "status": "final", "subject": {"reference": "Patient/123"}}}]},
 )
 
 ```
@@ -3486,7 +2973,7 @@ The ID of the FHIR provider to use. Can be either:
 <dl>
 <dd>
 
-**request:** `FhirBundle` 
+**request:** `typing.Any` 
     
 </dd>
 </dl>
@@ -3865,7 +3352,8 @@ client.fhir_provider.delete(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">add_auth_config</a>(...) -> FhirProviderResponse</code></summary>
+## Auth Config
+<details><summary><code>client.fhir_provider.auth_config.<a href="src/phenoml/fhir_provider/auth_config/client.py">add</a>(...) -> FhirProviderResponse</code></summary>
 <dl>
 <dd>
 
@@ -3905,7 +3393,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.fhir_provider.add_auth_config(
+client.fhir_provider.auth_config.add(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     request=FhirProviderAddAuthConfigRequest_ClientSecret(
         client_id="your-client-id",
@@ -3955,7 +3443,7 @@ client.fhir_provider.add_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">set_active_auth_config</a>(...) -> FhirProviderResponse</code></summary>
+<details><summary><code>client.fhir_provider.auth_config.<a href="src/phenoml/fhir_provider/auth_config/client.py">set_active</a>(...) -> FhirProviderResponse</code></summary>
 <dl>
 <dd>
 
@@ -3997,7 +3485,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.fhir_provider.set_active_auth_config(
+client.fhir_provider.auth_config.set_active(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     auth_config_id="auth-config-456",
 )
@@ -4044,7 +3532,7 @@ client.fhir_provider.set_active_auth_config(
 </dl>
 </details>
 
-<details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">remove_auth_config</a>(...) -> RemoveAuthConfigResponse</code></summary>
+<details><summary><code>client.fhir_provider.auth_config.<a href="src/phenoml/fhir_provider/auth_config/client.py">remove</a>(...) -> RemoveResponse</code></summary>
 <dl>
 <dd>
 
@@ -4083,7 +3571,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.fhir_provider.remove_auth_config(
+client.fhir_provider.auth_config.remove(
     fhir_provider_id="1716d214-de93-43a4-aa6b-a878d864e2ad",
     auth_config_id="auth-config-456",
 )
@@ -4775,8 +4263,8 @@ File type is auto-detected from content magic bytes.
 </dl>
 </details>
 
-## Summary Templates
-<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">list</a>() -> TemplatesListResponse</code></summary>
+## Templates
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">list</a>() -> ListResponse</code></summary>
 <dl>
 <dd>
 
@@ -4840,128 +4328,7 @@ client.summary.templates.list()
 </dl>
 </details>
 
-<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">create</a>(...) -> CreateSummaryTemplateResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Creates a summary template from an example using LLM function calling
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.summary.templates.create(
-    name="Discharge Summary",
-    example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
-    target_resources=[
-        "Patient",
-        "Condition",
-        "MedicationRequest"
-    ],
-    mode="narrative",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**name:** `str` — Name of the template
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**example_summary:** `str` — Example summary note to generate template from
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**target_resources:** `typing.List[str]` — List of target FHIR resources
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**mode:** `str` — Template mode (stored with the template)
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `typing.Optional[str]` — Description of the template
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**example_fhir_data:** `typing.Optional[typing.Dict[str, typing.Any]]` — Optional example FHIR data that corresponds to the example summary
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">get</a>(...) -> TemplatesGetResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">get</a>(...) -> GetResponse</code></summary>
 <dl>
 <dd>
 
@@ -5035,7 +4402,7 @@ client.summary.templates.get(
 </dl>
 </details>
 
-<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">update</a>(...) -> TemplatesUpdateResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">update</a>(...) -> UpdateResponse</code></summary>
 <dl>
 <dd>
 
@@ -5157,7 +4524,7 @@ client.summary.templates.update(
 </dl>
 </details>
 
-<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">delete</a>(...) -> TemplatesDeleteResponse</code></summary>
+<details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">delete</a>(...) -> DeleteResponse</code></summary>
 <dl>
 <dd>
 
@@ -5810,8 +5177,230 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
-## Tools McpServer
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">create</a>(...) -> McpServerResponse</code></summary>
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">list</a>(...) -> McpServerToolResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists all MCP server tools for a specific MCP server
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.tools.list(
+    mcp_server_id="mcp_server_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_id:** `str` — ID of the MCP server to list tools for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">get</a>(...) -> McpServerToolResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a MCP server tool by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.tools.get(
+    mcp_server_tool_id="mcp_server_tool_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_tool_id:** `str` — ID of the MCP server tool to retrieve
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">delete</a>(...) -> McpServerToolResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deletes a MCP server tool by ID
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.tools.delete(
+    mcp_server_tool_id="mcp_server_tool_id",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**mcp_server_tool_id:** `str` — ID of the MCP server tool to delete
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## MCP Servers
+<details><summary><code>client.tools.mcp_servers.<a href="src/phenoml/tools/mcp_servers/client.py">create</a>(...) -> McpServerResponse</code></summary>
 <dl>
 <dd>
 
@@ -5847,7 +5436,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.tools.mcp_server.create(
+client.tools.mcp_servers.create(
     name="My MCP Server",
     mcp_server_url="https://mcp.example.com",
 )
@@ -5894,7 +5483,7 @@ client.tools.mcp_server.create(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">list</a>() -> McpServerResponse</code></summary>
+<details><summary><code>client.tools.mcp_servers.<a href="src/phenoml/tools/mcp_servers/client.py">list</a>() -> McpServerResponse</code></summary>
 <dl>
 <dd>
 
@@ -5930,7 +5519,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.tools.mcp_server.list()
+client.tools.mcp_servers.list()
 
 ```
 </dd>
@@ -5958,7 +5547,7 @@ client.tools.mcp_server.list()
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">get</a>(...) -> McpServerResponse</code></summary>
+<details><summary><code>client.tools.mcp_servers.<a href="src/phenoml/tools/mcp_servers/client.py">get</a>(...) -> McpServerResponse</code></summary>
 <dl>
 <dd>
 
@@ -5994,7 +5583,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.tools.mcp_server.get(
+client.tools.mcp_servers.get(
     mcp_server_id="mcp_server_id",
 )
 
@@ -6032,7 +5621,7 @@ client.tools.mcp_server.get(
 </dl>
 </details>
 
-<details><summary><code>client.tools.mcp_server.<a href="src/phenoml/tools/mcp_server/client.py">delete</a>(...) -> McpServerResponse</code></summary>
+<details><summary><code>client.tools.mcp_servers.<a href="src/phenoml/tools/mcp_servers/client.py">delete</a>(...) -> McpServerResponse</code></summary>
 <dl>
 <dd>
 
@@ -6068,7 +5657,7 @@ client = PhenomlClient(
     environment=PhenomlClientEnvironment.DEFAULT,
 )
 
-client.tools.mcp_server.delete(
+client.tools.mcp_servers.delete(
     mcp_server_id="mcp_server_id",
 )
 
@@ -6087,229 +5676,6 @@ client.tools.mcp_server.delete(
 <dd>
 
 **mcp_server_id:** `str` — ID of the MCP server to delete
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## Tools McpServer Tools
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">list</a>(...) -> McpServerToolResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Lists all MCP server tools for a specific MCP server
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.tools.mcp_server.tools.list(
-    mcp_server_id="mcp_server_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_id:** `str` — ID of the MCP server to list tools for
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">get</a>(...) -> McpServerToolResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a MCP server tool by ID
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.tools.mcp_server.tools.get(
-    mcp_server_tool_id="mcp_server_tool_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` — ID of the MCP server tool to retrieve
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tools.mcp_server.tools.<a href="src/phenoml/tools/mcp_server/tools/client.py">delete</a>(...) -> McpServerToolResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Deletes a MCP server tool by ID
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from phenoml import PhenomlClient
-from phenoml.environment import PhenomlClientEnvironment
-
-client = PhenomlClient(
-    client_id="<clientId>",
-    client_secret="<clientSecret>",
-    environment=PhenomlClientEnvironment.DEFAULT,
-)
-
-client.tools.mcp_server.tools.delete(
-    mcp_server_tool_id="mcp_server_tool_id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**mcp_server_tool_id:** `str` — ID of the MCP server tool to delete
     
 </dd>
 </dl>

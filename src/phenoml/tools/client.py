@@ -12,9 +12,10 @@ from .types.lang2fhir_and_create_multi_response import Lang2FhirAndCreateMultiRe
 from .types.lang2fhir_and_create_request_resource import Lang2FhirAndCreateRequestResource
 from .types.lang2fhir_and_create_response import Lang2FhirAndCreateResponse
 from .types.lang2fhir_and_search_response import Lang2FhirAndSearchResponse
+from .types.mcp_server_tool_response import McpServerToolResponse
 
 if typing.TYPE_CHECKING:
-    from .mcp_server.client import AsyncMcpServerClient, McpServerClient
+    from .mcp_servers.client import AsyncMcpServersClient, McpServersClient
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -23,7 +24,7 @@ class ToolsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawToolsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._mcp_server: typing.Optional[McpServerClient] = None
+        self._mcp_servers: typing.Optional[McpServersClient] = None
 
     @property
     def with_raw_response(self) -> RawToolsClient:
@@ -303,20 +304,122 @@ class ToolsClient:
         )
         return _response.data
 
-    @property
-    def mcp_server(self):
-        if self._mcp_server is None:
-            from .mcp_server.client import McpServerClient  # noqa: E402
+    def list(
+        self, mcp_server_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Lists all MCP server tools for a specific MCP server
 
-            self._mcp_server = McpServerClient(client_wrapper=self._client_wrapper)
-        return self._mcp_server
+        Parameters
+        ----------
+        mcp_server_id : str
+            ID of the MCP server to list tools for
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully listed MCP server tools
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.tools.list(
+            mcp_server_id="mcp_server_id",
+        )
+        """
+        _response = self._raw_client.list(mcp_server_id, request_options=request_options)
+        return _response.data
+
+    def get(
+        self, mcp_server_tool_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Gets a MCP server tool by ID
+
+        Parameters
+        ----------
+        mcp_server_tool_id : str
+            ID of the MCP server tool to retrieve
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully retrieved MCP server tool
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.tools.get(
+            mcp_server_tool_id="mcp_server_tool_id",
+        )
+        """
+        _response = self._raw_client.get(mcp_server_tool_id, request_options=request_options)
+        return _response.data
+
+    def delete(
+        self, mcp_server_tool_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Deletes a MCP server tool by ID
+
+        Parameters
+        ----------
+        mcp_server_tool_id : str
+            ID of the MCP server tool to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully deleted MCP server tool
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.tools.delete(
+            mcp_server_tool_id="mcp_server_tool_id",
+        )
+        """
+        _response = self._raw_client.delete(mcp_server_tool_id, request_options=request_options)
+        return _response.data
+
+    @property
+    def mcp_servers(self):
+        if self._mcp_servers is None:
+            from .mcp_servers.client import McpServersClient  # noqa: E402
+
+            self._mcp_servers = McpServersClient(client_wrapper=self._client_wrapper)
+        return self._mcp_servers
 
 
 class AsyncToolsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawToolsClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._mcp_server: typing.Optional[AsyncMcpServerClient] = None
+        self._mcp_servers: typing.Optional[AsyncMcpServersClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawToolsClient:
@@ -628,10 +731,136 @@ class AsyncToolsClient:
         )
         return _response.data
 
-    @property
-    def mcp_server(self):
-        if self._mcp_server is None:
-            from .mcp_server.client import AsyncMcpServerClient  # noqa: E402
+    async def list(
+        self, mcp_server_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Lists all MCP server tools for a specific MCP server
 
-            self._mcp_server = AsyncMcpServerClient(client_wrapper=self._client_wrapper)
-        return self._mcp_server
+        Parameters
+        ----------
+        mcp_server_id : str
+            ID of the MCP server to list tools for
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully listed MCP server tools
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.tools.list(
+                mcp_server_id="mcp_server_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list(mcp_server_id, request_options=request_options)
+        return _response.data
+
+    async def get(
+        self, mcp_server_tool_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Gets a MCP server tool by ID
+
+        Parameters
+        ----------
+        mcp_server_tool_id : str
+            ID of the MCP server tool to retrieve
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully retrieved MCP server tool
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.tools.get(
+                mcp_server_tool_id="mcp_server_tool_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get(mcp_server_tool_id, request_options=request_options)
+        return _response.data
+
+    async def delete(
+        self, mcp_server_tool_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> McpServerToolResponse:
+        """
+        Deletes a MCP server tool by ID
+
+        Parameters
+        ----------
+        mcp_server_tool_id : str
+            ID of the MCP server tool to delete
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        McpServerToolResponse
+            Successfully deleted MCP server tool
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.tools.delete(
+                mcp_server_tool_id="mcp_server_tool_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete(mcp_server_tool_id, request_options=request_options)
+        return _response.data
+
+    @property
+    def mcp_servers(self):
+        if self._mcp_servers is None:
+            from .mcp_servers.client import AsyncMcpServersClient  # noqa: E402
+
+            self._mcp_servers = AsyncMcpServersClient(client_wrapper=self._client_wrapper)
+        return self._mcp_servers

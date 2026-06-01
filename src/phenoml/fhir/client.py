@@ -5,12 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawFhirClient, RawFhirClient
-from .types.fhir_bundle import FhirBundle
-from .types.fhir_bundle_entry_item import FhirBundleEntryItem
-from .types.fhir_resource import FhirResource
-from .types.fhir_resource_meta import FhirResourceMeta
 from .types.patch_request_body_item import PatchRequestBodyItem
-from .types.search_response import SearchResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -36,13 +31,24 @@ class FhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SearchResponse:
+    ) -> typing.Any:
         """
-        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
+
+        FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+        - Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
+        - Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
+        - Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
+        - Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
+
+        Examples:
+        - `Patient?name=John%20Doe&_count=10&_sort=family`
+        - `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
+
+        When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -60,13 +66,6 @@ class FhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
-            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
-            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
-            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
-            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
-            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
-
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
             Must be in the format: Patient/{uuid} or Practitioner/{uuid}
@@ -80,7 +79,7 @@ class FhirClient:
 
         Returns
         -------
-        SearchResponse
+        typing.Any
             Successfully retrieved FHIR resource(s)
 
         Examples
@@ -101,7 +100,6 @@ class FhirClient:
         _response = self._raw_client.search(
             fhir_provider_id,
             fhir_path,
-            query_parameters=query_parameters,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             request_options=request_options,
@@ -113,13 +111,11 @@ class FhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
         Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
 
@@ -139,8 +135,7 @@ class FhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -150,18 +145,12 @@ class FhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource created successfully
 
         Examples
@@ -177,17 +166,15 @@ class FhirClient:
             fhir_path="Patient",
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            resource_type="Patient",
+            request={"resourceType": "Patient"},
         )
         """
         _response = self._raw_client.create(
             fhir_provider_id,
             fhir_path,
-            resource_type=resource_type,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            id=id,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
@@ -197,13 +184,11 @@ class FhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
         Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
 
@@ -223,8 +208,7 @@ class FhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -234,18 +218,12 @@ class FhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource upserted successfully
 
         Examples
@@ -261,18 +239,15 @@ class FhirClient:
             fhir_path="Patient",
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            resource_type="Patient",
-            id="123",
+            request={"resourceType": "Patient", "id": "123"},
         )
         """
         _response = self._raw_client.upsert(
             fhir_provider_id,
             fhir_path,
-            resource_type=resource_type,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            id=id,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
@@ -285,7 +260,7 @@ class FhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> typing.Any:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -318,7 +293,7 @@ class FhirClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Any]
+        typing.Any
             Resource deleted successfully
 
         Examples
@@ -354,14 +329,18 @@ class FhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
-        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+        Partially updates a FHIR resource on the specified provider.
 
-        The request body should contain an array of JSON Patch operations. Each operation specifies:
-        - `op`: The operation type (add, remove, replace, move, copy, test)
-        - `path`: JSON Pointer to the target location in the resource
-        - `value`: The value to use (required for add, replace, and test operations)
+        Two body formats are supported, selected by request content type:
+        - `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
+          - `op`: The operation type (add, remove, replace, move, copy, test)
+          - `path`: JSON Pointer to the target location in the resource
+          - `value`: The value to use (required for add, replace, and test operations)
+        - `application/fhir+json` — a partial FHIR resource for merge-patch semantics.
+
+        **Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -394,7 +373,7 @@ class FhirClient:
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource patched successfully
 
         Examples
@@ -434,12 +413,11 @@ class FhirClient:
         self,
         fhir_provider_id: str,
         *,
-        entry: typing.Sequence[FhirBundleEntryItem],
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirBundle:
+    ) -> typing.Any:
         """
         Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
 
@@ -454,8 +432,7 @@ class FhirClient:
             - A UUID representing the provider ID
             - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        entry : typing.Sequence[FhirBundleEntryItem]
-            Array of bundle entries containing resources or operation results
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -465,22 +442,17 @@ class FhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        total : typing.Optional[int]
-            Total number of resources that match the search criteria.
-            Optional field as not all FHIR servers include it (e.g., Medplum).
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirBundle
+        typing.Any
             Bundle executed successfully
 
         Examples
         --------
         from phenoml import PhenomlClient
-        from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -490,37 +462,34 @@ class FhirClient:
             fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
             phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
             phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            entry=[
-                FhirBundleEntryItem(
-                    resource={
-                        "resourceType": "Patient",
-                        "name": [{"family": "Doe", "given": ["John"]}],
+            request={
+                "resourceType": "Bundle",
+                "type": "transaction",
+                "entry": [
+                    {
+                        "request": {"method": "POST", "url": "Patient"},
+                        "resource": {
+                            "resourceType": "Patient",
+                            "name": [{"family": "Doe", "given": ["John"]}],
+                        },
                     },
-                    request=FhirBundleEntryItemRequest(
-                        method="POST",
-                        url="Patient",
-                    ),
-                ),
-                FhirBundleEntryItem(
-                    resource={
-                        "resourceType": "Observation",
-                        "status": "final",
-                        "subject": {"reference": "Patient/123"},
+                    {
+                        "request": {"method": "POST", "url": "Observation"},
+                        "resource": {
+                            "resourceType": "Observation",
+                            "status": "final",
+                            "subject": {"reference": "Patient/123"},
+                        },
                     },
-                    request=FhirBundleEntryItemRequest(
-                        method="POST",
-                        url="Observation",
-                    ),
-                ),
-            ],
+                ],
+            },
         )
         """
         _response = self._raw_client.execute_bundle(
             fhir_provider_id,
-            entry=entry,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            total=total,
             request_options=request_options,
         )
         return _response.data
@@ -546,13 +515,24 @@ class AsyncFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SearchResponse:
+    ) -> typing.Any:
         """
-        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
+
+        FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+        - Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
+        - Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
+        - Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
+        - Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
+
+        Examples:
+        - `Patient?name=John%20Doe&_count=10&_sort=family`
+        - `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
+
+        When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -570,13 +550,6 @@ class AsyncFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
-            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
-            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
-            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
-            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
-            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
-
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
             Must be in the format: Patient/{uuid} or Practitioner/{uuid}
@@ -590,7 +563,7 @@ class AsyncFhirClient:
 
         Returns
         -------
-        SearchResponse
+        typing.Any
             Successfully retrieved FHIR resource(s)
 
         Examples
@@ -619,7 +592,6 @@ class AsyncFhirClient:
         _response = await self._raw_client.search(
             fhir_provider_id,
             fhir_path,
-            query_parameters=query_parameters,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
             request_options=request_options,
@@ -631,13 +603,11 @@ class AsyncFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
         Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
 
@@ -657,8 +627,7 @@ class AsyncFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -668,18 +637,12 @@ class AsyncFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource created successfully
 
         Examples
@@ -700,7 +663,7 @@ class AsyncFhirClient:
                 fhir_path="Patient",
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                resource_type="Patient",
+                request={"resourceType": "Patient"},
             )
 
 
@@ -709,11 +672,9 @@ class AsyncFhirClient:
         _response = await self._raw_client.create(
             fhir_provider_id,
             fhir_path,
-            resource_type=resource_type,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            id=id,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
@@ -723,13 +684,11 @@ class AsyncFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
         Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
 
@@ -749,8 +708,7 @@ class AsyncFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -760,18 +718,12 @@ class AsyncFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource upserted successfully
 
         Examples
@@ -792,8 +744,7 @@ class AsyncFhirClient:
                 fhir_path="Patient",
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                resource_type="Patient",
-                id="123",
+                request={"resourceType": "Patient", "id": "123"},
             )
 
 
@@ -802,11 +753,9 @@ class AsyncFhirClient:
         _response = await self._raw_client.upsert(
             fhir_provider_id,
             fhir_path,
-            resource_type=resource_type,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            id=id,
-            meta=meta,
             request_options=request_options,
         )
         return _response.data
@@ -819,7 +768,7 @@ class AsyncFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Any]:
+    ) -> typing.Any:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -852,7 +801,7 @@ class AsyncFhirClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Any]
+        typing.Any
             Resource deleted successfully
 
         Examples
@@ -896,14 +845,18 @@ class AsyncFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirResource:
+    ) -> typing.Any:
         """
-        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+        Partially updates a FHIR resource on the specified provider.
 
-        The request body should contain an array of JSON Patch operations. Each operation specifies:
-        - `op`: The operation type (add, remove, replace, move, copy, test)
-        - `path`: JSON Pointer to the target location in the resource
-        - `value`: The value to use (required for add, replace, and test operations)
+        Two body formats are supported, selected by request content type:
+        - `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
+          - `op`: The operation type (add, remove, replace, move, copy, test)
+          - `path`: JSON Pointer to the target location in the resource
+          - `value`: The value to use (required for add, replace, and test operations)
+        - `application/fhir+json` — a partial FHIR resource for merge-patch semantics.
+
+        **Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -936,7 +889,7 @@ class AsyncFhirClient:
 
         Returns
         -------
-        FhirResource
+        typing.Any
             Resource patched successfully
 
         Examples
@@ -984,12 +937,11 @@ class AsyncFhirClient:
         self,
         fhir_provider_id: str,
         *,
-        entry: typing.Sequence[FhirBundleEntryItem],
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FhirBundle:
+    ) -> typing.Any:
         """
         Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
 
@@ -1004,8 +956,7 @@ class AsyncFhirClient:
             - A UUID representing the provider ID
             - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        entry : typing.Sequence[FhirBundleEntryItem]
-            Array of bundle entries containing resources or operation results
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -1015,16 +966,12 @@ class AsyncFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        total : typing.Optional[int]
-            Total number of resources that match the search criteria.
-            Optional field as not all FHIR servers include it (e.g., Medplum).
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FhirBundle
+        typing.Any
             Bundle executed successfully
 
         Examples
@@ -1032,7 +979,6 @@ class AsyncFhirClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
-        from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -1045,29 +991,27 @@ class AsyncFhirClient:
                 fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
                 phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
                 phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                entry=[
-                    FhirBundleEntryItem(
-                        resource={
-                            "resourceType": "Patient",
-                            "name": [{"family": "Doe", "given": ["John"]}],
+                request={
+                    "resourceType": "Bundle",
+                    "type": "transaction",
+                    "entry": [
+                        {
+                            "request": {"method": "POST", "url": "Patient"},
+                            "resource": {
+                                "resourceType": "Patient",
+                                "name": [{"family": "Doe", "given": ["John"]}],
+                            },
                         },
-                        request=FhirBundleEntryItemRequest(
-                            method="POST",
-                            url="Patient",
-                        ),
-                    ),
-                    FhirBundleEntryItem(
-                        resource={
-                            "resourceType": "Observation",
-                            "status": "final",
-                            "subject": {"reference": "Patient/123"},
+                        {
+                            "request": {"method": "POST", "url": "Observation"},
+                            "resource": {
+                                "resourceType": "Observation",
+                                "status": "final",
+                                "subject": {"reference": "Patient/123"},
+                            },
                         },
-                        request=FhirBundleEntryItemRequest(
-                            method="POST",
-                            url="Observation",
-                        ),
-                    ),
-                ],
+                    ],
+                },
             )
 
 
@@ -1075,10 +1019,9 @@ class AsyncFhirClient:
         """
         _response = await self._raw_client.execute_bundle(
             fhir_provider_id,
-            entry=entry,
+            request=request,
             phenoml_on_behalf_of=phenoml_on_behalf_of,
             phenoml_fhir_provider=phenoml_fhir_provider,
-            total=total,
             request_options=request_options,
         )
         return _response.data

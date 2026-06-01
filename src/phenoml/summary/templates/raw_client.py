@@ -15,11 +15,10 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.create_summary_template_response import CreateSummaryTemplateResponse
-from .types.templates_delete_response import TemplatesDeleteResponse
-from .types.templates_get_response import TemplatesGetResponse
-from .types.templates_list_response import TemplatesListResponse
-from .types.templates_update_response import TemplatesUpdateResponse
+from .types.delete_response import DeleteResponse
+from .types.get_response import GetResponse
+from .types.list_response import ListResponse
+from .types.update_response import UpdateResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -30,7 +29,7 @@ class RawTemplatesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TemplatesListResponse]:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[ListResponse]:
         """
         Retrieves all summary templates for the authenticated user
 
@@ -41,7 +40,7 @@ class RawTemplatesClient:
 
         Returns
         -------
-        HttpResponse[TemplatesListResponse]
+        HttpResponse[ListResponse]
             Templates retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -52,9 +51,9 @@ class RawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesListResponse,
+                    ListResponse,
                     parse_obj_as(
-                        type_=TemplatesListResponse,  # type: ignore
+                        type_=ListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -90,120 +89,7 @@ class RawTemplatesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create(
-        self,
-        *,
-        name: str,
-        example_summary: str,
-        target_resources: typing.Sequence[str],
-        mode: str,
-        description: typing.Optional[str] = OMIT,
-        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateSummaryTemplateResponse]:
-        """
-        Creates a summary template from an example using LLM function calling
-
-        Parameters
-        ----------
-        name : str
-            Name of the template
-
-        example_summary : str
-            Example summary note to generate template from
-
-        target_resources : typing.Sequence[str]
-            List of target FHIR resources
-
-        mode : str
-            Template mode (stored with the template)
-
-        description : typing.Optional[str]
-            Description of the template
-
-        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
-            Optional example FHIR data that corresponds to the example summary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateSummaryTemplateResponse]
-            Template created successfully
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "fhir2summary/template",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "example_summary": example_summary,
-                "target_resources": target_resources,
-                "example_fhir_data": example_fhir_data,
-                "mode": mode,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateSummaryTemplateResponse,
-                    parse_obj_as(
-                        type_=CreateSummaryTemplateResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[TemplatesGetResponse]:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[GetResponse]:
         """
         Retrieves a specific summary template
 
@@ -217,7 +103,7 @@ class RawTemplatesClient:
 
         Returns
         -------
-        HttpResponse[TemplatesGetResponse]
+        HttpResponse[GetResponse]
             Template retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -228,9 +114,9 @@ class RawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesGetResponse,
+                    GetResponse,
                     parse_obj_as(
-                        type_=TemplatesGetResponse,  # type: ignore
+                        type_=GetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -298,7 +184,7 @@ class RawTemplatesClient:
         mode: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TemplatesUpdateResponse]:
+    ) -> HttpResponse[UpdateResponse]:
         """
         Updates an existing summary template
 
@@ -324,7 +210,7 @@ class RawTemplatesClient:
 
         Returns
         -------
-        HttpResponse[TemplatesUpdateResponse]
+        HttpResponse[UpdateResponse]
             Template updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -346,9 +232,9 @@ class RawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesUpdateResponse,
+                    UpdateResponse,
                     parse_obj_as(
-                        type_=TemplatesUpdateResponse,  # type: ignore
+                        type_=UpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -419,7 +305,7 @@ class RawTemplatesClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[TemplatesDeleteResponse]:
+    ) -> HttpResponse[DeleteResponse]:
         """
         Deletes a summary template
 
@@ -433,7 +319,7 @@ class RawTemplatesClient:
 
         Returns
         -------
-        HttpResponse[TemplatesDeleteResponse]
+        HttpResponse[DeleteResponse]
             Template deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -444,9 +330,9 @@ class RawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=TemplatesDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -509,9 +395,7 @@ class AsyncRawTemplatesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def list(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TemplatesListResponse]:
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> AsyncHttpResponse[ListResponse]:
         """
         Retrieves all summary templates for the authenticated user
 
@@ -522,7 +406,7 @@ class AsyncRawTemplatesClient:
 
         Returns
         -------
-        AsyncHttpResponse[TemplatesListResponse]
+        AsyncHttpResponse[ListResponse]
             Templates retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -533,124 +417,13 @@ class AsyncRawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesListResponse,
+                    ListResponse,
                     parse_obj_as(
-                        type_=TemplatesListResponse,  # type: ignore
+                        type_=ListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create(
-        self,
-        *,
-        name: str,
-        example_summary: str,
-        target_resources: typing.Sequence[str],
-        mode: str,
-        description: typing.Optional[str] = OMIT,
-        example_fhir_data: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateSummaryTemplateResponse]:
-        """
-        Creates a summary template from an example using LLM function calling
-
-        Parameters
-        ----------
-        name : str
-            Name of the template
-
-        example_summary : str
-            Example summary note to generate template from
-
-        target_resources : typing.Sequence[str]
-            List of target FHIR resources
-
-        mode : str
-            Template mode (stored with the template)
-
-        description : typing.Optional[str]
-            Description of the template
-
-        example_fhir_data : typing.Optional[typing.Dict[str, typing.Any]]
-            Optional example FHIR data that corresponds to the example summary
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[CreateSummaryTemplateResponse]
-            Template created successfully
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "fhir2summary/template",
-            method="POST",
-            json={
-                "name": name,
-                "description": description,
-                "example_summary": example_summary,
-                "target_resources": target_resources,
-                "example_fhir_data": example_fhir_data,
-                "mode": mode,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateSummaryTemplateResponse,
-                    parse_obj_as(
-                        type_=CreateSummaryTemplateResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 401:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
@@ -684,7 +457,7 @@ class AsyncRawTemplatesClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TemplatesGetResponse]:
+    ) -> AsyncHttpResponse[GetResponse]:
         """
         Retrieves a specific summary template
 
@@ -698,7 +471,7 @@ class AsyncRawTemplatesClient:
 
         Returns
         -------
-        AsyncHttpResponse[TemplatesGetResponse]
+        AsyncHttpResponse[GetResponse]
             Template retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -709,9 +482,9 @@ class AsyncRawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesGetResponse,
+                    GetResponse,
                     parse_obj_as(
-                        type_=TemplatesGetResponse,  # type: ignore
+                        type_=GetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -779,7 +552,7 @@ class AsyncRawTemplatesClient:
         mode: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TemplatesUpdateResponse]:
+    ) -> AsyncHttpResponse[UpdateResponse]:
         """
         Updates an existing summary template
 
@@ -805,7 +578,7 @@ class AsyncRawTemplatesClient:
 
         Returns
         -------
-        AsyncHttpResponse[TemplatesUpdateResponse]
+        AsyncHttpResponse[UpdateResponse]
             Template updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -827,9 +600,9 @@ class AsyncRawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesUpdateResponse,
+                    UpdateResponse,
                     parse_obj_as(
-                        type_=TemplatesUpdateResponse,  # type: ignore
+                        type_=UpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -900,7 +673,7 @@ class AsyncRawTemplatesClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TemplatesDeleteResponse]:
+    ) -> AsyncHttpResponse[DeleteResponse]:
         """
         Deletes a summary template
 
@@ -914,7 +687,7 @@ class AsyncRawTemplatesClient:
 
         Returns
         -------
-        AsyncHttpResponse[TemplatesDeleteResponse]
+        AsyncHttpResponse[DeleteResponse]
             Template deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -925,9 +698,9 @@ class AsyncRawTemplatesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TemplatesDeleteResponse,
+                    DeleteResponse,
                     parse_obj_as(
-                        type_=TemplatesDeleteResponse,  # type: ignore
+                        type_=DeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

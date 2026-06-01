@@ -42,7 +42,6 @@ if typing.TYPE_CHECKING:
     from .no_auth import NoAuth
     from .on_behalf_of_auth import OnBehalfOfAuth
     from .provider import Provider
-    from .remove_auth_config_response import RemoveAuthConfigResponse
     from .role import Role
     from .service_account_key import ServiceAccountKey
     from .service_account_metadata import ServiceAccountMetadata
@@ -81,7 +80,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "NoAuth": ".no_auth",
     "OnBehalfOfAuth": ".on_behalf_of_auth",
     "Provider": ".provider",
-    "RemoveAuthConfigResponse": ".remove_auth_config_response",
     "Role": ".role",
     "ServiceAccountKey": ".service_account_key",
     "ServiceAccountMetadata": ".service_account_metadata",
@@ -144,7 +142,6 @@ __all__ = [
     "NoAuth",
     "OnBehalfOfAuth",
     "Provider",
-    "RemoveAuthConfigResponse",
     "Role",
     "ServiceAccountKey",
     "ServiceAccountMetadata",

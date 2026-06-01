@@ -1,20 +1,20 @@
 {
   "mappings": [
     {
-      "id": "0b0e49e9-0deb-45b0-9352-a2a461260b1d",
-      "name": "Create a new agent - default",
+      "id": "9ee03ec1-37dc-4c9e-ad81-2e57908d6bbf",
+      "name": "Create agent prompt - default",
       "request": {
-        "urlPathTemplate": "/agent/create",
+        "urlPathTemplate": "/agent/prompts",
         "method": "POST"
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent created successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt created successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "0b0e49e9-0deb-45b0-9352-a2a461260b1d",
+      "uuid": "9ee03ec1-37dc-4c9e-ad81-2e57908d6bbf",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -27,25 +27,20 @@
       }
     },
     {
-      "id": "c2c59d8b-d686-4aec-938a-9442c2837751",
-      "name": "List agents - default",
+      "id": "2a1f6cfb-2b6a-4ccc-b25d-9df38cea4564",
+      "name": "List agent prompts - default",
       "request": {
-        "urlPathTemplate": "/agent/list",
-        "method": "GET",
-        "queryParameters": {
-          "tags": {
-            "equalTo": "tags"
-          }
-        }
+        "urlPathTemplate": "/agent/prompts/list",
+        "method": "GET"
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agents retrieved successfully\",\n  \"agents\": [\n    {\n      \"id\": \"agent_123\",\n      \"name\": \"Medical Assistant\",\n      \"description\": \"An AI assistant for medical information processing\",\n      \"prompts\": [\n        \"prompt_123\"\n      ],\n      \"tools\": [\n        \"mcp_server_123\",\n        \"mcp_server_456\"\n      ],\n      \"workflows\": [\n        \"workflow_123\",\n        \"workflow_456\"\n      ],\n      \"tags\": [\n        \"medical\",\n        \"fhir\"\n      ],\n      \"provider\": [\n        \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n      ]\n    },\n    {\n      \"id\": \"agent_456\",\n      \"name\": \"Clinical Coding Assistant\",\n      \"description\": \"Helps with ICD-10 and SNOMED coding\",\n      \"prompts\": [\n        \"prompt_456\"\n      ],\n      \"tools\": [\n        \"mcp_server_123\",\n        \"mcp_server_456\"\n      ],\n      \"workflows\": [\n        \"workflow_123\",\n        \"workflow_456\"\n      ],\n      \"tags\": [\n        \"coding\"\n      ],\n      \"provider\": [\n        \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n      ]\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompts retrieved successfully\",\n  \"prompts\": [\n    {\n      \"id\": \"prompt_123\",\n      \"name\": \"Medical Assistant System Prompt\",\n      \"description\": \"System prompt for medical assistant agent\",\n      \"content\": \"You are a helpful medical assistant...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"medical\",\n        \"system\"\n      ]\n    },\n    {\n      \"id\": \"prompt_456\",\n      \"name\": \"Clinical Coding Prompt\",\n      \"description\": \"Prompt for ICD-10 / SNOMED coding tasks\",\n      \"content\": \"You assist with mapping clinical text to standard codes...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"coding\"\n      ]\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "c2c59d8b-d686-4aec-938a-9442c2837751",
+      "uuid": "2a1f6cfb-2b6a-4ccc-b25d-9df38cea4564",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -59,10 +54,10 @@
       "postServeActions": []
     },
     {
-      "id": "3a95e7a5-16ad-46fc-9dc1-87f2c08983f2",
-      "name": "Get agent by ID - default",
+      "id": "18bcf272-5b7d-46a0-be20-0b353e231278",
+      "name": "Get prompt by ID - default",
       "request": {
-        "urlPathTemplate": "/agent/{id}",
+        "urlPathTemplate": "/agent/prompts/{id}",
         "method": "GET",
         "pathParameters": {
           "id": {
@@ -72,12 +67,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent retrieved successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt retrieved successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "3a95e7a5-16ad-46fc-9dc1-87f2c08983f2",
+      "uuid": "18bcf272-5b7d-46a0-be20-0b353e231278",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -90,10 +85,10 @@
       }
     },
     {
-      "id": "7e9d7937-69d6-4ae1-bdfb-97598a95869d",
-      "name": "Update agent - default",
+      "id": "fe6feaad-23ca-4473-8a96-84d4519510ed",
+      "name": "Update prompt - default",
       "request": {
-        "urlPathTemplate": "/agent/{id}",
+        "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PUT",
         "pathParameters": {
           "id": {
@@ -103,12 +98,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent updated successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt updated successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "7e9d7937-69d6-4ae1-bdfb-97598a95869d",
+      "uuid": "fe6feaad-23ca-4473-8a96-84d4519510ed",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -121,10 +116,10 @@
       }
     },
     {
-      "id": "eadb3f0f-6b44-4cf7-9eeb-089736435054",
-      "name": "Delete agent - default",
+      "id": "414a66c3-3ee9-431c-abd0-a355eccedc82",
+      "name": "Delete prompt - default",
       "request": {
-        "urlPathTemplate": "/agent/{id}",
+        "urlPathTemplate": "/agent/prompts/{id}",
         "method": "DELETE",
         "pathParameters": {
           "id": {
@@ -134,12 +129,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent deleted successfully\"\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt deleted successfully\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "eadb3f0f-6b44-4cf7-9eeb-089736435054",
+      "uuid": "414a66c3-3ee9-431c-abd0-a355eccedc82",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -152,10 +147,10 @@
       }
     },
     {
-      "id": "43a7a52c-ad15-4ea1-8761-1d5edfe68a1a",
-      "name": "Patch agent - default",
+      "id": "d5227b47-3bea-4448-97f1-c1900ac69981",
+      "name": "Patch prompt - default",
       "request": {
-        "urlPathTemplate": "/agent/{id}",
+        "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PATCH",
         "pathParameters": {
           "id": {
@@ -165,12 +160,12 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Agent patched successfully\",\n  \"data\": {\n    \"id\": \"agent_123\",\n    \"name\": \"Medical Assistant\",\n    \"description\": \"An AI assistant for medical information processing\",\n    \"prompts\": [\n      \"prompt_123\",\n      \"prompt_456\"\n    ],\n    \"tools\": [\n      \"mcp_server_123\",\n      \"mcp_server_456\"\n    ],\n    \"workflows\": [\n      \"workflow_123\",\n      \"workflow_456\"\n    ],\n    \"tags\": [\n      \"medical\",\n      \"fhir\"\n    ],\n    \"provider\": \"7002b0b4-8d09-445a-bf65-0fafdaf26c35\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt patched successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "43a7a52c-ad15-4ea1-8761-1d5edfe68a1a",
+      "uuid": "d5227b47-3bea-4448-97f1-c1900ac69981",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -183,7 +178,7 @@
       }
     },
     {
-      "id": "ff293a6e-87b7-47f8-b190-c69893360de1",
+      "id": "c424cb7b-fb9c-4843-8c76-fdf4433b8595",
       "name": "Chat with agent - Query Patient Condition",
       "request": {
         "urlPathTemplate": "/agent/chat",
@@ -196,7 +191,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ff293a6e-87b7-47f8-b190-c69893360de1",
+      "uuid": "c424cb7b-fb9c-4843-8c76-fdf4433b8595",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -209,7 +204,7 @@
       }
     },
     {
-      "id": "b4bc28e7-2442-4cc4-9dae-45adfdbbc779",
+      "id": "731b0ca0-9afd-4f48-a926-38bd2b46726f",
       "name": "Chat with agent (streaming) - default",
       "request": {
         "urlPathTemplate": "/agent/stream-chat",
@@ -222,7 +217,7 @@
           "Content-Type": "text/event-stream"
         }
       },
-      "uuid": "b4bc28e7-2442-4cc4-9dae-45adfdbbc779",
+      "uuid": "731b0ca0-9afd-4f48-a926-38bd2b46726f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -235,7 +230,7 @@
       }
     },
     {
-      "id": "9c7bb45a-7bd5-4019-b07d-3c872677344b",
+      "id": "bb412169-df55-4200-9546-63684df8255e",
       "name": "Get chat messages - default",
       "request": {
         "urlPathTemplate": "/agent/chat/messages",
@@ -262,7 +257,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "9c7bb45a-7bd5-4019-b07d-3c872677344b",
+      "uuid": "bb412169-df55-4200-9546-63684df8255e",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -274,183 +269,6 @@
         }
       },
       "postServeActions": []
-    },
-    {
-      "id": "9e0655e2-4c6a-4cef-a9ab-d6cf5bfeb2ea",
-      "name": "Create agent prompt - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts",
-        "method": "POST"
-      },
-      "response": {
-        "status": 201,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt created successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "9e0655e2-4c6a-4cef-a9ab-d6cf5bfeb2ea",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "e1fcf156-d013-4a9b-a3d1-cbc7711260b8",
-      "name": "List agent prompts - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/list",
-        "method": "GET"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompts retrieved successfully\",\n  \"prompts\": [\n    {\n      \"id\": \"prompt_123\",\n      \"name\": \"Medical Assistant System Prompt\",\n      \"description\": \"System prompt for medical assistant agent\",\n      \"content\": \"You are a helpful medical assistant...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"medical\",\n        \"system\"\n      ]\n    },\n    {\n      \"id\": \"prompt_456\",\n      \"name\": \"Clinical Coding Prompt\",\n      \"description\": \"Prompt for ICD-10 / SNOMED coding tasks\",\n      \"content\": \"You assist with mapping clinical text to standard codes...\",\n      \"is_default\": false,\n      \"tags\": [\n        \"coding\"\n      ]\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "e1fcf156-d013-4a9b-a3d1-cbc7711260b8",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      },
-      "postServeActions": []
-    },
-    {
-      "id": "f3c974a3-740d-43f7-aeae-66d4821102f9",
-      "name": "Get prompt by ID - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/{id}",
-        "method": "GET",
-        "pathParameters": {
-          "id": {
-            "equalTo": "id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt retrieved successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "f3c974a3-740d-43f7-aeae-66d4821102f9",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "716e93ee-3401-4779-9f25-cb623aa27040",
-      "name": "Update prompt - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/{id}",
-        "method": "PUT",
-        "pathParameters": {
-          "id": {
-            "equalTo": "id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt updated successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "716e93ee-3401-4779-9f25-cb623aa27040",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "9c84d3e5-8865-4a3c-9ff8-933175607c7c",
-      "name": "Delete prompt - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/{id}",
-        "method": "DELETE",
-        "pathParameters": {
-          "id": {
-            "equalTo": "id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt deleted successfully\"\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "9c84d3e5-8865-4a3c-9ff8-933175607c7c",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "793e3782-c6c1-4dcf-b1c7-2804d31acda2",
-      "name": "Patch prompt - default",
-      "request": {
-        "urlPathTemplate": "/agent/prompts/{id}",
-        "method": "PATCH",
-        "pathParameters": {
-          "id": {
-            "equalTo": "id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Prompt patched successfully\",\n  \"data\": {\n    \"id\": \"prompt_123\",\n    \"name\": \"Medical Assistant System Prompt\",\n    \"description\": \"System prompt for medical assistant agent\",\n    \"content\": \"You are a helpful medical assistant...\",\n    \"is_default\": false,\n    \"tags\": [\n      \"medical\",\n      \"system\"\n    ]\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "793e3782-c6c1-4dcf-b1c7-2804d31acda2",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
     },
     {
       "id": "4f952b94-23fc-4604-b653-febfc05228e2",
@@ -505,7 +323,7 @@
       }
     },
     {
-      "id": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
+      "id": "ff34677a-29e6-4120-bf66-a936499a06cd",
       "name": "Upload custom code system - JSON codes (preferred)",
       "request": {
         "urlPathTemplate": "/construe/upload",
@@ -518,7 +336,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
+      "uuid": "ff34677a-29e6-4120-bf66-a936499a06cd",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -531,33 +349,7 @@
       }
     },
     {
-      "id": "483e6c62-b4d6-4793-80b0-16b68f91803d",
-      "name": "Extract medical codes from text - Basic Extraction",
-      "request": {
-        "urlPathTemplate": "/construe/extract",
-        "method": "POST"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"Q60.3\",\n      \"description\": \"Renal hypoplasia, unspecified\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"R93.42\",\n      \"description\": \"Abnormal findings on diagnostic imaging of kidney\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"N28.1\",\n      \"description\": \"Cyst of kidney, acquired\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "483e6c62-b4d6-4793-80b0-16b68f91803d",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "ad73e857-f825-4c59-ab41-2e783be515c1",
+      "id": "2580f34f-b4f5-47ed-ab09-31219e4c4531",
       "name": "List available code systems - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems",
@@ -570,7 +362,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ad73e857-f825-4c59-ab41-2e783be515c1",
+      "uuid": "2580f34f-b4f5-47ed-ab09-31219e4c4531",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -584,7 +376,7 @@
       "postServeActions": []
     },
     {
-      "id": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
+      "id": "abd8f5b4-902d-4e96-98c2-21b6f0c1bf79",
       "name": "Get code system detail - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -607,7 +399,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
+      "uuid": "abd8f5b4-902d-4e96-98c2-21b6f0c1bf79",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -620,7 +412,7 @@
       }
     },
     {
-      "id": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
+      "id": "a4ca9264-2956-496e-b3f1-ab16c90b563e",
       "name": "Delete custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -643,7 +435,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
+      "uuid": "a4ca9264-2956-496e-b3f1-ab16c90b563e",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -656,7 +448,7 @@
       }
     },
     {
-      "id": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
+      "id": "7a23e1e4-604d-4272-a283-ad3960cff488",
       "name": "Export custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}/export",
@@ -679,7 +471,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
+      "uuid": "7a23e1e4-604d-4272-a283-ad3960cff488",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -692,7 +484,7 @@
       }
     },
     {
-      "id": "3553709f-8cbf-4576-8919-9e8efd3a0161",
+      "id": "ae557b10-a792-473d-b010-39b6b8cdfa3c",
       "name": "List codes in a code system - Browse ICD-10-CM",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}",
@@ -721,88 +513,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "3553709f-8cbf-4576-8919-9e8efd3a0161",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
-      "name": "Get a specific code - Look Up ICD-10 Code",
-      "request": {
-        "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
-        "method": "GET",
-        "pathParameters": {
-          "codesystem": {
-            "equalTo": "ICD-10-CM"
-          },
-          "codeID": {
-            "equalTo": "E1165"
-          }
-        },
-        "queryParameters": {
-          "version": {
-            "equalTo": "version"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E1165\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
-      "name": "Semantic search (embedding-based) - Respiratory Symptoms",
-      "request": {
-        "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
-        "method": "GET",
-        "pathParameters": {
-          "codesystem": {
-            "equalTo": "ICD-10-CM"
-          }
-        },
-        "queryParameters": {
-          "text": {
-            "equalTo": "patient has trouble breathing at night and wakes up gasping"
-          },
-          "version": {
-            "equalTo": "version"
-          },
-          "limit": {
-            "equalTo": "1"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"R06.00\",\n      \"description\": \"Dyspnea, unspecified\"\n    },\n    {\n      \"code\": \"R06.01\",\n      \"description\": \"Orthopnea\"\n    },\n    {\n      \"code\": \"G47.33\",\n      \"description\": \"Obstructive sleep apnea\"\n    },\n    {\n      \"code\": \"R06.83\",\n      \"description\": \"Snoring\"\n    },\n    {\n      \"code\": \"J45.20\",\n      \"description\": \"Mild intermittent asthma, uncomplicated\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
+      "uuid": "ae557b10-a792-473d-b010-39b6b8cdfa3c",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -841,7 +552,114 @@
       }
     },
     {
-      "id": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
+      "id": "cea8f0f3-f9fd-4def-bc7a-0544e7c3c5e8",
+      "name": "Extract medical codes from text - Basic Extraction",
+      "request": {
+        "urlPathTemplate": "/construe/extract",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"Q60.3\",\n      \"description\": \"Renal hypoplasia, unspecified\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"R93.42\",\n      \"description\": \"Abnormal findings on diagnostic imaging of kidney\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"N28.1\",\n      \"description\": \"Cyst of kidney, acquired\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cea8f0f3-f9fd-4def-bc7a-0544e7c3c5e8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f76fe9a6-63cd-4ef4-8fa8-68cf65acb129",
+      "name": "Get a specific code - Look Up ICD-10 Code",
+      "request": {
+        "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
+        "method": "GET",
+        "pathParameters": {
+          "codesystem": {
+            "equalTo": "ICD-10-CM"
+          },
+          "codeID": {
+            "equalTo": "E1165"
+          }
+        },
+        "queryParameters": {
+          "version": {
+            "equalTo": "version"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E1165\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f76fe9a6-63cd-4ef4-8fa8-68cf65acb129",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "73407d3c-6b8b-44c7-9f62-037a627a9460",
+      "name": "Semantic search (embedding-based) - Respiratory Symptoms",
+      "request": {
+        "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
+        "method": "GET",
+        "pathParameters": {
+          "codesystem": {
+            "equalTo": "ICD-10-CM"
+          }
+        },
+        "queryParameters": {
+          "text": {
+            "equalTo": "patient has trouble breathing at night and wakes up gasping"
+          },
+          "version": {
+            "equalTo": "version"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"R06.00\",\n      \"description\": \"Dyspnea, unspecified\"\n    },\n    {\n      \"code\": \"R06.01\",\n      \"description\": \"Orthopnea\"\n    },\n    {\n      \"code\": \"G47.33\",\n      \"description\": \"Obstructive sleep apnea\"\n    },\n    {\n      \"code\": \"R06.83\",\n      \"description\": \"Snoring\"\n    },\n    {\n      \"code\": \"J45.20\",\n      \"description\": \"Mild intermittent asthma, uncomplicated\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "73407d3c-6b8b-44c7-9f62-037a627a9460",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "bbdabd68-3fec-4a50-a8c1-35b1bbfbee8f",
       "name": "Text search (keyword-based) - Search by Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
@@ -870,7 +688,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
+      "uuid": "bbdabd68-3fec-4a50-a8c1-35b1bbfbee8f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -933,7 +751,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"456\",\n  \"meta\": {\n    \"versionId\": \"1\",\n    \"lastUpdated\": \"2024-01-15T10:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"456\",\n  \"meta\": {\n    \"versionId\": \"1\",\n    \"lastUpdated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -967,7 +785,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"2\",\n    \"lastUpdated\": \"2024-02-20T11:00:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"2\",\n    \"lastUpdated\": \"2024-02-20T11:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1035,7 +853,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"3\",\n    \"lastUpdated\": \"2024-02-20T11:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"3\",\n    \"lastUpdated\": \"2024-02-20T11:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1066,7 +884,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Bundle\",\n  \"total\": 1,\n  \"entry\": [\n    {\n      \"resource\": {\n        \"resourceType\": \"Patient\",\n        \"id\": \"456\"\n      },\n      \"response\": {\n        \"status\": \"201 Created\",\n        \"location\": \"Patient/456\"\n      }\n    }\n  ]\n}",
+        "body": "{\n  \"resourceType\": \"Bundle\",\n  \"type\": \"transaction-response\",\n  \"entry\": [\n    {\n      \"response\": {\n        \"status\": \"201 Created\",\n        \"location\": \"Patient/456\"\n      },\n      \"resource\": {\n        \"resourceType\": \"Patient\",\n        \"id\": \"456\"\n      }\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1199,7 +1017,7 @@
       }
     },
     {
-      "id": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
+      "id": "24cae405-63ee-495b-babf-903da750f423",
       "name": "Add authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/add-auth-config",
@@ -1217,7 +1035,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
+      "uuid": "24cae405-63ee-495b-babf-903da750f423",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1230,7 +1048,7 @@
       }
     },
     {
-      "id": "32b90d4d-aed8-40f2-88ff-d8eaf65b6f37",
+      "id": "975d60b0-72d8-4766-ba25-16a3236cdc49",
       "name": "Set active authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
@@ -1248,7 +1066,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "32b90d4d-aed8-40f2-88ff-d8eaf65b6f37",
+      "uuid": "975d60b0-72d8-4766-ba25-16a3236cdc49",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1261,7 +1079,7 @@
       }
     },
     {
-      "id": "8d6715d1-b638-413a-b521-fcf3ba96b8ed",
+      "id": "9d276783-b016-4199-bdae-bbc17075bc8d",
       "name": "Remove authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
@@ -1279,7 +1097,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "8d6715d1-b638-413a-b521-fcf3ba96b8ed",
+      "uuid": "9d276783-b016-4199-bdae-bbc17075bc8d",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1473,32 +1291,6 @@
         }
       },
       "postServeActions": []
-    },
-    {
-      "id": "a10e68fb-83d3-47e9-bd58-5f45b864d827",
-      "name": "Create a new summary template - Discharge Summary Template",
-      "request": {
-        "urlPathTemplate": "/fhir2summary/template",
-        "method": "POST"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Template created successfully\",\n  \"template_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"template\": {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Discharge Summary\",\n    \"description\": \"description\",\n    \"template\": \"Patient <<Patient.name[0].text>>, age <<Patient.birthDate|age>>, was admitted on <<Encounter[0].period.start>> with <<Condition[0].code.coding[0].display>>. Discharged on <<Encounter[0].period.end>> with <<MedicationRequest[0].medicationCodeableConcept.coding[0].display>> <<MedicationRequest[0].dosageInstruction[0].text>>.\",\n    \"target_resources\": [\n      \"Patient\",\n      \"Condition\",\n      \"MedicationRequest\"\n    ],\n    \"mode\": \"narrative\",\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"created_at\": \"2024-01-15T10:30:00Z\",\n    \"updated_at\": \"2024-01-15T10:30:00Z\"\n  }\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "a10e68fb-83d3-47e9-bd58-5f45b864d827",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
     },
     {
       "id": "4a4911fe-5ed4-4e8c-9775-892c9187a4c4",
@@ -1724,122 +1516,7 @@
       }
     },
     {
-      "id": "ddbcb7ff-0fd9-4112-ad91-cc3860f06753",
-      "name": "Create MCP server - default",
-      "request": {
-        "urlPathTemplate": "/tools/mcp-server/create",
-        "method": "POST"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server and Tools created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"tool-001\",\n      \"name\": \"search_endpoints\",\n      \"description\": \"Search across the documented endpoints\",\n      \"input_schema\": {\n        \"query\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"tool-002\",\n      \"name\": \"get_endpoint\",\n      \"description\": \"Fetch a single endpoint by ID\",\n      \"input_schema\": {\n        \"endpoint_id\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "ddbcb7ff-0fd9-4112-ad91-cc3860f06753",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "6ff92961-ff91-4045-ad7b-91688d4188e7",
-      "name": "List MCP servers - default",
-      "request": {
-        "urlPathTemplate": "/tools/mcp-server/list",
-        "method": "GET"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Servers retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"456\",\n      \"name\": \"Another MCP Server\",\n      \"description\": \"A second MCP server\",\n      \"mcp_server_url\": \"https://other.mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "6ff92961-ff91-4045-ad7b-91688d4188e7",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      },
-      "postServeActions": []
-    },
-    {
-      "id": "3ca2c0c3-9e21-4b0d-8191-303c91b5056f",
-      "name": "Get MCP server by ID - default",
-      "request": {
-        "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
-        "method": "GET",
-        "pathParameters": {
-          "mcp_server_id": {
-            "equalTo": "mcp_server_id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "3ca2c0c3-9e21-4b0d-8191-303c91b5056f",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "0af80d13-3d8a-497f-b833-b86e563d088e",
-      "name": "Delete MCP server by ID - default",
-      "request": {
-        "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
-        "method": "DELETE",
-        "pathParameters": {
-          "mcp_server_id": {
-            "equalTo": "mcp_server_id"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server Configuration and Tools deleted successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "0af80d13-3d8a-497f-b833-b86e563d088e",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "46b87c79-282c-49b7-9bc6-8e14f643b773",
+      "id": "7f991ae8-e3f8-4dbf-afc7-04f1ce4f7043",
       "name": "List MCP server tools - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}/list",
@@ -1857,7 +1534,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "46b87c79-282c-49b7-9bc6-8e14f643b773",
+      "uuid": "7f991ae8-e3f8-4dbf-afc7-04f1ce4f7043",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1870,7 +1547,7 @@
       }
     },
     {
-      "id": "83bf3b30-8561-4f1b-83f7-82f8126c2207",
+      "id": "a4c32be7-58e4-4af3-91cf-428f8da01298",
       "name": "Get MCP server tool by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
@@ -1888,7 +1565,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "83bf3b30-8561-4f1b-83f7-82f8126c2207",
+      "uuid": "a4c32be7-58e4-4af3-91cf-428f8da01298",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1901,7 +1578,7 @@
       }
     },
     {
-      "id": "0e976dc8-ea27-4e1e-91f0-f56977d25ea3",
+      "id": "26bcc316-af2f-4d6b-be75-93a4f454e597",
       "name": "Delete MCP server tool by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
@@ -1919,7 +1596,122 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "0e976dc8-ea27-4e1e-91f0-f56977d25ea3",
+      "uuid": "26bcc316-af2f-4d6b-be75-93a4f454e597",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b5071918-92fa-4ace-8fec-57d06d20a800",
+      "name": "Create MCP server - default",
+      "request": {
+        "urlPathTemplate": "/tools/mcp-server/create",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server and Tools created successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"tool-001\",\n      \"name\": \"search_endpoints\",\n      \"description\": \"Search across the documented endpoints\",\n      \"input_schema\": {\n        \"query\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"tool-002\",\n      \"name\": \"get_endpoint\",\n      \"description\": \"Fetch a single endpoint by ID\",\n      \"input_schema\": {\n        \"endpoint_id\": \"string\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b5071918-92fa-4ace-8fec-57d06d20a800",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7f9d25cb-d7a0-45cb-855a-b115573061a3",
+      "name": "List MCP servers - default",
+      "request": {
+        "urlPathTemplate": "/tools/mcp-server/list",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Servers retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    },\n    {\n      \"id\": \"456\",\n      \"name\": \"Another MCP Server\",\n      \"description\": \"A second MCP server\",\n      \"mcp_server_url\": \"https://other.mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7f9d25cb-d7a0-45cb-855a-b115573061a3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "02e3fb96-01f8-441f-a162-64a18c63c28f",
+      "name": "Get MCP server by ID - default",
+      "request": {
+        "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
+        "method": "GET",
+        "pathParameters": {
+          "mcp_server_id": {
+            "equalTo": "mcp_server_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server retrieved successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "02e3fb96-01f8-441f-a162-64a18c63c28f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9cf10eaa-9101-4929-bc71-b0a37ef2b6b4",
+      "name": "Delete MCP server by ID - default",
+      "request": {
+        "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "mcp_server_id": {
+            "equalTo": "mcp_server_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"success\": true,\n  \"message\": \"MCP Server Configuration and Tools deleted successfully\",\n  \"data\": {\n    \"id\": \"123\",\n    \"name\": \"My MCP Server\",\n    \"description\": \"My MCP Server is a server that provides MCP services\",\n    \"mcp_server_url\": \"https://mcp.example.com\"\n  },\n  \"mcp_servers\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server\",\n      \"description\": \"My MCP Server is a server that provides MCP services\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ],\n  \"mcp_server_tools\": [\n    {\n      \"id\": \"123\",\n      \"name\": \"My MCP Server Tool\",\n      \"description\": \"My MCP Server Tool is a tool that provides MCP services\",\n      \"input_schema\": {\n        \"name\": \"string\",\n        \"age\": \"number\"\n      },\n      \"mcp_server_id\": \"123\",\n      \"mcp_server_url\": \"https://mcp.example.com\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9cf10eaa-9101-4929-bc71-b0a37ef2b6b4",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -2130,6 +1922,6 @@
     }
   ],
   "meta": {
-    "total": 70
+    "total": 63
   }
 }

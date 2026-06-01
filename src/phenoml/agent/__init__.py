@@ -20,19 +20,25 @@ if typing.TYPE_CHECKING:
         ChatMessageTemplateRole,
         ChatSessionTemplate,
         DeleteResponse,
-        GetChatMessagesRequestOrder,
-        GetChatMessagesRequestRole,
-        GetChatMessagesResponse,
         JsonPatch,
         JsonPatchOperation,
         JsonPatchOperationOp,
         ListResponse,
         PromptTemplate,
+        PromptsDeleteResponse,
+        PromptsListResponse,
         SuccessResponse,
     )
-    from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
-    from . import prompts
-    from .prompts import PromptsDeleteResponse, PromptsListResponse
+    from .errors import (
+        BadRequestError,
+        ForbiddenError,
+        GatewayTimeoutError,
+        InternalServerError,
+        NotFoundError,
+        UnauthorizedError,
+    )
+    from . import chat
+    from .chat import ListMessagesRequestOrder, ListMessagesRequestRole, ListMessagesResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AgentChatResponse": ".types",
     "AgentChatStreamEvent": ".types",
@@ -49,21 +55,22 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatSessionTemplate": ".types",
     "DeleteResponse": ".types",
     "ForbiddenError": ".errors",
-    "GetChatMessagesRequestOrder": ".types",
-    "GetChatMessagesRequestRole": ".types",
-    "GetChatMessagesResponse": ".types",
+    "GatewayTimeoutError": ".errors",
     "InternalServerError": ".errors",
     "JsonPatch": ".types",
     "JsonPatchOperation": ".types",
     "JsonPatchOperationOp": ".types",
+    "ListMessagesRequestOrder": ".chat",
+    "ListMessagesRequestRole": ".chat",
+    "ListMessagesResponse": ".chat",
     "ListResponse": ".types",
     "NotFoundError": ".errors",
     "PromptTemplate": ".types",
-    "PromptsDeleteResponse": ".prompts",
-    "PromptsListResponse": ".prompts",
+    "PromptsDeleteResponse": ".types",
+    "PromptsListResponse": ".types",
     "SuccessResponse": ".types",
     "UnauthorizedError": ".errors",
-    "prompts": ".prompts",
+    "chat": ".chat",
 }
 
 
@@ -104,13 +111,14 @@ __all__ = [
     "ChatSessionTemplate",
     "DeleteResponse",
     "ForbiddenError",
-    "GetChatMessagesRequestOrder",
-    "GetChatMessagesRequestRole",
-    "GetChatMessagesResponse",
+    "GatewayTimeoutError",
     "InternalServerError",
     "JsonPatch",
     "JsonPatchOperation",
     "JsonPatchOperationOp",
+    "ListMessagesRequestOrder",
+    "ListMessagesRequestRole",
+    "ListMessagesResponse",
     "ListResponse",
     "NotFoundError",
     "PromptTemplate",
@@ -118,5 +126,5 @@ __all__ = [
     "PromptsListResponse",
     "SuccessResponse",
     "UnauthorizedError",
-    "prompts",
+    "chat",
 ]

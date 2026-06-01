@@ -9,19 +9,6 @@ def test_summary_templates_list_() -> None:
     verify_request_count(test_id, "GET", "/fhir2summary/templates", None, 1)
 
 
-def test_summary_templates_create() -> None:
-    """Test create endpoint with WireMock"""
-    test_id = "summary.templates.create.0"
-    client = get_client(test_id)
-    client.summary.templates.create(
-        name="Discharge Summary",
-        example_summary="Patient John Doe, age 45, was admitted on 2024-01-10 with Type 2 Diabetes. Discharged on 2024-01-15 with Metformin 500mg BID.",
-        target_resources=["Patient", "Condition", "MedicationRequest"],
-        mode="narrative",
-    )
-    verify_request_count(test_id, "POST", "/fhir2summary/template", None, 1)
-
-
 def test_summary_templates_get() -> None:
     """Test get endpoint with WireMock"""
     test_id = "summary.templates.get.0"

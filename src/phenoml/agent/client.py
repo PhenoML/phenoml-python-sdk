@@ -7,19 +7,13 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawAgentClient, RawAgentClient
-from .types.agent_chat_response import AgentChatResponse
-from .types.agent_chat_stream_event import AgentChatStreamEvent
-from .types.agent_create_request_provider import AgentCreateRequestProvider
-from .types.agent_response import AgentResponse
-from .types.delete_response import DeleteResponse
-from .types.get_chat_messages_request_order import GetChatMessagesRequestOrder
-from .types.get_chat_messages_request_role import GetChatMessagesRequestRole
-from .types.get_chat_messages_response import GetChatMessagesResponse
+from .types.agent_prompts_response import AgentPromptsResponse
 from .types.json_patch import JsonPatch
-from .types.list_response import ListResponse
+from .types.prompts_delete_response import PromptsDeleteResponse
+from .types.prompts_list_response import PromptsListResponse
 
 if typing.TYPE_CHECKING:
-    from .prompts.client import AsyncPromptsClient, PromptsClient
+    from .chat.client import AsyncChatClient, ChatClient
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
@@ -28,7 +22,7 @@ class AgentClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawAgentClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._prompts: typing.Optional[PromptsClient] = None
+        self._chat: typing.Optional[ChatClient] = None
 
     @property
     def with_raw_response(self) -> RawAgentClient:
@@ -45,48 +39,39 @@ class AgentClient:
         self,
         *,
         name: str,
-        prompts: typing.Sequence[str],
-        provider: AgentCreateRequestProvider,
+        content: str,
         description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Creates a new PhenoAgent with specified configuration
+        Creates a new agent prompt
 
         Parameters
         ----------
         name : str
-            Agent name
+            Prompt name
 
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        provider : AgentCreateRequestProvider
-            FHIR provider ID(s) for this agent. Required.
-            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+        content : str
+            Prompt content
 
         description : typing.Optional[str]
-            Agent description
+            Prompt description
 
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        workflows : typing.Optional[typing.Sequence[str]]
-            Array of workflow IDs to expose as tools for this agent
+        is_default : typing.Optional[bool]
+            Whether this is a default prompt
 
         tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
+            Tags for categorizing the prompt
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent created successfully
+        AgentPromptsResponse
+            Prompt created successfully
 
         Examples
         --------
@@ -97,43 +82,36 @@ class AgentClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.agent.create(
-            name="Medical Assistant",
-            description="An AI assistant for medical information processing",
-            prompts=["prompt_123"],
-            tags=["medical", "fhir"],
-            provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+            name="Medical Assistant System Prompt",
+            description="System prompt for medical assistant agent",
+            content="You are a helpful medical assistant specialized in FHIR data processing.",
+            is_default=False,
+            tags=["medical", "system"],
         )
         """
         _response = self._raw_client.create(
             name=name,
-            prompts=prompts,
-            provider=provider,
+            content=content,
             description=description,
-            tools=tools,
-            workflows=workflows,
+            is_default=is_default,
             tags=tags,
             request_options=request_options,
         )
         return _response.data
 
-    def list(
-        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> ListResponse:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
         """
-        Retrieves a list of PhenoAgents belonging to the authenticated user
+        Retrieves a list of agent prompts belonging to the authenticated user
 
         Parameters
         ----------
-        tags : typing.Optional[str]
-            Filter by tags
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ListResponse
-            Agents retrieved successfully
+        PromptsListResponse
+            Prompts retrieved successfully
 
         Examples
         --------
@@ -143,29 +121,27 @@ class AgentClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.agent.list(
-            tags="tags",
-        )
+        client.agent.list()
         """
-        _response = self._raw_client.list(tags=tags, request_options=request_options)
+        _response = self._raw_client.list(request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentPromptsResponse:
         """
-        Retrieves a specific agent by its ID
+        Retrieves a specific prompt by its ID
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent retrieved successfully
+        AgentPromptsResponse
+            Prompt retrieved successfully
 
         Examples
         --------
@@ -186,52 +162,43 @@ class AgentClient:
         self,
         id: str,
         *,
-        name: str,
-        prompts: typing.Sequence[str],
-        provider: AgentCreateRequestProvider,
+        name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
+        content: typing.Optional[str] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Updates an existing agent's configuration
+        Updates an existing prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
-        name : str
-            Agent name
-
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        provider : AgentCreateRequestProvider
-            FHIR provider ID(s) for this agent. Required.
-            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+        name : typing.Optional[str]
+            Prompt name
 
         description : typing.Optional[str]
-            Agent description
+            Prompt description
 
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
+        content : typing.Optional[str]
+            Prompt content
 
-        workflows : typing.Optional[typing.Sequence[str]]
-            Array of workflow IDs to expose as tools for this agent
+        is_default : typing.Optional[bool]
+            Whether this is a default prompt
 
         tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
+            Tags for categorizing the prompt
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent updated successfully
+        AgentPromptsResponse
+            Prompt updated successfully
 
         Examples
         --------
@@ -243,42 +210,40 @@ class AgentClient:
         )
         client.agent.update(
             id="id",
-            name="Medical Assistant",
-            description="Updated description for the medical assistant",
-            prompts=["prompt_123"],
-            tags=["medical", "fhir", "updated"],
-            provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+            name="Medical Assistant System Prompt",
+            description="Updated system prompt",
+            content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+            is_default=False,
+            tags=["medical", "system", "updated"],
         )
         """
         _response = self._raw_client.update(
             id,
             name=name,
-            prompts=prompts,
-            provider=provider,
             description=description,
-            tools=tools,
-            workflows=workflows,
+            content=content,
+            is_default=is_default,
             tags=tags,
             request_options=request_options,
         )
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsDeleteResponse:
         """
-        Deletes an existing agent
+        Deletes a prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DeleteResponse
-            Agent deleted successfully
+        PromptsDeleteResponse
+            Prompt deleted successfully
 
         Examples
         --------
@@ -297,14 +262,14 @@ class AgentClient:
 
     def patch(
         self, id: str, *, request: JsonPatch, request_options: typing.Optional[RequestOptions] = None
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Patches an existing agent's configuration
+        Patches an existing prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Agent Prompt ID
 
         request : JsonPatch
 
@@ -313,8 +278,8 @@ class AgentClient:
 
         Returns
         -------
-        AgentResponse
-            Agent patched successfully
+        AgentPromptsResponse
+            Prompt patched successfully
 
         Examples
         --------
@@ -330,257 +295,29 @@ class AgentClient:
             request=[
                 JsonPatchOperation(
                     op="replace",
-                    path="/description",
-                    value="patched description",
-                ),
-                JsonPatchOperation(
-                    op="add",
-                    path="/tags/-",
-                    value="updated",
-                ),
+                    path="/content",
+                    value="Updated prompt content.",
+                )
             ],
         )
         """
         _response = self._raw_client.patch(id, request=request, request_options=request_options)
         return _response.data
 
-    def chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentChatResponse:
-        """
-        Send a message to an agent and receive a JSON response.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AgentChatResponse
-            Chat response received successfully
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.agent.chat(
-            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            message="What is the patient's current condition?",
-            session_id="session-abc123",
-            agent_id="agent-123",
-        )
-        """
-        _response = self._raw_client.chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def stream_chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[AgentChatStreamEvent]:
-        """
-        Send a message to an agent and receive the response as a Server-Sent Events
-        (SSE) stream. Events include message_start, content_delta, tool_use,
-        tool_result, message_end, and error.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Yields
-        ------
-        typing.Iterator[AgentChatStreamEvent]
-            Streaming chat response. Each frame is a standard SSE record
-            (`event:` line + `data:` JSON line). The example shows a single
-            `content_delta` payload — multiple frames stream until `message_end`.
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        response = client.agent.stream_chat(
-            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            message="What is the patient's current condition?",
-            session_id="session-abc123",
-            agent_id="agent-123",
-        )
-        for chunk in response:
-            yield chunk
-        """
-        with self._raw_client.stream_chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        ) as r:
-            yield from r.data
-
-    def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[GetChatMessagesRequestRole] = None,
-        order: typing.Optional[GetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetChatMessagesResponse:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[GetChatMessagesRequestRole]
-            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
-            If not specified, messages with all roles are returned.
-
-            **Available roles:**
-            - `user` - Messages from the user
-            - `assistant` - Text responses from the AI assistant
-            - `model` - Function/tool call requests from the model
-            - `function` - Function/tool call results
-
-        order : typing.Optional[GetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetChatMessagesResponse
-            Chat messages retrieved successfully
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.agent.get_chat_messages(
-            chat_session_id="chat_session_id",
-            num_messages=1,
-            role="user",
-            order="asc",
-        )
-        """
-        _response = self._raw_client.get_chat_messages(
-            chat_session_id=chat_session_id,
-            num_messages=num_messages,
-            role=role,
-            order=order,
-            request_options=request_options,
-        )
-        return _response.data
-
     @property
-    def prompts(self):
-        if self._prompts is None:
-            from .prompts.client import PromptsClient  # noqa: E402
+    def chat(self):
+        if self._chat is None:
+            from .chat.client import ChatClient  # noqa: E402
 
-            self._prompts = PromptsClient(client_wrapper=self._client_wrapper)
-        return self._prompts
+            self._chat = ChatClient(client_wrapper=self._client_wrapper)
+        return self._chat
 
 
 class AsyncAgentClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawAgentClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
-        self._prompts: typing.Optional[AsyncPromptsClient] = None
+        self._chat: typing.Optional[AsyncChatClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawAgentClient:
@@ -597,48 +334,39 @@ class AsyncAgentClient:
         self,
         *,
         name: str,
-        prompts: typing.Sequence[str],
-        provider: AgentCreateRequestProvider,
+        content: str,
         description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Creates a new PhenoAgent with specified configuration
+        Creates a new agent prompt
 
         Parameters
         ----------
         name : str
-            Agent name
+            Prompt name
 
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        provider : AgentCreateRequestProvider
-            FHIR provider ID(s) for this agent. Required.
-            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+        content : str
+            Prompt content
 
         description : typing.Optional[str]
-            Agent description
+            Prompt description
 
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
-
-        workflows : typing.Optional[typing.Sequence[str]]
-            Array of workflow IDs to expose as tools for this agent
+        is_default : typing.Optional[bool]
+            Whether this is a default prompt
 
         tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
+            Tags for categorizing the prompt
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent created successfully
+        AgentPromptsResponse
+            Prompt created successfully
 
         Examples
         --------
@@ -654,11 +382,11 @@ class AsyncAgentClient:
 
         async def main() -> None:
             await client.agent.create(
-                name="Medical Assistant",
-                description="An AI assistant for medical information processing",
-                prompts=["prompt_123"],
-                tags=["medical", "fhir"],
-                provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+                name="Medical Assistant System Prompt",
+                description="System prompt for medical assistant agent",
+                content="You are a helpful medical assistant specialized in FHIR data processing.",
+                is_default=False,
+                tags=["medical", "system"],
             )
 
 
@@ -666,34 +394,27 @@ class AsyncAgentClient:
         """
         _response = await self._raw_client.create(
             name=name,
-            prompts=prompts,
-            provider=provider,
+            content=content,
             description=description,
-            tools=tools,
-            workflows=workflows,
+            is_default=is_default,
             tags=tags,
             request_options=request_options,
         )
         return _response.data
 
-    async def list(
-        self, *, tags: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> ListResponse:
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
         """
-        Retrieves a list of PhenoAgents belonging to the authenticated user
+        Retrieves a list of agent prompts belonging to the authenticated user
 
         Parameters
         ----------
-        tags : typing.Optional[str]
-            Filter by tags
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        ListResponse
-            Agents retrieved successfully
+        PromptsListResponse
+            Prompts retrieved successfully
 
         Examples
         --------
@@ -708,32 +429,30 @@ class AsyncAgentClient:
 
 
         async def main() -> None:
-            await client.agent.list(
-                tags="tags",
-            )
+            await client.agent.list()
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(tags=tags, request_options=request_options)
+        _response = await self._raw_client.list(request_options=request_options)
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AgentPromptsResponse:
         """
-        Retrieves a specific agent by its ID
+        Retrieves a specific prompt by its ID
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent retrieved successfully
+        AgentPromptsResponse
+            Prompt retrieved successfully
 
         Examples
         --------
@@ -762,52 +481,43 @@ class AsyncAgentClient:
         self,
         id: str,
         *,
-        name: str,
-        prompts: typing.Sequence[str],
-        provider: AgentCreateRequestProvider,
+        name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
-        tools: typing.Optional[typing.Sequence[str]] = OMIT,
-        workflows: typing.Optional[typing.Sequence[str]] = OMIT,
+        content: typing.Optional[str] = OMIT,
+        is_default: typing.Optional[bool] = OMIT,
         tags: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Updates an existing agent's configuration
+        Updates an existing prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
-        name : str
-            Agent name
-
-        prompts : typing.Sequence[str]
-            Array of prompt IDs to use for this agent
-
-        provider : AgentCreateRequestProvider
-            FHIR provider ID(s) for this agent. Required.
-            In shared/experiment environments, the default sandbox provider is used if a different provider is not explicitly specified.
+        name : typing.Optional[str]
+            Prompt name
 
         description : typing.Optional[str]
-            Agent description
+            Prompt description
 
-        tools : typing.Optional[typing.Sequence[str]]
-            Array of MCP server tool IDs to use for this agent
+        content : typing.Optional[str]
+            Prompt content
 
-        workflows : typing.Optional[typing.Sequence[str]]
-            Array of workflow IDs to expose as tools for this agent
+        is_default : typing.Optional[bool]
+            Whether this is a default prompt
 
         tags : typing.Optional[typing.Sequence[str]]
-            Tags for categorizing the agent
+            Tags for categorizing the prompt
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AgentResponse
-            Agent updated successfully
+        AgentPromptsResponse
+            Prompt updated successfully
 
         Examples
         --------
@@ -824,11 +534,11 @@ class AsyncAgentClient:
         async def main() -> None:
             await client.agent.update(
                 id="id",
-                name="Medical Assistant",
-                description="Updated description for the medical assistant",
-                prompts=["prompt_123"],
-                tags=["medical", "fhir", "updated"],
-                provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+                name="Medical Assistant System Prompt",
+                description="Updated system prompt",
+                content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+                is_default=False,
+                tags=["medical", "system", "updated"],
             )
 
 
@@ -837,32 +547,32 @@ class AsyncAgentClient:
         _response = await self._raw_client.update(
             id,
             name=name,
-            prompts=prompts,
-            provider=provider,
             description=description,
-            tools=tools,
-            workflows=workflows,
+            content=content,
+            is_default=is_default,
             tags=tags,
             request_options=request_options,
         )
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> PromptsDeleteResponse:
         """
-        Deletes an existing agent
+        Deletes a prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Prompt ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        DeleteResponse
-            Agent deleted successfully
+        PromptsDeleteResponse
+            Prompt deleted successfully
 
         Examples
         --------
@@ -889,14 +599,14 @@ class AsyncAgentClient:
 
     async def patch(
         self, id: str, *, request: JsonPatch, request_options: typing.Optional[RequestOptions] = None
-    ) -> AgentResponse:
+    ) -> AgentPromptsResponse:
         """
-        Patches an existing agent's configuration
+        Patches an existing prompt
 
         Parameters
         ----------
         id : str
-            Agent ID
+            Agent Prompt ID
 
         request : JsonPatch
 
@@ -905,8 +615,8 @@ class AsyncAgentClient:
 
         Returns
         -------
-        AgentResponse
-            Agent patched successfully
+        AgentPromptsResponse
+            Prompt patched successfully
 
         Examples
         --------
@@ -927,14 +637,9 @@ class AsyncAgentClient:
                 request=[
                     JsonPatchOperation(
                         op="replace",
-                        path="/description",
-                        value="patched description",
-                    ),
-                    JsonPatchOperation(
-                        op="add",
-                        path="/tags/-",
-                        value="updated",
-                    ),
+                        path="/content",
+                        value="Updated prompt content.",
+                    )
                 ],
             )
 
@@ -944,258 +649,10 @@ class AsyncAgentClient:
         _response = await self._raw_client.patch(id, request=request, request_options=request_options)
         return _response.data
 
-    async def chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentChatResponse:
-        """
-        Send a message to an agent and receive a JSON response.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AgentChatResponse
-            Chat response received successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.agent.chat(
-                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                message="What is the patient's current condition?",
-                session_id="session-abc123",
-                agent_id="agent-123",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def stream_chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AgentChatStreamEvent]:
-        """
-        Send a message to an agent and receive the response as a Server-Sent Events
-        (SSE) stream. Events include message_start, content_delta, tool_use,
-        tool_result, message_end, and error.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Yields
-        ------
-        typing.AsyncIterator[AgentChatStreamEvent]
-            Streaming chat response. Each frame is a standard SSE record
-            (`event:` line + `data:` JSON line). The example shows a single
-            `content_delta` payload — multiple frames stream until `message_end`.
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            response = await client.agent.stream_chat(
-                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                message="What is the patient's current condition?",
-                session_id="session-abc123",
-                agent_id="agent-123",
-            )
-            async for chunk in response:
-                yield chunk
-
-
-        asyncio.run(main())
-        """
-        async with self._raw_client.stream_chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
-
-    async def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[GetChatMessagesRequestRole] = None,
-        order: typing.Optional[GetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetChatMessagesResponse:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[GetChatMessagesRequestRole]
-            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
-            If not specified, messages with all roles are returned.
-
-            **Available roles:**
-            - `user` - Messages from the user
-            - `assistant` - Text responses from the AI assistant
-            - `model` - Function/tool call requests from the model
-            - `function` - Function/tool call results
-
-        order : typing.Optional[GetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetChatMessagesResponse
-            Chat messages retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.agent.get_chat_messages(
-                chat_session_id="chat_session_id",
-                num_messages=1,
-                role="user",
-                order="asc",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_chat_messages(
-            chat_session_id=chat_session_id,
-            num_messages=num_messages,
-            role=role,
-            order=order,
-            request_options=request_options,
-        )
-        return _response.data
-
     @property
-    def prompts(self):
-        if self._prompts is None:
-            from .prompts.client import AsyncPromptsClient  # noqa: E402
+    def chat(self):
+        if self._chat is None:
+            from .chat.client import AsyncChatClient  # noqa: E402
 
-            self._prompts = AsyncPromptsClient(client_wrapper=self._client_wrapper)
-        return self._prompts
+            self._chat = AsyncChatClient(client_wrapper=self._client_wrapper)
+        return self._chat

@@ -11,20 +11,7 @@ from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
-from .errors.bad_gateway_error import BadGatewayError
-from .errors.bad_request_error import BadRequestError
-from .errors.internal_server_error import InternalServerError
-from .errors.not_found_error import NotFoundError
-from .errors.service_unavailable_error import ServiceUnavailableError
-from .errors.too_many_requests_error import TooManyRequestsError
-from .errors.unauthorized_error import UnauthorizedError
-from .types.error_response import ErrorResponse
-from .types.fhir_bundle import FhirBundle
-from .types.fhir_bundle_entry_item import FhirBundleEntryItem
-from .types.fhir_resource import FhirResource
-from .types.fhir_resource_meta import FhirResourceMeta
 from .types.patch_request_body_item import PatchRequestBodyItem
-from .types.search_response import SearchResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -40,13 +27,24 @@ class RawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SearchResponse]:
+    ) -> HttpResponse[typing.Any]:
         """
-        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
+
+        FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+        - Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
+        - Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
+        - Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
+        - Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
+
+        Examples:
+        - `Patient?name=John%20Doe&_count=10&_sort=family`
+        - `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
+
+        When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -64,13 +62,6 @@ class RawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
-            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
-            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
-            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
-            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
-            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
-
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
             Must be in the format: Patient/{uuid} or Practitioner/{uuid}
@@ -84,15 +75,12 @@ class RawFhirClient:
 
         Returns
         -------
-        HttpResponse[SearchResponse]
+        HttpResponse[typing.Any]
             Successfully retrieved FHIR resource(s)
         """
         _response = self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="GET",
-            params={
-                "query_parameters": query_parameters,
-            },
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
                 "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
@@ -100,92 +88,17 @@ class RawFhirClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchResponse,
+                    typing.Any,
                     parse_obj_as(
-                        type_=SearchResponse,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -200,13 +113,11 @@ class RawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FhirResource]:
+    ) -> HttpResponse[typing.Any]:
         """
         Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
 
@@ -226,8 +137,7 @@ class RawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -237,30 +147,18 @@ class RawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[FhirResource]
+        HttpResponse[typing.Any]
             Resource created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="POST",
-            json={
-                "resourceType": resource_type,
-                "id": id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirResourceMeta, direction="write"
-                ),
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -270,81 +168,17 @@ class RawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -359,13 +193,11 @@ class RawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FhirResource]:
+    ) -> HttpResponse[typing.Any]:
         """
         Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
 
@@ -385,8 +217,7 @@ class RawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -396,30 +227,18 @@ class RawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[FhirResource]
+        HttpResponse[typing.Any]
             Resource upserted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PUT",
-            json={
-                "resourceType": resource_type,
-                "id": id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirResourceMeta, direction="write"
-                ),
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -429,81 +248,17 @@ class RawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -521,7 +276,7 @@ class RawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Any]]:
+    ) -> HttpResponse[typing.Any]:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -554,7 +309,7 @@ class RawFhirClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Any]]
+        HttpResponse[typing.Any]
             Resource deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -567,92 +322,17 @@ class RawFhirClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Any],
+                    typing.Any,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Any],  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -671,14 +351,18 @@ class RawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FhirResource]:
+    ) -> HttpResponse[typing.Any]:
         """
-        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+        Partially updates a FHIR resource on the specified provider.
 
-        The request body should contain an array of JSON Patch operations. Each operation specifies:
-        - `op`: The operation type (add, remove, replace, move, copy, test)
-        - `path`: JSON Pointer to the target location in the resource
-        - `value`: The value to use (required for add, replace, and test operations)
+        Two body formats are supported, selected by request content type:
+        - `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
+          - `op`: The operation type (add, remove, replace, move, copy, test)
+          - `path`: JSON Pointer to the target location in the resource
+          - `value`: The value to use (required for add, replace, and test operations)
+        - `application/fhir+json` — a partial FHIR resource for merge-patch semantics.
+
+        **Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -711,7 +395,7 @@ class RawFhirClient:
 
         Returns
         -------
-        HttpResponse[FhirResource]
+        HttpResponse[typing.Any]
             Resource patched successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -729,92 +413,17 @@ class RawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -828,12 +437,11 @@ class RawFhirClient:
         self,
         fhir_provider_id: str,
         *,
-        entry: typing.Sequence[FhirBundleEntryItem],
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FhirBundle]:
+    ) -> HttpResponse[typing.Any]:
         """
         Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
 
@@ -848,8 +456,7 @@ class RawFhirClient:
             - A UUID representing the provider ID
             - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        entry : typing.Sequence[FhirBundleEntryItem]
-            Array of bundle entries containing resources or operation results
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -859,28 +466,18 @@ class RawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        total : typing.Optional[int]
-            Total number of resources that match the search criteria.
-            Optional field as not all FHIR servers include it (e.g., Medplum).
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[FhirBundle]
+        HttpResponse[typing.Any]
             Bundle executed successfully
         """
         _response = self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir",
             method="POST",
-            json={
-                "total": total,
-                "entry": convert_and_respect_annotation_metadata(
-                    object_=entry, annotation=typing.Sequence[FhirBundleEntryItem], direction="write"
-                ),
-                "resourceType": "Bundle",
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -890,81 +487,17 @@ class RawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirBundle,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirBundle,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -984,13 +517,24 @@ class AsyncRawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        query_parameters: typing.Optional[typing.Dict[str, typing.Optional[str]]] = None,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SearchResponse]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
-        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.
+        Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
+
+        FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+        - Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
+        - Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
+        - Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
+        - Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
+
+        Examples:
+        - `Patient?name=John%20Doe&_count=10&_sort=family`
+        - `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
+
+        When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -1008,13 +552,6 @@ class AsyncRawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        query_parameters : typing.Optional[typing.Dict[str, typing.Optional[str]]]
-            FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:
-            - Resource-specific search parameters (e.g., name for Patient, status for Observation)
-            - Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)
-            - Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)
-            - Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)
-
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
             Must be in the format: Patient/{uuid} or Practitioner/{uuid}
@@ -1028,15 +565,12 @@ class AsyncRawFhirClient:
 
         Returns
         -------
-        AsyncHttpResponse[SearchResponse]
+        AsyncHttpResponse[typing.Any]
             Successfully retrieved FHIR resource(s)
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="GET",
-            params={
-                "query_parameters": query_parameters,
-            },
             headers={
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
                 "X-Phenoml-Fhir-Provider": str(phenoml_fhir_provider) if phenoml_fhir_provider is not None else None,
@@ -1044,92 +578,17 @@ class AsyncRawFhirClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SearchResponse,
+                    typing.Any,
                     parse_obj_as(
-                        type_=SearchResponse,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1144,13 +603,11 @@ class AsyncRawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FhirResource]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
         Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
 
@@ -1170,8 +627,7 @@ class AsyncRawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -1181,30 +637,18 @@ class AsyncRawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[FhirResource]
+        AsyncHttpResponse[typing.Any]
             Resource created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="POST",
-            json={
-                "resourceType": resource_type,
-                "id": id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirResourceMeta, direction="write"
-                ),
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -1214,81 +658,17 @@ class AsyncRawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1303,13 +683,11 @@ class AsyncRawFhirClient:
         fhir_provider_id: str,
         fhir_path: str,
         *,
-        resource_type: str,
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        id: typing.Optional[str] = OMIT,
-        meta: typing.Optional[FhirResourceMeta] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FhirResource]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
         Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
 
@@ -1329,8 +707,7 @@ class AsyncRawFhirClient:
             - "Patient/123" (for specific resource operations)
             - "Patient/123/_history" (for history operations)
 
-        resource_type : str
-            The type of FHIR resource (e.g., Patient, Observation, etc.)
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -1340,30 +717,18 @@ class AsyncRawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        id : typing.Optional[str]
-            Logical ID of the resource
-
-        meta : typing.Optional[FhirResourceMeta]
-            Metadata about the resource
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[FhirResource]
+        AsyncHttpResponse[typing.Any]
             Resource upserted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir/{encode_path_param(fhir_path)}",
             method="PUT",
-            json={
-                "resourceType": resource_type,
-                "id": id,
-                "meta": convert_and_respect_annotation_metadata(
-                    object_=meta, annotation=FhirResourceMeta, direction="write"
-                ),
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -1373,81 +738,17 @@ class AsyncRawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1465,7 +766,7 @@ class AsyncRawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Any]]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
         Deletes a FHIR resource from the specified provider.
 
@@ -1498,7 +799,7 @@ class AsyncRawFhirClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Any]]
+        AsyncHttpResponse[typing.Any]
             Resource deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1511,92 +812,17 @@ class AsyncRawFhirClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Any],
+                    typing.Any,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Any],  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1615,14 +841,18 @@ class AsyncRawFhirClient:
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FhirResource]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
-        Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.
+        Partially updates a FHIR resource on the specified provider.
 
-        The request body should contain an array of JSON Patch operations. Each operation specifies:
-        - `op`: The operation type (add, remove, replace, move, copy, test)
-        - `path`: JSON Pointer to the target location in the resource
-        - `value`: The value to use (required for add, replace, and test operations)
+        Two body formats are supported, selected by request content type:
+        - `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
+          - `op`: The operation type (add, remove, replace, move, copy, test)
+          - `path`: JSON Pointer to the target location in the resource
+          - `value`: The value to use (required for add, replace, and test operations)
+        - `application/fhir+json` — a partial FHIR resource for merge-patch semantics.
+
+        **Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
         The request is proxied to the configured FHIR server with appropriate authentication headers.
 
@@ -1655,7 +885,7 @@ class AsyncRawFhirClient:
 
         Returns
         -------
-        AsyncHttpResponse[FhirResource]
+        AsyncHttpResponse[typing.Any]
             Resource patched successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1673,92 +903,17 @@ class AsyncRawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirResource,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirResource,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -1772,12 +927,11 @@ class AsyncRawFhirClient:
         self,
         fhir_provider_id: str,
         *,
-        entry: typing.Sequence[FhirBundleEntryItem],
+        request: typing.Any,
         phenoml_on_behalf_of: typing.Optional[str] = None,
         phenoml_fhir_provider: typing.Optional[str] = None,
-        total: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FhirBundle]:
+    ) -> AsyncHttpResponse[typing.Any]:
         """
         Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.
 
@@ -1792,8 +946,7 @@ class AsyncRawFhirClient:
             - A UUID representing the provider ID
             - A provider name (legacy support - will just use the most recently updated provider with this name)
 
-        entry : typing.Sequence[FhirBundleEntryItem]
-            Array of bundle entries containing resources or operation results
+        request : typing.Any
 
         phenoml_on_behalf_of : typing.Optional[str]
             Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
@@ -1803,28 +956,18 @@ class AsyncRawFhirClient:
             Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
             Multiple FHIR provider integrations can be provided as comma-separated values.
 
-        total : typing.Optional[int]
-            Total number of resources that match the search criteria.
-            Optional field as not all FHIR servers include it (e.g., Medplum).
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[FhirBundle]
+        AsyncHttpResponse[typing.Any]
             Bundle executed successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"fhir-provider/{encode_path_param(fhir_provider_id)}/fhir",
             method="POST",
-            json={
-                "total": total,
-                "entry": convert_and_respect_annotation_metadata(
-                    object_=entry, annotation=typing.Sequence[FhirBundleEntryItem], direction="write"
-                ),
-                "resourceType": "Bundle",
-            },
+            json=request,
             headers={
                 "content-type": "application/fhir+json",
                 "X-Phenoml-On-Behalf-Of": str(phenoml_on_behalf_of) if phenoml_on_behalf_of is not None else None,
@@ -1834,81 +977,17 @@ class AsyncRawFhirClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FhirBundle,
+                    typing.Any,
                     parse_obj_as(
-                        type_=FhirBundle,  # type: ignore
+                        type_=typing.Any,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        parse_obj_as(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

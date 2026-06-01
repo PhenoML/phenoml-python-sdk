@@ -45,16 +45,14 @@ client = PhenomlClient(
 )
 
 client.agent.create(
-    name="Medical Assistant",
-    description="An AI assistant for medical information processing",
-    prompts=[
-        "prompt_123"
-    ],
+    name="Medical Assistant System Prompt",
+    description="System prompt for medical assistant agent",
+    content="You are a helpful medical assistant specialized in FHIR data processing.",
+    is_default=False,
     tags=[
         "medical",
-        "fhir"
+        "system"
     ],
-    provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
 )
 ```
 
@@ -88,16 +86,14 @@ client = AsyncPhenomlClient(
 
 async def main() -> None:
     await client.agent.create(
-        name="Medical Assistant",
-        description="An AI assistant for medical information processing",
-        prompts=[
-            "prompt_123"
-        ],
+        name="Medical Assistant System Prompt",
+        description="System prompt for medical assistant agent",
+        content="You are a helpful medical assistant specialized in FHIR data processing.",
+        is_default=False,
         tags=[
             "medical",
-            "fhir"
+            "system"
         ],
-        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
     )
 
 
@@ -131,7 +127,7 @@ client = PhenomlClient(
     client_secret="<clientSecret>",
 )
 
-client.agent.stream_chat(
+client.agent.chat.stream(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     message="What is the patient\'s current condition?",

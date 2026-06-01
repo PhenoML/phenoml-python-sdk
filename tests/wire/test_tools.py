@@ -54,3 +54,33 @@ def test_tools_analyze_cohort() -> None:
         provider="550e8400-e29b-41d4-a716-446655440000",
     )
     verify_request_count(test_id, "POST", "/tools/cohort", None, 1)
+
+
+def test_tools_list_() -> None:
+    """Test list endpoint with WireMock"""
+    test_id = "tools.list_.0"
+    client = get_client(test_id)
+    client.tools.list(
+        mcp_server_id="mcp_server_id",
+    )
+    verify_request_count(test_id, "GET", "/tools/mcp-server/mcp_server_id/list", None, 1)
+
+
+def test_tools_get() -> None:
+    """Test get endpoint with WireMock"""
+    test_id = "tools.get.0"
+    client = get_client(test_id)
+    client.tools.get(
+        mcp_server_tool_id="mcp_server_tool_id",
+    )
+    verify_request_count(test_id, "GET", "/tools/mcp-server/tool/mcp_server_tool_id", None, 1)
+
+
+def test_tools_delete() -> None:
+    """Test delete endpoint with WireMock"""
+    test_id = "tools.delete.0"
+    client = get_client(test_id)
+    client.tools.delete(
+        mcp_server_tool_id="mcp_server_tool_id",
+    )
+    verify_request_count(test_id, "DELETE", "/tools/mcp-server/tool/mcp_server_tool_id", None, 1)

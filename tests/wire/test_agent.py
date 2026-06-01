@@ -8,23 +8,21 @@ def test_agent_create() -> None:
     test_id = "agent.create.0"
     client = get_client(test_id)
     client.agent.create(
-        name="Medical Assistant",
-        description="An AI assistant for medical information processing",
-        prompts=["prompt_123"],
-        tags=["medical", "fhir"],
-        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+        name="Medical Assistant System Prompt",
+        description="System prompt for medical assistant agent",
+        content="You are a helpful medical assistant specialized in FHIR data processing.",
+        is_default=False,
+        tags=["medical", "system"],
     )
-    verify_request_count(test_id, "POST", "/agent/create", None, 1)
+    verify_request_count(test_id, "POST", "/agent/prompts", None, 1)
 
 
 def test_agent_list_() -> None:
     """Test list endpoint with WireMock"""
     test_id = "agent.list_.0"
     client = get_client(test_id)
-    client.agent.list(
-        tags="tags",
-    )
-    verify_request_count(test_id, "GET", "/agent/list", {"tags": "tags"}, 1)
+    client.agent.list()
+    verify_request_count(test_id, "GET", "/agent/prompts/list", None, 1)
 
 
 def test_agent_get() -> None:
@@ -34,7 +32,7 @@ def test_agent_get() -> None:
     client.agent.get(
         id="id",
     )
-    verify_request_count(test_id, "GET", "/agent/id", None, 1)
+    verify_request_count(test_id, "GET", "/agent/prompts/id", None, 1)
 
 
 def test_agent_update() -> None:
@@ -43,13 +41,13 @@ def test_agent_update() -> None:
     client = get_client(test_id)
     client.agent.update(
         id="id",
-        name="Medical Assistant",
-        description="Updated description for the medical assistant",
-        prompts=["prompt_123"],
-        tags=["medical", "fhir", "updated"],
-        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+        name="Medical Assistant System Prompt",
+        description="Updated system prompt",
+        content="You are a helpful medical assistant. Always cite ICD-10 codes when discussing diagnoses.",
+        is_default=False,
+        tags=["medical", "system", "updated"],
     )
-    verify_request_count(test_id, "PUT", "/agent/id", None, 1)
+    verify_request_count(test_id, "PUT", "/agent/prompts/id", None, 1)
 
 
 def test_agent_delete() -> None:
@@ -59,7 +57,7 @@ def test_agent_delete() -> None:
     client.agent.delete(
         id="id",
     )
-    verify_request_count(test_id, "DELETE", "/agent/id", None, 1)
+    verify_request_count(test_id, "DELETE", "/agent/prompts/id", None, 1)
 
 
 def test_agent_patch() -> None:
@@ -71,62 +69,9 @@ def test_agent_patch() -> None:
         request=[
             JsonPatchOperation(
                 op="replace",
-                path="/description",
-                value="patched description",
-            ),
-            JsonPatchOperation(
-                op="add",
-                path="/tags/-",
-                value="updated",
-            ),
+                path="/content",
+                value="Updated prompt content.",
+            )
         ],
     )
-    verify_request_count(test_id, "PATCH", "/agent/id", None, 1)
-
-
-def test_agent_chat() -> None:
-    """Test chat endpoint with WireMock"""
-    test_id = "agent.chat.0"
-    client = get_client(test_id)
-    client.agent.chat(
-        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-        message="What is the patient's current condition?",
-        session_id="session-abc123",
-        agent_id="agent-123",
-    )
-    verify_request_count(test_id, "POST", "/agent/chat", None, 1)
-
-
-def test_agent_stream_chat() -> None:
-    """Test streamChat endpoint with WireMock"""
-    test_id = "agent.stream_chat.0"
-    client = get_client(test_id)
-    for _ in client.agent.stream_chat(
-        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-        message="What is the patient's current condition?",
-        session_id="session-abc123",
-        agent_id="agent-123",
-    ):
-        pass
-    verify_request_count(test_id, "POST", "/agent/stream-chat", None, 1)
-
-
-def test_agent_get_chat_messages() -> None:
-    """Test getChatMessages endpoint with WireMock"""
-    test_id = "agent.get_chat_messages.0"
-    client = get_client(test_id)
-    client.agent.get_chat_messages(
-        chat_session_id="chat_session_id",
-        num_messages=1,
-        role="user",
-        order="asc",
-    )
-    verify_request_count(
-        test_id,
-        "GET",
-        "/agent/chat/messages",
-        {"chat_session_id": "chat_session_id", "num_messages": "1", "role": "user", "order": "asc"},
-        1,
-    )
+    verify_request_count(test_id, "PATCH", "/agent/prompts/id", None, 1)
