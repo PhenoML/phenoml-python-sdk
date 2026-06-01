@@ -2,7 +2,7 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "14.0.1",
+    "sdkVersion": "15.0.0",
     "specCommit": "3c80528939d0dc24009795241888122f9b9b2c5c",
     "generatorName": "fernapi/fern-python-sdk"
   },
