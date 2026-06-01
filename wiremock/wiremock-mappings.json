@@ -183,7 +183,7 @@
       }
     },
     {
-      "id": "ff293a6e-87b7-47f8-b190-c69893360de1",
+      "id": "c424cb7b-fb9c-4843-8c76-fdf4433b8595",
       "name": "Chat with agent - Query Patient Condition",
       "request": {
         "urlPathTemplate": "/agent/chat",
@@ -196,7 +196,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ff293a6e-87b7-47f8-b190-c69893360de1",
+      "uuid": "c424cb7b-fb9c-4843-8c76-fdf4433b8595",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -209,7 +209,7 @@
       }
     },
     {
-      "id": "b4bc28e7-2442-4cc4-9dae-45adfdbbc779",
+      "id": "731b0ca0-9afd-4f48-a926-38bd2b46726f",
       "name": "Chat with agent (streaming) - default",
       "request": {
         "urlPathTemplate": "/agent/stream-chat",
@@ -222,7 +222,7 @@
           "Content-Type": "text/event-stream"
         }
       },
-      "uuid": "b4bc28e7-2442-4cc4-9dae-45adfdbbc779",
+      "uuid": "731b0ca0-9afd-4f48-a926-38bd2b46726f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -235,7 +235,7 @@
       }
     },
     {
-      "id": "9c7bb45a-7bd5-4019-b07d-3c872677344b",
+      "id": "bb412169-df55-4200-9546-63684df8255e",
       "name": "Get chat messages - default",
       "request": {
         "urlPathTemplate": "/agent/chat/messages",
@@ -262,7 +262,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "9c7bb45a-7bd5-4019-b07d-3c872677344b",
+      "uuid": "bb412169-df55-4200-9546-63684df8255e",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -505,7 +505,7 @@
       }
     },
     {
-      "id": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
+      "id": "ff34677a-29e6-4120-bf66-a936499a06cd",
       "name": "Upload custom code system - JSON codes (preferred)",
       "request": {
         "urlPathTemplate": "/construe/upload",
@@ -518,7 +518,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "2ae8afdf-8ac6-4ed4-9def-0b0b40d33899",
+      "uuid": "ff34677a-29e6-4120-bf66-a936499a06cd",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -531,33 +531,7 @@
       }
     },
     {
-      "id": "483e6c62-b4d6-4793-80b0-16b68f91803d",
-      "name": "Extract medical codes from text - Basic Extraction",
-      "request": {
-        "urlPathTemplate": "/construe/extract",
-        "method": "POST"
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"Q60.3\",\n      \"description\": \"Renal hypoplasia, unspecified\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"R93.42\",\n      \"description\": \"Abnormal findings on diagnostic imaging of kidney\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"N28.1\",\n      \"description\": \"Cyst of kidney, acquired\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "483e6c62-b4d6-4793-80b0-16b68f91803d",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "ad73e857-f825-4c59-ab41-2e783be515c1",
+      "id": "2580f34f-b4f5-47ed-ab09-31219e4c4531",
       "name": "List available code systems - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems",
@@ -570,7 +544,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ad73e857-f825-4c59-ab41-2e783be515c1",
+      "uuid": "2580f34f-b4f5-47ed-ab09-31219e4c4531",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -584,7 +558,7 @@
       "postServeActions": []
     },
     {
-      "id": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
+      "id": "abd8f5b4-902d-4e96-98c2-21b6f0c1bf79",
       "name": "Get code system detail - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -607,7 +581,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e7d6b805-2fa8-4145-a68e-d72d5a47e50e",
+      "uuid": "abd8f5b4-902d-4e96-98c2-21b6f0c1bf79",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -620,7 +594,7 @@
       }
     },
     {
-      "id": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
+      "id": "a4ca9264-2956-496e-b3f1-ab16c90b563e",
       "name": "Delete custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
@@ -643,7 +617,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "05cca0b7-d67a-4f82-b683-ddb8c40a5584",
+      "uuid": "a4ca9264-2956-496e-b3f1-ab16c90b563e",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -656,7 +630,7 @@
       }
     },
     {
-      "id": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
+      "id": "7a23e1e4-604d-4272-a283-ad3960cff488",
       "name": "Export custom code system - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}/export",
@@ -679,130 +653,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "77672059-02c1-4caa-91f0-a9ab01dc75d9",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "3553709f-8cbf-4576-8919-9e8efd3a0161",
-      "name": "List codes in a code system - Browse ICD-10-CM",
-      "request": {
-        "urlPathTemplate": "/construe/codes/{codesystem}",
-        "method": "GET",
-        "pathParameters": {
-          "codesystem": {
-            "equalTo": "ICD-10-CM"
-          }
-        },
-        "queryParameters": {
-          "version": {
-            "equalTo": "2025"
-          },
-          "cursor": {
-            "equalTo": "cursor"
-          },
-          "limit": {
-            "equalTo": "1"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"A00\",\n      \"description\": \"Cholera\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A000\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar cholerae\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A001\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar eltor\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A009\",\n      \"description\": \"Cholera, unspecified\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A01\",\n      \"description\": \"Typhoid and paratyphoid fevers\",\n      \"definition\": \"definition\"\n    }\n  ],\n  \"next_cursor\": \"QTAx\",\n  \"has_more\": true\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "3553709f-8cbf-4576-8919-9e8efd3a0161",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
-      "name": "Get a specific code - Look Up ICD-10 Code",
-      "request": {
-        "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
-        "method": "GET",
-        "pathParameters": {
-          "codesystem": {
-            "equalTo": "ICD-10-CM"
-          },
-          "codeID": {
-            "equalTo": "E1165"
-          }
-        },
-        "queryParameters": {
-          "version": {
-            "equalTo": "version"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E1165\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "3d316249-77a6-4153-aebf-e2f5b7c44e04",
-      "persistent": true,
-      "priority": 3,
-      "metadata": {
-        "mocklab": {
-          "created": {
-            "at": "2020-01-01T00:00:00.000Z",
-            "via": "SYSTEM"
-          }
-        }
-      }
-    },
-    {
-      "id": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
-      "name": "Semantic search (embedding-based) - Respiratory Symptoms",
-      "request": {
-        "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
-        "method": "GET",
-        "pathParameters": {
-          "codesystem": {
-            "equalTo": "ICD-10-CM"
-          }
-        },
-        "queryParameters": {
-          "text": {
-            "equalTo": "patient has trouble breathing at night and wakes up gasping"
-          },
-          "version": {
-            "equalTo": "version"
-          },
-          "limit": {
-            "equalTo": "1"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"R06.00\",\n      \"description\": \"Dyspnea, unspecified\"\n    },\n    {\n      \"code\": \"R06.01\",\n      \"description\": \"Orthopnea\"\n    },\n    {\n      \"code\": \"G47.33\",\n      \"description\": \"Obstructive sleep apnea\"\n    },\n    {\n      \"code\": \"R06.83\",\n      \"description\": \"Snoring\"\n    },\n    {\n      \"code\": \"J45.20\",\n      \"description\": \"Mild intermittent asthma, uncomplicated\"\n    }\n  ]\n}",
-        "headers": {
-          "Content-Type": "application/json"
-        }
-      },
-      "uuid": "a5a1b7ef-d2f5-44ae-82a2-5243d199b7ec",
+      "uuid": "7a23e1e4-604d-4272-a283-ad3960cff488",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -841,7 +692,156 @@
       }
     },
     {
-      "id": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
+      "id": "cea8f0f3-f9fd-4def-bc7a-0544e7c3c5e8",
+      "name": "Extract medical codes from text - Basic Extraction",
+      "request": {
+        "urlPathTemplate": "/construe/extract",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"Q60.3\",\n      \"description\": \"Renal hypoplasia, unspecified\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"R93.42\",\n      \"description\": \"Abnormal findings on diagnostic imaging of kidney\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    },\n    {\n      \"code\": \"N28.1\",\n      \"description\": \"Cyst of kidney, acquired\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cea8f0f3-f9fd-4def-bc7a-0544e7c3c5e8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "45c624e8-db92-4c7d-adc8-856520652e18",
+      "name": "List codes in a code system - Browse ICD-10-CM",
+      "request": {
+        "urlPathTemplate": "/construe/codes/{codesystem}",
+        "method": "GET",
+        "pathParameters": {
+          "codesystem": {
+            "equalTo": "ICD-10-CM"
+          }
+        },
+        "queryParameters": {
+          "version": {
+            "equalTo": "2025"
+          },
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"A00\",\n      \"description\": \"Cholera\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A000\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar cholerae\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A001\",\n      \"description\": \"Cholera due to Vibrio cholerae 01, biovar eltor\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A009\",\n      \"description\": \"Cholera, unspecified\",\n      \"definition\": \"definition\"\n    },\n    {\n      \"code\": \"A01\",\n      \"description\": \"Typhoid and paratyphoid fevers\",\n      \"definition\": \"definition\"\n    }\n  ],\n  \"next_cursor\": \"QTAx\",\n  \"has_more\": true\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "45c624e8-db92-4c7d-adc8-856520652e18",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f76fe9a6-63cd-4ef4-8fa8-68cf65acb129",
+      "name": "Get a specific code - Look Up ICD-10 Code",
+      "request": {
+        "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
+        "method": "GET",
+        "pathParameters": {
+          "codesystem": {
+            "equalTo": "ICD-10-CM"
+          },
+          "codeID": {
+            "equalTo": "E1165"
+          }
+        },
+        "queryParameters": {
+          "version": {
+            "equalTo": "version"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"code\": \"E1165\",\n  \"description\": \"Type 2 diabetes mellitus with hyperglycemia\",\n  \"definition\": \"definition\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f76fe9a6-63cd-4ef4-8fa8-68cf65acb129",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "73407d3c-6b8b-44c7-9f62-037a627a9460",
+      "name": "Semantic search (embedding-based) - Respiratory Symptoms",
+      "request": {
+        "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
+        "method": "GET",
+        "pathParameters": {
+          "codesystem": {
+            "equalTo": "ICD-10-CM"
+          }
+        },
+        "queryParameters": {
+          "text": {
+            "equalTo": "patient has trouble breathing at night and wakes up gasping"
+          },
+          "version": {
+            "equalTo": "version"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"ICD-10-CM\",\n    \"version\": \"2025\"\n  },\n  \"results\": [\n    {\n      \"code\": \"R06.00\",\n      \"description\": \"Dyspnea, unspecified\"\n    },\n    {\n      \"code\": \"R06.01\",\n      \"description\": \"Orthopnea\"\n    },\n    {\n      \"code\": \"G47.33\",\n      \"description\": \"Obstructive sleep apnea\"\n    },\n    {\n      \"code\": \"R06.83\",\n      \"description\": \"Snoring\"\n    },\n    {\n      \"code\": \"J45.20\",\n      \"description\": \"Mild intermittent asthma, uncomplicated\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "73407d3c-6b8b-44c7-9f62-037a627a9460",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "bbdabd68-3fec-4a50-a8c1-35b1bbfbee8f",
       "name": "Text search (keyword-based) - Search by Code",
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
@@ -870,7 +870,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "e79f7cf6-1a64-47da-8f6b-faee78e62aad",
+      "uuid": "bbdabd68-3fec-4a50-a8c1-35b1bbfbee8f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -933,7 +933,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"456\",\n  \"meta\": {\n    \"versionId\": \"1\",\n    \"lastUpdated\": \"2024-01-15T10:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"456\",\n  \"meta\": {\n    \"versionId\": \"1\",\n    \"lastUpdated\": \"2024-01-15T10:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -967,7 +967,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"2\",\n    \"lastUpdated\": \"2024-02-20T11:00:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"2\",\n    \"lastUpdated\": \"2024-02-20T11:00:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1035,7 +1035,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"3\",\n    \"lastUpdated\": \"2024-02-20T11:30:00Z\",\n    \"profile\": [\n      \"profile\"\n    ]\n  }\n}",
+        "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"123\",\n  \"meta\": {\n    \"versionId\": \"3\",\n    \"lastUpdated\": \"2024-02-20T11:30:00Z\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1066,7 +1066,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"resourceType\": \"Bundle\",\n  \"total\": 1,\n  \"entry\": [\n    {\n      \"resource\": {\n        \"resourceType\": \"Patient\",\n        \"id\": \"456\"\n      },\n      \"response\": {\n        \"status\": \"201 Created\",\n        \"location\": \"Patient/456\"\n      }\n    }\n  ]\n}",
+        "body": "{\n  \"resourceType\": \"Bundle\",\n  \"type\": \"transaction-response\",\n  \"entry\": [\n    {\n      \"response\": {\n        \"status\": \"201 Created\",\n        \"location\": \"Patient/456\"\n      },\n      \"resource\": {\n        \"resourceType\": \"Patient\",\n        \"id\": \"456\"\n      }\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1199,7 +1199,7 @@
       }
     },
     {
-      "id": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
+      "id": "24cae405-63ee-495b-babf-903da750f423",
       "name": "Add authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/add-auth-config",
@@ -1217,7 +1217,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "5ccd8e66-0ab1-4a7d-aaef-951f8b471837",
+      "uuid": "24cae405-63ee-495b-babf-903da750f423",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1230,7 +1230,7 @@
       }
     },
     {
-      "id": "32b90d4d-aed8-40f2-88ff-d8eaf65b6f37",
+      "id": "975d60b0-72d8-4766-ba25-16a3236cdc49",
       "name": "Set active authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
@@ -1248,7 +1248,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "32b90d4d-aed8-40f2-88ff-d8eaf65b6f37",
+      "uuid": "975d60b0-72d8-4766-ba25-16a3236cdc49",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1261,7 +1261,7 @@
       }
     },
     {
-      "id": "8d6715d1-b638-413a-b521-fcf3ba96b8ed",
+      "id": "9d276783-b016-4199-bdae-bbc17075bc8d",
       "name": "Remove authentication configuration - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
@@ -1279,7 +1279,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "8d6715d1-b638-413a-b521-fcf3ba96b8ed",
+      "uuid": "9d276783-b016-4199-bdae-bbc17075bc8d",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1724,7 +1724,7 @@
       }
     },
     {
-      "id": "ddbcb7ff-0fd9-4112-ad91-cc3860f06753",
+      "id": "b5071918-92fa-4ace-8fec-57d06d20a800",
       "name": "Create MCP server - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/create",
@@ -1737,7 +1737,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "ddbcb7ff-0fd9-4112-ad91-cc3860f06753",
+      "uuid": "b5071918-92fa-4ace-8fec-57d06d20a800",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1750,7 +1750,7 @@
       }
     },
     {
-      "id": "6ff92961-ff91-4045-ad7b-91688d4188e7",
+      "id": "7f9d25cb-d7a0-45cb-855a-b115573061a3",
       "name": "List MCP servers - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/list",
@@ -1763,7 +1763,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "6ff92961-ff91-4045-ad7b-91688d4188e7",
+      "uuid": "7f9d25cb-d7a0-45cb-855a-b115573061a3",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1777,7 +1777,7 @@
       "postServeActions": []
     },
     {
-      "id": "3ca2c0c3-9e21-4b0d-8191-303c91b5056f",
+      "id": "02e3fb96-01f8-441f-a162-64a18c63c28f",
       "name": "Get MCP server by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
@@ -1795,7 +1795,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "3ca2c0c3-9e21-4b0d-8191-303c91b5056f",
+      "uuid": "02e3fb96-01f8-441f-a162-64a18c63c28f",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1808,7 +1808,7 @@
       }
     },
     {
-      "id": "0af80d13-3d8a-497f-b833-b86e563d088e",
+      "id": "9cf10eaa-9101-4929-bc71-b0a37ef2b6b4",
       "name": "Delete MCP server by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
@@ -1826,7 +1826,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "0af80d13-3d8a-497f-b833-b86e563d088e",
+      "uuid": "9cf10eaa-9101-4929-bc71-b0a37ef2b6b4",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1839,7 +1839,7 @@
       }
     },
     {
-      "id": "46b87c79-282c-49b7-9bc6-8e14f643b773",
+      "id": "8e97fafd-2614-4c11-bf6a-f9dc213c5547",
       "name": "List MCP server tools - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}/list",
@@ -1857,7 +1857,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "46b87c79-282c-49b7-9bc6-8e14f643b773",
+      "uuid": "8e97fafd-2614-4c11-bf6a-f9dc213c5547",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1870,7 +1870,7 @@
       }
     },
     {
-      "id": "83bf3b30-8561-4f1b-83f7-82f8126c2207",
+      "id": "c988e389-fd97-4116-9cdc-76e27231cba8",
       "name": "Get MCP server tool by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
@@ -1888,7 +1888,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "83bf3b30-8561-4f1b-83f7-82f8126c2207",
+      "uuid": "c988e389-fd97-4116-9cdc-76e27231cba8",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1901,7 +1901,7 @@
       }
     },
     {
-      "id": "0e976dc8-ea27-4e1e-91f0-f56977d25ea3",
+      "id": "14880425-c434-4645-b0f1-b1312050062a",
       "name": "Delete MCP server tool by ID - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
@@ -1919,7 +1919,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "0e976dc8-ea27-4e1e-91f0-f56977d25ea3",
+      "uuid": "14880425-c434-4645-b0f1-b1312050062a",
       "persistent": true,
       "priority": 3,
       "metadata": {

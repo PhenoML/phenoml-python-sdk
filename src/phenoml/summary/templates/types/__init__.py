@@ -6,15 +6,15 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .templates_delete_response import TemplatesDeleteResponse
-    from .templates_get_response import TemplatesGetResponse
-    from .templates_list_response import TemplatesListResponse
-    from .templates_update_response import TemplatesUpdateResponse
+    from .delete_response import DeleteResponse
+    from .get_response import GetResponse
+    from .list_response import ListResponse
+    from .update_response import UpdateResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "TemplatesDeleteResponse": ".templates_delete_response",
-    "TemplatesGetResponse": ".templates_get_response",
-    "TemplatesListResponse": ".templates_list_response",
-    "TemplatesUpdateResponse": ".templates_update_response",
+    "DeleteResponse": ".delete_response",
+    "GetResponse": ".get_response",
+    "ListResponse": ".list_response",
+    "UpdateResponse": ".update_response",
 }
 
 
@@ -39,4 +39,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["TemplatesDeleteResponse", "TemplatesGetResponse", "TemplatesListResponse", "TemplatesUpdateResponse"]
+__all__ = ["DeleteResponse", "GetResponse", "ListResponse", "UpdateResponse"]

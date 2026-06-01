@@ -7,8 +7,8 @@ from ...core.request_options import RequestOptions
 from ..types.agent_prompts_response import AgentPromptsResponse
 from ..types.json_patch import JsonPatch
 from .raw_client import AsyncRawPromptsClient, RawPromptsClient
-from .types.prompts_delete_response import PromptsDeleteResponse
-from .types.prompts_list_response import PromptsListResponse
+from .types.prompt_delete_response import PromptDeleteResponse
+from .types.prompt_list_response import PromptListResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -93,7 +93,7 @@ class PromptsClient:
         )
         return _response.data
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptListResponse:
         """
         Retrieves a list of agent prompts belonging to the authenticated user
 
@@ -104,7 +104,7 @@ class PromptsClient:
 
         Returns
         -------
-        PromptsListResponse
+        PromptListResponse
             Prompts retrieved successfully
 
         Examples
@@ -222,7 +222,7 @@ class PromptsClient:
         )
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> PromptDeleteResponse:
         """
         Deletes a prompt
 
@@ -236,7 +236,7 @@ class PromptsClient:
 
         Returns
         -------
-        PromptsDeleteResponse
+        PromptDeleteResponse
             Prompt deleted successfully
 
         Examples
@@ -386,7 +386,7 @@ class AsyncPromptsClient:
         )
         return _response.data
 
-    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptsListResponse:
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> PromptListResponse:
         """
         Retrieves a list of agent prompts belonging to the authenticated user
 
@@ -397,7 +397,7 @@ class AsyncPromptsClient:
 
         Returns
         -------
-        PromptsListResponse
+        PromptListResponse
             Prompts retrieved successfully
 
         Examples
@@ -539,9 +539,7 @@ class AsyncPromptsClient:
         )
         return _response.data
 
-    async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> PromptsDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> PromptDeleteResponse:
         """
         Deletes a prompt
 
@@ -555,7 +553,7 @@ class AsyncPromptsClient:
 
         Returns
         -------
-        PromptsDeleteResponse
+        PromptDeleteResponse
             Prompt deleted successfully
 
         Examples

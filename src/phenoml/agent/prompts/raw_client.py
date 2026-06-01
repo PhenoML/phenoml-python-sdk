@@ -18,8 +18,8 @@ from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.agent_prompts_response import AgentPromptsResponse
 from ..types.json_patch import JsonPatch
-from .types.prompts_delete_response import PromptsDeleteResponse
-from .types.prompts_list_response import PromptsListResponse
+from .types.prompt_delete_response import PromptDeleteResponse
+from .types.prompt_list_response import PromptListResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -147,7 +147,7 @@ class RawPromptsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[PromptsListResponse]:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[PromptListResponse]:
         """
         Retrieves a list of agent prompts belonging to the authenticated user
 
@@ -158,7 +158,7 @@ class RawPromptsClient:
 
         Returns
         -------
-        HttpResponse[PromptsListResponse]
+        HttpResponse[PromptListResponse]
             Prompts retrieved successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -169,9 +169,9 @@ class RawPromptsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PromptsListResponse,
+                    PromptListResponse,
                     parse_obj_as(
-                        type_=PromptsListResponse,  # type: ignore
+                        type_=PromptListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -439,7 +439,7 @@ class RawPromptsClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[PromptsDeleteResponse]:
+    ) -> HttpResponse[PromptDeleteResponse]:
         """
         Deletes a prompt
 
@@ -453,7 +453,7 @@ class RawPromptsClient:
 
         Returns
         -------
-        HttpResponse[PromptsDeleteResponse]
+        HttpResponse[PromptDeleteResponse]
             Prompt deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -464,9 +464,9 @@ class RawPromptsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PromptsDeleteResponse,
+                    PromptDeleteResponse,
                     parse_obj_as(
-                        type_=PromptsDeleteResponse,  # type: ignore
+                        type_=PromptDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -753,7 +753,7 @@ class AsyncRawPromptsClient:
 
     async def list(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[PromptsListResponse]:
+    ) -> AsyncHttpResponse[PromptListResponse]:
         """
         Retrieves a list of agent prompts belonging to the authenticated user
 
@@ -764,7 +764,7 @@ class AsyncRawPromptsClient:
 
         Returns
         -------
-        AsyncHttpResponse[PromptsListResponse]
+        AsyncHttpResponse[PromptListResponse]
             Prompts retrieved successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -775,9 +775,9 @@ class AsyncRawPromptsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PromptsListResponse,
+                    PromptListResponse,
                     parse_obj_as(
-                        type_=PromptsListResponse,  # type: ignore
+                        type_=PromptListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1045,7 +1045,7 @@ class AsyncRawPromptsClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[PromptsDeleteResponse]:
+    ) -> AsyncHttpResponse[PromptDeleteResponse]:
         """
         Deletes a prompt
 
@@ -1059,7 +1059,7 @@ class AsyncRawPromptsClient:
 
         Returns
         -------
-        AsyncHttpResponse[PromptsDeleteResponse]
+        AsyncHttpResponse[PromptDeleteResponse]
             Prompt deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1070,9 +1070,9 @@ class AsyncRawPromptsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    PromptsDeleteResponse,
+                    PromptDeleteResponse,
                     parse_obj_as(
-                        type_=PromptsDeleteResponse,  # type: ignore
+                        type_=PromptDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

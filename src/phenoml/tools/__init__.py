@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
         SearchConcept,
     )
     from .errors import BadRequestError, FailedDependencyError, ForbiddenError, InternalServerError, UnauthorizedError
-    from . import mcp_server
+    from . import mcp_servers, mcp_tools
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "CohortResponse": ".types",
@@ -40,7 +40,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "McpServerToolResponse": ".types",
     "SearchConcept": ".types",
     "UnauthorizedError": ".errors",
-    "mcp_server": ".mcp_server",
+    "mcp_servers": ".mcp_servers",
+    "mcp_tools": ".mcp_tools",
 }
 
 
@@ -83,5 +84,6 @@ __all__ = [
     "McpServerToolResponse",
     "SearchConcept",
     "UnauthorizedError",
-    "mcp_server",
+    "mcp_servers",
+    "mcp_tools",
 ]

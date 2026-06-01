@@ -6,48 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import (
-        ErrorResponse,
-        FhirBundle,
-        FhirBundleEntryItem,
-        FhirBundleEntryItemRequest,
-        FhirBundleEntryItemRequestMethod,
-        FhirBundleEntryItemResponse,
-        FhirResource,
-        FhirResourceMeta,
-        PatchRequestBodyItem,
-        PatchRequestBodyItemOp,
-        SearchResponse,
-    )
-    from .errors import (
-        BadGatewayError,
-        BadRequestError,
-        InternalServerError,
-        NotFoundError,
-        ServiceUnavailableError,
-        TooManyRequestsError,
-        UnauthorizedError,
-    )
-_dynamic_imports: typing.Dict[str, str] = {
-    "BadGatewayError": ".errors",
-    "BadRequestError": ".errors",
-    "ErrorResponse": ".types",
-    "FhirBundle": ".types",
-    "FhirBundleEntryItem": ".types",
-    "FhirBundleEntryItemRequest": ".types",
-    "FhirBundleEntryItemRequestMethod": ".types",
-    "FhirBundleEntryItemResponse": ".types",
-    "FhirResource": ".types",
-    "FhirResourceMeta": ".types",
-    "InternalServerError": ".errors",
-    "NotFoundError": ".errors",
-    "PatchRequestBodyItem": ".types",
-    "PatchRequestBodyItemOp": ".types",
-    "SearchResponse": ".types",
-    "ServiceUnavailableError": ".errors",
-    "TooManyRequestsError": ".errors",
-    "UnauthorizedError": ".errors",
-}
+    from .types import PatchRequestBodyItem, PatchRequestBodyItemOp
+_dynamic_imports: typing.Dict[str, str] = {"PatchRequestBodyItem": ".types", "PatchRequestBodyItemOp": ".types"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -71,23 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "BadGatewayError",
-    "BadRequestError",
-    "ErrorResponse",
-    "FhirBundle",
-    "FhirBundleEntryItem",
-    "FhirBundleEntryItemRequest",
-    "FhirBundleEntryItemRequestMethod",
-    "FhirBundleEntryItemResponse",
-    "FhirResource",
-    "FhirResourceMeta",
-    "InternalServerError",
-    "NotFoundError",
-    "PatchRequestBodyItem",
-    "PatchRequestBodyItemOp",
-    "SearchResponse",
-    "ServiceUnavailableError",
-    "TooManyRequestsError",
-    "UnauthorizedError",
-]
+__all__ = ["PatchRequestBodyItem", "PatchRequestBodyItemOp"]
