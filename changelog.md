@@ -28,7 +28,6 @@
 * **`phenoml.lang2fhir.NotFoundError` / `ClientClosedRequestError` / `GatewayTimeoutError`** — new error classes (HTTP 404 / 499 / 504) in `phenoml.lang2fhir.errors`, raised by the lang2fhir endpoints.
 ### Changed
 * **`client.workflows.get(...)` / `update(...)` / `delete(...)`** — now raise the existing `phenoml.workflows.GatewayTimeoutError` on HTTP 504 (previously only `execute(...)` did); no API surface change.
-* **Package data** — `src/phenoml/openapi/openapi.json` was dropped from the Poetry package `include` list, so it is no longer shipped in the sdist/wheel; non-breaking for SDK consumers.
 
 ## 14.0.0 - 2026-05-25
 ### Breaking Changes
