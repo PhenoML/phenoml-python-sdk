@@ -7,18 +7,14 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawAgentClient, RawAgentClient
-from .types.agent_chat_response import AgentChatResponse
-from .types.agent_chat_stream_event import AgentChatStreamEvent
 from .types.agent_create_request_provider import AgentCreateRequestProvider
 from .types.agent_response import AgentResponse
 from .types.delete_response import DeleteResponse
-from .types.get_chat_messages_request_order import GetChatMessagesRequestOrder
-from .types.get_chat_messages_request_role import GetChatMessagesRequestRole
-from .types.get_chat_messages_response import GetChatMessagesResponse
 from .types.json_patch import JsonPatch
 from .types.list_response import ListResponse
 
 if typing.TYPE_CHECKING:
+    from .chat.client import AsyncChatClient, ChatClient
     from .prompts.client import AsyncPromptsClient, PromptsClient
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -28,6 +24,7 @@ class AgentClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._raw_client = RawAgentClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
+        self._chat: typing.Optional[ChatClient] = None
         self._prompts: typing.Optional[PromptsClient] = None
 
     @property
@@ -344,228 +341,13 @@ class AgentClient:
         _response = self._raw_client.patch(id, request=request, request_options=request_options)
         return _response.data
 
-    def chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentChatResponse:
-        """
-        Send a message to an agent and receive a JSON response.
+    @property
+    def chat(self):
+        if self._chat is None:
+            from .chat.client import ChatClient  # noqa: E402
 
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AgentChatResponse
-            Chat response received successfully
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.agent.chat(
-            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            message="What is the patient's current condition?",
-            session_id="session-abc123",
-            agent_id="agent-123",
-        )
-        """
-        _response = self._raw_client.chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        )
-        return _response.data
-
-    def stream_chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[AgentChatStreamEvent]:
-        """
-        Send a message to an agent and receive the response as a Server-Sent Events
-        (SSE) stream. Events include message_start, content_delta, tool_use,
-        tool_result, message_end, and error.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Yields
-        ------
-        typing.Iterator[AgentChatStreamEvent]
-            Streaming chat response. Each frame is a standard SSE record
-            (`event:` line + `data:` JSON line). The example shows a single
-            `content_delta` payload — multiple frames stream until `message_end`.
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        response = client.agent.stream_chat(
-            phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-            phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-            message="What is the patient's current condition?",
-            session_id="session-abc123",
-            agent_id="agent-123",
-        )
-        for chunk in response:
-            yield chunk
-        """
-        with self._raw_client.stream_chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        ) as r:
-            yield from r.data
-
-    def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[GetChatMessagesRequestRole] = None,
-        order: typing.Optional[GetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetChatMessagesResponse:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[GetChatMessagesRequestRole]
-            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
-            If not specified, messages with all roles are returned.
-
-            **Available roles:**
-            - `user` - Messages from the user
-            - `assistant` - Text responses from the AI assistant
-            - `model` - Function/tool call requests from the model
-            - `function` - Function/tool call results
-
-        order : typing.Optional[GetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetChatMessagesResponse
-            Chat messages retrieved successfully
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.agent.get_chat_messages(
-            chat_session_id="chat_session_id",
-            num_messages=1,
-            role="user",
-            order="asc",
-        )
-        """
-        _response = self._raw_client.get_chat_messages(
-            chat_session_id=chat_session_id,
-            num_messages=num_messages,
-            role=role,
-            order=order,
-            request_options=request_options,
-        )
-        return _response.data
+            self._chat = ChatClient(client_wrapper=self._client_wrapper)
+        return self._chat
 
     @property
     def prompts(self):
@@ -580,6 +362,7 @@ class AsyncAgentClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawAgentClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
+        self._chat: typing.Optional[AsyncChatClient] = None
         self._prompts: typing.Optional[AsyncPromptsClient] = None
 
     @property
@@ -944,253 +727,13 @@ class AsyncAgentClient:
         _response = await self._raw_client.patch(id, request=request, request_options=request_options)
         return _response.data
 
-    async def chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AgentChatResponse:
-        """
-        Send a message to an agent and receive a JSON response.
+    @property
+    def chat(self):
+        if self._chat is None:
+            from .chat.client import AsyncChatClient  # noqa: E402
 
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AgentChatResponse
-            Chat response received successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.agent.chat(
-                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                message="What is the patient's current condition?",
-                session_id="session-abc123",
-                agent_id="agent-123",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def stream_chat(
-        self,
-        *,
-        message: str,
-        agent_id: str,
-        phenoml_on_behalf_of: typing.Optional[str] = None,
-        phenoml_fhir_provider: typing.Optional[str] = None,
-        context: typing.Optional[str] = OMIT,
-        session_id: typing.Optional[str] = OMIT,
-        enhanced_reasoning: typing.Optional[bool] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AgentChatStreamEvent]:
-        """
-        Send a message to an agent and receive the response as a Server-Sent Events
-        (SSE) stream. Events include message_start, content_delta, tool_use,
-        tool_result, message_end, and error.
-
-        Parameters
-        ----------
-        message : str
-            The message to send to the agent
-
-        agent_id : str
-            The ID of the agent to chat with
-
-        phenoml_on_behalf_of : typing.Optional[str]
-            Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
-            Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-
-        phenoml_fhir_provider : typing.Optional[str]
-            Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
-            Multiple FHIR provider integrations can be provided as comma-separated values.
-
-        context : typing.Optional[str]
-            Optional context for the conversation
-
-        session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
-
-        enhanced_reasoning : typing.Optional[bool]
-            Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Yields
-        ------
-        typing.AsyncIterator[AgentChatStreamEvent]
-            Streaming chat response. Each frame is a standard SSE record
-            (`event:` line + `data:` JSON line). The example shows a single
-            `content_delta` payload — multiple frames stream until `message_end`.
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            response = await client.agent.stream_chat(
-                phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
-                phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-                message="What is the patient's current condition?",
-                session_id="session-abc123",
-                agent_id="agent-123",
-            )
-            async for chunk in response:
-                yield chunk
-
-
-        asyncio.run(main())
-        """
-        async with self._raw_client.stream_chat(
-            message=message,
-            agent_id=agent_id,
-            phenoml_on_behalf_of=phenoml_on_behalf_of,
-            phenoml_fhir_provider=phenoml_fhir_provider,
-            context=context,
-            session_id=session_id,
-            enhanced_reasoning=enhanced_reasoning,
-            request_options=request_options,
-        ) as r:
-            async for _chunk in r.data:
-                yield _chunk
-
-    async def get_chat_messages(
-        self,
-        *,
-        chat_session_id: str,
-        num_messages: typing.Optional[int] = None,
-        role: typing.Optional[GetChatMessagesRequestRole] = None,
-        order: typing.Optional[GetChatMessagesRequestOrder] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetChatMessagesResponse:
-        """
-        Retrieves a list of chat messages for a given chat session
-
-        Parameters
-        ----------
-        chat_session_id : str
-            Chat session ID
-
-        num_messages : typing.Optional[int]
-            Number of messages to return
-
-        role : typing.Optional[GetChatMessagesRequestRole]
-            Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
-            If not specified, messages with all roles are returned.
-
-            **Available roles:**
-            - `user` - Messages from the user
-            - `assistant` - Text responses from the AI assistant
-            - `model` - Function/tool call requests from the model
-            - `function` - Function/tool call results
-
-        order : typing.Optional[GetChatMessagesRequestOrder]
-            Order of messages
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        GetChatMessagesResponse
-            Chat messages retrieved successfully
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.agent.get_chat_messages(
-                chat_session_id="chat_session_id",
-                num_messages=1,
-                role="user",
-                order="asc",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get_chat_messages(
-            chat_session_id=chat_session_id,
-            num_messages=num_messages,
-            role=role,
-            order=order,
-            request_options=request_options,
-        )
-        return _response.data
+            self._chat = AsyncChatClient(client_wrapper=self._client_wrapper)
+        return self._chat
 
     @property
     def prompts(self):

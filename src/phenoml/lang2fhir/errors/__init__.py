@@ -7,16 +7,20 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .bad_request_error import BadRequestError
-    from .failed_dependency_error import FailedDependencyError
+    from .client_closed_request_error import ClientClosedRequestError
     from .forbidden_error import ForbiddenError
+    from .gateway_timeout_error import GatewayTimeoutError
     from .internal_server_error import InternalServerError
+    from .not_found_error import NotFoundError
     from .unauthorized_error import UnauthorizedError
     from .unprocessable_entity_error import UnprocessableEntityError
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".bad_request_error",
-    "FailedDependencyError": ".failed_dependency_error",
+    "ClientClosedRequestError": ".client_closed_request_error",
     "ForbiddenError": ".forbidden_error",
+    "GatewayTimeoutError": ".gateway_timeout_error",
     "InternalServerError": ".internal_server_error",
+    "NotFoundError": ".not_found_error",
     "UnauthorizedError": ".unauthorized_error",
     "UnprocessableEntityError": ".unprocessable_entity_error",
 }
@@ -45,9 +49,11 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
-    "FailedDependencyError",
+    "ClientClosedRequestError",
     "ForbiddenError",
+    "GatewayTimeoutError",
     "InternalServerError",
+    "NotFoundError",
     "UnauthorizedError",
     "UnprocessableEntityError",
 ]

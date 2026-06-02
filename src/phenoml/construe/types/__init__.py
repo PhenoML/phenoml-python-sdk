@@ -30,8 +30,6 @@ if typing.TYPE_CHECKING:
     from .semantic_search_result import SemanticSearchResult
     from .text_search_response import TextSearchResponse
     from .text_search_result import TextSearchResult
-    from .upload_code_system_response import UploadCodeSystemResponse
-    from .upload_request_format import UploadRequestFormat
 _dynamic_imports: typing.Dict[str, str] = {
     "Citation": ".citation",
     "CodeCategory": ".code_category",
@@ -57,8 +55,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SemanticSearchResult": ".semantic_search_result",
     "TextSearchResponse": ".text_search_response",
     "TextSearchResult": ".text_search_result",
-    "UploadCodeSystemResponse": ".upload_code_system_response",
-    "UploadRequestFormat": ".upload_request_format",
 }
 
 
@@ -108,6 +104,4 @@ __all__ = [
     "SemanticSearchResult",
     "TextSearchResponse",
     "TextSearchResult",
-    "UploadCodeSystemResponse",
-    "UploadRequestFormat",
 ]

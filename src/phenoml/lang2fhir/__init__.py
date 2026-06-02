@@ -33,14 +33,17 @@ if typing.TYPE_CHECKING:
     )
     from .errors import (
         BadRequestError,
-        FailedDependencyError,
+        ClientClosedRequestError,
         ForbiddenError,
+        GatewayTimeoutError,
         InternalServerError,
+        NotFoundError,
         UnauthorizedError,
         UnprocessableEntityError,
     )
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
+    "ClientClosedRequestError": ".errors",
     "CreateMultiRequestDetectionEffort": ".types",
     "CreateMultiRequestValidationMethod": ".types",
     "CreateMultiResponse": ".types",
@@ -58,10 +61,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DocumentMultiRequestDetectionEffort": ".types",
     "DocumentMultiRequestValidationMethod": ".types",
     "DocumentMultiResponse": ".types",
-    "FailedDependencyError": ".errors",
     "FhirResource": ".types",
     "ForbiddenError": ".errors",
+    "GatewayTimeoutError": ".errors",
     "InternalServerError": ".errors",
+    "NotFoundError": ".errors",
     "PageClassification": ".types",
     "PageFilter": ".types",
     "SearchResponse": ".types",
@@ -95,6 +99,7 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
+    "ClientClosedRequestError",
     "CreateMultiRequestDetectionEffort",
     "CreateMultiRequestValidationMethod",
     "CreateMultiResponse",
@@ -112,10 +117,11 @@ __all__ = [
     "DocumentMultiRequestDetectionEffort",
     "DocumentMultiRequestValidationMethod",
     "DocumentMultiResponse",
-    "FailedDependencyError",
     "FhirResource",
     "ForbiddenError",
+    "GatewayTimeoutError",
     "InternalServerError",
+    "NotFoundError",
     "PageClassification",
     "PageFilter",
     "SearchResponse",

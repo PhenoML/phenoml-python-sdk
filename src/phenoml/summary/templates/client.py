@@ -6,10 +6,10 @@ from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
 from ..types.create_summary_template_response import CreateSummaryTemplateResponse
 from .raw_client import AsyncRawTemplatesClient, RawTemplatesClient
-from .types.templates_delete_response import TemplatesDeleteResponse
-from .types.templates_get_response import TemplatesGetResponse
-from .types.templates_list_response import TemplatesListResponse
-from .types.templates_update_response import TemplatesUpdateResponse
+from .types.delete_response import DeleteResponse
+from .types.get_response import GetResponse
+from .types.list_response import ListResponse
+from .types.update_response import UpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -30,7 +30,7 @@ class TemplatesClient:
         """
         return self._raw_client
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> TemplatesListResponse:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListResponse:
         """
         Retrieves all summary templates for the authenticated user
 
@@ -41,7 +41,7 @@ class TemplatesClient:
 
         Returns
         -------
-        TemplatesListResponse
+        ListResponse
             Templates retrieved successfully
 
         Examples
@@ -125,7 +125,7 @@ class TemplatesClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TemplatesGetResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetResponse:
         """
         Retrieves a specific summary template
 
@@ -139,7 +139,7 @@ class TemplatesClient:
 
         Returns
         -------
-        TemplatesGetResponse
+        GetResponse
             Template retrieved successfully
 
         Examples
@@ -167,7 +167,7 @@ class TemplatesClient:
         mode: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TemplatesUpdateResponse:
+    ) -> UpdateResponse:
         """
         Updates an existing summary template
 
@@ -193,7 +193,7 @@ class TemplatesClient:
 
         Returns
         -------
-        TemplatesUpdateResponse
+        UpdateResponse
             Template updated successfully
 
         Examples
@@ -223,7 +223,7 @@ class TemplatesClient:
         )
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TemplatesDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes a summary template
 
@@ -237,7 +237,7 @@ class TemplatesClient:
 
         Returns
         -------
-        TemplatesDeleteResponse
+        DeleteResponse
             Template deleted successfully
 
         Examples
@@ -271,7 +271,7 @@ class AsyncTemplatesClient:
         """
         return self._raw_client
 
-    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> TemplatesListResponse:
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListResponse:
         """
         Retrieves all summary templates for the authenticated user
 
@@ -282,7 +282,7 @@ class AsyncTemplatesClient:
 
         Returns
         -------
-        TemplatesListResponse
+        ListResponse
             Templates retrieved successfully
 
         Examples
@@ -382,7 +382,7 @@ class AsyncTemplatesClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TemplatesGetResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetResponse:
         """
         Retrieves a specific summary template
 
@@ -396,7 +396,7 @@ class AsyncTemplatesClient:
 
         Returns
         -------
-        TemplatesGetResponse
+        GetResponse
             Template retrieved successfully
 
         Examples
@@ -432,7 +432,7 @@ class AsyncTemplatesClient:
         mode: str,
         description: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TemplatesUpdateResponse:
+    ) -> UpdateResponse:
         """
         Updates an existing summary template
 
@@ -458,7 +458,7 @@ class AsyncTemplatesClient:
 
         Returns
         -------
-        TemplatesUpdateResponse
+        UpdateResponse
             Template updated successfully
 
         Examples
@@ -496,9 +496,7 @@ class AsyncTemplatesClient:
         )
         return _response.data
 
-    async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> TemplatesDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> DeleteResponse:
         """
         Deletes a summary template
 
@@ -512,7 +510,7 @@ class AsyncTemplatesClient:
 
         Returns
         -------
-        TemplatesDeleteResponse
+        DeleteResponse
             Template deleted successfully
 
         Examples
