@@ -1,0 +1,25 @@
+name: sync-fern-artifacts
+
+# Bundles the OpenAPI spec, extracts code examples from it, and commits both
+# in one ordered run. Replaces the separate bundle-openapi-spec and
+# extract-code-examples workflows, which ran independently and could race —
+# extract reading a stale spec, never re-triggered because the bundle's
+# GITHUB_TOKEN push doesn't wake another workflow. The shared reusable workflow
+# owns the ordering, concurrency, fork guard, and single commit.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # Defense-in-depth: a push touching only the generated artifacts won't
+    # re-trigger. (Primary loop-break is GITHUB_TOKEN not re-triggering.)
+    paths-ignore:
+      - "src/phenoml/openapi/openapi.json"
+      - "code-examples.json"
+
+jobs:
+  sync:
+    permissions:
+      contents: write
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sync-fern-artifacts.yml@main
+    with:
+      spec-path: src/phenoml/openapi/openapi.json
