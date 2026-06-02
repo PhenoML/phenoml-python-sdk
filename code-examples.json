@@ -1699,7 +1699,7 @@
         }
       },
       "render": {
-        "callTemplate": "client.fhir.search(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}}, {{__body__}})",
+        "callTemplate": "client.fhir.search(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}})",
         "params": [
           {
             "name": "fhir_provider_id",
@@ -1709,18 +1709,7 @@
             "name": "fhir_path",
             "kind": "string"
           }
-        ],
-        "body": {
-          "fieldSeparator": ", ",
-          "fields": [
-            {
-              "jsonKey": "query_parameters",
-              "fieldTemplate": "query_parameters={{value}}",
-              "kind": "object",
-              "required": false
-            }
-          ]
-        }
+        ]
       }
     },
     "POST /fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
@@ -1742,7 +1731,7 @@
         }
       },
       "render": {
-        "callTemplate": "client.fhir.create(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}}, {{__body__}})",
+        "callTemplate": "client.fhir.create(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}}, request={{__body__}})",
         "params": [
           {
             "name": "fhir_provider_id",
@@ -1757,22 +1746,11 @@
           "fieldSeparator": ", ",
           "fields": [
             {
-              "jsonKey": "resourceType",
-              "fieldTemplate": "resourceType={{value}}",
-              "kind": "string",
-              "required": true
-            },
-            {
-              "jsonKey": "id",
-              "fieldTemplate": "id={{value}}",
-              "kind": "string",
-              "required": false
-            },
-            {
-              "jsonKey": "meta",
-              "fieldTemplate": "meta={{value}}",
+              "jsonKey": "",
+              "fieldTemplate": "{{value}}",
               "kind": "object",
-              "required": false
+              "required": true,
+              "passthroughBody": true
             }
           ]
         }
@@ -1798,7 +1776,7 @@
         }
       },
       "render": {
-        "callTemplate": "client.fhir.upsert(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}}, {{__body__}})",
+        "callTemplate": "client.fhir.upsert(fhir_provider_id={{fhir_provider_id}}, fhir_path={{fhir_path}}, request={{__body__}})",
         "params": [
           {
             "name": "fhir_provider_id",
@@ -1813,22 +1791,11 @@
           "fieldSeparator": ", ",
           "fields": [
             {
-              "jsonKey": "resourceType",
-              "fieldTemplate": "resourceType={{value}}",
-              "kind": "string",
-              "required": true
-            },
-            {
-              "jsonKey": "id",
-              "fieldTemplate": "id={{value}}",
-              "kind": "string",
-              "required": false
-            },
-            {
-              "jsonKey": "meta",
-              "fieldTemplate": "meta={{value}}",
+              "jsonKey": "",
+              "fieldTemplate": "{{value}}",
               "kind": "object",
-              "required": false
+              "required": true,
+              "passthroughBody": true
             }
           ]
         }
@@ -1982,7 +1949,7 @@
         }
       },
       "render": {
-        "callTemplate": "client.fhir.execute_bundle(fhir_provider_id={{fhir_provider_id}}, {{__body__}})",
+        "callTemplate": "client.fhir.execute_bundle(fhir_provider_id={{fhir_provider_id}}, request={{__body__}})",
         "params": [
           {
             "name": "fhir_provider_id",
@@ -1993,31 +1960,11 @@
           "fieldSeparator": ", ",
           "fields": [
             {
-              "jsonKey": "resourceType",
-              "fieldTemplate": "resourceType={{value}}",
-              "kind": "enum",
+              "jsonKey": "",
+              "fieldTemplate": "{{value}}",
+              "kind": "object",
               "required": true,
-              "enumValues": [
-                "Bundle"
-              ]
-            },
-            {
-              "jsonKey": "entry",
-              "fieldTemplate": "entry={{value}}",
-              "kind": "list",
-              "required": true,
-              "items": {
-                "jsonKey": "",
-                "fieldTemplate": "{{value}}",
-                "kind": "object",
-                "required": true
-              }
-            },
-            {
-              "jsonKey": "total",
-              "fieldTemplate": "total={{value}}",
-              "kind": "number",
-              "required": false
+              "passthroughBody": true
             }
           ]
         }
@@ -2679,8 +2626,8 @@
       },
       "response": {
         "body": {
-          "resourceType": "Appointment",
-          "searchParams": "date=ge2025-03-02&date=le2025-03-09"
+          "resource_type": "Appointment",
+          "search_params": "date=ge2025-03-02&date=le2025-03-09"
         }
       },
       "render": {
