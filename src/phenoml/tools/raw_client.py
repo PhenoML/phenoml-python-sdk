@@ -10,7 +10,6 @@ from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from .errors.bad_request_error import BadRequestError
-from .errors.failed_dependency_error import FailedDependencyError
 from .errors.forbidden_error import ForbiddenError
 from .errors.internal_server_error import InternalServerError
 from .errors.unauthorized_error import UnauthorizedError
@@ -119,17 +118,6 @@ class RawToolsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -262,17 +250,6 @@ class RawToolsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -388,17 +365,6 @@ class RawToolsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -646,17 +612,6 @@ class AsyncRawToolsClient:
                         ),
                     ),
                 )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -771,17 +726,6 @@ class AsyncRawToolsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -906,17 +850,6 @@ class AsyncRawToolsClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 424:
-                raise FailedDependencyError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,

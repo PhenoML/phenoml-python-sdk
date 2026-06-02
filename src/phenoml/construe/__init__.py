@@ -31,8 +31,6 @@ if typing.TYPE_CHECKING:
         SemanticSearchResult,
         TextSearchResponse,
         TextSearchResult,
-        UploadCodeSystemResponse,
-        UploadRequestFormat,
     )
     from .errors import (
         BadRequestError,
@@ -46,6 +44,8 @@ if typing.TYPE_CHECKING:
         ServiceUnavailableError,
         UnauthorizedError,
     )
+    from . import code_systems, codes
+    from .code_systems import UploadRequestFormat, UploadResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "Citation": ".types",
@@ -81,8 +81,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TextSearchResponse": ".types",
     "TextSearchResult": ".types",
     "UnauthorizedError": ".errors",
-    "UploadCodeSystemResponse": ".types",
-    "UploadRequestFormat": ".types",
+    "UploadRequestFormat": ".code_systems",
+    "UploadResponse": ".code_systems",
+    "code_systems": ".code_systems",
+    "codes": ".codes",
 }
 
 
@@ -142,6 +144,8 @@ __all__ = [
     "TextSearchResponse",
     "TextSearchResult",
     "UnauthorizedError",
-    "UploadCodeSystemResponse",
     "UploadRequestFormat",
+    "UploadResponse",
+    "code_systems",
+    "codes",
 ]

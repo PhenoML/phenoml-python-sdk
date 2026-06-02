@@ -39,7 +39,6 @@ if typing.TYPE_CHECKING:
         NoAuth,
         OnBehalfOfAuth,
         Provider,
-        RemoveAuthConfigResponse,
         Role,
         ServiceAccountKey,
         ServiceAccountMetadata,
@@ -47,6 +46,8 @@ if typing.TYPE_CHECKING:
         TokenPassthroughAuth,
     )
     from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from . import auth_config
+    from .auth_config import RemoveResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "AuthMethod": ".types",
     "BadRequestError": ".errors",
@@ -84,13 +85,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "NotFoundError": ".errors",
     "OnBehalfOfAuth": ".types",
     "Provider": ".types",
-    "RemoveAuthConfigResponse": ".types",
+    "RemoveResponse": ".auth_config",
     "Role": ".types",
     "ServiceAccountKey": ".types",
     "ServiceAccountMetadata": ".types",
     "SmartConfiguration": ".types",
     "TokenPassthroughAuth": ".types",
     "UnauthorizedError": ".errors",
+    "auth_config": ".auth_config",
 }
 
 
@@ -152,11 +154,12 @@ __all__ = [
     "NotFoundError",
     "OnBehalfOfAuth",
     "Provider",
-    "RemoveAuthConfigResponse",
+    "RemoveResponse",
     "Role",
     "ServiceAccountKey",
     "ServiceAccountMetadata",
     "SmartConfiguration",
     "TokenPassthroughAuth",
     "UnauthorizedError",
+    "auth_config",
 ]
