@@ -66,7 +66,7 @@ jobs:
       # version tagged but unpublished, and subsequent runs would skip
       # publish because the tag already exists.
       - name: Verify bundled OpenAPI spec
-        uses: PhenoML/sdk-shared-actions/verify-openapi-spec@v1.0.0
+        uses: PhenoML/sdk-shared-actions/verify-openapi-spec@1.0.0
         with:
           spec-path: src/phenoml/openapi/openapi.json
 

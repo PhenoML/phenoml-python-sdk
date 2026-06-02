@@ -20,6 +20,6 @@ jobs:
   sync:
     permissions:
       contents: write
-    uses: PhenoML/sdk-shared-actions/.github/workflows/sync-fern-artifacts.yml@v1.0.0
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sync-fern-artifacts.yml@1.0.0
     with:
       spec-path: src/phenoml/openapi/openapi.json
