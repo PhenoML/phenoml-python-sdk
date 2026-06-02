@@ -131,7 +131,7 @@ client = PhenomlClient(
     client_secret="<clientSecret>",
 )
 
-client.agent.stream_chat(
+client.agent.chat.stream(
     phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
     phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
     message="What is the patient\'s current condition?",

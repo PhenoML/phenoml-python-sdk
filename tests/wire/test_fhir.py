@@ -1,6 +1,6 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.fhir import FhirBundleEntryItem, FhirBundleEntryItemRequest, PatchRequestBodyItem
+from phenoml.fhir import PatchRequestBodyItem
 
 
 def test_fhir_search() -> None:
@@ -25,7 +25,7 @@ def test_fhir_create() -> None:
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-        resource_type="Patient",
+        request={"resourceType": "Patient"},
     )
     verify_request_count(test_id, "POST", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
@@ -39,8 +39,7 @@ def test_fhir_upsert() -> None:
         fhir_path="Patient",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-        resource_type="Patient",
-        id="123",
+        request={"resourceType": "Patient", "id": "123"},
     )
     verify_request_count(test_id, "PUT", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
@@ -86,21 +85,23 @@ def test_fhir_execute_bundle() -> None:
         fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
         phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
         phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
-        entry=[
-            FhirBundleEntryItem(
-                resource={"resourceType": "Patient", "name": [{"family": "Doe", "given": ["John"]}]},
-                request=FhirBundleEntryItemRequest(
-                    method="POST",
-                    url="Patient",
-                ),
-            ),
-            FhirBundleEntryItem(
-                resource={"resourceType": "Observation", "status": "final", "subject": {"reference": "Patient/123"}},
-                request=FhirBundleEntryItemRequest(
-                    method="POST",
-                    url="Observation",
-                ),
-            ),
-        ],
+        request={
+            "resourceType": "Bundle",
+            "type": "transaction",
+            "entry": [
+                {
+                    "request": {"method": "POST", "url": "Patient"},
+                    "resource": {"resourceType": "Patient", "name": [{"family": "Doe", "given": ["John"]}]},
+                },
+                {
+                    "request": {"method": "POST", "url": "Observation"},
+                    "resource": {
+                        "resourceType": "Observation",
+                        "status": "final",
+                        "subject": {"reference": "Patient/123"},
+                    },
+                },
+            ],
+        },
     )
     verify_request_count(test_id, "POST", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir", None, 1)
