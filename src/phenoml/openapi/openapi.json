@@ -2,62 +2,70 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "0be22a22f76bdd8d90a4f341dcd435fd5590ef7e"
+    "version": "2903d5176690213e8f9bd937e4d4696088f870f9"
   },
   "x-services": [
     {
       "id": "construe",
       "name": "Construe",
       "description": "Extract medical codes from natural language clinical text. Supports SNOMED CT, ICD-10, RxNorm, LOINC, and more.",
-      "iconHint": "construe"
+      "iconHint": "construe",
+      "status": "ga"
     },
     {
       "id": "lang2fhir",
       "name": "Lang2FHIR",
       "description": "Convert natural language clinical text into structured FHIR resources including Patient, Condition, MedicationRequest, and more.",
-      "iconHint": "lang2fhir"
+      "iconHint": "lang2fhir",
+      "status": "ga"
     },
     {
       "id": "summary",
       "name": "Summary",
       "description": "Generate clinical summaries from FHIR resources. Supports narrative templates, flattening for RAG, and IPS generation.",
-      "iconHint": "fhir2summary"
+      "iconHint": "fhir2summary",
+      "status": "beta"
     },
     {
       "id": "agent",
       "name": "Agent",
       "description": "Create AI agents that can query and interact with electronic health records using natural language.",
-      "iconHint": "agent"
+      "iconHint": "agent",
+      "status": "beta"
     },
     {
       "id": "workflow",
       "name": "Workflow",
       "description": "Create and execute clinical workflows. Define workflow logic and test execution with sample data.",
-      "iconHint": "workflows"
+      "iconHint": "workflows",
+      "status": "alpha"
     },
     {
       "id": "auth",
       "name": "Authentication",
       "description": "Manage API credentials, generate authentication tokens, and handle authorization.",
-      "iconHint": "auth"
+      "iconHint": "auth",
+      "status": "ga"
     },
     {
       "id": "tools",
       "name": "Tools",
       "description": "LLM tools that combine lang2fhir with FHIR server operations.",
-      "iconHint": "tools"
+      "iconHint": "tools",
+      "status": "beta"
     },
     {
       "id": "fhir",
       "name": "FHIR",
       "description": "FHIR server operations including resource CRUD, search, and batch operations.",
-      "iconHint": "proxy"
+      "iconHint": "proxy",
+      "status": "ga"
     }
   ],
   "paths": {
     "/agent/create": {
       "post": {
-        "operationId": "create",
+        "operationId": "agent_create",
         "summary": "Create a new agent",
         "description": "Creates a new PhenoAgent with specified configuration",
         "requestBody": {
@@ -126,7 +134,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -142,7 +150,7 @@
     },
     "/agent/list": {
       "get": {
-        "operationId": "list",
+        "operationId": "agent_list",
         "summary": "List agents",
         "description": "Retrieves a list of PhenoAgents belonging to the authenticated user",
         "parameters": [
@@ -163,6 +171,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "title": "ListResponse",
                   "properties": {
                     "success": {
                       "type": "boolean",
@@ -222,7 +231,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -238,7 +247,7 @@
     },
     "/agent/{id}": {
       "get": {
-        "operationId": "get",
+        "operationId": "agent_get",
         "summary": "Get agent by ID",
         "description": "Retrieves a specific agent by its ID",
         "parameters": [
@@ -293,7 +302,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Agent not found"
@@ -310,7 +319,7 @@
         "x-service": "agent"
       },
       "put": {
-        "operationId": "update",
+        "operationId": "agent_update",
         "summary": "Update agent",
         "description": "Updates an existing agent's configuration",
         "parameters": [
@@ -391,7 +400,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Agent not found"
@@ -408,7 +417,7 @@
         "x-service": "agent"
       },
       "delete": {
-        "operationId": "delete",
+        "operationId": "agent_delete",
         "summary": "Delete agent",
         "description": "Deletes an existing agent",
         "parameters": [
@@ -429,6 +438,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "title": "DeleteResponse",
                   "properties": {
                     "success": {
                       "type": "boolean",
@@ -451,7 +461,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Agent not found"
@@ -468,7 +478,7 @@
         "x-service": "agent"
       },
       "patch": {
-        "operationId": "patch",
+        "operationId": "agent_patch",
         "summary": "Patch agent",
         "description": "Patches an existing agent's configuration",
         "parameters": [
@@ -548,7 +558,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Agent not found"
@@ -567,7 +577,10 @@
     },
     "/agent/chat": {
       "post": {
-        "operationId": "chat",
+        "tags": [
+          "Agent / Chat"
+        ],
+        "operationId": "agent_send",
         "summary": "Chat with agent",
         "description": "Send a message to an agent and receive a JSON response.",
         "parameters": [
@@ -647,10 +660,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
+          },
+          "404": {
+            "description": "Agent or session not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -663,7 +682,10 @@
     },
     "/agent/stream-chat": {
       "post": {
-        "operationId": "streamChat",
+        "tags": [
+          "Agent / Chat"
+        ],
+        "operationId": "agent_stream",
         "summary": "Chat with agent (streaming)",
         "description": "Send a message to an agent and receive the response as a Server-Sent Events\n(SSE) stream. Events include message_start, content_delta, tool_use,\ntool_result, message_end, and error.\n",
         "parameters": [
@@ -712,10 +734,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
+          },
+          "404": {
+            "description": "Agent or session not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -728,7 +756,10 @@
     },
     "/agent/chat/messages": {
       "get": {
-        "operationId": "getChatMessages",
+        "tags": [
+          "Agent / Chat"
+        ],
+        "operationId": "agent_listMessages",
         "summary": "Get chat messages",
         "description": "Retrieves a list of chat messages for a given chat session",
         "parameters": [
@@ -850,10 +881,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
+          },
+          "404": {
+            "description": "Chat session not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -866,7 +903,10 @@
     },
     "/agent/prompts": {
       "post": {
-        "operationId": "promptsCreate",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_createPrompt",
         "summary": "Create agent prompt",
         "description": "Creates a new agent prompt",
         "requestBody": {
@@ -922,7 +962,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -938,7 +978,10 @@
     },
     "/agent/prompts/list": {
       "get": {
-        "operationId": "promptsList",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_listPrompts",
         "summary": "List agent prompts",
         "description": "Retrieves a list of agent prompts belonging to the authenticated user",
         "responses": {
@@ -948,6 +991,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "title": "PromptsListResponse",
                   "properties": {
                     "success": {
                       "type": "boolean",
@@ -999,7 +1043,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -1015,7 +1059,10 @@
     },
     "/agent/prompts/{id}": {
       "get": {
-        "operationId": "promptsGet",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_getPrompt",
         "summary": "Get prompt by ID",
         "description": "Retrieves a specific prompt by its ID",
         "parameters": [
@@ -1059,7 +1106,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Prompt not found"
@@ -1076,7 +1123,10 @@
         "x-service": "agent"
       },
       "put": {
-        "operationId": "promptsUpdate",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_updatePrompt",
         "summary": "Update prompt",
         "description": "Updates an existing prompt",
         "parameters": [
@@ -1144,7 +1194,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Prompt not found"
@@ -1161,7 +1211,10 @@
         "x-service": "agent"
       },
       "patch": {
-        "operationId": "promptsPatch",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_patchPrompt",
         "summary": "Patch prompt",
         "description": "Patches an existing prompt",
         "parameters": [
@@ -1225,7 +1278,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Prompt not found"
@@ -1242,7 +1295,10 @@
         "x-service": "agent"
       },
       "delete": {
-        "operationId": "promptsDelete",
+        "tags": [
+          "Agent / Prompts"
+        ],
+        "operationId": "agent_deletePrompt",
         "summary": "Delete prompt",
         "description": "Deletes a prompt",
         "parameters": [
@@ -1263,6 +1319,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "title": "PromptsDeleteResponse",
                   "properties": {
                     "success": {
                       "type": "boolean",
@@ -1285,7 +1342,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "404": {
             "description": "Prompt not found"
@@ -1304,7 +1361,7 @@
     },
     "/auth/token": {
       "post": {
-        "operationId": "getLegacyToken",
+        "operationId": "authtoken_getLegacyToken",
         "summary": "Generate authentication token",
         "description": "Generates a JWT token using Basic Authentication with API credential client ID and secret.\n",
         "security": [
@@ -1355,30 +1412,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request - Missing or malformed Authorization header",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer",
-                      "example": 400
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Missing Authorization header"
-                    },
-                    "data": {
-                      "type": "object",
-                      "nullable": true
-                    }
-                  }
-                }
-              }
-            }
           }
         },
         "x-service": "auth"
@@ -1386,7 +1419,7 @@
     },
     "/v2/auth/token": {
       "post": {
-        "operationId": "getToken",
+        "operationId": "authtoken_getToken",
         "summary": "Request an access token",
         "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with expiration information.\n",
         "security": [
@@ -1499,7 +1532,10 @@
     },
     "/construe/upload": {
       "post": {
-        "operationId": "uploadCodeSystem",
+        "tags": [
+          "Construe / Code Systems"
+        ],
+        "operationId": "construe_upload",
         "summary": "Upload custom code system",
         "description": "Upload a custom medical code system with codes and descriptions for use in code extraction. Requires a paid plan.\nReturns 202 immediately; embedding generation runs asynchronously. Poll\nGET /construe/codes/systems/{codesystem}?version={version} to check when status\ntransitions from \"processing\" to \"ready\" or \"failed\".\n",
         "requestBody": {
@@ -1601,7 +1637,7 @@
             "description": "Code system version already exists (when replace=false)"
           },
           "424": {
-            "description": "Failed dependency (processing or embedding generation failed)"
+            "description": "Failed dependency (error processing or storing the code system)"
           },
           "500": {
             "description": "Server error"
@@ -1617,7 +1653,10 @@
     },
     "/construe/extract": {
       "post": {
-        "operationId": "extractCodes",
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_extract",
         "summary": "Extract medical codes from text",
         "description": "Converts natural language text into structured medical codes.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "requestBody": {
@@ -1955,7 +1994,10 @@
     },
     "/construe/codes/systems": {
       "get": {
-        "operationId": "listCodeSystems",
+        "tags": [
+          "Construe / Code Systems"
+        ],
+        "operationId": "construe_list",
         "summary": "List available code systems",
         "description": "Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.\n",
         "responses": {
@@ -2032,7 +2074,10 @@
     },
     "/construe/codes/systems/{codesystem}": {
       "get": {
-        "operationId": "getCodeSystem",
+        "tags": [
+          "Construe / Code Systems"
+        ],
+        "operationId": "construe_find",
         "summary": "Get code system detail",
         "description": "Returns full metadata for a single code system, including timestamps and builtin status.\n",
         "parameters": [
@@ -2098,7 +2143,10 @@
         "x-service": "construe"
       },
       "delete": {
-        "operationId": "deleteCodeSystem",
+        "tags": [
+          "Construe / Code Systems"
+        ],
+        "operationId": "construe_delete",
         "summary": "Delete custom code system",
         "description": "Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.\nOnly available on dedicated instances. Large systems may take up to a minute to delete.\n",
         "parameters": [
@@ -2162,7 +2210,10 @@
     },
     "/construe/codes/systems/{codesystem}/export": {
       "get": {
-        "operationId": "exportCodeSystem",
+        "tags": [
+          "Construe / Code Systems"
+        ],
+        "operationId": "construe_export",
         "summary": "Export custom code system",
         "description": "Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.\nThe exported file can be re-uploaded directly via POST /construe/upload with format \"json\".\nOnly available on dedicated instances. Builtin systems cannot be exported.\n",
         "parameters": [
@@ -2252,7 +2303,10 @@
     },
     "/construe/codes/{codesystem}": {
       "get": {
-        "operationId": "listCodes",
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_listCodes",
         "summary": "List codes in a code system",
         "description": "Returns a paginated list of all codes in the specified code system from the terminology server.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2428,7 +2482,10 @@
     },
     "/construe/codes/{codesystem}/{codeID}": {
       "get": {
-        "operationId": "getCode",
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_lookup",
         "summary": "Get a specific code",
         "description": "Looks up a specific code in the terminology server and returns its details.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2540,7 +2597,10 @@
     },
     "/construe/codes/{codesystem}/search/semantic": {
       "get": {
-        "operationId": "searchSemantic",
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_searchSemantic",
         "summary": "Semantic search (embedding-based)",
         "description": "Performs semantic similarity search using vector embeddings.\n\n**Availability**: This endpoint works for both **built-in and custom** code systems.\n\n**When to use**: Best for natural language queries where you want to find conceptually\nrelated codes, even when different terminology is used. The search understands meaning,\nnot just keywords.\n\n**Examples**:\n- Query \"trouble breathing at night\" finds codes like \"Sleep apnea\", \"Orthopnea\",\n  \"Nocturnal dyspnea\" \u2014 semantically related but no exact keyword matches\n- Query \"heart problems\" finds \"Myocardial infarction\", \"Cardiac arrest\", \"Arrhythmia\"\n\n**Trade-offs**: Slower than text search (requires embedding generation), but finds\nconceptually similar results that keyword search would miss.\n\nSee also: `/search/text` for faster keyword-based lookup with typo tolerance.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2706,7 +2766,7 @@
     },
     "/construe/feedback": {
       "post": {
-        "operationId": "submitFeedback",
+        "operationId": "construe_submitFeedback",
         "summary": "Submit feedback on extraction results",
         "description": "Submits user feedback on results from the Construe extraction endpoint.\nFeedback includes the full extraction result received and the result the user expected.\n",
         "requestBody": {
@@ -2786,7 +2846,10 @@
     },
     "/construe/codes/{codesystem}/search/text": {
       "get": {
-        "operationId": "searchText",
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_searchText",
         "summary": "Text search (keyword-based)",
         "description": "Performs fast full-text search over code IDs and descriptions.\n\n**Availability**: This endpoint is only available for **built-in code systems**.\nCustom code systems uploaded via `/construe/upload` are not indexed for full-text search\nand will return empty results. Use `/search/semantic` to search custom code systems.\n\n**When to use**: Best for autocomplete UIs, code lookup, or when users know part of\nthe code ID or specific keywords. Fast response times suitable for typeahead interfaces.\n\n**Features**:\n- Substring matching on code IDs (e.g., \"11.65\" finds \"E11.65\")\n- Typo tolerance on descriptions (not on code IDs)\n- Fast response times (~10-50ms)\n\n**Examples**:\n- Query \"E11\" finds all codes starting with E11 (diabetes codes)\n- Query \"diabtes\" (typo) still finds \"diabetes\" codes\n\n**Trade-offs**: Faster than semantic search, but only matches keywords/substrings.\nWon't find conceptually related codes with different terminology.\n\nSee also: `/search/semantic` for finding conceptually similar codes.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "parameters": [
@@ -2950,8 +3013,8 @@
     "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
       "get": {
         "summary": "Read or search FHIR resources",
-        "description": "Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval and search operations based on the FHIR path and query parameters.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "search",
+        "description": "Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.\n\nFHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:\n- Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)\n- Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)\n- Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)\n- Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)\n\nExamples:\n- `Patient?name=John%20Doe&_count=10&_sort=family`\n- `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`\n\nWhen using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
+        "operationId": "fhir_search",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -2964,58 +3027,6 @@
           },
           {
             "$ref": "#/components/parameters/fhir_FhirProviderHeader"
-          },
-          {
-            "name": "query_parameters",
-            "in": "query",
-            "description": "FHIR-compliant query parameters for search operations. Supports standard FHIR search parameters including:\n- Resource-specific search parameters (e.g., name for Patient, status for Observation)\n- Common search parameters (_id, _lastUpdated, _tag, _profile, _security, _text, _content, _filter)\n- Result parameters (_count, _offset, _sort, _include, _revinclude, _summary, _elements)\n- Search prefixes for dates, numbers, quantities (eq, ne, gt, ge, lt, le, sa, eb, ap)\n",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              }
-            },
-            "style": "form",
-            "explode": true,
-            "examples": {
-              "patient_name_search": {
-                "summary": "Search patients by name with pagination",
-                "value": {
-                  "name": "John Doe",
-                  "_count": "10",
-                  "_offset": "0",
-                  "_sort": "family"
-                }
-              },
-              "patient_advanced_search": {
-                "summary": "Advanced patient search with multiple criteria",
-                "value": {
-                  "family": "Doe",
-                  "given": "John",
-                  "birthdate": "ge1980-01-01",
-                  "gender": "male",
-                  "_include": "Patient:general-practitioner"
-                }
-              },
-              "observation_search": {
-                "summary": "Search observations by patient and date range",
-                "value": {
-                  "patient": "Patient/123",
-                  "date": "ge2023-01-01",
-                  "category": "vital-signs",
-                  "_sort": "-date"
-                }
-              },
-              "condition_search": {
-                "summary": "Search conditions with text search",
-                "value": {
-                  "patient": "Patient/123",
-                  "clinical-status": "active",
-                  "_text": "diabetes",
-                  "_summary": "true"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -3023,16 +3034,7 @@
             "description": "Successfully retrieved FHIR resource(s)",
             "content": {
               "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/fhir_FHIRBundle"
-                    },
-                    {
-                      "$ref": "#/components/schemas/fhir_FHIRResource"
-                    }
-                  ]
-                },
+                "schema": {},
                 "examples": {
                   "bundle_response": {
                     "summary": "Search results as FHIR Bundle",
@@ -3075,27 +3077,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/fhir_NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3108,7 +3089,7 @@
       "post": {
         "summary": "Create FHIR resource",
         "description": "Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "create",
+        "operationId": "fhir_create",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -3128,9 +3109,7 @@
           "required": true,
           "content": {
             "application/fhir+json": {
-              "schema": {
-                "$ref": "#/components/schemas/fhir_FHIRResource"
-              },
+              "schema": {},
               "examples": {
                 "create_patient": {
                   "summary": "Create a new patient",
@@ -3147,9 +3126,7 @@
             "description": "Resource created successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/fhir_FHIRResource"
-                },
+                "schema": {},
                 "example": {
                   "resourceType": "Patient",
                   "id": "456",
@@ -3160,24 +3137,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3190,7 +3149,7 @@
       "put": {
         "summary": "Upsert FHIR resource",
         "description": "Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "upsert",
+        "operationId": "fhir_upsert",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -3210,9 +3169,7 @@
           "required": true,
           "content": {
             "application/fhir+json": {
-              "schema": {
-                "$ref": "#/components/schemas/fhir_FHIRResource"
-              },
+              "schema": {},
               "examples": {
                 "upsert_patient": {
                   "summary": "Create or update a patient",
@@ -3230,9 +3187,7 @@
             "description": "Resource upserted successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/fhir_FHIRResource"
-                },
+                "schema": {},
                 "example": {
                   "resourceType": "Patient",
                   "id": "123",
@@ -3243,24 +3198,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3272,8 +3209,8 @@
       },
       "patch": {
         "summary": "Patch FHIR resource",
-        "description": "Partially updates a FHIR resource on the specified provider using JSON Patch operations as defined in RFC 6902.\n\nThe request body should contain an array of JSON Patch operations. Each operation specifies:\n- `op`: The operation type (add, remove, replace, move, copy, test)\n- `path`: JSON Pointer to the target location in the resource\n- `value`: The value to use (required for add, replace, and test operations)\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "patch",
+        "description": "Partially updates a FHIR resource on the specified provider.\n\nTwo body formats are supported, selected by request content type:\n- `application/json-patch+json` \u2014 an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:\n  - `op`: The operation type (add, remove, replace, move, copy, test)\n  - `path`: JSON Pointer to the target location in the resource\n  - `value`: The value to use (required for add, replace, and test operations)\n- `application/fhir+json` \u2014 a partial FHIR resource for merge-patch semantics.\n\n**Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
+        "operationId": "fhir_patch",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -3394,10 +3331,7 @@
               }
             },
             "application/fhir+json": {
-              "schema": {
-                "type": "object",
-                "description": "Alternative: Partial FHIR resource for merge-patch operations \n(support depends on FHIR server implementation)\n"
-              },
+              "schema": {},
               "examples": {
                 "merge_patch_patient": {
                   "summary": "Merge patch format (server-dependent)",
@@ -3421,9 +3355,7 @@
             "description": "Resource patched successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/fhir_FHIRResource"
-                },
+                "schema": {},
                 "example": {
                   "resourceType": "Patient",
                   "id": "123",
@@ -3434,27 +3366,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/fhir_NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3467,7 +3378,7 @@
       "delete": {
         "summary": "Delete FHIR resource",
         "description": "Deletes a FHIR resource from the specified provider.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "delete",
+        "operationId": "fhir_delete",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -3487,10 +3398,7 @@
             "description": "Resource deleted successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Deletion confirmation or operation outcome"
-                },
+                "schema": {},
                 "example": {
                   "resourceType": "OperationOutcome",
                   "issue": [
@@ -3505,27 +3413,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "404": {
-            "$ref": "#/components/responses/fhir_NotFound"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3540,7 +3427,7 @@
       "post": {
         "summary": "Execute FHIR bundle operation",
         "description": "Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.\n\nThe request body should contain a valid FHIR Bundle resource with transaction or batch type.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
-        "operationId": "executeBundle",
+        "operationId": "fhir_executeBundle",
         "parameters": [
           {
             "$ref": "#/components/parameters/fhir_FhirProviderIdParam"
@@ -3557,9 +3444,7 @@
           "required": true,
           "content": {
             "application/fhir+json": {
-              "schema": {
-                "$ref": "#/components/schemas/fhir_FHIRBundle"
-              },
+              "schema": {},
               "examples": {
                 "transaction_bundle": {
                   "summary": "Transaction bundle with multiple operations",
@@ -3609,9 +3494,7 @@
             "description": "Bundle executed successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/fhir_FHIRBundle"
-                },
+                "schema": {},
                 "examples": {
                   "bundle_response": {
                     "summary": "Bundle execution response",
@@ -3635,24 +3518,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "$ref": "#/components/responses/fhir_BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/fhir_Unauthorized"
-          },
-          "429": {
-            "$ref": "#/components/responses/fhir_TooManyRequests"
-          },
-          "500": {
-            "$ref": "#/components/responses/fhir_InternalServerError"
-          },
-          "502": {
-            "$ref": "#/components/responses/fhir_BadGateway"
-          },
-          "503": {
-            "$ref": "#/components/responses/fhir_ServiceUnavailable"
           }
         },
         "security": [
@@ -3665,7 +3530,7 @@
     },
     "/fhir-provider": {
       "post": {
-        "operationId": "create",
+        "operationId": "fhir_provider_create",
         "summary": "Create FHIR provider",
         "description": "Creates a new FHIR provider configuration with authentication credentials.\n\nNote: The \"sandbox\" provider type cannot be created via this API - it is managed internally.\n",
         "requestBody": {
@@ -3747,7 +3612,7 @@
     },
     "/fhir-provider/list": {
       "get": {
-        "operationId": "list",
+        "operationId": "fhir_provider_list",
         "summary": "List FHIR providers",
         "description": "Retrieves a list of all active FHIR providers for the authenticated user.\n\nOn shared instances, only sandbox providers are returned.\nSandbox providers return FhirProviderSandboxInfo.\n",
         "responses": {
@@ -3809,7 +3674,7 @@
     },
     "/fhir-provider/{fhir_provider_id}": {
       "get": {
-        "operationId": "get",
+        "operationId": "fhir_provider_get",
         "summary": "Get FHIR provider by ID",
         "description": "Retrieves a specific FHIR provider configuration by its ID.\n\nSandbox providers return FhirProviderSandboxInfo.\nOn shared instances, only sandbox providers can be accessed.\n",
         "parameters": [
@@ -3875,7 +3740,7 @@
         "x-service": "fhir"
       },
       "delete": {
-        "operationId": "delete",
+        "operationId": "fhir_provider_delete",
         "summary": "Delete FHIR provider",
         "description": "Deletes a FHIR provider.\n\nNote: Sandbox providers cannot be deleted.\n",
         "parameters": [
@@ -3918,7 +3783,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - only available on dedicated instances"
+            "description": "Forbidden - dedicated instance required, or sandbox provider cannot be modified"
           },
           "404": {
             "description": "FHIR provider not found"
@@ -3937,7 +3802,10 @@
     },
     "/fhir-provider/{fhir_provider_id}/add-auth-config": {
       "patch": {
-        "operationId": "addAuthConfig",
+        "tags": [
+          "FHIR / Auth Config"
+        ],
+        "operationId": "fhir_provider_add",
         "summary": "Add authentication configuration",
         "description": "Adds a new authentication configuration to an existing FHIR provider.\nThis enables key rotation and multiple auth configurations per provider.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
@@ -4018,7 +3886,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - only available on dedicated instances"
+            "description": "Forbidden - dedicated instance required, or sandbox provider cannot be modified"
           },
           "404": {
             "description": "FHIR provider not found"
@@ -4037,7 +3905,10 @@
     },
     "/fhir-provider/{fhir_provider_id}/set-active-auth-config": {
       "patch": {
-        "operationId": "setActiveAuthConfig",
+        "tags": [
+          "FHIR / Auth Config"
+        ],
+        "operationId": "fhir_provider_setActive",
         "summary": "Set active authentication configuration",
         "description": "Sets which authentication configuration should be active for a FHIR provider.\nOnly one auth config can be active at a time.\n\nIf the specified auth config is already active, the request succeeds without\nmaking any changes and returns a message indicating the config is already active.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
@@ -4115,7 +3986,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - only available on dedicated instances"
+            "description": "Forbidden - dedicated instance required, or sandbox provider cannot be modified"
           },
           "404": {
             "description": "FHIR provider or auth config not found"
@@ -4134,7 +4005,10 @@
     },
     "/fhir-provider/{fhir_provider_id}/remove-auth-config": {
       "patch": {
-        "operationId": "removeAuthConfig",
+        "tags": [
+          "FHIR / Auth Config"
+        ],
+        "operationId": "fhir_provider_remove",
         "summary": "Remove authentication configuration",
         "description": "Removes an authentication configuration from a FHIR provider.\nCannot remove the currently active auth configuration.\n\nNote: Sandbox providers cannot be modified.\n",
         "parameters": [
@@ -4215,7 +4089,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - only available on dedicated instances"
+            "description": "Forbidden - dedicated instance required, or sandbox provider cannot be modified"
           },
           "404": {
             "description": "FHIR provider or auth config not found"
@@ -4234,7 +4108,7 @@
     },
     "/cohort": {
       "post": {
-        "operationId": "analyze",
+        "operationId": "cohort_analyze",
         "summary": "Analyze text for patient cohort criteria",
         "description": "Converts natural language text into structured FHIR search queries for patient cohort analysis",
         "requestBody": {
@@ -4305,7 +4179,7 @@
     },
     "/lang2fhir/create": {
       "post": {
-        "operationId": "create",
+        "operationId": "lang2fhir_create",
         "summary": "Create FHIR resource from text",
         "description": "Converts natural language text into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -4433,6 +4307,12 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Profile not found"
+          },
+          "422": {
+            "description": "Generated FHIR resource failed validation"
+          },
           "500": {
             "description": "Server error"
           }
@@ -4447,7 +4327,7 @@
     },
     "/lang2fhir/create/multi": {
       "post": {
-        "operationId": "createMulti",
+        "operationId": "lang2fhir_createMulti",
         "summary": "Extract multiple FHIR resources from text",
         "description": "Analyzes natural language text and extracts multiple FHIR resources, returning them as a transaction Bundle.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types from the text.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -4547,6 +4427,12 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Profile not found"
+          },
+          "422": {
+            "description": "Generated FHIR resource failed validation"
+          },
           "500": {
             "description": "Server error"
           }
@@ -4561,7 +4447,7 @@
     },
     "/lang2fhir/search": {
       "post": {
-        "operationId": "search",
+        "operationId": "lang2fhir_search",
         "summary": "Generate FHIR search parameters from text",
         "description": "Converts natural language text into FHIR search parameters.\nAutomatically identifies the appropriate FHIR resource type and generates valid search query parameters.\n\nSupported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,\nCoverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,\nMedication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,\nPractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,\nSchedule, ServiceRequest, Slot, and Specimen.\n",
         "requestBody": {
@@ -4595,8 +4481,8 @@
                   "search_appointments": {
                     "summary": "Search Appointments",
                     "value": {
-                      "resourceType": "Appointment",
-                      "searchParams": "date=ge2025-03-02&date=le2025-03-09"
+                      "resource_type": "Appointment",
+                      "search_params": "date=ge2025-03-02&date=le2025-03-09"
                     }
                   }
                 }
@@ -4608,9 +4494,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "424": {
-            "description": "Internal Dependency Failure"
           },
           "500": {
             "description": "Server error"
@@ -4626,7 +4509,7 @@
     },
     "/lang2fhir/profile/upload": {
       "post": {
-        "operationId": "uploadProfile",
+        "operationId": "lang2fhir_uploadProfile",
         "summary": "Upload custom FHIR profile",
         "description": "Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.\n\nAll metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field\nfrom the StructureDefinition is used as the profile's unique identifier and lookup key.\nTo use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.\n\nUploads will be rejected if:\n- A built-in US Core or R4 base profile already exists with the same id\n- A custom profile with the same id has already been uploaded\n- A custom profile with the same url has already been uploaded\n",
         "requestBody": {
@@ -4689,7 +4572,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop or launch tier access"
+            "description": "Forbidden - profile upload is only available on dedicated instances"
           },
           "500": {
             "description": "Server error"
@@ -4705,7 +4588,7 @@
     },
     "/lang2fhir/document": {
       "post": {
-        "operationId": "document",
+        "operationId": "lang2fhir_document",
         "summary": "Convert document to FHIR resource",
         "description": "Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -4757,8 +4640,20 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Profile not found"
+          },
+          "422": {
+            "description": "Document could not be processed or generated resource failed validation"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -4771,7 +4666,7 @@
     },
     "/lang2fhir/document/multi": {
       "post": {
-        "operationId": "documentMulti",
+        "operationId": "lang2fhir_documentMulti",
         "summary": "Extract multiple FHIR resources from a document",
         "description": "Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
@@ -4888,11 +4783,20 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Profile not found"
+          },
           "422": {
-            "description": "Document could not be processed"
+            "description": "Document could not be processed or generated resource failed validation"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -4905,7 +4809,10 @@
     },
     "/fhir2summary/templates": {
       "get": {
-        "operationId": "listTemplates",
+        "tags": [
+          "Summary / Templates"
+        ],
+        "operationId": "summary_list",
         "summary": "List all summary templates",
         "description": "Retrieves all summary templates for the authenticated user",
         "responses": {
@@ -4965,7 +4872,10 @@
     },
     "/fhir2summary/template": {
       "post": {
-        "operationId": "createTemplate",
+        "tags": [
+          "Summary / Templates"
+        ],
+        "operationId": "summary_createTemplate",
         "summary": "Create a new summary template",
         "description": "Creates a summary template from an example using LLM function calling",
         "requestBody": {
@@ -5048,7 +4958,10 @@
     },
     "/fhir2summary/template/{id}": {
       "get": {
-        "operationId": "getTemplate",
+        "tags": [
+          "Summary / Templates"
+        ],
+        "operationId": "summary_get",
         "summary": "Get a summary template by ID",
         "description": "Retrieves a specific summary template",
         "parameters": [
@@ -5118,7 +5031,10 @@
         "x-service": "summary"
       },
       "put": {
-        "operationId": "updateTemplate",
+        "tags": [
+          "Summary / Templates"
+        ],
+        "operationId": "summary_update",
         "summary": "Update a summary template",
         "description": "Updates an existing summary template",
         "parameters": [
@@ -5215,7 +5131,10 @@
         "x-service": "summary"
       },
       "delete": {
-        "operationId": "deleteTemplate",
+        "tags": [
+          "Summary / Templates"
+        ],
+        "operationId": "summary_delete",
         "summary": "Delete a summary template",
         "description": "Deletes a summary template",
         "parameters": [
@@ -5275,7 +5194,7 @@
     },
     "/fhir2summary/create": {
       "post": {
-        "operationId": "create",
+        "operationId": "summary_create",
         "summary": "Generate a summary from FHIR resources",
         "description": "Creates a summary from FHIR resources using one of three modes:\n- **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)\n- **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)\n- **ips**: Generates an International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG. Requires a Bundle with exactly one Patient resource (returns 400 error if no Patient or multiple Patients are present). Automatically filters resources to those referencing the patient and generates sections for allergies, medications, problems, immunizations, procedures, and vital signs.\n",
         "requestBody": {
@@ -5428,7 +5347,7 @@
     },
     "/tools/lang2fhir-and-create": {
       "post": {
-        "operationId": "createFhirResource",
+        "operationId": "tools_createFhirResource",
         "summary": "Create FHIR resource from text and store it",
         "description": "Converts natural language to FHIR resource and optionally stores it in a FHIR server",
         "parameters": [
@@ -5520,10 +5439,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
-          },
-          "424": {
-            "description": "Failed Dependency - lang2fhir service error"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -5539,7 +5455,7 @@
     },
     "/tools/lang2fhir-and-create-multi": {
       "post": {
-        "operationId": "createFhirResourcesMulti",
+        "operationId": "tools_createFhirResourcesMulti",
         "summary": "Extract and store multiple FHIR resources",
         "description": "Extracts multiple FHIR resources from natural language text and stores them in a FHIR server.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references and submitted as a transaction bundle.\nFor FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically\nresolve them via PUT requests after the initial bundle creation.\n",
         "parameters": [
@@ -5628,10 +5544,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
-          },
-          "424": {
-            "description": "Failed Dependency - lang2fhir service error"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -5647,7 +5560,7 @@
     },
     "/tools/lang2fhir-and-search": {
       "post": {
-        "operationId": "searchFhirResources",
+        "operationId": "tools_searchFhirResources",
         "summary": "Search FHIR resources from natural language",
         "description": "Converts natural language to FHIR search parameters and executes search in FHIR server",
         "parameters": [
@@ -5714,10 +5627,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
-          },
-          "424": {
-            "description": "Failed Dependency - lang2fhir service error"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -5733,7 +5643,7 @@
     },
     "/tools/cohort": {
       "post": {
-        "operationId": "analyzeCohort",
+        "operationId": "tools_analyzeCohort",
         "summary": "Analyze patient cohorts",
         "description": "Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria",
         "parameters": [
@@ -5806,7 +5716,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested resource"
           },
           "500": {
             "description": "Server error"
@@ -5822,7 +5732,10 @@
     },
     "/tools/mcp-server/create": {
       "post": {
-        "operationId": "mcpServerCreate",
+        "tags": [
+          "Tools / MCP Servers"
+        ],
+        "operationId": "tools_create",
         "summary": "Create MCP server",
         "description": "Creates a new MCP server",
         "requestBody": {
@@ -5891,7 +5804,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
           },
           "500": {
             "description": "Server error"
@@ -5907,7 +5820,10 @@
     },
     "/tools/mcp-server/list": {
       "get": {
-        "operationId": "mcpServerList",
+        "tags": [
+          "Tools / MCP Servers"
+        ],
+        "operationId": "tools_list",
         "summary": "List MCP servers",
         "description": "Lists all MCP servers for a specific user",
         "responses": {
@@ -5943,7 +5859,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
           },
           "500": {
             "description": "Server error"
@@ -5959,7 +5875,10 @@
     },
     "/tools/mcp-server/{mcp_server_id}": {
       "get": {
-        "operationId": "mcpServerGet",
+        "tags": [
+          "Tools / MCP Servers"
+        ],
+        "operationId": "tools_get",
         "summary": "Get MCP server by ID",
         "description": "Gets a MCP server by ID",
         "parameters": [
@@ -5998,7 +5917,10 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
+          },
+          "404": {
+            "description": "MCP server not found"
           },
           "500": {
             "description": "Server error"
@@ -6012,7 +5934,10 @@
         "x-service": "tools"
       },
       "delete": {
-        "operationId": "mcpServerDelete",
+        "tags": [
+          "Tools / MCP Servers"
+        ],
+        "operationId": "tools_delete",
         "summary": "Delete MCP server by ID",
         "description": "Deletes a MCP server by ID",
         "parameters": [
@@ -6045,7 +5970,10 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
+          },
+          "404": {
+            "description": "MCP server not found"
           },
           "500": {
             "description": "Server error"
@@ -6061,7 +5989,10 @@
     },
     "/tools/mcp-server/{mcp_server_id}/list": {
       "get": {
-        "operationId": "mcpServerToolsList",
+        "tags": [
+          "Tools / MCP Tools"
+        ],
+        "operationId": "tools_listTools",
         "summary": "List MCP server tools",
         "description": "Lists all MCP server tools for a specific MCP server",
         "parameters": [
@@ -6116,7 +6047,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
           },
           "500": {
             "description": "Server error"
@@ -6132,7 +6063,10 @@
     },
     "/tools/mcp-server/tool/{mcp_server_tool_id}": {
       "get": {
-        "operationId": "mcpServerToolsGet",
+        "tags": [
+          "Tools / MCP Tools"
+        ],
+        "operationId": "tools_getTool",
         "summary": "Get MCP server tool by ID",
         "description": "Gets a MCP server tool by ID",
         "parameters": [
@@ -6176,7 +6110,10 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
+          },
+          "404": {
+            "description": "MCP server tool not found"
           },
           "500": {
             "description": "Server error"
@@ -6190,7 +6127,10 @@
         "x-service": "tools"
       },
       "delete": {
-        "operationId": "mcpServerToolsDelete",
+        "tags": [
+          "Tools / MCP Tools"
+        ],
+        "operationId": "tools_deleteTool",
         "summary": "Delete MCP server tool by ID",
         "description": "Deletes a MCP server tool by ID",
         "parameters": [
@@ -6223,7 +6163,10 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - MCP server endpoints require a dedicated instance, or access denied to this resource"
+          },
+          "404": {
+            "description": "MCP server tool not found"
           },
           "500": {
             "description": "Server error"
@@ -6239,7 +6182,7 @@
     },
     "/workflows": {
       "get": {
-        "operationId": "list",
+        "operationId": "workflows_list",
         "summary": "List all workflows",
         "description": "Retrieves all workflow definitions for the authenticated user",
         "parameters": [
@@ -6312,7 +6255,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "500": {
             "description": "Server error"
@@ -6326,7 +6269,7 @@
         "x-service": "workflow"
       },
       "post": {
-        "operationId": "create",
+        "operationId": "workflows_create",
         "summary": "Create new workflow",
         "description": "Creates a new workflow definition with graph generation from workflow instructions",
         "parameters": [
@@ -6409,7 +6352,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "500": {
             "description": "Server error"
@@ -6425,7 +6368,7 @@
     },
     "/workflows/{id}": {
       "get": {
-        "operationId": "get",
+        "operationId": "workflows_get",
         "summary": "Get workflow by ID",
         "description": "Retrieves a workflow definition by its ID",
         "parameters": [
@@ -6518,13 +6461,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "404": {
             "description": "Workflow not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -6535,7 +6481,7 @@
         "x-service": "workflow"
       },
       "put": {
-        "operationId": "update",
+        "operationId": "workflows_update",
         "summary": "Update workflow",
         "description": "Updates an existing workflow definition",
         "parameters": [
@@ -6651,13 +6597,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "404": {
             "description": "Workflow not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -6668,7 +6617,7 @@
         "x-service": "workflow"
       },
       "delete": {
-        "operationId": "delete",
+        "operationId": "workflows_delete",
         "summary": "Delete workflow",
         "description": "Deletes a workflow definition by its ID",
         "parameters": [
@@ -6712,13 +6661,16 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "404": {
             "description": "Workflow not found"
           },
           "500": {
             "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
           }
         },
         "security": [
@@ -6731,7 +6683,7 @@
     },
     "/workflows/{id}/execute": {
       "post": {
-        "operationId": "execute",
+        "operationId": "workflows_execute",
         "summary": "Execute workflow",
         "description": "Executes a workflow with provided input data and returns results",
         "parameters": [
@@ -6948,7 +6900,7 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - requires develop tier access"
+            "description": "Forbidden - access denied to the requested workflow"
           },
           "404": {
             "description": "Workflow not found"
@@ -8357,134 +8309,6 @@
             "type": "string",
             "description": "The ID of the saved feedback",
             "example": "abc123def456"
-          }
-        }
-      },
-      "fhir_FHIRBundle": {
-        "type": "object",
-        "description": "Represents a FHIR Bundle response containing multiple resources or operation results.\nBased on the FHIRBundle struct from io/fhir.go.\n",
-        "required": [
-          "resourceType",
-          "entry"
-        ],
-        "properties": {
-          "resourceType": {
-            "type": "string",
-            "enum": [
-              "Bundle"
-            ],
-            "description": "Always \"Bundle\" for bundle resources"
-          },
-          "total": {
-            "type": "integer",
-            "minimum": 0,
-            "description": "Total number of resources that match the search criteria.\nOptional field as not all FHIR servers include it (e.g., Medplum).\n"
-          },
-          "entry": {
-            "type": "array",
-            "description": "Array of bundle entries containing resources or operation results",
-            "items": {
-              "type": "object",
-              "properties": {
-                "resource": {
-                  "type": "object",
-                  "description": "The FHIR resource contained in this entry",
-                  "additionalProperties": true
-                },
-                "request": {
-                  "type": "object",
-                  "description": "Request information for transaction/batch bundles",
-                  "properties": {
-                    "method": {
-                      "type": "string",
-                      "enum": [
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "PATCH",
-                        "DELETE"
-                      ]
-                    },
-                    "url": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "response": {
-                  "type": "object",
-                  "description": "Response information for transaction/batch bundle responses",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "location": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_FHIRResource": {
-        "type": "object",
-        "description": "A generic FHIR resource. All FHIR resources share common elements like resourceType and id,\nbut the specific structure depends on the resource type.\n",
-        "required": [
-          "resourceType"
-        ],
-        "properties": {
-          "resourceType": {
-            "type": "string",
-            "description": "The type of FHIR resource (e.g., Patient, Observation, etc.)",
-            "example": "Patient"
-          },
-          "id": {
-            "type": "string",
-            "description": "Logical ID of the resource",
-            "example": "123"
-          },
-          "meta": {
-            "type": "object",
-            "description": "Metadata about the resource",
-            "properties": {
-              "versionId": {
-                "type": "string"
-              },
-              "lastUpdated": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "profile": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "additionalProperties": true
-      },
-      "fhir_ErrorResponse": {
-        "type": "object",
-        "description": "Standard error response structure",
-        "required": [
-          "message"
-        ],
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Human-readable error message"
-          },
-          "code": {
-            "type": "integer",
-            "description": "HTTP status code"
-          },
-          "data": {
-            "type": "object",
-            "description": "Additional error details",
-            "additionalProperties": true
           }
         }
       },
@@ -11227,171 +11051,40 @@
         "scheme": "basic",
         "description": "The header should be formatted as:\nAuthorization: Basic base64(client_id:client_secret)"
       }
-    },
-    "responses": {
-      "fhir_BadRequest": {
-        "description": "Bad request - invalid input parameters or malformed request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "invalid_provider": {
-                "summary": "Invalid provider ID",
-                "value": {
-                  "message": "Provider not found: invalid-provider-id",
-                  "code": 400
-                }
-              },
-              "malformed_resource": {
-                "summary": "Malformed FHIR resource",
-                "value": {
-                  "message": "Invalid FHIR resource format",
-                  "code": 400
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_Unauthorized": {
-        "description": "Unauthorized - authentication required or invalid",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "missing_auth": {
-                "summary": "Missing authentication",
-                "value": {
-                  "message": "Authentication required",
-                  "code": 401
-                }
-              },
-              "invalid_token": {
-                "summary": "Invalid authentication token",
-                "value": {
-                  "message": "Invalid or expired authentication token",
-                  "code": 401
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_NotFound": {
-        "description": "Not found - requested resource does not exist",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "resource_not_found": {
-                "summary": "FHIR resource not found",
-                "value": {
-                  "message": "Resource not found",
-                  "code": 404
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_TooManyRequests": {
-        "description": "Too many requests - upstream FHIR server rate limit exceeded",
-        "headers": {
-          "Retry-After": {
-            "description": "Number of seconds to wait before retrying the request",
-            "schema": {
-              "type": "string"
-            },
-            "example": "60"
-          }
-        },
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "rate_limited": {
-                "summary": "Rate limited by upstream FHIR server",
-                "value": {
-                  "message": "Rate limit exceeded",
-                  "code": 429
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_ServiceUnavailable": {
-        "description": "Service unavailable - upstream FHIR server temporarily unavailable",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "upstream_unavailable": {
-                "summary": "Upstream FHIR server unavailable",
-                "value": {
-                  "message": "Service temporarily unavailable",
-                  "code": 503
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_InternalServerError": {
-        "description": "Internal server error - unexpected server-side error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "server_error": {
-                "summary": "Generic server error",
-                "value": {
-                  "message": "Internal server error",
-                  "code": 500
-                }
-              }
-            }
-          }
-        }
-      },
-      "fhir_BadGateway": {
-        "description": "Bad gateway - upstream FHIR server error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/fhir_ErrorResponse"
-            },
-            "examples": {
-              "token_endpoint_error": {
-                "summary": "Token endpoint failure",
-                "value": {
-                  "message": "Upstream service error: token endpoint returned 401",
-                  "code": 502
-                }
-              },
-              "fhir_server_unreachable": {
-                "summary": "FHIR server unreachable",
-                "value": {
-                  "message": "Upstream service error: failed to connect to FHIR server",
-                  "code": 502
-                }
-              }
-            }
-          }
-        }
-      }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Agent / Chat",
+      "description": "Conversational sessions with an agent."
+    },
+    {
+      "name": "Agent / Prompts",
+      "description": "Reusable prompt templates that agents can attach to chats."
+    },
+    {
+      "name": "Construe / Code Systems",
+      "description": "Manage custom medical code systems used by the extractor."
+    },
+    {
+      "name": "Construe / Codes",
+      "description": "Extract and search codes within a code system."
+    },
+    {
+      "name": "FHIR / Auth Config",
+      "description": "Manage authentication configurations attached to a FHIR provider."
+    },
+    {
+      "name": "Summary / Templates",
+      "description": "Reusable summary templates that drive FHIR-to-text generation."
+    },
+    {
+      "name": "Tools / MCP Servers",
+      "description": "Register and manage MCP servers exposed as agent tools."
+    },
+    {
+      "name": "Tools / MCP Tools",
+      "description": "List and manage individual tools exposed by an MCP server."
+    }
+  ]
 }
