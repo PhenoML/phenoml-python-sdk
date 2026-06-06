@@ -31,9 +31,6 @@ classifiers = [
 packages = [
     { include = "phenoml", from = "src"}
 ]
-include = [
-    { path = "src/phenoml/openapi/openapi.json", format = ["sdist", "wheel"] }
-]
 
 [tool.poetry.urls]
 Repository = 'https://github.com/phenoml/phenoml-python-sdk'
