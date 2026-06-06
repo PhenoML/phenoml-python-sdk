@@ -1,3 +1,9 @@
+## 15.0.1 - 2026-06-06
+### Changed
+* **`phenoml.core.serialization` / `phenoml.core.pydantic_utilities`** — internal performance refactor: resolved type hints, pydantic `TypeAdapter` instances, and alias-conversion decisions are now cached, and the recursive alias walk is skipped when a type carries no field aliases (the hot path for SSE streaming). `parse_sse_obj` was simplified to always JSON-parse the SSE `data` field; the removed event-level discrimination path was unused by this SDK (the sole SSE stream, agent chat, is data-level discriminated), so streaming behavior is unchanged.
+* **`aiohttp` extra** — the optional `aiohttp` dependency floor is raised to `>=3.14.0` (was `>=3.13.4`); installing `phenoml[aiohttp]` now requires aiohttp 3.14+.
+* **Packaging — bundled `openapi.json`** — temporarily not shipped in the sdist/wheel for this release; restored in 15.0.2. (One-time step so Fern replay preserves the packaging automatically on future regens.)
+
 ## 15.0.0 - 2026-06-02
 ### Breaking Changes
 * **`client.agent.chat(...)` / `client.agent.stream_chat(...)` / `client.agent.get_chat_messages(...)`** — removed from `AgentClient`/`AsyncAgentClient`; the three chat methods now live on a new `client.agent.chat` sub-client. Rewrite call sites as `client.agent.chat.send(...)` / `client.agent.chat.stream(...)` / `client.agent.chat.list_messages(...)`.
