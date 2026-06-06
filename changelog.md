@@ -1,3 +1,7 @@
+## 15.0.2 - 2026-06-06
+### Changed
+* **Packaging — bundled `openapi.json`** — restored to the sdist/wheel (it was temporarily omitted in 15.0.1); installed packages again include `phenoml/openapi/openapi.json`.
+
 ## 15.0.1 - 2026-06-06
 ### Changed
 * **`phenoml.core.serialization` / `phenoml.core.pydantic_utilities`** — internal performance refactor: resolved type hints, pydantic `TypeAdapter` instances, and alias-conversion decisions are now cached, and the recursive alias walk is skipped when a type carries no field aliases (the hot path for SSE streaming). `parse_sse_obj` was simplified to always JSON-parse the SSE `data` field; the removed event-level discrimination path was unused by this SDK (the sole SSE stream, agent chat, is data-level discriminated), so streaming behavior is unchanged.
