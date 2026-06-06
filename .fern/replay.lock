@@ -21,25 +21,25 @@ generations:
 current_generation: 5847d262a2d7fd5082e62bde1b1afa6574b70efd
 patches:
   - id: patch-6516695e
-    content_hash: sha256:a1cee2e42834a10aefd98a177011562c1a5f9a757d7df134cf1b67d73310f334
+    content_hash: sha256:56940a11d30da0cd1bfd8658232256ed4f602c7b6b960dbb0045ad13c32e6cd1
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: 4de62af0d24fdb052a4b28a5e46187700b7138a4
+    base_generation: 5847d262a2d7fd5082e62bde1b1afa6574b70efd
     files:
       - pyproject.toml
       - src/phenoml/core/client_wrapper.py
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index 5eb4b3a..4112c54 100644
+      index cc86d42..79689b9 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
       @@ -4,7 +4,7 @@ dynamic = ["version"]
        
        [tool.poetry]
        name = "phenoml"
-      -version = "15.0.1"
-      +version = "15.0.2"
+      -version = "0.0.0.dev0"
+      +version = "15.0.3"
        description = ""
        readme = "README.md"
        authors = []
@@ -54,21 +54,21 @@ patches:
        [tool.poetry.urls]
        Repository = 'https://github.com/phenoml/phenoml-python-sdk'
       diff --git a/src/phenoml/core/client_wrapper.py b/src/phenoml/core/client_wrapper.py
-      index 6717149..0d8f46f 100644
+      index 3421d69..b056ad5 100644
       --- a/src/phenoml/core/client_wrapper.py
       +++ b/src/phenoml/core/client_wrapper.py
       @@ -29,12 +29,12 @@ class BaseClientWrapper:
                import platform
        
                headers: typing.Dict[str, str] = {
-      -            "User-Agent": "phenoml/15.0.1",
-      +            "User-Agent": "phenoml/15.0.2",
+      -            "User-Agent": "phenoml/0.0.0.dev0",
+      +            "User-Agent": "phenoml/15.0.3",
                    "X-Fern-Language": "Python",
                    "X-Fern-Runtime": f"python/{platform.python_version()}",
                    "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
                    "X-Fern-SDK-Name": "phenoml",
-      -            "X-Fern-SDK-Version": "15.0.1",
-      +            "X-Fern-SDK-Version": "15.0.2",
+      -            "X-Fern-SDK-Version": "0.0.0.dev0",
+      +            "X-Fern-SDK-Version": "15.0.3",
                    **(self.get_custom_headers() or {}),
                }
                token = self._get_token()
@@ -80,7 +80,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "15.0.2"
+        version = "15.0.3"
         description = ""
         readme = "README.md"
         authors = []
@@ -207,12 +207,12 @@ patches:
                 import platform
 
                 headers: typing.Dict[str, str] = {
-                    "User-Agent": "phenoml/15.0.2",
+                    "User-Agent": "phenoml/15.0.3",
                     "X-Fern-Language": "Python",
                     "X-Fern-Runtime": f"python/{platform.python_version()}",
                     "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
                     "X-Fern-SDK-Name": "phenoml",
-                    "X-Fern-SDK-Version": "15.0.2",
+                    "X-Fern-SDK-Version": "15.0.3",
                     **(self.get_custom_headers() or {}),
                 }
                 token = self._get_token()
@@ -297,4 +297,3 @@ patches:
                     token = await self._async_token()
                     headers["Authorization"] = f"Bearer {token}"
                 return headers
-    status: unresolved
