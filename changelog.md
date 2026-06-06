@@ -1,3 +1,7 @@
+## 15.0.3 - 2026-06-06
+### Changed
+* **Maintenance release** — no API or behavioral changes; regenerated tooling/metadata and re-synced the bundled `openapi.json` (same API surface as 15.0.2).
+
 ## 15.0.2 - 2026-06-06
 ### Changed
 * **Packaging — bundled `openapi.json`** — restored to the sdist/wheel (it was temporarily omitted in 15.0.1); installed packages again include `phenoml/openapi/openapi.json`.
