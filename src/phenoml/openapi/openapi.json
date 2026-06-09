@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "a7694b90bd7734cc0efa37a93bce44f07aa17855"
+    "version": "f063af0e8ddd9e9322b47bb8bc90c378af75764a"
   },
   "x-services": [
     {
@@ -25,6 +25,13 @@
       "description": "Generate clinical summaries from FHIR resources. Supports narrative templates, flattening for RAG, and IPS generation.",
       "iconHint": "fhir2summary",
       "status": "beta"
+    },
+    {
+      "id": "fhir2omop",
+      "name": "FHIR2OMOP",
+      "description": "Map FHIR R4 resources and bundles into OMOP Common Data Model (CDM v5.4) tables.",
+      "iconHint": "fhir2omop",
+      "status": "alpha"
     },
     {
       "id": "agent",
@@ -3008,6 +3015,224 @@
           }
         ],
         "x-service": "construe"
+      }
+    },
+    "/fhir2omop/create": {
+      "post": {
+        "operationId": "fhir2omop_create",
+        "summary": "Map FHIR resources to OMOP CDM v5.4",
+        "description": "Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\n**This is a structural mapping (`mode: \"structural\"`).** Rows are\nstructurally valid OMOP, but every clinical and source `concept_id` is `0`:\nthe vocabulary crosswalk that assigns real OMOP `concept_id`s is a planned\nfollow-up. Each `*_source_value` carries the verbatim FHIR coding\n(`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the\nresponse `report` lists a standard-code *suggestion* for each source coding\n(already-standard, an unchecked normalization suggestion, or unmapped). Do\nnot treat the output as analytically resolved OMOP until `concept_id`s are\npopulated.\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nA medication with no usable code, resolvable reference, or display is\nreported under `scan_summary.dropped_resources` rather than emitted as a\nblank row. The bundle must contain at least one Patient resource.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/fhir2omop_CreateOmopRequest"
+              },
+              "examples": {
+                "bundle_with_medication": {
+                  "summary": "Bundle with a referenced medication",
+                  "description": "Patient, Condition, and a MedicationRequest whose drug code lives in a contained Medication resource.",
+                  "value": {
+                    "fhir_resources": {
+                      "resourceType": "Bundle",
+                      "type": "collection",
+                      "entry": [
+                        {
+                          "resource": {
+                            "resourceType": "Patient",
+                            "id": "patient-1",
+                            "gender": "female",
+                            "birthDate": "1985-07-22"
+                          }
+                        },
+                        {
+                          "resource": {
+                            "resourceType": "Condition",
+                            "id": "condition-1",
+                            "subject": {
+                              "reference": "Patient/patient-1"
+                            },
+                            "code": {
+                              "coding": [
+                                {
+                                  "system": "http://snomed.info/sct",
+                                  "code": "44054006",
+                                  "display": "Type 2 diabetes mellitus"
+                                }
+                              ]
+                            },
+                            "onsetDateTime": "2024-01-15"
+                          }
+                        },
+                        {
+                          "resource": {
+                            "resourceType": "MedicationRequest",
+                            "id": "medreq-1",
+                            "status": "active",
+                            "subject": {
+                              "reference": "Patient/patient-1"
+                            },
+                            "medicationReference": {
+                              "reference": "#med0"
+                            },
+                            "authoredOn": "2024-01-16",
+                            "contained": [
+                              {
+                                "resourceType": "Medication",
+                                "id": "med0",
+                                "code": {
+                                  "coding": [
+                                    {
+                                      "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                                      "code": "860975",
+                                      "display": "metformin hydrochloride 500 MG"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "FHIR resources mapped to OMOP CDM v5.4 (structural)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fhir2omop_CreateOmopResponse"
+                },
+                "examples": {
+                  "structural_mapping": {
+                    "summary": "Structural mapping result",
+                    "value": {
+                      "success": true,
+                      "message": "FHIR resources mapped to OMOP CDM v5.4 (structural; concept_ids pending vocabulary crosswalk)",
+                      "mode": "structural",
+                      "tables": {
+                        "person": [
+                          {
+                            "person_id": 1,
+                            "gender_concept_id": 0,
+                            "year_of_birth": 1985,
+                            "month_of_birth": 7,
+                            "day_of_birth": 22,
+                            "birth_datetime": "1985-07-22",
+                            "race_concept_id": 0,
+                            "ethnicity_concept_id": 0,
+                            "person_source_value": "patient-1",
+                            "gender_source_value": "female"
+                          }
+                        ],
+                        "condition_occurrence": [
+                          {
+                            "condition_occurrence_id": 1,
+                            "person_id": 1,
+                            "condition_concept_id": 0,
+                            "condition_start_date": "2024-01-15",
+                            "condition_start_datetime": "2024-01-15",
+                            "condition_type_concept_id": 32817,
+                            "condition_source_value": "http://snomed.info/sct#44054006",
+                            "condition_source_concept_id": 0
+                          }
+                        ],
+                        "drug_exposure": [
+                          {
+                            "drug_exposure_id": 1,
+                            "person_id": 1,
+                            "drug_concept_id": 0,
+                            "drug_exposure_start_date": "2024-01-16",
+                            "drug_exposure_start_datetime": "2024-01-16",
+                            "drug_type_concept_id": 32817,
+                            "drug_source_value": "http://www.nlm.nih.gov/research/umls/rxnorm#860975",
+                            "drug_source_concept_id": 0
+                          }
+                        ]
+                      },
+                      "report": [
+                        {
+                          "resource_type": "Condition",
+                          "resource_id": "condition-1",
+                          "omop_table": "condition_occurrence",
+                          "source_system": "http://snomed.info/sct",
+                          "source_code": "44054006",
+                          "source_name": "Type 2 diabetes mellitus",
+                          "target_vocabulary": "SNOMED",
+                          "target_code": "44054006",
+                          "target_name": "Type 2 diabetes mellitus",
+                          "mapping_status": "ALREADY_STANDARD"
+                        },
+                        {
+                          "resource_type": "MedicationRequest",
+                          "resource_id": "medreq-1",
+                          "omop_table": "drug_exposure",
+                          "source_system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                          "source_code": "860975",
+                          "source_name": "metformin hydrochloride 500 MG",
+                          "target_vocabulary": "RXNORM",
+                          "target_code": "860975",
+                          "target_name": "metformin hydrochloride 500 MG",
+                          "mapping_status": "ALREADY_STANDARD"
+                        }
+                      ],
+                      "scan_summary": {
+                        "total_resources": 3,
+                        "resource_counts": {
+                          "Patient": 1,
+                          "Condition": 1,
+                          "MedicationRequest": 1
+                        },
+                        "tables_populated": {
+                          "person": 1,
+                          "condition_occurrence": 1,
+                          "drug_exposure": 1
+                        },
+                        "coding_systems": {
+                          "http://snomed.info/sct": 1,
+                          "http://www.nlm.nih.gov/research/umls/rxnorm": 1
+                        },
+                        "codes_already_standard": 2,
+                        "codes_normalized": 0,
+                        "codes_unmapped": 0,
+                        "off_vocab_rate": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid input. Possible reasons:\n- Invalid FHIR input (missing or non-Bundle/non-resource payload)\n- No Patient resource found (OMOP requires at least one person)\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fhir2omop_CreateOmopResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir2omop"
       }
     },
     "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}": {
@@ -8309,6 +8534,511 @@
             "type": "string",
             "description": "The ID of the saved feedback",
             "example": "abc123def456"
+          }
+        }
+      },
+      "fhir2omop_CreateOmopRequest": {
+        "type": "object",
+        "required": [
+          "fhir_resources"
+        ],
+        "properties": {
+          "fhir_resources": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "FHIR resources (single resource or Bundle). Must contain at least one\nPatient resource. Resources are mapped to OMOP rows; standalone\nMedication resources are consumed by medication references rather than\nmapped to their own table.\n"
+          }
+        }
+      },
+      "fhir2omop_CreateOmopResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "description": "Resolution mode. `structural` means all clinical concept_ids are 0 (vocabulary crosswalk pending)."
+          },
+          "tables": {
+            "$ref": "#/components/schemas/fhir2omop_OmopTables"
+          },
+          "report": {
+            "type": "array",
+            "description": "One Usagi-shaped entry per source coding routed through concept resolution.",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_MappingReportEntry"
+            }
+          },
+          "scan_summary": {
+            "$ref": "#/components/schemas/fhir2omop_ScanSummary"
+          }
+        }
+      },
+      "fhir2omop_OmopTables": {
+        "type": "object",
+        "description": "OMOP CDM v5.4 rows grouped by destination table.",
+        "properties": {
+          "person": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_PersonRow"
+            }
+          },
+          "visit_occurrence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_VisitOccurrenceRow"
+            }
+          },
+          "condition_occurrence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ConditionOccurrenceRow"
+            }
+          },
+          "drug_exposure": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_DrugExposureRow"
+            }
+          },
+          "procedure_occurrence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ProcedureOccurrenceRow"
+            }
+          },
+          "measurement": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_MeasurementRow"
+            }
+          },
+          "observation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ObservationRow"
+            }
+          }
+        }
+      },
+      "fhir2omop_PersonRow": {
+        "type": "object",
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "gender_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "year_of_birth": {
+            "type": "integer"
+          },
+          "month_of_birth": {
+            "type": "integer"
+          },
+          "day_of_birth": {
+            "type": "integer"
+          },
+          "birth_datetime": {
+            "type": "string"
+          },
+          "race_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ethnicity_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_source_value": {
+            "type": "string"
+          },
+          "gender_source_value": {
+            "type": "string"
+          },
+          "race_source_value": {
+            "type": "string"
+          },
+          "ethnicity_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_VisitOccurrenceRow": {
+        "type": "object",
+        "properties": {
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "visit_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "visit_start_date": {
+            "type": "string"
+          },
+          "visit_start_datetime": {
+            "type": "string"
+          },
+          "visit_end_date": {
+            "type": "string"
+          },
+          "visit_end_datetime": {
+            "type": "string"
+          },
+          "visit_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "visit_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_ConditionOccurrenceRow": {
+        "type": "object",
+        "properties": {
+          "condition_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "condition_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "condition_start_date": {
+            "type": "string"
+          },
+          "condition_start_datetime": {
+            "type": "string"
+          },
+          "condition_end_date": {
+            "type": "string"
+          },
+          "condition_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "condition_source_value": {
+            "type": "string"
+          },
+          "condition_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "condition_status_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_DrugExposureRow": {
+        "type": "object",
+        "properties": {
+          "drug_exposure_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "drug_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "drug_exposure_start_date": {
+            "type": "string"
+          },
+          "drug_exposure_start_datetime": {
+            "type": "string"
+          },
+          "drug_exposure_end_date": {
+            "type": "string"
+          },
+          "drug_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "stop_reason": {
+            "type": "string"
+          },
+          "sig": {
+            "type": "string"
+          },
+          "drug_source_value": {
+            "type": "string"
+          },
+          "drug_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "fhir2omop_ProcedureOccurrenceRow": {
+        "type": "object",
+        "properties": {
+          "procedure_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "procedure_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "procedure_date": {
+            "type": "string"
+          },
+          "procedure_datetime": {
+            "type": "string"
+          },
+          "procedure_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "procedure_source_value": {
+            "type": "string"
+          },
+          "procedure_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "fhir2omop_MeasurementRow": {
+        "type": "object",
+        "properties": {
+          "measurement_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "measurement_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "measurement_date": {
+            "type": "string"
+          },
+          "measurement_datetime": {
+            "type": "string"
+          },
+          "measurement_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "value_as_number": {
+            "type": "number",
+            "format": "double"
+          },
+          "value_as_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "unit_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "range_low": {
+            "type": "number",
+            "format": "double"
+          },
+          "range_high": {
+            "type": "number",
+            "format": "double"
+          },
+          "measurement_source_value": {
+            "type": "string"
+          },
+          "measurement_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "unit_source_value": {
+            "type": "string"
+          },
+          "value_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_ObservationRow": {
+        "type": "object",
+        "properties": {
+          "observation_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observation_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observation_date": {
+            "type": "string"
+          },
+          "observation_datetime": {
+            "type": "string"
+          },
+          "observation_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "value_as_number": {
+            "type": "number",
+            "format": "double"
+          },
+          "value_as_string": {
+            "type": "string"
+          },
+          "value_as_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "unit_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observation_source_value": {
+            "type": "string"
+          },
+          "observation_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "unit_source_value": {
+            "type": "string"
+          },
+          "value_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_MappingReportEntry": {
+        "type": "object",
+        "description": "One source_to_concept_map-style mapping suggestion (Usagi-shaped).",
+        "properties": {
+          "resource_type": {
+            "type": "string"
+          },
+          "resource_id": {
+            "type": "string"
+          },
+          "omop_table": {
+            "type": "string"
+          },
+          "source_system": {
+            "type": "string"
+          },
+          "source_code": {
+            "type": "string"
+          },
+          "source_name": {
+            "type": "string"
+          },
+          "target_vocabulary": {
+            "type": "string"
+          },
+          "target_code": {
+            "type": "string"
+          },
+          "target_name": {
+            "type": "string"
+          },
+          "mapping_status": {
+            "type": "string",
+            "description": "ALREADY_STANDARD (source already in target vocabulary), UNCHECKED (unreviewed suggestion), or UNMAPPED (no candidate found)."
+          },
+          "equivalence": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_ScanSummary": {
+        "type": "object",
+        "description": "White Rabbit-style aggregate profile of the mapping request.",
+        "properties": {
+          "total_resources": {
+            "type": "integer"
+          },
+          "resource_counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "tables_populated": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "coding_systems": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "codes_already_standard": {
+            "type": "integer"
+          },
+          "codes_normalized": {
+            "type": "integer"
+          },
+          "codes_unmapped": {
+            "type": "integer"
+          },
+          "off_vocab_rate": {
+            "type": "number",
+            "format": "double"
+          },
+          "dropped_resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_DroppedResource"
+            }
+          }
+        }
+      },
+      "fhir2omop_DroppedResource": {
+        "type": "object",
+        "properties": {
+          "resource_type": {
+            "type": "string"
+          },
+          "resource_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
           }
         }
       },

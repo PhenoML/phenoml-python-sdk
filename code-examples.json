@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "15.0.3",
-    "specCommit": "a7694b90bd7734cc0efa37a93bce44f07aa17855",
+    "sdkVersion": "15.0.4",
+    "specCommit": "f063af0e8ddd9e9322b47bb8bc90c378af75764a",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1665,6 +1665,185 @@
               "fieldTemplate": "limit={{value}}",
               "kind": "number",
               "required": false
+            }
+          ]
+        }
+      }
+    },
+    "POST /fhir2omop/create": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir2omop/create",
+      "request": {
+        "body": {
+          "fhir_resources": {
+            "resourceType": "Bundle",
+            "type": "collection",
+            "entry": [
+              {
+                "resource": {
+                  "resourceType": "Patient",
+                  "id": "patient-1",
+                  "gender": "female",
+                  "birthDate": "1985-07-22"
+                }
+              },
+              {
+                "resource": {
+                  "resourceType": "Condition",
+                  "id": "condition-1",
+                  "subject": {
+                    "reference": "Patient/patient-1"
+                  },
+                  "code": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "44054006",
+                        "display": "Type 2 diabetes mellitus"
+                      }
+                    ]
+                  },
+                  "onsetDateTime": "2024-01-15"
+                }
+              },
+              {
+                "resource": {
+                  "resourceType": "MedicationRequest",
+                  "id": "medreq-1",
+                  "status": "active",
+                  "subject": {
+                    "reference": "Patient/patient-1"
+                  },
+                  "medicationReference": {
+                    "reference": "#med0"
+                  },
+                  "authoredOn": "2024-01-16",
+                  "contained": [
+                    {
+                      "resourceType": "Medication",
+                      "id": "med0",
+                      "code": {
+                        "coding": [
+                          {
+                            "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                            "code": "860975",
+                            "display": "metformin hydrochloride 500 MG"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "response": {
+        "body": {
+          "success": true,
+          "message": "FHIR resources mapped to OMOP CDM v5.4 (structural; concept_ids pending vocabulary crosswalk)",
+          "mode": "structural",
+          "tables": {
+            "person": [
+              {
+                "person_id": 1,
+                "gender_concept_id": 0,
+                "year_of_birth": 1985,
+                "month_of_birth": 7,
+                "day_of_birth": 22,
+                "birth_datetime": "1985-07-22",
+                "race_concept_id": 0,
+                "ethnicity_concept_id": 0,
+                "person_source_value": "patient-1",
+                "gender_source_value": "female"
+              }
+            ],
+            "condition_occurrence": [
+              {
+                "condition_occurrence_id": 1,
+                "person_id": 1,
+                "condition_concept_id": 0,
+                "condition_start_date": "2024-01-15",
+                "condition_start_datetime": "2024-01-15",
+                "condition_type_concept_id": 32817,
+                "condition_source_value": "http://snomed.info/sct#44054006",
+                "condition_source_concept_id": 0
+              }
+            ],
+            "drug_exposure": [
+              {
+                "drug_exposure_id": 1,
+                "person_id": 1,
+                "drug_concept_id": 0,
+                "drug_exposure_start_date": "2024-01-16",
+                "drug_exposure_start_datetime": "2024-01-16",
+                "drug_type_concept_id": 32817,
+                "drug_source_value": "http://www.nlm.nih.gov/research/umls/rxnorm#860975",
+                "drug_source_concept_id": 0
+              }
+            ]
+          },
+          "report": [
+            {
+              "resource_type": "Condition",
+              "resource_id": "condition-1",
+              "omop_table": "condition_occurrence",
+              "source_system": "http://snomed.info/sct",
+              "source_code": "44054006",
+              "source_name": "Type 2 diabetes mellitus",
+              "target_vocabulary": "SNOMED",
+              "target_code": "44054006",
+              "target_name": "Type 2 diabetes mellitus",
+              "mapping_status": "ALREADY_STANDARD"
+            },
+            {
+              "resource_type": "MedicationRequest",
+              "resource_id": "medreq-1",
+              "omop_table": "drug_exposure",
+              "source_system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "source_code": "860975",
+              "source_name": "metformin hydrochloride 500 MG",
+              "target_vocabulary": "RXNORM",
+              "target_code": "860975",
+              "target_name": "metformin hydrochloride 500 MG",
+              "mapping_status": "ALREADY_STANDARD"
+            }
+          ],
+          "scan_summary": {
+            "total_resources": 3,
+            "resource_counts": {
+              "Patient": 1,
+              "Condition": 1,
+              "MedicationRequest": 1
+            },
+            "tables_populated": {
+              "person": 1,
+              "condition_occurrence": 1,
+              "drug_exposure": 1
+            },
+            "coding_systems": {
+              "http://snomed.info/sct": 1,
+              "http://www.nlm.nih.gov/research/umls/rxnorm": 1
+            },
+            "codes_already_standard": 2,
+            "codes_normalized": 0,
+            "codes_unmapped": 0,
+            "off_vocab_rate": 0
+          }
+        }
+      },
+      "render": {
+        "callTemplate": "client.fhir2omop.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "fhir_resources",
+              "fieldTemplate": "fhir_resources={{value}}",
+              "kind": "object",
+              "required": true
             }
           ]
         }
