@@ -18,7 +18,13 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.14.11
-current_generation: 5847d262a2d7fd5082e62bde1b1afa6574b70efd
+  - commit_sha: 22733237e60570755b9023a41c7ccf3bac8e064e
+    tree_hash: 15bd9bbaa3467207303b4966d9eeae8b549fd5be
+    timestamp: 2026-06-09T13:13:33.792Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.14.11
+current_generation: 22733237e60570755b9023a41c7ccf3bac8e064e
 patches:
   - id: patch-6516695e
     content_hash: sha256:56940a11d30da0cd1bfd8658232256ed4f602c7b6b960dbb0045ad13c32e6cd1
@@ -38,7 +44,7 @@ patches:
        
        [tool.poetry]
        name = "phenoml"
-      -version = "15.0.4"
+      -version = "0.0.0.dev0"
       +version = "15.0.3"
        description = ""
        readme = "README.md"
@@ -61,13 +67,13 @@ patches:
                import platform
        
                headers: typing.Dict[str, str] = {
-      -            "User-Agent": "phenoml/15.0.4",
+      -            "User-Agent": "phenoml/0.0.0.dev0",
       +            "User-Agent": "phenoml/15.0.3",
                    "X-Fern-Language": "Python",
                    "X-Fern-Runtime": f"python/{platform.python_version()}",
                    "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
                    "X-Fern-SDK-Name": "phenoml",
-      -            "X-Fern-SDK-Version": "15.0.4",
+      -            "X-Fern-SDK-Version": "0.0.0.dev0",
       +            "X-Fern-SDK-Version": "15.0.3",
                    **(self.get_custom_headers() or {}),
                }
@@ -297,3 +303,4 @@ patches:
                     token = await self._async_token()
                     headers["Authorization"] = f"Bearer {token}"
                 return headers
+    status: unresolved
