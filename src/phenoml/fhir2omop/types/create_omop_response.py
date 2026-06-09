@@ -14,7 +14,11 @@ class CreateOmopResponse(UniversalBaseModel):
     message: typing.Optional[str] = None
     mode: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Resolution mode. `structural` means all clinical concept_ids are 0 (vocabulary crosswalk pending).
+    Resolution mode. `resolved` (default) means clinical `concept_id`s were
+    filled by the concept-resolver service; `structural` means no resolver
+    was configured, so all clinical `concept_id`s are `0`. Reflects which
+    resolver is wired, not the path an individual coding took — per-coding
+    degradation is surfaced in `scan_summary`, not the mode.
     """
 
     tables: typing.Optional[OmopTables] = None

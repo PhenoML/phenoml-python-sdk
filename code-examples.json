@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "15.1.0",
-    "specCommit": "f063af0e8ddd9e9322b47bb8bc90c378af75764a",
+    "sdkVersion": "15.2.0",
+    "specCommit": "f96459701356d9f1fe1acbeab0f6f2eccc498046",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1742,8 +1742,8 @@
       "response": {
         "body": {
           "success": true,
-          "message": "FHIR resources mapped to OMOP CDM v5.4 (structural; concept_ids pending vocabulary crosswalk)",
-          "mode": "structural",
+          "message": "FHIR resources mapped to OMOP CDM v5.4 with vocabulary concept resolution",
+          "mode": "resolved",
           "tables": {
             "person": [
               {
@@ -1763,24 +1763,24 @@
               {
                 "condition_occurrence_id": 1,
                 "person_id": 1,
-                "condition_concept_id": 0,
+                "condition_concept_id": 201826,
                 "condition_start_date": "2024-01-15",
                 "condition_start_datetime": "2024-01-15",
                 "condition_type_concept_id": 32817,
                 "condition_source_value": "http://snomed.info/sct#44054006",
-                "condition_source_concept_id": 0
+                "condition_source_concept_id": 201826
               }
             ],
             "drug_exposure": [
               {
                 "drug_exposure_id": 1,
                 "person_id": 1,
-                "drug_concept_id": 0,
+                "drug_concept_id": 40163924,
                 "drug_exposure_start_date": "2024-01-16",
                 "drug_exposure_start_datetime": "2024-01-16",
                 "drug_type_concept_id": 32817,
                 "drug_source_value": "http://www.nlm.nih.gov/research/umls/rxnorm#860975",
-                "drug_source_concept_id": 0
+                "drug_source_concept_id": 40163924
               }
             ]
           },
@@ -1793,7 +1793,6 @@
               "source_code": "44054006",
               "source_name": "Type 2 diabetes mellitus",
               "target_vocabulary": "SNOMED",
-              "target_code": "44054006",
               "target_name": "Type 2 diabetes mellitus",
               "mapping_status": "ALREADY_STANDARD"
             },
@@ -1805,7 +1804,6 @@
               "source_code": "860975",
               "source_name": "metformin hydrochloride 500 MG",
               "target_vocabulary": "RXNORM",
-              "target_code": "860975",
               "target_name": "metformin hydrochloride 500 MG",
               "mapping_status": "ALREADY_STANDARD"
             }
@@ -1829,7 +1827,8 @@
             "codes_already_standard": 2,
             "codes_normalized": 0,
             "codes_unmapped": 0,
-            "off_vocab_rate": 0
+            "off_vocab_rate": 0,
+            "resolved_vocab_version": "v20240229"
           }
         }
       },

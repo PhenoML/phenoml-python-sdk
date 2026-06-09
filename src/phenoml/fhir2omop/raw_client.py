@@ -31,22 +31,35 @@ class RawFhir2OmopClient:
         (person, visit_occurrence, condition_occurrence, drug_exposure,
         procedure_occurrence, measurement, observation).
 
-        **This is a structural mapping (`mode: "structural"`).** Rows are
-        structurally valid OMOP, but every clinical and source `concept_id` is `0`:
-        the vocabulary crosswalk that assigns real OMOP `concept_id`s is a planned
-        follow-up. Each `*_source_value` carries the verbatim FHIR coding
+        **Two resolution modes, reported in `mode`.** `mode` reflects which
+        resolver is wired, not the path an individual coding took. With a
+        concept-resolver configured (the default), `mode` is `"resolved"` and the
+        resource's primary clinical coding is resolved to a real OMOP `concept_id`;
+        with no resolver configured, `mode` is `"structural"` and every clinical
+        and source `concept_id` is `0`. In `"resolved"` mode individual codings can
+        still land at `concept_id` `0` without changing the mode: a coding the
+        service finds no match for is `UNMAPPED`, and a coding that fell back to the
+        structural tier (the resolver was briefly unavailable, or the resource was
+        text-only) is surfaced in `scan_summary` (`concept_resolver_note`,
+        `construe_resolutions`). A `concept_id` of `0` is "no matching concept" per
+        OMOP semantics, deliberately not omitted. Only the primary clinical coding
+        is resolved — `gender`/`race`/`ethnicity`/`visit`/`value`/`unit`
+        `concept_id`s are always `0`.
+
+        In every mode each `*_source_value` carries the verbatim FHIR coding
         (`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the
-        response `report` lists a standard-code *suggestion* for each source coding
-        (already-standard, an unchecked normalization suggestion, or unmapped). Do
-        not treat the output as analytically resolved OMOP until `concept_id`s are
-        populated.
+        response `report` lists one Usagi-shaped entry per source coding describing
+        how it resolved (`ALREADY_STANDARD`, `MAPPED`, an `UNCHECKED` suggestion,
+        or `UNMAPPED`).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
         relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
-        A medication with no usable code, resolvable reference, or display is
-        reported under `scan_summary.dropped_resources` rather than emitted as a
-        blank row. The bundle must contain at least one Patient resource.
+        Resources that cannot be shaped into a row — a medication with no usable
+        code, resolvable reference, or display, or any clinical resource whose
+        subject/patient reference cannot be tied to a person — are reported under
+        `scan_summary.dropped_resources` rather than emitted as blank rows. The
+        bundle must contain at least one Patient resource.
 
         Parameters
         ----------
@@ -62,7 +75,7 @@ class RawFhir2OmopClient:
         Returns
         -------
         HttpResponse[CreateOmopResponse]
-            FHIR resources mapped to OMOP CDM v5.4 (structural)
+            FHIR resources mapped to OMOP CDM v5.4
         """
         _response = self._client_wrapper.httpx_client.request(
             "fhir2omop/create",
@@ -141,22 +154,35 @@ class AsyncRawFhir2OmopClient:
         (person, visit_occurrence, condition_occurrence, drug_exposure,
         procedure_occurrence, measurement, observation).
 
-        **This is a structural mapping (`mode: "structural"`).** Rows are
-        structurally valid OMOP, but every clinical and source `concept_id` is `0`:
-        the vocabulary crosswalk that assigns real OMOP `concept_id`s is a planned
-        follow-up. Each `*_source_value` carries the verbatim FHIR coding
+        **Two resolution modes, reported in `mode`.** `mode` reflects which
+        resolver is wired, not the path an individual coding took. With a
+        concept-resolver configured (the default), `mode` is `"resolved"` and the
+        resource's primary clinical coding is resolved to a real OMOP `concept_id`;
+        with no resolver configured, `mode` is `"structural"` and every clinical
+        and source `concept_id` is `0`. In `"resolved"` mode individual codings can
+        still land at `concept_id` `0` without changing the mode: a coding the
+        service finds no match for is `UNMAPPED`, and a coding that fell back to the
+        structural tier (the resolver was briefly unavailable, or the resource was
+        text-only) is surfaced in `scan_summary` (`concept_resolver_note`,
+        `construe_resolutions`). A `concept_id` of `0` is "no matching concept" per
+        OMOP semantics, deliberately not omitted. Only the primary clinical coding
+        is resolved — `gender`/`race`/`ethnicity`/`visit`/`value`/`unit`
+        `concept_id`s are always `0`.
+
+        In every mode each `*_source_value` carries the verbatim FHIR coding
         (`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the
-        response `report` lists a standard-code *suggestion* for each source coding
-        (already-standard, an unchecked normalization suggestion, or unmapped). Do
-        not treat the output as analytically resolved OMOP until `concept_id`s are
-        populated.
+        response `report` lists one Usagi-shaped entry per source coding describing
+        how it resolved (`ALREADY_STANDARD`, `MAPPED`, an `UNCHECKED` suggestion,
+        or `UNMAPPED`).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
         relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
-        A medication with no usable code, resolvable reference, or display is
-        reported under `scan_summary.dropped_resources` rather than emitted as a
-        blank row. The bundle must contain at least one Patient resource.
+        Resources that cannot be shaped into a row — a medication with no usable
+        code, resolvable reference, or display, or any clinical resource whose
+        subject/patient reference cannot be tied to a person — are reported under
+        `scan_summary.dropped_resources` rather than emitted as blank rows. The
+        bundle must contain at least one Patient resource.
 
         Parameters
         ----------
@@ -172,7 +198,7 @@ class AsyncRawFhir2OmopClient:
         Returns
         -------
         AsyncHttpResponse[CreateOmopResponse]
-            FHIR resources mapped to OMOP CDM v5.4 (structural)
+            FHIR resources mapped to OMOP CDM v5.4
         """
         _response = await self._client_wrapper.httpx_client.request(
             "fhir2omop/create",

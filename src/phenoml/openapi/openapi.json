@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "f063af0e8ddd9e9322b47bb8bc90c378af75764a"
+    "version": "f96459701356d9f1fe1acbeab0f6f2eccc498046"
   },
   "x-services": [
     {
@@ -3021,7 +3021,7 @@
       "post": {
         "operationId": "fhir2omop_create",
         "summary": "Map FHIR resources to OMOP CDM v5.4",
-        "description": "Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\n**This is a structural mapping (`mode: \"structural\"`).** Rows are\nstructurally valid OMOP, but every clinical and source `concept_id` is `0`:\nthe vocabulary crosswalk that assigns real OMOP `concept_id`s is a planned\nfollow-up. Each `*_source_value` carries the verbatim FHIR coding\n(`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the\nresponse `report` lists a standard-code *suggestion* for each source coding\n(already-standard, an unchecked normalization suggestion, or unmapped). Do\nnot treat the output as analytically resolved OMOP until `concept_id`s are\npopulated.\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nA medication with no usable code, resolvable reference, or display is\nreported under `scan_summary.dropped_resources` rather than emitted as a\nblank row. The bundle must contain at least one Patient resource.\n",
+        "description": "Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\n**Two resolution modes, reported in `mode`.** `mode` reflects which\nresolver is wired, not the path an individual coding took. With a\nconcept-resolver configured (the default), `mode` is `\"resolved\"` and the\nresource's primary clinical coding is resolved to a real OMOP `concept_id`;\nwith no resolver configured, `mode` is `\"structural\"` and every clinical\nand source `concept_id` is `0`. In `\"resolved\"` mode individual codings can\nstill land at `concept_id` `0` without changing the mode: a coding the\nservice finds no match for is `UNMAPPED`, and a coding that fell back to the\nstructural tier (the resolver was briefly unavailable, or the resource was\ntext-only) is surfaced in `scan_summary` (`concept_resolver_note`,\n`construe_resolutions`). A `concept_id` of `0` is \"no matching concept\" per\nOMOP semantics, deliberately not omitted. Only the primary clinical coding\nis resolved \u2014 `gender`/`race`/`ethnicity`/`visit`/`value`/`unit`\n`concept_id`s are always `0`.\n\nIn every mode each `*_source_value` carries the verbatim FHIR coding\n(`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the\nresponse `report` lists one Usagi-shaped entry per source coding describing\nhow it resolved (`ALREADY_STANDARD`, `MAPPED`, an `UNCHECKED` suggestion,\nor `UNMAPPED`).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`scan_summary.dropped_resources` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3104,15 +3104,110 @@
         },
         "responses": {
           "200": {
-            "description": "FHIR resources mapped to OMOP CDM v5.4 (structural)",
+            "description": "FHIR resources mapped to OMOP CDM v5.4",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/fhir2omop_CreateOmopResponse"
                 },
                 "examples": {
+                  "resolved_mapping": {
+                    "summary": "Resolved mapping result (default)",
+                    "description": "Same bundle with `concept_id`s filled by the concept-resolver\nservice. Both source codes are already standard, so each carries\nits own OMOP `concept_id` with `ALREADY_STANDARD` status;\n`target_code` is omitted because the service returns the standard\nconcept's id, name, and vocabulary rather than its `concept_code`.\nIllustrative `concept_id` values.\n",
+                    "value": {
+                      "success": true,
+                      "message": "FHIR resources mapped to OMOP CDM v5.4 with vocabulary concept resolution",
+                      "mode": "resolved",
+                      "tables": {
+                        "person": [
+                          {
+                            "person_id": 1,
+                            "gender_concept_id": 0,
+                            "year_of_birth": 1985,
+                            "month_of_birth": 7,
+                            "day_of_birth": 22,
+                            "birth_datetime": "1985-07-22",
+                            "race_concept_id": 0,
+                            "ethnicity_concept_id": 0,
+                            "person_source_value": "patient-1",
+                            "gender_source_value": "female"
+                          }
+                        ],
+                        "condition_occurrence": [
+                          {
+                            "condition_occurrence_id": 1,
+                            "person_id": 1,
+                            "condition_concept_id": 201826,
+                            "condition_start_date": "2024-01-15",
+                            "condition_start_datetime": "2024-01-15",
+                            "condition_type_concept_id": 32817,
+                            "condition_source_value": "http://snomed.info/sct#44054006",
+                            "condition_source_concept_id": 201826
+                          }
+                        ],
+                        "drug_exposure": [
+                          {
+                            "drug_exposure_id": 1,
+                            "person_id": 1,
+                            "drug_concept_id": 40163924,
+                            "drug_exposure_start_date": "2024-01-16",
+                            "drug_exposure_start_datetime": "2024-01-16",
+                            "drug_type_concept_id": 32817,
+                            "drug_source_value": "http://www.nlm.nih.gov/research/umls/rxnorm#860975",
+                            "drug_source_concept_id": 40163924
+                          }
+                        ]
+                      },
+                      "report": [
+                        {
+                          "resource_type": "Condition",
+                          "resource_id": "condition-1",
+                          "omop_table": "condition_occurrence",
+                          "source_system": "http://snomed.info/sct",
+                          "source_code": "44054006",
+                          "source_name": "Type 2 diabetes mellitus",
+                          "target_vocabulary": "SNOMED",
+                          "target_name": "Type 2 diabetes mellitus",
+                          "mapping_status": "ALREADY_STANDARD"
+                        },
+                        {
+                          "resource_type": "MedicationRequest",
+                          "resource_id": "medreq-1",
+                          "omop_table": "drug_exposure",
+                          "source_system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                          "source_code": "860975",
+                          "source_name": "metformin hydrochloride 500 MG",
+                          "target_vocabulary": "RXNORM",
+                          "target_name": "metformin hydrochloride 500 MG",
+                          "mapping_status": "ALREADY_STANDARD"
+                        }
+                      ],
+                      "scan_summary": {
+                        "total_resources": 3,
+                        "resource_counts": {
+                          "Patient": 1,
+                          "Condition": 1,
+                          "MedicationRequest": 1
+                        },
+                        "tables_populated": {
+                          "person": 1,
+                          "condition_occurrence": 1,
+                          "drug_exposure": 1
+                        },
+                        "coding_systems": {
+                          "http://snomed.info/sct": 1,
+                          "http://www.nlm.nih.gov/research/umls/rxnorm": 1
+                        },
+                        "codes_already_standard": 2,
+                        "codes_normalized": 0,
+                        "codes_unmapped": 0,
+                        "off_vocab_rate": 0,
+                        "resolved_vocab_version": "v20240229"
+                      }
+                    }
+                  },
                   "structural_mapping": {
-                    "summary": "Structural mapping result",
+                    "summary": "Structural mapping result (fallback / no resolver configured)",
                     "value": {
                       "success": true,
                       "message": "FHIR resources mapped to OMOP CDM v5.4 (structural; concept_ids pending vocabulary crosswalk)",
@@ -8561,7 +8656,7 @@
           },
           "mode": {
             "type": "string",
-            "description": "Resolution mode. `structural` means all clinical concept_ids are 0 (vocabulary crosswalk pending)."
+            "description": "Resolution mode. `resolved` (default) means clinical `concept_id`s were\nfilled by the concept-resolver service; `structural` means no resolver\nwas configured, so all clinical `concept_id`s are `0`. Reflects which\nresolver is wired, not the path an individual coding took \u2014 per-coding\ndegradation is surfaced in `scan_summary`, not the mode.\n"
           },
           "tables": {
             "$ref": "#/components/schemas/fhir2omop_OmopTables"
@@ -8965,17 +9060,15 @@
             "type": "string"
           },
           "target_code": {
-            "type": "string"
+            "type": "string",
+            "description": "Standard concept code. Set when a coding is matched by the structural\n(construe) tier \u2014 an already-standard code taken verbatim, or a\nconstrue-suggested code \u2014 which is every match in structural mode and,\nin resolved mode, codings for text-only resources or ones that fell back\nwhen the resolver was unavailable. Omitted for codings resolved directly\nby the concept-resolver service, which returns the standard concept's\nid, name, and vocabulary but not its `concept_code`.\n"
           },
           "target_name": {
             "type": "string"
           },
           "mapping_status": {
             "type": "string",
-            "description": "ALREADY_STANDARD (source already in target vocabulary), UNCHECKED (unreviewed suggestion), or UNMAPPED (no candidate found)."
-          },
-          "equivalence": {
-            "type": "string"
+            "description": "ALREADY_STANDARD (source already in the target standard vocabulary),\nMAPPED (resolved to a standard concept via the OMOP \"Maps to\" crosswalk\nor UMLS-CUI bridge; resolved mode only), UNCHECKED (an unreviewed\nconstrue suggestion; structural / fallback only), or UNMAPPED (no\ncandidate found).\n"
           },
           "note": {
             "type": "string"
@@ -9025,6 +9118,26 @@
             "items": {
               "$ref": "#/components/schemas/fhir2omop_DroppedResource"
             }
+          },
+          "resolved_vocab_version": {
+            "type": "string",
+            "description": "OMOP vocabulary release the resolver mapped against (e.g. \"v20240229\").\nResolved mode only; empty when no coded concept reached the service.\n"
+          },
+          "concept_resolver_note": {
+            "type": "string",
+            "description": "Set when concept resolution was degraded \u2014 the resolver was unavailable\nfor one or more codings, whose `concept_id`s fell back to the structural\n(construe) tier. Empty when resolution was clean.\n"
+          },
+          "concepts_bridged": {
+            "type": "integer",
+            "description": "Count of `concept_id`s chosen via the lower-confidence UMLS-CUI bridge\n(no direct OMOP crosswalk existed). Resolved mode only.\n"
+          },
+          "concept_candidates_truncated": {
+            "type": "integer",
+            "description": "Count of codings whose candidate list the resolver capped, so the best\nconcept may not have been among those returned.\n"
+          },
+          "construe_resolutions": {
+            "type": "integer",
+            "description": "Count of codings resolved via the construe ML extractor \u2014 the text-only\nor availability fallback path. A non-zero value bills the construe tier.\n"
           }
         }
       },

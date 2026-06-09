@@ -21,6 +21,36 @@ class ScanSummary(UniversalBaseModel):
     codes_unmapped: typing.Optional[int] = None
     off_vocab_rate: typing.Optional[float] = None
     dropped_resources: typing.Optional[typing.List[DroppedResource]] = None
+    resolved_vocab_version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    OMOP vocabulary release the resolver mapped against (e.g. "v20240229").
+    Resolved mode only; empty when no coded concept reached the service.
+    """
+
+    concept_resolver_note: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Set when concept resolution was degraded — the resolver was unavailable
+    for one or more codings, whose `concept_id`s fell back to the structural
+    (construe) tier. Empty when resolution was clean.
+    """
+
+    concepts_bridged: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Count of `concept_id`s chosen via the lower-confidence UMLS-CUI bridge
+    (no direct OMOP crosswalk existed). Resolved mode only.
+    """
+
+    concept_candidates_truncated: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Count of codings whose candidate list the resolver capped, so the best
+    concept may not have been among those returned.
+    """
+
+    construe_resolutions: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Count of codings resolved via the construe ML extractor — the text-only
+    or availability fallback path. A non-zero value bills the construe tier.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
