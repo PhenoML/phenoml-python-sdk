@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     from .cohort.client import AsyncCohortClient, CohortClient
     from .construe.client import AsyncConstrueClient, ConstrueClient
     from .fhir.client import AsyncFhirClient, FhirClient
+    from .fhir2omop.client import AsyncFhir2OmopClient, Fhir2OmopClient
     from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
     from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
     from .summary.client import AsyncSummaryClient, SummaryClient
@@ -200,6 +201,7 @@ class PhenomlClient:
         self._cohort: typing.Optional[CohortClient] = None
         self._construe: typing.Optional[ConstrueClient] = None
         self._fhir: typing.Optional[FhirClient] = None
+        self._fhir2omop: typing.Optional[Fhir2OmopClient] = None
         self._fhir_provider: typing.Optional[FhirProviderClient] = None
         self._lang2fhir: typing.Optional[Lang2FhirClient] = None
         self._summary: typing.Optional[SummaryClient] = None
@@ -245,6 +247,14 @@ class PhenomlClient:
 
             self._fhir = FhirClient(client_wrapper=self._client_wrapper)
         return self._fhir
+
+    @property
+    def fhir2omop(self):
+        if self._fhir2omop is None:
+            from .fhir2omop.client import Fhir2OmopClient  # noqa: E402
+
+            self._fhir2omop = Fhir2OmopClient(client_wrapper=self._client_wrapper)
+        return self._fhir2omop
 
     @property
     def fhir_provider(self):
@@ -477,6 +487,7 @@ class AsyncPhenomlClient:
         self._cohort: typing.Optional[AsyncCohortClient] = None
         self._construe: typing.Optional[AsyncConstrueClient] = None
         self._fhir: typing.Optional[AsyncFhirClient] = None
+        self._fhir2omop: typing.Optional[AsyncFhir2OmopClient] = None
         self._fhir_provider: typing.Optional[AsyncFhirProviderClient] = None
         self._lang2fhir: typing.Optional[AsyncLang2FhirClient] = None
         self._summary: typing.Optional[AsyncSummaryClient] = None
@@ -522,6 +533,14 @@ class AsyncPhenomlClient:
 
             self._fhir = AsyncFhirClient(client_wrapper=self._client_wrapper)
         return self._fhir
+
+    @property
+    def fhir2omop(self):
+        if self._fhir2omop is None:
+            from .fhir2omop.client import AsyncFhir2OmopClient  # noqa: E402
+
+            self._fhir2omop = AsyncFhir2OmopClient(client_wrapper=self._client_wrapper)
+        return self._fhir2omop
 
     @property
     def fhir_provider(self):
