@@ -38,7 +38,7 @@ patches:
        
        [tool.poetry]
        name = "phenoml"
-      -version = "0.0.0.dev0"
+      -version = "15.0.4"
       +version = "15.0.3"
        description = ""
        readme = "README.md"
@@ -61,13 +61,13 @@ patches:
                import platform
        
                headers: typing.Dict[str, str] = {
-      -            "User-Agent": "phenoml/0.0.0.dev0",
+      -            "User-Agent": "phenoml/15.0.4",
       +            "User-Agent": "phenoml/15.0.3",
                    "X-Fern-Language": "Python",
                    "X-Fern-Runtime": f"python/{platform.python_version()}",
                    "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
                    "X-Fern-SDK-Name": "phenoml",
-      -            "X-Fern-SDK-Version": "0.0.0.dev0",
+      -            "X-Fern-SDK-Version": "15.0.4",
       +            "X-Fern-SDK-Version": "15.0.3",
                    **(self.get_custom_headers() or {}),
                }
