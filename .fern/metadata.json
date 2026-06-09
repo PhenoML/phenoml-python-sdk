@@ -13,5 +13,5 @@
   "invokedBy": "ci",
   "requestedVersion": "AUTO",
   "ciProvider": "unknown",
-  "sdkVersion": "15.1.1"
+  "sdkVersion": "16.0.0"
 }

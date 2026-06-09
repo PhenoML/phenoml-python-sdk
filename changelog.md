@@ -1,3 +1,13 @@
+## 16.0.0 - 2026-06-09
+### Breaking Changes
+* **`phenoml.fhir2omop.MappingReportEntry.equivalence`** — field removed; delete any reads of `entry.equivalence`. Per-coding mapping confidence is no longer reported — inspect `mapping_status` instead.
+### Added
+* **`phenoml.fhir2omop.ScanSummary`** — five resolver-telemetry fields added (`resolved_vocab_version`, `concept_resolver_note`, `concepts_bridged`, `concept_candidates_truncated`, `construe_resolutions`) reporting the OMOP vocabulary release used and where concept resolution was degraded, bridged, truncated, or fell back to (and billed) the construe tier.
+### Changed
+* **`client.fhir2omop.create()`** — the API now defaults to `mode="resolved"`, filling clinical `concept_id`s via the concept-resolver service; the former structural-only behavior (all clinical `concept_id`s `0`) now occurs only when no resolver is configured and is reported as `mode="structural"`.
+* **`phenoml.fhir2omop.MappingReportEntry.mapping_status`** — adds the `MAPPED` value, returned in resolved mode when a coding is mapped to a standard concept via the OMOP "Maps to" crosswalk or UMLS-CUI bridge.
+* **`phenoml.fhir2omop.MappingReportEntry.target_code`** — now omitted for codings resolved directly by the concept-resolver (which returns the concept id/name/vocabulary but not its `concept_code`); still populated for structural / construe-tier matches.
+
 ## 15.1.0 - 2026-06-09
 ### Added
 * **`client.fhir2omop.create()`** — new method posting FHIR R4 resources or a Bundle to `POST /fhir2omop/create` and returning OMOP CDM v5.4 rows; structural mode only, so all clinical `concept_id`s are `0` (the vocabulary crosswalk is a later release).
