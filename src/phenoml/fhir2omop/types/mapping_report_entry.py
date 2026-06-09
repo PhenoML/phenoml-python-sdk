@@ -18,14 +18,27 @@ class MappingReportEntry(UniversalBaseModel):
     source_code: typing.Optional[str] = None
     source_name: typing.Optional[str] = None
     target_vocabulary: typing.Optional[str] = None
-    target_code: typing.Optional[str] = None
+    target_code: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Standard concept code. Set when a coding is matched by the structural
+    (construe) tier — an already-standard code taken verbatim, or a
+    construe-suggested code — which is every match in structural mode and,
+    in resolved mode, codings for text-only resources or ones that fell back
+    when the resolver was unavailable. Omitted for codings resolved directly
+    by the concept-resolver service, which returns the standard concept's
+    id, name, and vocabulary but not its `concept_code`.
+    """
+
     target_name: typing.Optional[str] = None
     mapping_status: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ALREADY_STANDARD (source already in target vocabulary), UNCHECKED (unreviewed suggestion), or UNMAPPED (no candidate found).
+    ALREADY_STANDARD (source already in the target standard vocabulary),
+    MAPPED (resolved to a standard concept via the OMOP "Maps to" crosswalk
+    or UMLS-CUI bridge; resolved mode only), UNCHECKED (an unreviewed
+    construe suggestion; structural / fallback only), or UNMAPPED (no
+    candidate found).
     """
 
-    equivalence: typing.Optional[str] = None
     note: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

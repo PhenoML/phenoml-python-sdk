@@ -29,12 +29,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
-            "User-Agent": "phenoml/15.1.0",
+            "User-Agent": "phenoml/0.0.0.dev0",
             "X-Fern-Language": "Python",
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Fern-SDK-Name": "phenoml",
-            "X-Fern-SDK-Version": "15.1.0",
+            "X-Fern-SDK-Version": "0.0.0.dev0",
             **(self.get_custom_headers() or {}),
         }
         token = self._get_token()
