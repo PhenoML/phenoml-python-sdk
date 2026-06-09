@@ -18,7 +18,13 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.14.11
-current_generation: 5847d262a2d7fd5082e62bde1b1afa6574b70efd
+  - commit_sha: 22733237e60570755b9023a41c7ccf3bac8e064e
+    tree_hash: 15bd9bbaa3467207303b4966d9eeae8b549fd5be
+    timestamp: 2026-06-09T13:13:33.792Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.14.11
+current_generation: 22733237e60570755b9023a41c7ccf3bac8e064e
 patches:
   - id: patch-6516695e
     content_hash: sha256:56940a11d30da0cd1bfd8658232256ed4f602c7b6b960dbb0045ad13c32e6cd1
@@ -297,3 +303,4 @@ patches:
                     token = await self._async_token()
                     headers["Authorization"] = f"Bearer {token}"
                 return headers
+    status: unresolved

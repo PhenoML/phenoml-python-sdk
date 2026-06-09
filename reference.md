@@ -3509,6 +3509,109 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 </dl>
 </details>
 
+## Fhir2Omop
+<details><summary><code>client.fhir2omop.<a href="src/phenoml/fhir2omop/client.py">create</a>(...) -> CreateOmopResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
+(person, visit_occurrence, condition_occurrence, drug_exposure,
+procedure_occurrence, measurement, observation).
+
+**This is a structural mapping (`mode: "structural"`).** Rows are
+structurally valid OMOP, but every clinical and source `concept_id` is `0`:
+the vocabulary crosswalk that assigns real OMOP `concept_id`s is a planned
+follow-up. Each `*_source_value` carries the verbatim FHIR coding
+(`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the
+response `report` lists a standard-code *suggestion* for each source coding
+(already-standard, an unchecked normalization suggestion, or unmapped). Do
+not treat the output as analytically resolved OMOP until `concept_id`s are
+populated.
+
+Medication codes are resolved whether they appear inline
+(`medicationCodeableConcept`) or via a `medicationReference` to a contained,
+relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
+A medication with no usable code, resolvable reference, or display is
+reported under `scan_summary.dropped_resources` rather than emitted as a
+blank row. The bundle must contain at least one Patient resource.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.fhir2omop.create(
+    fhir_resources={
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [{"resource": {"resourceType": "Patient", "id": "patient-1", "gender": "female", "birthDate": "1985-07-22"}}, {"resource": {"resourceType": "Condition", "id": "condition-1", "subject": {"reference": "Patient/patient-1"}, "code": {"coding": [{"system": "http://snomed.info/sct", "code": "44054006", "display": "Type 2 diabetes mellitus"}]}, "onsetDateTime": "2024-01-15"}}, {"resource": {"resourceType": "MedicationRequest", "id": "medreq-1", "status": "active", "subject": {"reference": "Patient/patient-1"}, "medicationReference": {"reference": "#med0"}, "authoredOn": "2024-01-16", "contained": [{"resourceType": "Medication", "id": "med0", "code": {"coding": [{"system": "http://www.nlm.nih.gov/research/umls/rxnorm", "code": "860975", "display": "metformin hydrochloride 500 MG"}]}}]}}]
+    },
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**fhir_resources:** `typing.Dict[str, typing.Any]` 
+
+FHIR resources (single resource or Bundle). Must contain at least one
+Patient resource. Resources are mapped to OMOP rows; standalone
+Medication resources are consumed by medication references rather than
+mapped to their own table.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## FhirProvider
 <details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...) -> FhirProviderResponse</code></summary>
 <dl>

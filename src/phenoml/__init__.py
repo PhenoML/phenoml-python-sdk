@@ -6,7 +6,19 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from . import agent, authtoken, cohort, construe, fhir, fhir_provider, lang2fhir, summary, tools, workflows
+    from . import (
+        agent,
+        authtoken,
+        cohort,
+        construe,
+        fhir,
+        fhir2omop,
+        fhir_provider,
+        lang2fhir,
+        summary,
+        tools,
+        workflows,
+    )
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncPhenomlClient, PhenomlClient
     from .environment import PhenomlClientEnvironment
@@ -23,6 +35,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "cohort": ".cohort",
     "construe": ".construe",
     "fhir": ".fhir",
+    "fhir2omop": ".fhir2omop",
     "fhir_provider": ".fhir_provider",
     "lang2fhir": ".lang2fhir",
     "summary": ".summary",
@@ -64,6 +77,7 @@ __all__ = [
     "cohort",
     "construe",
     "fhir",
+    "fhir2omop",
     "fhir_provider",
     "lang2fhir",
     "summary",

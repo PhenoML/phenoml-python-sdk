@@ -1,3 +1,10 @@
+## 15.1.0 - 2026-06-09
+### Added
+* **`client.fhir2omop.create()`** — new method posting FHIR R4 resources or a Bundle to `POST /fhir2omop/create` and returning OMOP CDM v5.4 rows; structural mode only, so all clinical `concept_id`s are `0` (the vocabulary crosswalk is a later release).
+* **`phenoml.fhir2omop.CreateOmopRequest` / `CreateOmopResponse`** — request carries `fhir_resources` (single resource or Bundle); response exposes `tables`, `report`, and `scan_summary`.
+* **`phenoml.fhir2omop.OmopTables`** and the row types `PersonRow`, `ConditionOccurrenceRow`, `DrugExposureRow`, `MeasurementRow`, `ObservationRow`, `ProcedureOccurrenceRow`, `VisitOccurrenceRow` — typed OMOP CDM table output.
+* **`phenoml.fhir2omop.MappingReportEntry` / `DroppedResource` / `ScanSummary`** — Usagi-shaped per-coding mapping report and White Rabbit-style scan summary.
+
 ## 15.0.3 - 2026-06-06
 ### Changed
 * **Maintenance release** — no API or behavioral changes; regenerated tooling/metadata and re-synced the bundled `openapi.json` (same API surface as 15.0.2).
