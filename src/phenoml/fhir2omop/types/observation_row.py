@@ -17,6 +17,7 @@ class ObservationRow(UniversalBaseModel):
     value_as_string: typing.Optional[str] = None
     value_as_concept_id: typing.Optional[int] = None
     unit_concept_id: typing.Optional[int] = None
+    visit_occurrence_id: typing.Optional[int] = None
     observation_source_value: typing.Optional[str] = None
     observation_source_concept_id: typing.Optional[int] = None
     unit_source_value: typing.Optional[str] = None

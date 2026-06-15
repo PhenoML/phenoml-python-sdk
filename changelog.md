@@ -1,3 +1,12 @@
+## [16.1.0] - 2026-06-15
+### Added
+- **`ConditionOccurrenceRow.visit_occurrence_id`**, **`DrugExposureRow.visit_occurrence_id`**, **`MeasurementRow.visit_occurrence_id`**, **`ObservationRow.visit_occurrence_id`**, and **`ProcedureOccurrenceRow.visit_occurrence_id`** — new optional field linking each clinical OMOP row back to its `visit_occurrence` row.
+- **`MeasurementRow.operator_concept_id`** — new optional field carrying the OMOP "Meas Value Operator" standard concept (`<`, `<=`, `>`, `>=`) parsed from a FHIR `valueQuantity.comparator` or numeric-string value; `0` when no operator is present.
+
+### Changed
+- **`MappingEntry.target_code`** — field semantics updated: now populated for `ALREADY_STANDARD` and `MAPPED` rows (the standard concept's own code) in addition to `UNCHECKED` suggestions; omitted only for `UNMAPPED` rows.
+- **`client.fhir2omop.create()` docstring** — clarifies that `concept_id=0` covers both `UNMAPPED` (no standard match) and `UNCHECKED` (unverified text-only suggestion), and documents that `operator_concept_id` is the one non-zero non-resolved concept on measurement rows.
+
 ## [16.0.0] - 2026-06-15
 ### Breaking Changes
 - **`phenoml.fhir2omop.MappingReportEntry`** — renamed to **`MappingEntry`**; update all imports and type annotations to use `MappingEntry`.
