@@ -36,7 +36,13 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.14.13
-current_generation: 6999ce50b7572e832a149b02ae50a4bfcd5f99f0
+  - commit_sha: 997137406cf9bb200923f3688584fe461561fb20
+    tree_hash: 4bee121240c0bbb02cb4824b7975161ecbef2b25
+    timestamp: 2026-06-15T15:37:37.493Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.14.13
+current_generation: 997137406cf9bb200923f3688584fe461561fb20
 patches:
   - id: patch-6516695e
     content_hash: sha256:52faab3f500f525da22dd68b8477a9a21aa2e4ae66ad57733223c539b40d5500
@@ -55,7 +61,7 @@ patches:
        
        [tool.poetry]
        name = "phenoml"
-      -version = "16.1.0"
+      -version = "0.0.0.dev0"
       +version = "16.0.0"
        description = ""
        readme = "README.md"
@@ -173,3 +179,4 @@ patches:
 
         [tool.poetry.extras]
         aiohttp=["aiohttp", "httpx-aiohttp"]
+    status: unresolved
