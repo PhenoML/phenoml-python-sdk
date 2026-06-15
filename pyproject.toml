@@ -4,7 +4,7 @@ dynamic = ["version"]
 
 [tool.poetry]
 name = "phenoml"
-version = "15.2.0"
+version = "16.0.0"
 description = ""
 readme = "README.md"
 authors = []

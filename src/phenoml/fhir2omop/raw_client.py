@@ -11,6 +11,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from .errors.bad_request_error import BadRequestError
 from .errors.internal_server_error import InternalServerError
+from .errors.service_unavailable_error import ServiceUnavailableError
 from .errors.unauthorized_error import UnauthorizedError
 from .types.create_omop_response import CreateOmopResponse
 from pydantic import ValidationError
@@ -27,30 +28,23 @@ class RawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[CreateOmopResponse]:
         """
-        Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
         (person, visit_occurrence, condition_occurrence, drug_exposure,
         procedure_occurrence, measurement, observation).
 
-        **Two resolution modes, reported in `mode`.** `mode` reflects which
-        resolver is wired, not the path an individual coding took. With a
-        concept-resolver configured (the default), `mode` is `"resolved"` and the
-        resource's primary clinical coding is resolved to a real OMOP `concept_id`;
-        with no resolver configured, `mode` is `"structural"` and every clinical
-        and source `concept_id` is `0`. In `"resolved"` mode individual codings can
-        still land at `concept_id` `0` without changing the mode: a coding the
-        service finds no match for is `UNMAPPED`, and a coding that fell back to the
-        structural tier (the resolver was briefly unavailable, or the resource was
-        text-only) is surfaced in `scan_summary` (`concept_resolver_note`,
-        `construe_resolutions`). A `concept_id` of `0` is "no matching concept" per
-        OMOP semantics, deliberately not omitted. Only the primary clinical coding
-        is resolved — `gender`/`race`/`ethnicity`/`visit`/`value`/`unit`
-        `concept_id`s are always `0`.
+        Each resource's primary clinical coding is resolved to a standard OMOP
+        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
+        response carries `mappings` (how each source coding resolved, linked back
+        to the row it produced), `dropped` (resources that could not be shaped
+        into a row), `vocab_version` (the OMOP vocabulary release codes were
+        resolved against), and a small `summary` of the resolution outcomes.
 
-        In every mode each `*_source_value` carries the verbatim FHIR coding
-        (`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the
-        response `report` lists one Usagi-shaped entry per source coding describing
-        how it resolved (`ALREADY_STANDARD`, `MAPPED`, an `UNCHECKED` suggestion,
-        or `UNMAPPED`).
+        A `concept_id` of `0` means "no matching standard concept" (OMOP
+        semantics) and is reported, not omitted — a coding with no match is
+        `UNMAPPED`. Only the primary clinical coding is resolved;
+        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
+        always `0`. Each `*_source_value` carries the verbatim FHIR coding
+        (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -58,7 +52,7 @@ class RawFhir2OmopClient:
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `scan_summary.dropped_resources` rather than emitted as blank rows. The
+        `dropped` rather than emitted as blank rows. The
         bundle must contain at least one Patient resource.
 
         Parameters
@@ -132,6 +126,17 @@ class RawFhir2OmopClient:
                         ),
                     ),
                 )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -150,30 +155,23 @@ class AsyncRawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[CreateOmopResponse]:
         """
-        Shapes a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
         (person, visit_occurrence, condition_occurrence, drug_exposure,
         procedure_occurrence, measurement, observation).
 
-        **Two resolution modes, reported in `mode`.** `mode` reflects which
-        resolver is wired, not the path an individual coding took. With a
-        concept-resolver configured (the default), `mode` is `"resolved"` and the
-        resource's primary clinical coding is resolved to a real OMOP `concept_id`;
-        with no resolver configured, `mode` is `"structural"` and every clinical
-        and source `concept_id` is `0`. In `"resolved"` mode individual codings can
-        still land at `concept_id` `0` without changing the mode: a coding the
-        service finds no match for is `UNMAPPED`, and a coding that fell back to the
-        structural tier (the resolver was briefly unavailable, or the resource was
-        text-only) is surfaced in `scan_summary` (`concept_resolver_note`,
-        `construe_resolutions`). A `concept_id` of `0` is "no matching concept" per
-        OMOP semantics, deliberately not omitted. Only the primary clinical coding
-        is resolved — `gender`/`race`/`ethnicity`/`visit`/`value`/`unit`
-        `concept_id`s are always `0`.
+        Each resource's primary clinical coding is resolved to a standard OMOP
+        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
+        response carries `mappings` (how each source coding resolved, linked back
+        to the row it produced), `dropped` (resources that could not be shaped
+        into a row), `vocab_version` (the OMOP vocabulary release codes were
+        resolved against), and a small `summary` of the resolution outcomes.
 
-        In every mode each `*_source_value` carries the verbatim FHIR coding
-        (`system#code`), `*_type_concept_id` is set to `32817` (EHR), and the
-        response `report` lists one Usagi-shaped entry per source coding describing
-        how it resolved (`ALREADY_STANDARD`, `MAPPED`, an `UNCHECKED` suggestion,
-        or `UNMAPPED`).
+        A `concept_id` of `0` means "no matching standard concept" (OMOP
+        semantics) and is reported, not omitted — a coding with no match is
+        `UNMAPPED`. Only the primary clinical coding is resolved;
+        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
+        always `0`. Each `*_source_value` carries the verbatim FHIR coding
+        (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -181,7 +179,7 @@ class AsyncRawFhir2OmopClient:
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `scan_summary.dropped_resources` rather than emitted as blank rows. The
+        `dropped` rather than emitted as blank rows. The
         bundle must contain at least one Patient resource.
 
         Parameters
@@ -246,6 +244,17 @@ class AsyncRawFhir2OmopClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
