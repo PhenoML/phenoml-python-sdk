@@ -8,10 +8,10 @@
       "enabled": true
     }
   },
-  "originGitCommit": "5084e3096e5bd89bf2e86ea44d96e3407f6f5c6b",
+  "originGitCommit": "0b686daf772ca536c1eecef8ea137c430edf5585",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
   "requestedVersion": "AUTO",
   "ciProvider": "unknown",
-  "sdkVersion": "16.0.0"
+  "sdkVersion": "0.0.0.dev0"
 }
