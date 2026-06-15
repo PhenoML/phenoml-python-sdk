@@ -16,6 +16,7 @@ class DrugExposureRow(UniversalBaseModel):
     drug_type_concept_id: typing.Optional[int] = None
     stop_reason: typing.Optional[str] = None
     sig: typing.Optional[str] = None
+    visit_occurrence_id: typing.Optional[int] = None
     drug_source_value: typing.Optional[str] = None
     drug_source_concept_id: typing.Optional[int] = None
 

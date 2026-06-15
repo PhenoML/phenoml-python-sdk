@@ -41,12 +41,15 @@ class Fhir2OmopClient:
         into a row), `vocab_version` (the OMOP vocabulary release codes were
         resolved against), and a small `summary` of the resolution outcomes.
 
-        A `concept_id` of `0` means "no matching standard concept" (OMOP
-        semantics) and is reported, not omitted — a coding with no match is
-        `UNMAPPED`. Only the primary clinical coding is resolved;
+        A `concept_id` of `0` is reported, not omitted (OMOP "no matching
+        concept" semantics): it covers both a coding with no standard match
+        (`UNMAPPED`) and an unverified suggestion for a text-only resource
+        (`UNCHECKED`). Only the primary clinical coding is resolved, so
         `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`. Each `*_source_value` carries the verbatim FHIR coding
-        (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        always `0`; the one populated non-resolved concept is measurement
+        `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
+        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
+        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -174,12 +177,15 @@ class AsyncFhir2OmopClient:
         into a row), `vocab_version` (the OMOP vocabulary release codes were
         resolved against), and a small `summary` of the resolution outcomes.
 
-        A `concept_id` of `0` means "no matching standard concept" (OMOP
-        semantics) and is reported, not omitted — a coding with no match is
-        `UNMAPPED`. Only the primary clinical coding is resolved;
+        A `concept_id` of `0` is reported, not omitted (OMOP "no matching
+        concept" semantics): it covers both a coding with no standard match
+        (`UNMAPPED`) and an unverified suggestion for a text-only resource
+        (`UNCHECKED`). Only the primary clinical coding is resolved, so
         `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`. Each `*_source_value` carries the verbatim FHIR coding
-        (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        always `0`; the one populated non-resolved concept is measurement
+        `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
+        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
+        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,

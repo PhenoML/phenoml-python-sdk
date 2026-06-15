@@ -10,22 +10,24 @@ class Summary(UniversalBaseModel):
     """
     The request's data-quality headline: how the coded concepts split across
     resolution outcomes, and the share that was not already in a target
-    standard vocabulary.
+    standard vocabulary. Each coded resource is counted once (per resolved
+    concept), even when it carried several codings — unlike `mappings`, which
+    has one entry per coding.
     """
 
     codes_already_standard: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Codings already a standard OMOP concept.
+    Coded concepts already a standard OMOP concept (ALREADY_STANDARD).
     """
 
     codes_normalized: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Codings mapped or suggested to a standard concept (MAPPED or UNCHECKED).
+    Coded concepts mapped or suggested to a standard concept (MAPPED or UNCHECKED).
     """
 
     codes_unmapped: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Codings with no standard concept found.
+    Coded concepts with no standard concept found (UNMAPPED).
     """
 
     off_vocab_rate: typing.Optional[float] = pydantic.Field(default=None)
