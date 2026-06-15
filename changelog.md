@@ -1,3 +1,13 @@
+## [16.2.0] - 2026-06-15
+### Added
+- **`Provider`** — `"aidbox"` is now a supported FHIR provider value in the `Provider` union type.
+- **`ConditionOccurrenceRow.visit_occurrence_id`**, **`DrugExposureRow.visit_occurrence_id`**, **`ProcedureOccurrenceRow.visit_occurrence_id`**, **`MeasurementRow.visit_occurrence_id`**, and **`ObservationRow.visit_occurrence_id`** — new optional field linking each clinical OMOP row back to its `visit_occurrence` row.
+- **`MeasurementRow.operator_concept_id`** — new optional field carrying the OMOP "Meas Value Operator" standard concept (`<`, `<=`, `>`, `>=`) parsed from a FHIR `valueQuantity.comparator` or numeric-string value; `0` when no operator is present.
+
+### Changed
+- **`MappingEntry.target_code`** — field semantics updated: now populated for `ALREADY_STANDARD` and `MAPPED` rows (the standard concept's own code) in addition to `UNCHECKED` suggestions; omitted only for `UNMAPPED` rows.
+- **`Summary`** field descriptions clarified to reflect that each coded resource is counted once per resolved concept, not once per coding.
+
 ## [16.1.0] - 2026-06-15
 ### Added
 - **`ConditionOccurrenceRow.visit_occurrence_id`**, **`DrugExposureRow.visit_occurrence_id`**, **`MeasurementRow.visit_occurrence_id`**, **`ObservationRow.visit_occurrence_id`**, and **`ProcedureOccurrenceRow.visit_occurrence_id`** — new optional field linking each clinical OMOP row back to its `visit_occurrence` row.
