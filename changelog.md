@@ -1,3 +1,10 @@
+## [16.1.0] - 2026-06-15
+### Added
+- **`phenoml.fhir2omop.MeasurementRow.operator_concept_id`** — new optional field carrying the OMOP "Meas Value Operator" standard concept id (e.g. `<`, `<=`, `>`, `>=`) parsed from a numeric-string value or a FHIR `valueQuantity.comparator`; `0` when no operator is present.
+
+### Changed
+- **`phenoml.fhir2omop.MappingEntry.target_code`** — docstring updated to clarify that the field is populated for `ALREADY_STANDARD` rows (source code itself), `MAPPED` rows (standard concept's code), and `UNCHECKED` rows (suggested code), and omitted for `UNMAPPED` rows.
+
 ## [16.0.0] - 2026-06-15
 ### Breaking Changes
 - **`phenoml.fhir2omop.MappingReportEntry`** — renamed to **`MappingEntry`**; update all imports and type annotations to use `MappingEntry`.
