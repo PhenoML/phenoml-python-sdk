@@ -14,6 +14,11 @@ class MeasurementRow(UniversalBaseModel):
     measurement_datetime: typing.Optional[str] = None
     measurement_type_concept_id: typing.Optional[int] = None
     value_as_number: typing.Optional[float] = None
+    operator_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP "Meas Value Operator" standard concept qualifying value_as_number (<, <=, >, >=), parsed from a numeric-string value or a FHIR valueQuantity.comparator. 0 when no operator (a bare number).
+    """
+
     value_as_concept_id: typing.Optional[int] = None
     unit_concept_id: typing.Optional[int] = None
     range_low: typing.Optional[float] = None
