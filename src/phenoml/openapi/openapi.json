@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "5084e3096e5bd89bf2e86ea44d96e3407f6f5c6b"
+    "version": "788cec0a9a7651caf2b106634631d487dfa16704"
   },
   "x-services": [
     {
@@ -3021,7 +3021,7 @@
       "post": {
         "operationId": "fhir2omop_create",
         "summary": "Map FHIR resources to OMOP CDM v5.4",
-        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\nEach resource's primary clinical coding is resolved to a standard OMOP\n`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the\nresponse carries `mappings` (how each source coding resolved, linked back\nto the row it produced), `dropped` (resources that could not be shaped\ninto a row), `vocab_version` (the OMOP vocabulary release codes were\nresolved against), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` means \"no matching standard concept\" (OMOP\nsemantics) and is reported, not omitted \u2014 a coding with no match is\n`UNMAPPED`. Only the primary clinical coding is resolved;\n`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are\nalways `0`. Each `*_source_value` carries the verbatim FHIR coding\n(`system#code`), and `*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
+        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\nEach resource's primary clinical coding is resolved to a standard OMOP\n`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the\nresponse carries `mappings` (how each source coding resolved, linked back\nto the row it produced), `dropped` (resources that could not be shaped\ninto a row), `vocab_version` (the OMOP vocabulary release codes were\nresolved against), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` is reported, not omitted (OMOP \"no matching\nconcept\" semantics): it covers both a coding with no standard match\n(`UNMAPPED`) and an unverified suggestion for a text-only resource\n(`UNCHECKED`). Only the primary clinical coding is resolved, so\n`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are\nalways `0`; the one populated non-resolved concept is measurement\n`operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)\nrather than the resolver. Each `*_source_value` carries the verbatim FHIR\ncoding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3113,7 +3113,7 @@
                 "examples": {
                   "mapping_result": {
                     "summary": "Mapping result",
-                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status. `target_code` is omitted for a\nresolved concept \u2014 it is identified by `target_vocabulary` and\n`target_name` (and the row's `*_concept_id`). Illustrative\n`concept_id` values.\n",
+                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status and a `target_code` equal to the\nsource code. Illustrative `concept_id` values.\n",
                     "value": {
                       "success": true,
                       "message": "FHIR resources mapped to OMOP CDM v5.4",
@@ -3167,6 +3167,7 @@
                           "source_code": "44054006",
                           "source_name": "Type 2 diabetes mellitus",
                           "target_vocabulary": "SNOMED",
+                          "target_code": "44054006",
                           "target_name": "Type 2 diabetes mellitus",
                           "mapping_status": "ALREADY_STANDARD"
                         },
@@ -3179,6 +3180,7 @@
                           "source_code": "860975",
                           "source_name": "metformin hydrochloride 500 MG",
                           "target_vocabulary": "RXNORM",
+                          "target_code": "860975",
                           "target_name": "metformin hydrochloride 500 MG",
                           "mapping_status": "ALREADY_STANDARD"
                         }
@@ -8738,6 +8740,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "condition_source_value": {
             "type": "string"
           },
@@ -8784,6 +8790,10 @@
           "sig": {
             "type": "string"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "drug_source_value": {
             "type": "string"
           },
@@ -8815,6 +8825,10 @@
             "type": "string"
           },
           "procedure_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "visit_occurrence_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8856,6 +8870,11 @@
             "type": "number",
             "format": "double"
           },
+          "operator_concept_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "OMOP \"Meas Value Operator\" standard concept qualifying value_as_number (<, <=, >, >=), parsed from a numeric-string value or a FHIR valueQuantity.comparator. 0 when no operator (a bare number)."
+          },
           "value_as_concept_id": {
             "type": "integer",
             "format": "int64"
@@ -8871,6 +8890,10 @@
           "range_high": {
             "type": "number",
             "format": "double"
+          },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
           },
           "measurement_source_value": {
             "type": "string"
@@ -8927,6 +8950,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "observation_source_value": {
             "type": "string"
           },
@@ -8974,7 +9001,7 @@
           },
           "target_code": {
             "type": "string",
-            "description": "The standard concept's code, when present. Populated only for an\n`UNCHECKED` suggestion (where the API normalized a text-only resource\nto a suggested code); omitted for codings resolved through concept\nresolution (`ALREADY_STANDARD` / `MAPPED` / `UNMAPPED`), which are\nidentified by `target_vocabulary`, `target_name`, and the row's\n`*_concept_id` rather than by code.\n"
+            "description": "The standard concept's own code: the source code itself for an\nALREADY_STANDARD row, the standard concept's code for a MAPPED row,\nor the suggested code for an UNCHECKED row. Omitted for UNMAPPED\nrows.\n"
           },
           "target_name": {
             "type": "string"
@@ -8990,19 +9017,19 @@
       },
       "fhir2omop_Summary": {
         "type": "object",
-        "description": "The request's data-quality headline: how the coded concepts split across\nresolution outcomes, and the share that was not already in a target\nstandard vocabulary.\n",
+        "description": "The request's data-quality headline: how the coded concepts split across\nresolution outcomes, and the share that was not already in a target\nstandard vocabulary. Each coded resource is counted once (per resolved\nconcept), even when it carried several codings \u2014 unlike `mappings`, which\nhas one entry per coding.\n",
         "properties": {
           "codes_already_standard": {
             "type": "integer",
-            "description": "Codings already a standard OMOP concept."
+            "description": "Coded concepts already a standard OMOP concept (ALREADY_STANDARD)."
           },
           "codes_normalized": {
             "type": "integer",
-            "description": "Codings mapped or suggested to a standard concept (MAPPED or UNCHECKED)."
+            "description": "Coded concepts mapped or suggested to a standard concept (MAPPED or UNCHECKED)."
           },
           "codes_unmapped": {
             "type": "integer",
-            "description": "Codings with no standard concept found."
+            "description": "Coded concepts with no standard concept found (UNMAPPED)."
           },
           "off_vocab_rate": {
             "type": "number",

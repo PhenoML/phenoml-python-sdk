@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.0.0",
-    "specCommit": "5084e3096e5bd89bf2e86ea44d96e3407f6f5c6b",
+    "sdkVersion": "16.1.0",
+    "specCommit": "788cec0a9a7651caf2b106634631d487dfa16704",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1793,6 +1793,7 @@
               "source_code": "44054006",
               "source_name": "Type 2 diabetes mellitus",
               "target_vocabulary": "SNOMED",
+              "target_code": "44054006",
               "target_name": "Type 2 diabetes mellitus",
               "mapping_status": "ALREADY_STANDARD"
             },
@@ -1805,6 +1806,7 @@
               "source_code": "860975",
               "source_name": "metformin hydrochloride 500 MG",
               "target_vocabulary": "RXNORM",
+              "target_code": "860975",
               "target_name": "metformin hydrochloride 500 MG",
               "mapping_status": "ALREADY_STANDARD"
             }
