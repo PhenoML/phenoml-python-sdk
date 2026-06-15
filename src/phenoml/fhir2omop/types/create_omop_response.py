@@ -4,30 +4,34 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .mapping_report_entry import MappingReportEntry
+from .dropped_resource import DroppedResource
+from .mapping_entry import MappingEntry
 from .omop_tables import OmopTables
-from .scan_summary import ScanSummary
+from .summary import Summary
 
 
 class CreateOmopResponse(UniversalBaseModel):
     success: typing.Optional[bool] = None
     message: typing.Optional[str] = None
-    mode: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Resolution mode. `resolved` (default) means clinical `concept_id`s were
-    filled by the concept-resolver service; `structural` means no resolver
-    was configured, so all clinical `concept_id`s are `0`. Reflects which
-    resolver is wired, not the path an individual coding took — per-coding
-    degradation is surfaced in `scan_summary`, not the mode.
-    """
-
     tables: typing.Optional[OmopTables] = None
-    report: typing.Optional[typing.List[MappingReportEntry]] = pydantic.Field(default=None)
+    mappings: typing.Optional[typing.List[MappingEntry]] = pydantic.Field(default=None)
     """
-    One Usagi-shaped entry per source coding routed through concept resolution.
+    One entry per source coding (or one entry for a text-only resource with no coding), describing how it resolved and linking back to the row it produced.
     """
 
-    scan_summary: typing.Optional[ScanSummary] = None
+    dropped: typing.Optional[typing.List[DroppedResource]] = pydantic.Field(default=None)
+    """
+    Resources that could not be shaped into an OMOP row (rather than emitted as blank rows).
+    """
+
+    vocab_version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The OMOP vocabulary release the clinical codes were resolved against
+    (e.g. "v20240229"), for reproducibility. Present when at least one
+    coded concept was resolved.
+    """
+
+    summary: typing.Optional[Summary] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

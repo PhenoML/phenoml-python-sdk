@@ -10,26 +10,26 @@ if typing.TYPE_CHECKING:
     from .create_omop_response import CreateOmopResponse
     from .dropped_resource import DroppedResource
     from .drug_exposure_row import DrugExposureRow
-    from .mapping_report_entry import MappingReportEntry
+    from .mapping_entry import MappingEntry
     from .measurement_row import MeasurementRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
     from .person_row import PersonRow
     from .procedure_occurrence_row import ProcedureOccurrenceRow
-    from .scan_summary import ScanSummary
+    from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
     "ConditionOccurrenceRow": ".condition_occurrence_row",
     "CreateOmopResponse": ".create_omop_response",
     "DroppedResource": ".dropped_resource",
     "DrugExposureRow": ".drug_exposure_row",
-    "MappingReportEntry": ".mapping_report_entry",
+    "MappingEntry": ".mapping_entry",
     "MeasurementRow": ".measurement_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
     "PersonRow": ".person_row",
     "ProcedureOccurrenceRow": ".procedure_occurrence_row",
-    "ScanSummary": ".scan_summary",
+    "Summary": ".summary",
     "VisitOccurrenceRow": ".visit_occurrence_row",
 }
 
@@ -60,12 +60,12 @@ __all__ = [
     "CreateOmopResponse",
     "DroppedResource",
     "DrugExposureRow",
-    "MappingReportEntry",
+    "MappingEntry",
     "MeasurementRow",
     "ObservationRow",
     "OmopTables",
     "PersonRow",
     "ProcedureOccurrenceRow",
-    "ScanSummary",
+    "Summary",
     "VisitOccurrenceRow",
 ]
