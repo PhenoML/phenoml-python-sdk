@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "5084e3096e5bd89bf2e86ea44d96e3407f6f5c6b"
+    "version": "0b686daf772ca536c1eecef8ea137c430edf5585"
   },
   "x-services": [
     {
@@ -3113,7 +3113,7 @@
                 "examples": {
                   "mapping_result": {
                     "summary": "Mapping result",
-                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status. `target_code` is omitted for a\nresolved concept \u2014 it is identified by `target_vocabulary` and\n`target_name` (and the row's `*_concept_id`). Illustrative\n`concept_id` values.\n",
+                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status and a `target_code` equal to the\nsource code. Illustrative `concept_id` values.\n",
                     "value": {
                       "success": true,
                       "message": "FHIR resources mapped to OMOP CDM v5.4",
@@ -3167,6 +3167,7 @@
                           "source_code": "44054006",
                           "source_name": "Type 2 diabetes mellitus",
                           "target_vocabulary": "SNOMED",
+                          "target_code": "44054006",
                           "target_name": "Type 2 diabetes mellitus",
                           "mapping_status": "ALREADY_STANDARD"
                         },
@@ -3179,6 +3180,7 @@
                           "source_code": "860975",
                           "source_name": "metformin hydrochloride 500 MG",
                           "target_vocabulary": "RXNORM",
+                          "target_code": "860975",
                           "target_name": "metformin hydrochloride 500 MG",
                           "mapping_status": "ALREADY_STANDARD"
                         }
@@ -8738,6 +8740,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "condition_source_value": {
             "type": "string"
           },
@@ -8784,6 +8790,10 @@
           "sig": {
             "type": "string"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "drug_source_value": {
             "type": "string"
           },
@@ -8815,6 +8825,10 @@
             "type": "string"
           },
           "procedure_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "visit_occurrence_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8856,6 +8870,11 @@
             "type": "number",
             "format": "double"
           },
+          "operator_concept_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "OMOP \"Meas Value Operator\" standard concept qualifying value_as_number (<, <=, >, >=), parsed from a numeric-string value or a FHIR valueQuantity.comparator. 0 when no operator (a bare number)."
+          },
           "value_as_concept_id": {
             "type": "integer",
             "format": "int64"
@@ -8871,6 +8890,10 @@
           "range_high": {
             "type": "number",
             "format": "double"
+          },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
           },
           "measurement_source_value": {
             "type": "string"
@@ -8927,6 +8950,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "observation_source_value": {
             "type": "string"
           },
@@ -8974,7 +9001,7 @@
           },
           "target_code": {
             "type": "string",
-            "description": "The standard concept's code, when present. Populated only for an\n`UNCHECKED` suggestion (where the API normalized a text-only resource\nto a suggested code); omitted for codings resolved through concept\nresolution (`ALREADY_STANDARD` / `MAPPED` / `UNMAPPED`), which are\nidentified by `target_vocabulary`, `target_name`, and the row's\n`*_concept_id` rather than by code.\n"
+            "description": "The standard concept's own code: the source code itself for an\nALREADY_STANDARD row, the standard concept's code for a MAPPED row,\nor the suggested code for an UNCHECKED row. Omitted for UNMAPPED\nrows.\n"
           },
           "target_name": {
             "type": "string"
