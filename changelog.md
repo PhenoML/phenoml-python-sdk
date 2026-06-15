@@ -1,3 +1,13 @@
+## [17.0.0] - 2026-06-15
+### Breaking Changes
+- **`phenoml.fhir2omop.CreateOmopResponse`** — fields `report`, `scan_summary`, and `mode` removed; replace `report` with `mappings` (`List[MappingEntry]`), `scan_summary` with `summary` (`Summary`), and remove any references to `mode`. `vocab_version` and `dropped` are now top-level fields.
+- **`phenoml.fhir2omop.MappingReportEntry`** — renamed to **`MappingEntry`**; update all imports and type annotations to use `MappingEntry`.
+- **`phenoml.fhir2omop.ScanSummary`** — renamed to **`Summary`**; update all imports and type annotations to use `Summary`. Several telemetry fields (`total_resources`, `resource_counts`, `tables_populated`, `coding_systems`, `resolved_vocab_version`, `concept_resolver_note`, `concepts_bridged`, `concept_candidates_truncated`, `construe_resolutions`, `dropped_resources`) have been removed from this model.
+
+### Added
+- **`phenoml.fhir2omop.MappingEntry.omop_id`** — new integer field linking each mapping entry back to the id of the OMOP row it produced within `omop_table`.
+- **`phenoml.fhir2omop.types.MeasurementRow.operator_concept_id`** — new optional integer field carrying the OMOP "Meas Value Operator" standard concept qualifying `value_as_number` (e.g. `<`, `<=`, `>`, `>=`); `0` when no operator is present.
+
 ## [16.0.0] - 2026-06-15
 ### Breaking Changes
 - **`phenoml.fhir2omop.MappingReportEntry`** — renamed to **`MappingEntry`**; update all imports and type annotations to use `MappingEntry`.
