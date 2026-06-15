@@ -4,6 +4,7 @@ import typing
 
 Provider = typing.Union[
     typing.Literal[
+        "aidbox",
         "athenahealth",
         "canvas",
         "cerner",
