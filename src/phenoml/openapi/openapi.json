@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "5084e3096e5bd89bf2e86ea44d96e3407f6f5c6b"
+    "version": "d8d5e2bd177033f0c4bb887455050e567bb6b8b2"
   },
   "x-services": [
     {
@@ -8855,6 +8855,11 @@
           "value_as_number": {
             "type": "number",
             "format": "double"
+          },
+          "operator_concept_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "OMOP \"Meas Value Operator\" standard concept qualifying value_as_number (<, <=, >, >=), parsed from a numeric-string value or a FHIR valueQuantity.comparator. 0 when no operator (a bare number)."
           },
           "value_as_concept_id": {
             "type": "integer",
