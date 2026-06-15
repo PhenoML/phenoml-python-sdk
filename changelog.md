@@ -1,3 +1,19 @@
+## [16.0.0] - 2026-06-15
+### Breaking Changes
+- **`phenoml.fhir2omop.MappingReportEntry`** — renamed to **`MappingEntry`**; update all imports and type annotations to use `MappingEntry`.
+- **`phenoml.fhir2omop.ScanSummary`** — renamed to **`Summary`**; update all imports and type annotations to use `Summary`.
+- **`phenoml.fhir2omop.CreateOmopResponse`** — fields `report`, `scan_summary`, and `mode` removed; replace `report` with `mappings` (`List[MappingEntry]`), `scan_summary` with `summary` (`Summary`), and remove any references to `mode`.
+
+### Added
+- **`phenoml.fhir2omop.MappingEntry`** — new Pydantic model describing how a single source coding resolved to an OMOP standard concept, exposing fields such as `omop_id`, `source_code`, `target_vocabulary`, `mapping_status`, and `note`.
+- **`phenoml.fhir2omop.Summary`** — new Pydantic model carrying data-quality headline metrics: `codes_already_standard`, `codes_normalized`, `codes_unmapped`, and `off_vocab_rate`.
+- **`phenoml.fhir2omop.CreateOmopResponse.dropped`** — new top-level field listing resources that could not be shaped into an OMOP row (previously nested under `scan_summary.dropped_resources`).
+- **`phenoml.fhir2omop.CreateOmopResponse.vocab_version`** — new top-level field reporting the OMOP vocabulary release codes were resolved against (e.g. `"v20240229"`).
+- **`phenoml.fhir2omop.ServiceUnavailableError`** — new `ApiError` subclass raised when the API returns HTTP 503; callers may now catch this explicitly.
+
+### Changed
+- **`client.fhir2omop.create()` OpenAPI spec** — endpoint description updated to document both `resolved` and `structural` modes in detail, including a `resolved_mapping` response example.
+
 ## 15.2.0 - 2026-06-09
 ### Added
 * **`phenoml.fhir2omop.ScanSummary`** — five resolver-telemetry fields added (`resolved_vocab_version`, `concept_resolver_note`, `concepts_bridged`, `concept_candidates_truncated`, `construe_resolutions`) reporting the OMOP vocabulary release used and where concept resolution was degraded, bridged, truncated, or fell back to (and billed) the construe tier.
