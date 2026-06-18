@@ -13,6 +13,7 @@ from ...core.parse_error import ParsingError
 from ...core.pydantic_utilities import parse_obj_as, parse_sse_obj
 from ...core.request_options import RequestOptions
 from ..errors.bad_request_error import BadRequestError
+from ..errors.conflict_error import ConflictError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.gateway_timeout_error import GatewayTimeoutError
 from ..errors.internal_server_error import InternalServerError
@@ -68,7 +69,7 @@ class RawChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -153,6 +154,17 @@ class RawChatClient:
                         ),
                     ),
                 )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -222,7 +234,7 @@ class RawChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -322,6 +334,17 @@ class RawChatClient:
                         )
                     if _response.status_code == 404:
                         raise NotFoundError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                typing.Any,
+                                parse_obj_as(
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 409:
+                        raise ConflictError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Any,
@@ -535,7 +558,7 @@ class AsyncRawChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -620,6 +643,17 @@ class AsyncRawChatClient:
                         ),
                     ),
                 )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 500:
                 raise InternalServerError(
                     headers=dict(_response.headers),
@@ -689,7 +723,7 @@ class AsyncRawChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -789,6 +823,17 @@ class AsyncRawChatClient:
                         )
                     if _response.status_code == 404:
                         raise NotFoundError(
+                            headers=dict(_response.headers),
+                            body=typing.cast(
+                                typing.Any,
+                                parse_obj_as(
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
+                                ),
+                            ),
+                        )
+                    if _response.status_code == 409:
+                        raise ConflictError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Any,

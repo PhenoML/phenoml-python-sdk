@@ -29,6 +29,7 @@ if typing.TYPE_CHECKING:
     )
     from .errors import (
         BadRequestError,
+        ConflictError,
         ForbiddenError,
         GatewayTimeoutError,
         InternalServerError,
@@ -52,6 +53,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ChatMessageTemplate": ".types",
     "ChatMessageTemplateRole": ".types",
     "ChatSessionTemplate": ".types",
+    "ConflictError": ".errors",
     "DeleteResponse": ".types",
     "ForbiddenError": ".errors",
     "GatewayTimeoutError": ".errors",
@@ -109,6 +111,7 @@ __all__ = [
     "ChatMessageTemplate",
     "ChatMessageTemplateRole",
     "ChatSessionTemplate",
+    "ConflictError",
     "DeleteResponse",
     "ForbiddenError",
     "GatewayTimeoutError",

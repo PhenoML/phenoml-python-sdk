@@ -1,3 +1,12 @@
+## [16.3.0] - 2026-06-18
+### Added
+- **`phenoml.agent.errors.ConflictError`** — new `ApiError` subclass raised by `client.agent.chat.send(...)` and `client.agent.chat.stream(...)` for HTTP 409 responses when a session already has an active turn.
+
+### Changed
+- **`client.agent.chat.send(...)` and `client.agent.chat.stream(...)` `session_id` parameter** — docstring now states that only one request may be active per session at a time and overlapping turns return `409 Conflict`.
+- **`client.fhir2omop.create(...)`** — docstring now lists the supported FHIR resource-to-OMOP table mappings and clarifies that unsupported resource types are accepted but ignored.
+- **`CreateOmopResponse.dropped`** — field description now clarifies that only supported resources missing required subject/patient, code, or medication reference data appear in `dropped`; unsupported resource types are ignored.
+
 ## [16.2.0] - 2026-06-15
 ### Added
 - **`Provider`** — `"aidbox"` is now a supported FHIR provider value in the `Provider` union type.
@@ -567,4 +576,3 @@ from phenoml import PhenomlClient
 * Update documentation to reflect removed parameter
 * Remove AgentCreateRequest.is_active field from type definitions
 * 🌿 Generated with Fern
-

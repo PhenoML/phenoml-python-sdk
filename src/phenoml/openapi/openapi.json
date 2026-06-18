@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "64f369254225bd6c2d4c58d87f59165d7e8e8dc9"
+    "version": "fbaef4c66e97232edfaacb20d23d476aa286ecdd"
   },
   "x-services": [
     {
@@ -672,6 +672,9 @@
           "404": {
             "description": "Agent or session not found"
           },
+          "409": {
+            "description": "Chat session already has an active request. Retry after the in-flight turn completes."
+          },
           "500": {
             "description": "Server error"
           },
@@ -745,6 +748,9 @@
           },
           "404": {
             "description": "Agent or session not found"
+          },
+          "409": {
+            "description": "Chat session already has an active request. Retry after the in-flight turn completes."
           },
           "500": {
             "description": "Server error"
@@ -3021,7 +3027,7 @@
       "post": {
         "operationId": "fhir2omop_create",
         "summary": "Map FHIR resources to OMOP CDM v5.4",
-        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\nEach resource's primary clinical coding is resolved to a standard OMOP\n`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the\nresponse carries `mappings` (how each source coding resolved, linked back\nto the row it produced), `dropped` (resources that could not be shaped\ninto a row), `vocab_version` (the OMOP vocabulary release codes were\nresolved against), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` is reported, not omitted (OMOP \"no matching\nconcept\" semantics): it covers both a coding with no standard match\n(`UNMAPPED`) and an unverified suggestion for a text-only resource\n(`UNCHECKED`). Only the primary clinical coding is resolved, so\n`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are\nalways `0`; the one populated non-resolved concept is measurement\n`operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)\nrather than the resolver. Each `*_source_value` carries the verbatim FHIR\ncoding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
+        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\nResource support is intentionally limited to the OMOP tables returned by\nthis endpoint:\n- `Patient` -> `person`\n- `Encounter` -> `visit_occurrence`\n- `Condition` -> `condition_occurrence`\n- `Procedure` -> `procedure_occurrence`\n- `MedicationRequest`, `MedicationStatement`, and\n  `MedicationAdministration` -> `drug_exposure`\n- `Immunization` -> `drug_exposure`\n- `Observation` with a numeric `valueQuantity`, `valueInteger`, or\n  numeric-looking `valueString` (for example `\"<2\"`) -> `measurement`\n- non-numeric `Observation` -> `observation`\n- `AllergyIntolerance` -> `observation`\n\n`Medication` is supported only as reference data for medication\nresources; it is not emitted as its own row because OMOP CDM has no\nMedication table. Other reference/admin resources such as `Practitioner`,\n`Organization`, `Location`, `Coverage`, and `Claim`, and clinical\nworkflow/document resources such as `DiagnosticReport`, `ServiceRequest`,\n`CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and\n`DeviceUseStatement`, are currently accepted in a Bundle but are not\nshaped into OMOP rows. Unsupported resource types are ignored rather than\nlisted under `dropped`; `dropped` is reserved for supported resource types\nthat were missing the subject/patient, code, or medication reference data\nneeded to produce a valid row.\n\nEach resource's primary clinical coding is resolved to a standard OMOP\n`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the\nresponse carries `mappings` (how each source coding resolved, linked back\nto the row it produced), `dropped` (resources that could not be shaped\ninto a row), `vocab_version` (the OMOP vocabulary release codes were\nresolved against), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` is reported, not omitted (OMOP \"no matching\nconcept\" semantics): it covers both a coding with no standard match\n(`UNMAPPED`) and an unverified suggestion for a text-only resource\n(`UNCHECKED`). Only the primary clinical coding is resolved, so\n`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are\nalways `0`; the one populated non-resolved concept is measurement\n`operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)\nrather than the resolver. Each `*_source_value` carries the verbatim FHIR\ncoding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -7345,7 +7351,7 @@
           },
           "session_id": {
             "type": "string",
-            "description": "Optional session ID for conversation continuity",
+            "description": "Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.",
             "example": "session-abc123"
           },
           "agent_id": {
@@ -7381,7 +7387,7 @@
           },
           "session_id": {
             "type": "string",
-            "description": "Optional session ID for conversation continuity",
+            "description": "Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.",
             "example": "session-abc123"
           },
           "agent_id": {
@@ -8544,7 +8550,7 @@
           "fhir_resources": {
             "type": "object",
             "additionalProperties": true,
-            "description": "FHIR resources (single resource or Bundle). Must contain at least one\nPatient resource. Resources are mapped to OMOP rows; standalone\nMedication resources are consumed by medication references rather than\nmapped to their own table.\n"
+            "description": "FHIR resources (single resource or Bundle). Must contain at least one\nPatient resource. Supported row-producing resources are Patient,\nEncounter, Condition, Procedure, MedicationRequest,\nMedicationStatement, MedicationAdministration, Immunization,\nObservation, and AllergyIntolerance. Standalone Medication resources\nare consumed by medication references rather than mapped to their own\ntable. Other resource types are accepted but ignored.\n"
           }
         }
       },
@@ -8569,7 +8575,7 @@
           },
           "dropped": {
             "type": "array",
-            "description": "Resources that could not be shaped into an OMOP row (rather than emitted as blank rows).",
+            "description": "Supported resource instances that could not be shaped into an OMOP\nrow because required subject/patient, code, or medication reference\ndata was missing. Unsupported resource types are ignored and do not\nappear here.\n",
             "items": {
               "$ref": "#/components/schemas/fhir2omop_DroppedResource"
             }

@@ -21,7 +21,10 @@ class CreateOmopResponse(UniversalBaseModel):
 
     dropped: typing.Optional[typing.List[DroppedResource]] = pydantic.Field(default=None)
     """
-    Resources that could not be shaped into an OMOP row (rather than emitted as blank rows).
+    Supported resource instances that could not be shaped into an OMOP
+    row because required subject/patient, code, or medication reference
+    data was missing. Unsupported resource types are ignored and do not
+    appear here.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
