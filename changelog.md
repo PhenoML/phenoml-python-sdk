@@ -1,3 +1,12 @@
+## [16.3.0] - 2026-06-18
+### Added
+- **`phenoml.agent.errors.ConflictError`** — new `ApiError` subclass raised when the agent chat endpoint returns HTTP 409; callers can now catch this explicitly to detect concurrent session conflicts.
+
+### Changed
+- **`client.agent.chat` `session_id` parameter** — docstring now documents that only one request may be active per session at a time; overlapping turns for the same session return 409 Conflict (now surfaced as `ConflictError`).
+- **`client.fhir2omop.create()` docstring** — expanded with a full FHIR resource → OMOP table mapping (e.g. `Observation` with numeric value → `measurement`, `AllergyIntolerance` → `observation`) and clarifies which resource types are silently ignored vs. listed under `dropped`.
+- **`CreateOmopResponse.dropped`** — field description clarified: only supported resource instances missing required subject/patient, code, or medication reference data appear here; unsupported resource types are silently ignored and never listed.
+
 ## [16.2.0] - 2026-06-15
 ### Added
 - **`Provider`** — `"aidbox"` is now a supported FHIR provider value in the `Provider` union type.
