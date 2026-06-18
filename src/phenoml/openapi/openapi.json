@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "788cec0a9a7651caf2b106634631d487dfa16704"
+    "version": "64f369254225bd6c2d4c58d87f59165d7e8e8dc9"
   },
   "x-services": [
     {
@@ -9323,6 +9323,7 @@
         "type": "string",
         "description": "Type of FHIR server provider.\n\nThe \"sandbox\" provider type is managed internally and cannot be created via API.\nIt is used on shared instances.\n",
         "enum": [
+          "aidbox",
           "athenahealth",
           "canvas",
           "cerner",

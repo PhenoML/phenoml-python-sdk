@@ -42,14 +42,20 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.14.13
-current_generation: fa9f5062718873625449782553bed61043532b1c
+  - commit_sha: 4cf14c8a12c24732e7d4159109b7c1924eead6f9
+    tree_hash: 38bbea63c9e1fb1c115453218edc43bbd3949ab3
+    timestamp: 2026-06-15T17:26:29.740Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.14.13
+current_generation: 4cf14c8a12c24732e7d4159109b7c1924eead6f9
 patches:
   - id: patch-6516695e
     content_hash: sha256:29d85120d58e5f06a344be0c1228262bb29c8c57591581d8a56b6d3eabe65d75
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: 6999ce50b7572e832a149b02ae50a4bfcd5f99f0
+    base_generation: 4cf14c8a12c24732e7d4159109b7c1924eead6f9
     files:
       - pyproject.toml
     patch_content: |

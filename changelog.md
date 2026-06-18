@@ -1,3 +1,7 @@
+## [16.2.0] - 2026-06-15
+### Added
+- **`Provider`** — `"aidbox"` is now a supported FHIR provider value in the `Provider` union type.
+
 ## [16.1.0] - 2026-06-15
 ### Added
 - **`ConditionOccurrenceRow.visit_occurrence_id`**, **`DrugExposureRow.visit_occurrence_id`**, **`MeasurementRow.visit_occurrence_id`**, **`ObservationRow.visit_occurrence_id`**, and **`ProcedureOccurrenceRow.visit_occurrence_id`** — new optional field linking each clinical OMOP row back to its `visit_occurrence` row.
