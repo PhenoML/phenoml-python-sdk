@@ -65,7 +65,7 @@ class ChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -143,7 +143,7 @@ class ChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -304,7 +304,7 @@ class AsyncChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
@@ -390,7 +390,7 @@ class AsyncChatClient:
             Optional context for the conversation
 
         session_id : typing.Optional[str]
-            Optional session ID for conversation continuity
+            Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
 
         enhanced_reasoning : typing.Optional[bool]
             Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
