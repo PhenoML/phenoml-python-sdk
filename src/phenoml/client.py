@@ -23,6 +23,7 @@ if typing.TYPE_CHECKING:
     from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
     from .summary.client import AsyncSummaryClient, SummaryClient
     from .tools.client import AsyncToolsClient, ToolsClient
+    from .voice.client import AsyncVoiceClient, VoiceClient
     from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
 
@@ -206,6 +207,7 @@ class PhenomlClient:
         self._lang2fhir: typing.Optional[Lang2FhirClient] = None
         self._summary: typing.Optional[SummaryClient] = None
         self._tools: typing.Optional[ToolsClient] = None
+        self._voice: typing.Optional[VoiceClient] = None
         self._workflows: typing.Optional[WorkflowsClient] = None
 
     @property
@@ -287,6 +289,14 @@ class PhenomlClient:
 
             self._tools = ToolsClient(client_wrapper=self._client_wrapper)
         return self._tools
+
+    @property
+    def voice(self):
+        if self._voice is None:
+            from .voice.client import VoiceClient  # noqa: E402
+
+            self._voice = VoiceClient(client_wrapper=self._client_wrapper)
+        return self._voice
 
     @property
     def workflows(self):
@@ -492,6 +502,7 @@ class AsyncPhenomlClient:
         self._lang2fhir: typing.Optional[AsyncLang2FhirClient] = None
         self._summary: typing.Optional[AsyncSummaryClient] = None
         self._tools: typing.Optional[AsyncToolsClient] = None
+        self._voice: typing.Optional[AsyncVoiceClient] = None
         self._workflows: typing.Optional[AsyncWorkflowsClient] = None
 
     @property
@@ -573,6 +584,14 @@ class AsyncPhenomlClient:
 
             self._tools = AsyncToolsClient(client_wrapper=self._client_wrapper)
         return self._tools
+
+    @property
+    def voice(self):
+        if self._voice is None:
+            from .voice.client import AsyncVoiceClient  # noqa: E402
+
+            self._voice = AsyncVoiceClient(client_wrapper=self._client_wrapper)
+        return self._voice
 
     @property
     def workflows(self):

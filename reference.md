@@ -6452,6 +6452,85 @@ client.tools.mcp_tools.delete(
 </dl>
 </details>
 
+## Voice
+<details><summary><code>client.voice.voice.<a href="src/phenoml/voice/voice/client.py">transcribe</a>(...) -> TranscribeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transcribes an uploaded audio recording and returns the transcript.
+Send the raw audio bytes as the request body; the audio format is
+detected automatically (WAV, FLAC, MP3, OGG/WebM Opus).
+
+Supports up to ~5 minutes of audio per request. This limit is on audio
+duration regardless of file size or format, so a compressed recording
+within the size limit can still be rejected for being too long. Pair the
+transcript with a downstream text step (e.g. `POST /lang2fhir/create`)
+to turn it into a FHIR resource.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+client.voice.voice.transcribe(...)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `typing.Union[bytes, typing.Iterator[bytes], typing.AsyncIterator[bytes]]` — Raw audio bytes (WAV, FLAC, MP3, or OGG/WebM Opus).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**language:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — BCP-47 language tag, repeatable for up to 4 candidate languages. Defaults to `en-US`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Workflows
 <details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...) -> ListWorkflowsResponse</code></summary>
 <dl>

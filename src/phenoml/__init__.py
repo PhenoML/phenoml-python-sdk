@@ -17,6 +17,7 @@ if typing.TYPE_CHECKING:
         lang2fhir,
         summary,
         tools,
+        voice,
         workflows,
     )
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
@@ -40,6 +41,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "lang2fhir": ".lang2fhir",
     "summary": ".summary",
     "tools": ".tools",
+    "voice": ".voice",
     "workflows": ".workflows",
 }
 
@@ -82,5 +84,6 @@ __all__ = [
     "lang2fhir",
     "summary",
     "tools",
+    "voice",
     "workflows",
 ]
