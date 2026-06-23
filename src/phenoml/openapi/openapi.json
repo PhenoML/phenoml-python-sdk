@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "fbaef4c66e97232edfaacb20d23d476aa286ecdd"
+    "version": "e2c477c4583f8f9e7d0d1a5b5591c1aa8cabef10"
   },
   "x-services": [
     {
@@ -67,6 +67,13 @@
       "description": "FHIR server operations including resource CRUD, search, and batch operations.",
       "iconHint": "proxy",
       "status": "ga"
+    },
+    {
+      "id": "voice",
+      "name": "Voice",
+      "description": "Transcribe audio recordings into text with speech-to-text. Pair the transcript with Lang2FHIR to turn spoken clinical notes into structured FHIR resources.",
+      "iconHint": "voice",
+      "status": "alpha"
     }
   ],
   "paths": {
@@ -6409,6 +6416,80 @@
         "x-service": "tools"
       }
     },
+    "/transcribe": {
+      "post": {
+        "tags": [
+          "Voice / Voice"
+        ],
+        "operationId": "voice_transcribe",
+        "summary": "Transcribe audio",
+        "description": "Transcribes an uploaded audio recording and returns the transcript.\nSend the raw audio bytes as the request body; the audio format is\ndetected automatically (WAV, FLAC, MP3, OGG/WebM Opus).\n\nSupports up to ~5 minutes of audio per request. This limit is on audio\nduration regardless of file size or format, so a compressed recording\nwithin the size limit can still be rejected for being too long. Pair the\ntranscript with a downstream text step (e.g. `POST /lang2fhir/create`)\nto turn it into a FHIR resource.\n",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "description": "BCP-47 language tag, repeatable for up to 4 candidate languages. Defaults to `en-US`.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Raw audio bytes (WAV, FLAC, MP3, or OGG/WebM Opus).",
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transcription succeeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/voice_TranscribeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (empty body, too many languages, no transcript produced, or audio that is too long or in an unsupported format)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "402": {
+            "description": "Payment required (credits exhausted or subscription inactive)"
+          },
+          "413": {
+            "description": "Audio exceeds the maximum size"
+          },
+          "502": {
+            "description": "Speech recognition failed"
+          },
+          "503": {
+            "description": "Transcription temporarily unavailable"
+          },
+          "504": {
+            "description": "Transcription timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "voice"
+      }
+    },
     "/workflows": {
       "get": {
         "operationId": "workflows_list",
@@ -11044,6 +11125,18 @@
           }
         }
       },
+      "voice_TranscribeResponse": {
+        "type": "object",
+        "required": [
+          "transcript"
+        ],
+        "properties": {
+          "transcript": {
+            "type": "string",
+            "description": "The full transcript of the audio."
+          }
+        }
+      },
       "workflows_CreateWorkflowRequest": {
         "type": "object",
         "required": [
@@ -11832,6 +11925,10 @@
     {
       "name": "Tools / MCP Tools",
       "description": "List and manage individual tools exposed by an MCP server."
+    },
+    {
+      "name": "Voice / Voice",
+      "description": "Speech-to-text transcription of audio recordings."
     }
   ]
 }
