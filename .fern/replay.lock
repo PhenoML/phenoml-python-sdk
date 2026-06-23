@@ -63,16 +63,16 @@ generations:
 current_generation: e0932f75557c87fc1914f6c54c5917b59231d3a1
 patches:
   - id: patch-6516695e
-    content_hash: sha256:07505f8175d78f0dc3cab8f1bc99e9588c1c24f0c43427439a4c685d56635932
+    content_hash: sha256:d2b3264c983a6bb7ce6db1b48d80d28aa93b1f5c838f654cd489a6e8569bee20
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: ac1f834fe3b978f13cb7dba910fc81dcd35abe2c
+    base_generation: e0932f75557c87fc1914f6c54c5917b59231d3a1
     files:
       - pyproject.toml
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index cc86d42..678bcb9 100644
+      index cc86d42..6c649b6 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
       @@ -4,7 +4,7 @@ dynamic = ["version"]
@@ -80,7 +80,7 @@ patches:
        [tool.poetry]
        name = "phenoml"
       -version = "0.0.0.dev0"
-      +version = "16.3.0"
+      +version = "16.4.0"
        description = ""
        readme = "README.md"
        authors = []
@@ -102,7 +102,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "16.3.0"
+        version = "16.4.0"
         description = ""
         readme = "README.md"
         authors = []
@@ -197,4 +197,3 @@ patches:
 
         [tool.poetry.extras]
         aiohttp=["aiohttp", "httpx-aiohttp"]
-    status: unresolved
