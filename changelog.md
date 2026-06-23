@@ -1,3 +1,14 @@
+## [16.4.0] - 2026-06-23
+### Added
+- **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.
+- **`RawVoiceClient`** and **`AsyncRawVoiceClient`** — new clients under `phenoml.voice.voice` exposing `transcribe(...)` with support for `bytes`, `Iterator[bytes]`, or `AsyncIterator[bytes]` input and an optional BCP-47 `language` hint.
+- **`phenoml.voice.TranscribeResponse`** — new response type with a `transcript` field returned by the transcription endpoint.
+- **`phenoml.voice.errors`** — new typed error classes (`BadRequestError`, `UnauthorizedError`, `PaymentRequiredError`, `ContentTooLargeError`, `BadGatewayError`, `ServiceUnavailableError`, `GatewayTimeoutError`) raised by the voice service.
+
+### Changed
+- **`client.fhir2omop.create(...)` docstring** — now enumerates all supported FHIR resource types and clarifies that unsupported types are silently ignored rather than listed under `dropped`.
+- **`client.agent.chat.send(...)` and `client.agent.chat.stream(...)` `session_id` parameter** — description now explicitly states that only one request may be active per session at a time and that overlapping turns return 409 Conflict.
+
 ## [16.3.0] - 2026-06-18
 ### Added
 - **`phenoml.agent.errors.ConflictError`** — new `ApiError` subclass raised by `client.agent.chat.send(...)` and `client.agent.chat.stream(...)` for HTTP 409 responses when a session already has an active turn.
