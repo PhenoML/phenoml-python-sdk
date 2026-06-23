@@ -6,29 +6,39 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .care_site_row import CareSiteRow
     from .condition_occurrence_row import ConditionOccurrenceRow
     from .create_omop_response import CreateOmopResponse
+    from .death_row import DeathRow
     from .dropped_resource import DroppedResource
     from .drug_exposure_row import DrugExposureRow
+    from .location_row import LocationRow
     from .mapping_entry import MappingEntry
     from .measurement_row import MeasurementRow
+    from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
     from .person_row import PersonRow
     from .procedure_occurrence_row import ProcedureOccurrenceRow
+    from .provider_row import ProviderRow
     from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
+    "CareSiteRow": ".care_site_row",
     "ConditionOccurrenceRow": ".condition_occurrence_row",
     "CreateOmopResponse": ".create_omop_response",
+    "DeathRow": ".death_row",
     "DroppedResource": ".dropped_resource",
     "DrugExposureRow": ".drug_exposure_row",
+    "LocationRow": ".location_row",
     "MappingEntry": ".mapping_entry",
     "MeasurementRow": ".measurement_row",
+    "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
     "PersonRow": ".person_row",
     "ProcedureOccurrenceRow": ".procedure_occurrence_row",
+    "ProviderRow": ".provider_row",
     "Summary": ".summary",
     "VisitOccurrenceRow": ".visit_occurrence_row",
 }
@@ -56,16 +66,21 @@ def __dir__():
 
 
 __all__ = [
+    "CareSiteRow",
     "ConditionOccurrenceRow",
     "CreateOmopResponse",
+    "DeathRow",
     "DroppedResource",
     "DrugExposureRow",
+    "LocationRow",
     "MappingEntry",
     "MeasurementRow",
+    "ObservationPeriodRow",
     "ObservationRow",
     "OmopTables",
     "PersonRow",
     "ProcedureOccurrenceRow",
+    "ProviderRow",
     "Summary",
     "VisitOccurrenceRow",
 ]
