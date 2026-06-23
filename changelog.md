@@ -5,10 +5,6 @@
 - **`phenoml.voice.TranscribeResponse`** — new response type with a `transcript` field returned by the transcription endpoint.
 - **`phenoml.voice.errors`** — new typed error classes (`BadRequestError`, `UnauthorizedError`, `PaymentRequiredError`, `ContentTooLargeError`, `BadGatewayError`, `ServiceUnavailableError`, `GatewayTimeoutError`) raised by the voice service.
 
-### Changed
-- **`client.fhir2omop.create(...)` docstring** — now enumerates all supported FHIR resource types and clarifies that unsupported types are silently ignored rather than listed under `dropped`.
-- **`client.agent.chat.send(...)` and `client.agent.chat.stream(...)` `session_id` parameter** — description now explicitly states that only one request may be active per session at a time and that overlapping turns return 409 Conflict.
-
 ## [16.3.0] - 2026-06-18
 ### Added
 - **`phenoml.agent.errors.ConflictError`** — new `ApiError` subclass raised by `client.agent.chat.send(...)` and `client.agent.chat.stream(...)` for HTTP 409 responses when a session already has an active turn.
