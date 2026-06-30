@@ -1,3 +1,11 @@
+## [16.5.0] - 2026-06-30
+### Added
+- **`CareSiteRow`, `DeathRow`, `LocationRow`, `ObservationPeriodRow`, `ProviderRow`** — five new OMOP CDM v5.4 row types exported from `phenoml.fhir2omop`, covering care sites, deaths, locations, observation periods, and providers.
+- **`OmopTables.location`, `.care_site`, `.provider`, `.death`, `.observation_period`** — new optional list fields on `OmopTables` populated when the corresponding OMOP tables are produced by the FHIR-to-OMOP conversion.
+- **`provider_id` field** — added as an optional field to `ConditionOccurrenceRow`, `DrugExposureRow`, `MeasurementRow`, `ObservationRow`, `ProcedureOccurrenceRow`, and `VisitOccurrenceRow` to link clinical events to their ordering provider.
+- **`PersonRow.location_id` and `VisitOccurrenceRow.care_site_id`** — new optional linkage fields connecting persons to their location and visits to their care site.
+- **`CreateMultiResponseResourcesItem.source_pages`** — new optional `List[int]` field containing 1-indexed page numbers indicating which source document pages a FHIR resource was extracted from (populated by `/lang2fhir/document/multi` only).
+
 ## [16.4.0] - 2026-06-23
 ### Added
 - **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.
