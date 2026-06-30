@@ -4,12 +4,17 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .care_site_row import CareSiteRow
 from .condition_occurrence_row import ConditionOccurrenceRow
+from .death_row import DeathRow
 from .drug_exposure_row import DrugExposureRow
+from .location_row import LocationRow
 from .measurement_row import MeasurementRow
+from .observation_period_row import ObservationPeriodRow
 from .observation_row import ObservationRow
 from .person_row import PersonRow
 from .procedure_occurrence_row import ProcedureOccurrenceRow
+from .provider_row import ProviderRow
 from .visit_occurrence_row import VisitOccurrenceRow
 
 
@@ -18,7 +23,12 @@ class OmopTables(UniversalBaseModel):
     OMOP CDM v5.4 rows grouped by destination table.
     """
 
+    location: typing.Optional[typing.List[LocationRow]] = None
+    care_site: typing.Optional[typing.List[CareSiteRow]] = None
+    provider: typing.Optional[typing.List[ProviderRow]] = None
     person: typing.Optional[typing.List[PersonRow]] = None
+    death: typing.Optional[typing.List[DeathRow]] = None
+    observation_period: typing.Optional[typing.List[ObservationPeriodRow]] = None
     visit_occurrence: typing.Optional[typing.List[VisitOccurrenceRow]] = None
     condition_occurrence: typing.Optional[typing.List[ConditionOccurrenceRow]] = None
     drug_exposure: typing.Optional[typing.List[DrugExposureRow]] = None

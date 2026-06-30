@@ -15,6 +15,8 @@ class VisitOccurrenceRow(UniversalBaseModel):
     visit_end_date: typing.Optional[str] = None
     visit_end_datetime: typing.Optional[str] = None
     visit_type_concept_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
+    care_site_id: typing.Optional[int] = None
     visit_source_value: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
