@@ -14,6 +14,7 @@ class ProcedureOccurrenceRow(UniversalBaseModel):
     procedure_datetime: typing.Optional[str] = None
     procedure_type_concept_id: typing.Optional[int] = None
     visit_occurrence_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
     procedure_source_value: typing.Optional[str] = None
     procedure_source_concept_id: typing.Optional[int] = None
 

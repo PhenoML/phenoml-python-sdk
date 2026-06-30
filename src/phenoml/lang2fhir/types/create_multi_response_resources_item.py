@@ -29,6 +29,14 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
         FieldMetadata(alias="originalText"),
         pydantic.Field(alias="originalText", description="Verbatim text excerpt from the original clinical document"),
     ] = None
+    source_pages: typing_extensions.Annotated[
+        typing.Optional[typing.List[int]],
+        FieldMetadata(alias="sourcePages"),
+        pydantic.Field(
+            alias="sourcePages",
+            description="1-indexed source document page number(s) this resource was extracted from. Populated only by the /lang2fhir/document/multi endpoint; omitted when the source page could not be determined (e.g. raw-text create/multi, or a resource with no verbatim source text).",
+        ),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
