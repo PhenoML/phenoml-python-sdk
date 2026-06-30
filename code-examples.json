@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.4.0",
-    "specCommit": "e2c477c4583f8f9e7d0d1a5b5591c1aa8cabef10",
+    "sdkVersion": "16.5.0",
+    "specCommit": "5275e24c43b267315ba69ed879018e66367384c7",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -2999,19 +2999,28 @@
               "tempId": "urn:uuid:patient-001",
               "resourceType": "Patient",
               "description": "John Doe, born 1979-03-15",
-              "originalText": "John Doe, DOB 1979-03-15"
+              "originalText": "John Doe, DOB 1979-03-15",
+              "sourcePages": [
+                1
+              ]
             },
             {
               "tempId": "urn:uuid:condition-001",
               "resourceType": "Condition",
               "description": "Type 2 Diabetes Mellitus diagnosis",
-              "originalText": "diagnosed with Type 2 Diabetes"
+              "originalText": "diagnosed with Type 2 Diabetes",
+              "sourcePages": [
+                1
+              ]
             },
             {
               "tempId": "urn:uuid:medication-001",
               "resourceType": "MedicationRequest",
               "description": "Metformin 500mg prescription",
-              "originalText": "Prescribed Metformin 500mg"
+              "originalText": "Prescribed Metformin 500mg",
+              "sourcePages": [
+                2
+              ]
             }
           ]
         }
