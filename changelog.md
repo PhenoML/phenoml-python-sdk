@@ -1,3 +1,15 @@
+## [16.5.0] - 2026-07-02
+### Added
+- **`stream_reconnection_enabled` and `max_stream_reconnection_attempts`** — new optional parameters on `PhenomlClient`, `AsyncPhenomlClient`, and `RequestOptions` to configure automatic SSE stream reconnection behavior.
+- **`CareSiteRow`, `DeathRow`, `LocationRow`, `ObservationPeriodRow`, `ProviderRow`** — five new OMOP CDM v5.4 row types exported from `phenoml.fhir2omop` representing care site, death, location, observation period, and provider records.
+- **`OmopTables`** — now includes optional `location`, `care_site`, `provider`, `death`, and `observation_period` table lists alongside existing tables.
+- **`VisitOccurrenceRow.provider_id` and `VisitOccurrenceRow.care_site_id`** — new optional fields linking visit occurrences to OMOP provider and care site records.
+- **`CreateMultiResponseResourcesItem.source_pages`** — new optional `List[int]` field containing 1-indexed source document page numbers from which a FHIR resource was extracted, populated by the `/lang2fhir/document/multi` endpoint.
+
+### Changed
+- **`ConditionOccurrenceRow`, `DrugExposureRow`, `MeasurementRow`, `ObservationRow`, and `ProcedureOccurrenceRow`** — each gains an optional `provider_id` field linking the clinical event to an OMOP provider record.
+- **`PersonRow`** — gains an optional `location_id` field linking the person to an OMOP location record.
+
 ## [16.4.0] - 2026-06-23
 ### Added
 - **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.
