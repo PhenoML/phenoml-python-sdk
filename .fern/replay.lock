@@ -69,16 +69,16 @@ generations:
 current_generation: 61e0a76bfe4aeaf8a39d28f57260f6bee3aae4b3
 patches:
   - id: patch-6516695e
-    content_hash: sha256:d2b3264c983a6bb7ce6db1b48d80d28aa93b1f5c838f654cd489a6e8569bee20
+    content_hash: sha256:9869990131d19d23639e0389f5019537b9ebf0aa5c27eb35cb42879c983506c6
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: e0932f75557c87fc1914f6c54c5917b59231d3a1
+    base_generation: 61e0a76bfe4aeaf8a39d28f57260f6bee3aae4b3
     files:
       - pyproject.toml
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index cc86d42..6c649b6 100644
+      index cea8b20..8b65a77 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
       @@ -4,7 +4,7 @@ dynamic = ["version"]
@@ -86,7 +86,7 @@ patches:
        [tool.poetry]
        name = "phenoml"
       -version = "0.0.0.dev0"
-      +version = "16.4.0"
+      +version = "16.5.0"
        description = ""
        readme = "README.md"
        authors = []
@@ -108,7 +108,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "16.4.0"
+        version = "16.5.0"
         description = ""
         readme = "README.md"
         authors = []
@@ -144,7 +144,7 @@ patches:
 
         [tool.poetry.dependencies]
         python = "^3.10"
-        aiohttp = { version = ">=3.14.0,<4", optional = true, python = ">=3.10"}
+        aiohttp = { version = ">=3.14.1,<4", optional = true, python = ">=3.10"}
         httpx = ">=0.21.2"
         httpx-aiohttp = { version = "0.1.8", optional = true, python = ">=3.10"}
         pydantic = ">= 1.9.2"
@@ -166,6 +166,7 @@ patches:
         [tool.pytest.ini_options]
         testpaths = [ "tests" ]
         asyncio_mode = "auto"
+        norecursedirs = [ "src" ]
         markers = [
             "aiohttp: tests that require httpx_aiohttp to be installed",
         ]
@@ -203,4 +204,3 @@ patches:
 
         [tool.poetry.extras]
         aiohttp=["aiohttp", "httpx-aiohttp"]
-    status: unresolved
