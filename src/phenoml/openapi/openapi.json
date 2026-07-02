@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "e2c477c4583f8f9e7d0d1a5b5591c1aa8cabef10"
+    "version": "5ca96bb9b4766f13b667043f4937d5f0cea5f6a7"
   },
   "x-services": [
     {
@@ -4994,19 +4994,28 @@
                       "tempId": "urn:uuid:patient-001",
                       "resourceType": "Patient",
                       "description": "John Doe, born 1979-03-15",
-                      "originalText": "John Doe, DOB 1979-03-15"
+                      "originalText": "John Doe, DOB 1979-03-15",
+                      "sourcePages": [
+                        1
+                      ]
                     },
                     {
                       "tempId": "urn:uuid:condition-001",
                       "resourceType": "Condition",
                       "description": "Type 2 Diabetes Mellitus diagnosis",
-                      "originalText": "diagnosed with Type 2 Diabetes"
+                      "originalText": "diagnosed with Type 2 Diabetes",
+                      "sourcePages": [
+                        1
+                      ]
                     },
                     {
                       "tempId": "urn:uuid:medication-001",
                       "resourceType": "MedicationRequest",
                       "description": "Metformin 500mg prescription",
-                      "originalText": "Prescribed Metformin 500mg"
+                      "originalText": "Prescribed Metformin 500mg",
+                      "sourcePages": [
+                        2
+                      ]
                     }
                   ]
                 }
@@ -8674,10 +8683,40 @@
         "type": "object",
         "description": "OMOP CDM v5.4 rows grouped by destination table.",
         "properties": {
+          "location": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_LocationRow"
+            }
+          },
+          "care_site": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_CareSiteRow"
+            }
+          },
+          "provider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ProviderRow"
+            }
+          },
           "person": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/fhir2omop_PersonRow"
+            }
+          },
+          "death": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_DeathRow"
+            }
+          },
+          "observation_period": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ObservationPeriodRow"
             }
           },
           "visit_occurrence": {
@@ -8718,6 +8757,127 @@
           }
         }
       },
+      "fhir2omop_LocationRow": {
+        "type": "object",
+        "properties": {
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "address_1": {
+            "type": "string"
+          },
+          "address_2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "location_source_value": {
+            "type": "string"
+          },
+          "country_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "country_source_value": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "fhir2omop_CareSiteRow": {
+        "type": "object",
+        "properties": {
+          "care_site_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_name": {
+            "type": "string"
+          },
+          "place_of_service_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_source_value": {
+            "type": "string"
+          },
+          "place_of_service_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_ProviderRow": {
+        "type": "object",
+        "properties": {
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_name": {
+            "type": "string"
+          },
+          "npi": {
+            "type": "string"
+          },
+          "dea": {
+            "type": "string"
+          },
+          "specialty_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "year_of_birth": {
+            "type": "integer"
+          },
+          "gender_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_source_value": {
+            "type": "string"
+          },
+          "specialty_source_value": {
+            "type": "string"
+          },
+          "specialty_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "gender_source_value": {
+            "type": "string"
+          },
+          "gender_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "fhir2omop_PersonRow": {
         "type": "object",
         "properties": {
@@ -8749,6 +8909,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "person_source_value": {
             "type": "string"
           },
@@ -8760,6 +8924,59 @@
           },
           "ethnicity_source_value": {
             "type": "string"
+          }
+        }
+      },
+      "fhir2omop_DeathRow": {
+        "type": "object",
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "death_date": {
+            "type": "string"
+          },
+          "death_datetime": {
+            "type": "string"
+          },
+          "death_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cause_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cause_source_value": {
+            "type": "string"
+          },
+          "cause_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "fhir2omop_ObservationPeriodRow": {
+        "type": "object",
+        "properties": {
+          "observation_period_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observation_period_start_date": {
+            "type": "string"
+          },
+          "observation_period_end_date": {
+            "type": "string"
+          },
+          "period_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -8791,6 +9008,14 @@
             "type": "string"
           },
           "visit_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8828,6 +9053,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8881,6 +9110,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "drug_source_value": {
             "type": "string"
           },
@@ -8916,6 +9149,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8982,6 +9219,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "measurement_source_value": {
             "type": "string"
           },
@@ -9038,6 +9279,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -10220,6 +10465,16 @@
                   "type": "string",
                   "description": "Verbatim text excerpt from the original clinical document",
                   "example": "diagnosed with Type 2 Diabetes"
+                },
+                "sourcePages": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "1-indexed source document page number(s) this resource was extracted from. Populated only by the /lang2fhir/document/multi endpoint; omitted when the source page could not be determined (e.g. raw-text create/multi, or a resource with no verbatim source text).\n",
+                  "example": [
+                    2
+                  ]
                 }
               }
             }
