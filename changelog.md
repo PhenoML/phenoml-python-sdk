@@ -1,3 +1,18 @@
+## [16.5.0] - 2026-07-09
+### Added
+- **`client.implementation_guides`** — new lazy-loaded service client on `PhenomlClient` and `AsyncPhenomlClient` exposing `list`, `get`, `update`, and `delete` methods for managing FHIR implementation guides, backed by `RawImplementationGuidesClient` / `AsyncRawImplementationGuidesClient`.
+- **`client.profiles`** — new lazy-loaded service client on `PhenomlClient` and `AsyncPhenomlClient` exposing full CRUD (`list`, `create`, `get`, `update`, `delete`) for custom FHIR StructureDefinition profiles, backed by `RawProfilesClient` / `AsyncRawProfilesClient`.
+- **`phenoml.implementation_guides` / `phenoml.profiles`** — new top-level subpackages exporting typed response models (`ImplementationGuideSummary`, `ImplementationGuideDetail`, `ImplementationGuideListResponse`, `ProfileSummary`, `ProfileGetResponse`, `ProfileListResponse`, `ProfileUploadRequest`) and typed error classes for each service.
+- **`stream_reconnection_enabled`, `max_stream_reconnection_attempts`** — new optional constructor parameters on `PhenomlClient` and `AsyncPhenomlClient` (also available on `RequestOptions`) that control automatic SSE stream reconnection with exponential backoff.
+- **OMOP CDM v5.4 additions** — five new row types (`CareSiteRow`, `DeathRow`, `LocationRow`, `ObservationPeriodRow`, `ProviderRow`) exported from `phenoml.fhir2omop`; `OmopTables` gains matching table groupings; and `provider_id`, `care_site_id`, `location_id` optional fields added to all existing occurrence and person row types.
+- **`CreateMultiResponseResourcesItem.source_pages`** — new optional `List[int]` field carrying 1-indexed source document page numbers for resources extracted by the `/lang2fhir/document/multi` endpoint.
+- **`RequestOptions.timeout`** — new `float` field for per-request timeout override; `timeout_in_seconds` is now a deprecated alias.
+
+### Changed
+- **SSE `EventSource` (`iter_sse` / `aiter_sse`)** — streams now automatically reconnect on drop using exponential backoff (capped at 30 s), honour the server's `retry:` directive, reset attempt counts on progress, and enforce a 1 MiB per-line size guard.
+- **`PhenomlClient` / `AsyncPhenomlClient` timeout handling** — when a custom `httpx_client` is supplied the SDK no longer overrides its timeout, leaving the provided client's own settings in effect.
+- **`client.lang2fhir.upload_profile(...)`** — marked deprecated in favour of `client.profiles.profiles.create(...)`; the existing route continues to work until a future removal.
+
 ## [16.4.0] - 2026-06-23
 ### Added
 - **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.
