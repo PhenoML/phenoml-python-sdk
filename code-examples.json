@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.4.0",
-    "specCommit": "e2c477c4583f8f9e7d0d1a5b5591c1aa8cabef10",
+    "sdkVersion": "16.5.0",
+    "specCommit": "0f5e6fc5cd6ac889d00d6733e3b710e4fb90e90e",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1190,33 +1190,9 @@
         "body": {
           "systems": [
             {
-              "name": "ICD-10-CM",
-              "version": "2025",
-              "code_count": 97584,
-              "builtin": true
-            },
-            {
-              "name": "SNOMED_CT_US_LITE",
-              "version": "20240901",
-              "code_count": 102837,
-              "builtin": true
-            },
-            {
-              "name": "RXNORM",
-              "version": "11042024",
-              "code_count": 257619,
-              "builtin": true
-            },
-            {
-              "name": "LOINC",
-              "version": "2.78",
-              "code_count": 98123,
-              "builtin": true
-            },
-            {
-              "name": "HPO",
-              "version": "2025",
-              "code_count": 19542,
+              "name": "CPT",
+              "version": "umls-2026aa",
+              "code_count": 10298,
               "builtin": true
             },
             {
@@ -1226,9 +1202,93 @@
               "builtin": true
             },
             {
+              "name": "HCPCS",
+              "version": "umls-2026aa",
+              "code_count": 7322,
+              "builtin": true
+            },
+            {
+              "name": "HPO",
+              "version": "umls-2026aa",
+              "code_count": 19698,
+              "builtin": true
+            },
+            {
+              "name": "HPO",
+              "version": "2025",
+              "code_count": 19542,
+              "builtin": true
+            },
+            {
+              "name": "ICD-10",
+              "version": "umls-2026aa",
+              "code_count": 12292,
+              "builtin": true
+            },
+            {
+              "name": "ICD-10-CM",
+              "version": "umls-2026aa",
+              "code_count": 98506,
+              "builtin": true
+            },
+            {
+              "name": "ICD-10-CM",
+              "version": "2025",
+              "code_count": 97584,
+              "builtin": true
+            },
+            {
+              "name": "ICD-10-PCS",
+              "version": "umls-2026aa",
+              "code_count": 79232,
+              "builtin": true
+            },
+            {
               "name": "ICD-10-PCS",
               "version": "2025",
               "code_count": 78717,
+              "builtin": true
+            },
+            {
+              "name": "LOINC",
+              "version": "umls-2026aa",
+              "code_count": 99231,
+              "builtin": true
+            },
+            {
+              "name": "LOINC",
+              "version": "2.78",
+              "code_count": 98123,
+              "builtin": true
+            },
+            {
+              "name": "RXNORM",
+              "version": "umls-2026aa",
+              "code_count": 259884,
+              "builtin": true
+            },
+            {
+              "name": "RXNORM",
+              "version": "11042024",
+              "code_count": 257619,
+              "builtin": true
+            },
+            {
+              "name": "SNOMED_CT_US",
+              "version": "umls-2026aa",
+              "code_count": 386110,
+              "builtin": true
+            },
+            {
+              "name": "SNOMED_CT_US",
+              "version": "20240901",
+              "code_count": 371482,
+              "builtin": true
+            },
+            {
+              "name": "SNOMED_CT_US_LITE",
+              "version": "20240901",
+              "code_count": 102837,
               "builtin": true
             }
           ]
@@ -2999,19 +3059,28 @@
               "tempId": "urn:uuid:patient-001",
               "resourceType": "Patient",
               "description": "John Doe, born 1979-03-15",
-              "originalText": "John Doe, DOB 1979-03-15"
+              "originalText": "John Doe, DOB 1979-03-15",
+              "sourcePages": [
+                1
+              ]
             },
             {
               "tempId": "urn:uuid:condition-001",
               "resourceType": "Condition",
               "description": "Type 2 Diabetes Mellitus diagnosis",
-              "originalText": "diagnosed with Type 2 Diabetes"
+              "originalText": "diagnosed with Type 2 Diabetes",
+              "sourcePages": [
+                1
+              ]
             },
             {
               "tempId": "urn:uuid:medication-001",
               "resourceType": "MedicationRequest",
               "description": "Metformin 500mg prescription",
-              "originalText": "Prescribed Metformin 500mg"
+              "originalText": "Prescribed Metformin 500mg",
+              "sourcePages": [
+                2
+              ]
             }
           ]
         }
@@ -3413,6 +3482,218 @@
             }
           ]
         }
+      }
+    },
+    "GET /fhir/implementation-guides": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/implementation-guides",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.list()",
+        "params": []
+      }
+    },
+    "GET /fhir/implementation-guides/{name}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/implementation-guides/{name}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.get(name={{name}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "PUT /fhir/implementation-guides/{name}": {
+      "httpMethod": "PUT",
+      "httpPath": "/fhir/implementation-guides/{name}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.update(name={{name}}, {{__body__}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "profile_context",
+              "fieldTemplate": "profile_context={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "DELETE /fhir/implementation-guides/{name}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir/implementation-guides/{name}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.delete(name={{name}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "GET /fhir/profiles": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/profiles",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.profiles.profiles.list({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "url",
+              "fieldTemplate": "url={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "POST /fhir/profiles": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir/profiles",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.profiles.profiles.create({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "structure_definition",
+              "fieldTemplate": "structure_definition={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir/profiles/{id}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/profiles/{id}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.profiles.profiles.get(id={{id}})",
+        "params": [
+          {
+            "name": "id",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "PUT /fhir/profiles/{id}": {
+      "httpMethod": "PUT",
+      "httpPath": "/fhir/profiles/{id}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.profiles.profiles.update(id={{id}}, {{__body__}})",
+        "params": [
+          {
+            "name": "id",
+            "kind": "string"
+          }
+        ],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "structure_definition",
+              "fieldTemplate": "structure_definition={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "DELETE /fhir/profiles/{id}": {
+      "httpMethod": "DELETE",
+      "httpPath": "/fhir/profiles/{id}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.profiles.profiles.delete(id={{id}})",
+        "params": [
+          {
+            "name": "id",
+            "kind": "string"
+          }
+        ]
       }
     },
     "POST /tools/lang2fhir-and-create": {

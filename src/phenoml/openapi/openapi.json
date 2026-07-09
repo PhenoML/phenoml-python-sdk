@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "e2c477c4583f8f9e7d0d1a5b5591c1aa8cabef10"
+    "version": "0f5e6fc5cd6ac889d00d6733e3b710e4fb90e90e"
   },
   "x-services": [
     {
@@ -18,6 +18,13 @@
       "description": "Convert natural language clinical text into structured FHIR resources including Patient, Condition, MedicationRequest, and more.",
       "iconHint": "lang2fhir",
       "status": "ga"
+    },
+    {
+      "id": "fhir_artifacts",
+      "name": "FHIR Artifacts",
+      "description": "Manage custom FHIR artifacts on a dedicated instance \u2014 StructureDefinition profiles and the implementation guides that group them \u2014 used by Lang2FHIR extraction and other FHIR capabilities.",
+      "iconHint": "profiles",
+      "status": "alpha"
     },
     {
       "id": "summary",
@@ -1678,7 +1685,7 @@
         ],
         "operationId": "construe_extract",
         "summary": "Extract medical codes from text",
-        "description": "Converts natural language text into structured medical codes.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
+        "description": "Converts natural language text into structured medical codes.\n\nPass `system.version` to select a specific code system version, for example\n`umls-2026aa` for UMLS 2026AA-backed systems.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -1695,6 +1702,20 @@
                     "system": {
                       "name": "ICD-10-CM",
                       "version": "2025"
+                    }
+                  }
+                },
+                "icd10cm_umls_2026aa": {
+                  "summary": "ICD-10-CM UMLS 2026AA",
+                  "description": "Select a specific code system version by passing its version ID.",
+                  "value": {
+                    "text": "Patient has type 2 diabetes mellitus with diabetic chronic kidney disease.",
+                    "system": {
+                      "name": "ICD-10-CM",
+                      "version": "umls-2026aa"
+                    },
+                    "config": {
+                      "validation_method": "simple"
                     }
                   }
                 },
@@ -2031,33 +2052,9 @@
                 "example": {
                   "systems": [
                     {
-                      "name": "ICD-10-CM",
-                      "version": "2025",
-                      "code_count": 97584,
-                      "builtin": true
-                    },
-                    {
-                      "name": "SNOMED_CT_US_LITE",
-                      "version": "20240901",
-                      "code_count": 102837,
-                      "builtin": true
-                    },
-                    {
-                      "name": "RXNORM",
-                      "version": "11042024",
-                      "code_count": 257619,
-                      "builtin": true
-                    },
-                    {
-                      "name": "LOINC",
-                      "version": "2.78",
-                      "code_count": 98123,
-                      "builtin": true
-                    },
-                    {
-                      "name": "HPO",
-                      "version": "2025",
-                      "code_count": 19542,
+                      "name": "CPT",
+                      "version": "umls-2026aa",
+                      "code_count": 10298,
                       "builtin": true
                     },
                     {
@@ -2067,9 +2064,93 @@
                       "builtin": true
                     },
                     {
+                      "name": "HCPCS",
+                      "version": "umls-2026aa",
+                      "code_count": 7322,
+                      "builtin": true
+                    },
+                    {
+                      "name": "HPO",
+                      "version": "umls-2026aa",
+                      "code_count": 19698,
+                      "builtin": true
+                    },
+                    {
+                      "name": "HPO",
+                      "version": "2025",
+                      "code_count": 19542,
+                      "builtin": true
+                    },
+                    {
+                      "name": "ICD-10",
+                      "version": "umls-2026aa",
+                      "code_count": 12292,
+                      "builtin": true
+                    },
+                    {
+                      "name": "ICD-10-CM",
+                      "version": "umls-2026aa",
+                      "code_count": 98506,
+                      "builtin": true
+                    },
+                    {
+                      "name": "ICD-10-CM",
+                      "version": "2025",
+                      "code_count": 97584,
+                      "builtin": true
+                    },
+                    {
+                      "name": "ICD-10-PCS",
+                      "version": "umls-2026aa",
+                      "code_count": 79232,
+                      "builtin": true
+                    },
+                    {
                       "name": "ICD-10-PCS",
                       "version": "2025",
                       "code_count": 78717,
+                      "builtin": true
+                    },
+                    {
+                      "name": "LOINC",
+                      "version": "umls-2026aa",
+                      "code_count": 99231,
+                      "builtin": true
+                    },
+                    {
+                      "name": "LOINC",
+                      "version": "2.78",
+                      "code_count": 98123,
+                      "builtin": true
+                    },
+                    {
+                      "name": "RXNORM",
+                      "version": "umls-2026aa",
+                      "code_count": 259884,
+                      "builtin": true
+                    },
+                    {
+                      "name": "RXNORM",
+                      "version": "11042024",
+                      "code_count": 257619,
+                      "builtin": true
+                    },
+                    {
+                      "name": "SNOMED_CT_US",
+                      "version": "umls-2026aa",
+                      "code_count": 386110,
+                      "builtin": true
+                    },
+                    {
+                      "name": "SNOMED_CT_US",
+                      "version": "20240901",
+                      "code_count": 371482,
+                      "builtin": true
+                    },
+                    {
+                      "name": "SNOMED_CT_US_LITE",
+                      "version": "20240901",
+                      "code_count": 102837,
                       "builtin": true
                     }
                   ]
@@ -2118,7 +2199,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system. Required if multiple versions exist.",
+            "description": "Specific version of the code system, such as `umls-2026aa`.",
             "example": "2025"
           }
         ],
@@ -2143,7 +2224,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters or multiple versions exist without version specified"
+            "description": "Invalid parameters"
           },
           "401": {
             "description": "Unauthorized"
@@ -2187,7 +2268,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system. Required if multiple versions exist."
+            "description": "Specific version of the custom code system."
           }
         ],
         "responses": {
@@ -2205,7 +2286,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters or multiple versions exist without version specified"
+            "description": "Invalid parameters"
           },
           "401": {
             "description": "Unauthorized"
@@ -2254,7 +2335,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system. Required if multiple versions exist."
+            "description": "Specific version of the custom code system."
           }
         ],
         "responses": {
@@ -2292,7 +2373,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters or multiple versions exist without version specified"
+            "description": "Invalid parameters"
           },
           "401": {
             "description": "Unauthorized"
@@ -2356,7 +2437,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system. Required if multiple versions exist.",
+            "description": "Specific version of the code system, such as `umls-2026aa`.",
             "examples": {
               "browse_icd10cm": {
                 "summary": "Browse ICD-10-CM",
@@ -2480,7 +2561,7 @@
             }
           },
           "400": {
-            "description": "Invalid parameters or multiple versions exist without version specified"
+            "description": "Invalid parameters"
           },
           "401": {
             "description": "Unauthorized"
@@ -2554,7 +2635,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system"
+            "description": "Specific version of the code system, such as `umls-2026aa`."
           }
         ],
         "responses": {
@@ -2670,7 +2751,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system"
+            "description": "Specific version of the code system, such as `umls-2026aa`."
           },
           {
             "name": "limit",
@@ -2919,7 +3000,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Specific version of the code system"
+            "description": "Specific version of the code system, such as `umls-2026aa`."
           },
           {
             "name": "limit",
@@ -4746,8 +4827,9 @@
     "/lang2fhir/profile/upload": {
       "post": {
         "operationId": "lang2fhir_uploadProfile",
-        "summary": "Upload custom FHIR profile",
-        "description": "Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.\n\nAll metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field\nfrom the StructureDefinition is used as the profile's unique identifier and lookup key.\nTo use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.\n\nUploads will be rejected if:\n- A built-in US Core or R4 base profile already exists with the same id\n- A custom profile with the same id has already been uploaded\n- A custom profile with the same url has already been uploaded\n",
+        "deprecated": true,
+        "summary": "Upload custom FHIR profile (deprecated)",
+        "description": "**Deprecated \u2014 use `POST /fhir/profiles` instead.** This route continues to work\nand operates on the same custom profiles, so no migration is required; it\nwill be removed in a future release. Note that `POST /fhir/profiles` does not\naccept `profile_context`; set implementation-guide context with\n`PUT /fhir/implementation-guides/{name}`.\n\nUpload a custom FHIR StructureDefinition profile for use with the lang2fhir service.\n\nAll metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field\nfrom the StructureDefinition is used as the profile's unique identifier and lookup key.\nTo use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.\n\nUploads will be rejected if:\n- A built-in US Core or R4 base profile already exists with the same id\n- A custom profile with the same id has already been uploaded\n- A custom profile with the same url has already been uploaded\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -4994,19 +5076,28 @@
                       "tempId": "urn:uuid:patient-001",
                       "resourceType": "Patient",
                       "description": "John Doe, born 1979-03-15",
-                      "originalText": "John Doe, DOB 1979-03-15"
+                      "originalText": "John Doe, DOB 1979-03-15",
+                      "sourcePages": [
+                        1
+                      ]
                     },
                     {
                       "tempId": "urn:uuid:condition-001",
                       "resourceType": "Condition",
                       "description": "Type 2 Diabetes Mellitus diagnosis",
-                      "originalText": "diagnosed with Type 2 Diabetes"
+                      "originalText": "diagnosed with Type 2 Diabetes",
+                      "sourcePages": [
+                        1
+                      ]
                     },
                     {
                       "tempId": "urn:uuid:medication-001",
                       "resourceType": "MedicationRequest",
                       "description": "Metformin 500mg prescription",
-                      "originalText": "Prescribed Metformin 500mg"
+                      "originalText": "Prescribed Metformin 500mg",
+                      "sourcePages": [
+                        2
+                      ]
                     }
                   ]
                 }
@@ -5579,6 +5670,417 @@
           }
         ],
         "x-service": "summary"
+      }
+    },
+    "/fhir/implementation-guides": {
+      "get": {
+        "operationId": "implementation-guides_list",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "List implementation guides",
+        "description": "Returns every implementation guide on this instance \u2014 both guides that\nhave stored metadata (a profile_context) and guides referenced by at\nleast one custom profile \u2014 with the number of profiles in each.\n",
+        "responses": {
+          "200": {
+            "description": "List of implementation guides",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "description": "The implementation guide name.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "acme-cardiology"
+        }
+      ],
+      "get": {
+        "operationId": "implementation-guides_get",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Get an implementation guide",
+        "description": "Returns a single implementation guide, including its profile_context and\nthe ids of the profiles that belong to it.\n",
+        "responses": {
+          "200": {
+            "description": "The requested implementation guide",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The name is reserved or malformed"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Implementation guide not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "put": {
+        "operationId": "implementation-guides_update",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Set an implementation guide's profile context",
+        "description": "Sets (or clears, with an empty value) the natural-language profile_context\nfor an implementation guide. The context is injected into the LLM during\nresource detection to help select the right profiles from this guide.\nIt applies to every profile in the guide.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/implementation-guides_UpdateImplementationGuideRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Implementation guide successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid implementation guide name or profile_context too long"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "implementation-guides_delete",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Delete an implementation guide's metadata",
+        "description": "Deletes the stored metadata for an implementation guide \u2014 its\nprofile_context and timestamps. Member profiles keep their\nimplementation_guide assignment, so a guide still referenced by at least\none profile continues to appear in listings, just without context or\ntimestamps.\n",
+        "responses": {
+          "204": {
+            "description": "Implementation guide metadata successfully deleted"
+          },
+          "400": {
+            "description": "The name is reserved or malformed"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "No implementation guide metadata exists for this name"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles": {
+      "get": {
+        "operationId": "profiles_list",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "List custom FHIR profiles",
+        "description": "Returns metadata for every custom (uploaded) FHIR profile on this\ninstance, across all implementation guides. The full StructureDefinition\nJSON is omitted from each entry; fetch a single profile by id to retrieve it.\n\nThe `url` query parameter filters by canonical URL. The canonical URL is the\nstable key other platform features use to reference a profile (FHIR's\n`meta.profile`, `baseDefinition`), since StructureDefinition ids are only\nunique within a package. A non-matching filter returns an empty list, not a 404.\n",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "description": "Filter by canonical URL. Accepts the FHIR pinned form `url|version` (split on the last `|`); the bare form matches the current version.\n",
+            "schema": {
+              "type": "string"
+            },
+            "example": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of uploaded profiles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "post": {
+        "operationId": "profiles_create",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Upload a custom FHIR profile",
+        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. All metadata (version, resource type, id, url) is derived from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. Code system configuration is auto-extracted from the\nsnapshot. Optionally group the profile under a named implementation guide.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profiles_ProfileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The id collides with a built-in US Core or R4 base profile\n- A custom profile with the same id or url already exists\n"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The lowercase StructureDefinition id of the custom profile.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "custom-patient"
+        }
+      ],
+      "get": {
+        "operationId": "profiles_get",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Get a custom FHIR profile",
+        "description": "Returns a single custom profile by id, including its full StructureDefinition JSON.\n",
+        "responses": {
+          "200": {
+            "description": "The requested profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "put": {
+        "operationId": "profiles_update",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Update a custom FHIR profile",
+        "description": "Replaces an existing custom profile with a new StructureDefinition. The\n`id` path parameter is authoritative: if the StructureDefinition includes\nan `id` it must match the path parameter, and if it omits one the path\nparameter is used. The FHIR resource type of the profile cannot change.\nCode system configuration is\nre-derived from the new StructureDefinition. When `implementation_guide` is\nomitted, the profile keeps its existing implementation guide. The instance\nstores a single version per canonical URL, so this replaces it in place.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profiles_ProfileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The StructureDefinition id does not match the id path parameter\n- The resource type differs from the existing profile\n- The url collides with a built-in profile or another custom profile\n"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "profiles_delete",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Delete a custom FHIR profile",
+        "description": "Permanently deletes a custom profile by id.\n",
+        "responses": {
+          "204": {
+            "description": "Profile successfully deleted"
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
       }
     },
     "/tools/lang2fhir-and-create": {
@@ -7971,13 +8473,13 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Code system name. Can be a built-in system or a custom system name.\n\nBuilt-in systems:\n* SNOMED_CT_US_LITE - version 20240901\n* RXNORM - version 11042024\n* ICD-10-CM - version 2025\n* ICD-10-PCS - version 2025\n* LOINC - version 2.78\n* HPO - version 2025\n* CPT - version 2025\n\nCustom systems:\n* Any valid system name uploaded via /construe/upload. Requires a paid plan.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
+            "description": "Code system name. Can be a built-in system or a custom system name.\n\nBuilt-in systems:\n* CPT\n* HCPCS\n* HPO\n* ICD-10\n* ICD-10-CM\n* ICD-10-PCS\n* LOINC\n* RXNORM\n* SNOMED_CT_US\n* SNOMED_CT_US_LITE\n\nCustom systems:\n* Any valid system name uploaded via /construe/upload. Requires a paid plan.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
             "example": "SNOMED_CT_US_LITE"
           },
           "version": {
             "type": "string",
-            "description": "Code system version. Must match the version available in your environment.",
-            "example": "20240901"
+            "description": "Specific code system version.",
+            "example": "umls-2026aa"
           }
         }
       },
@@ -8208,7 +8710,7 @@
           "version": {
             "type": "string",
             "description": "Code system version",
-            "example": "2025"
+            "example": "umls-2026aa"
           }
         }
       },
@@ -8229,7 +8731,7 @@
           "version": {
             "type": "string",
             "description": "Code system version",
-            "example": "2025"
+            "example": "umls-2026aa"
           },
           "code_count": {
             "type": "integer",
@@ -8501,7 +9003,7 @@
           "version": {
             "type": "string",
             "description": "Code system version",
-            "example": "2025"
+            "example": "umls-2026aa"
           },
           "code_count": {
             "type": "integer",
@@ -8674,10 +9176,40 @@
         "type": "object",
         "description": "OMOP CDM v5.4 rows grouped by destination table.",
         "properties": {
+          "location": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_LocationRow"
+            }
+          },
+          "care_site": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_CareSiteRow"
+            }
+          },
+          "provider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ProviderRow"
+            }
+          },
           "person": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/fhir2omop_PersonRow"
+            }
+          },
+          "death": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_DeathRow"
+            }
+          },
+          "observation_period": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/fhir2omop_ObservationPeriodRow"
             }
           },
           "visit_occurrence": {
@@ -8718,6 +9250,127 @@
           }
         }
       },
+      "fhir2omop_LocationRow": {
+        "type": "object",
+        "properties": {
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "address_1": {
+            "type": "string"
+          },
+          "address_2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "location_source_value": {
+            "type": "string"
+          },
+          "country_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "country_source_value": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "fhir2omop_CareSiteRow": {
+        "type": "object",
+        "properties": {
+          "care_site_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_name": {
+            "type": "string"
+          },
+          "place_of_service_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_source_value": {
+            "type": "string"
+          },
+          "place_of_service_source_value": {
+            "type": "string"
+          }
+        }
+      },
+      "fhir2omop_ProviderRow": {
+        "type": "object",
+        "properties": {
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_name": {
+            "type": "string"
+          },
+          "npi": {
+            "type": "string"
+          },
+          "dea": {
+            "type": "string"
+          },
+          "specialty_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "year_of_birth": {
+            "type": "integer"
+          },
+          "gender_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_source_value": {
+            "type": "string"
+          },
+          "specialty_source_value": {
+            "type": "string"
+          },
+          "specialty_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "gender_source_value": {
+            "type": "string"
+          },
+          "gender_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "fhir2omop_PersonRow": {
         "type": "object",
         "properties": {
@@ -8749,6 +9402,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "location_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "person_source_value": {
             "type": "string"
           },
@@ -8760,6 +9417,59 @@
           },
           "ethnicity_source_value": {
             "type": "string"
+          }
+        }
+      },
+      "fhir2omop_DeathRow": {
+        "type": "object",
+        "properties": {
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "death_date": {
+            "type": "string"
+          },
+          "death_datetime": {
+            "type": "string"
+          },
+          "death_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cause_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cause_source_value": {
+            "type": "string"
+          },
+          "cause_source_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "fhir2omop_ObservationPeriodRow": {
+        "type": "object",
+        "properties": {
+          "observation_period_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "person_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observation_period_start_date": {
+            "type": "string"
+          },
+          "observation_period_end_date": {
+            "type": "string"
+          },
+          "period_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -8791,6 +9501,14 @@
             "type": "string"
           },
           "visit_type_concept_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "care_site_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8828,6 +9546,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8881,6 +9603,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "drug_source_value": {
             "type": "string"
           },
@@ -8916,6 +9642,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -8982,6 +9712,10 @@
             "type": "integer",
             "format": "int64"
           },
+          "provider_id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "measurement_source_value": {
             "type": "string"
           },
@@ -9038,6 +9772,10 @@
             "format": "int64"
           },
           "visit_occurrence_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "provider_id": {
             "type": "integer",
             "format": "int64"
           },
@@ -10220,6 +10958,16 @@
                   "type": "string",
                   "description": "Verbatim text excerpt from the original clinical document",
                   "example": "diagnosed with Type 2 Diabetes"
+                },
+                "sourcePages": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "1-indexed source document page number(s) this resource was extracted from. Populated only by the /lang2fhir/document/multi endpoint; omitted when the source page could not be determined (e.g. raw-text create/multi, or a resource with no verbatim source text).\n",
+                  "example": [
+                    2
+                  ]
                 }
               }
             }
@@ -10637,6 +11385,219 @@
             "description": "Unresolved placeholders or issues (narrative mode only)"
           }
         }
+      },
+      "implementation-guides_ImplementationGuideSummary": {
+        "type": "object",
+        "description": "Metadata for an implementation guide. This is an instance-local grouping record, not a complete FHIR ImplementationGuide resource.\n",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The instance-local implementation guide name (the stable key).",
+            "example": "acme-cardiology"
+          },
+          "profile_context": {
+            "type": "string",
+            "description": "Natural-language context injected into the LLM during resource detection.",
+            "example": "When the text mentions phenotypic features, prefer the hpo-observation profile over Condition."
+          },
+          "profile_count": {
+            "type": "integer",
+            "description": "The number of custom profiles in this implementation guide.",
+            "example": 3
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Present only for guides that have stored metadata (a profile_context has been set). Omitted for guides that exist solely because a profile references them.\n"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Present only for guides that have stored metadata. Omitted for guides that exist solely because a profile references them.\n"
+          }
+        }
+      },
+      "implementation-guides_ImplementationGuideListResponse": {
+        "type": "object",
+        "properties": {
+          "implementation_guides": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/implementation-guides_ImplementationGuideSummary"
+            }
+          }
+        }
+      },
+      "implementation-guides_ImplementationGuideDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/implementation-guides_ImplementationGuideSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "profiles": {
+                "type": "array",
+                "description": "The ids of the profiles that belong to this implementation guide.",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "custom-patient",
+                  "acme-vital-signs"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "implementation-guides_UpdateImplementationGuideRequest": {
+        "type": "object",
+        "properties": {
+          "profile_context": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Natural-language context that helps the LLM select the right profiles from this implementation guide during resource detection. An empty value clears the context. Max 2000 characters.\n",
+            "example": "When clinical text describes phenotypic features, use the hpo-phenotype-observation profile instead of Condition."
+          }
+        }
+      },
+      "profiles_ProfileUploadRequest": {
+        "type": "object",
+        "required": [
+          "structure_definition"
+        ],
+        "properties": {
+          "structure_definition": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/profiles_FHIRResource"
+              }
+            ],
+            "description": "A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. All metadata (version, resource type, id) is derived from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, it is derived from the final path segment of the canonical url.\n",
+            "example": {
+              "resourceType": "StructureDefinition",
+              "id": "custom-patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "name": "CustomPatient",
+              "status": "active",
+              "fhirVersion": "4.0.1",
+              "kind": "resource",
+              "abstract": false,
+              "type": "Patient",
+              "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+              "derivation": "constraint",
+              "snapshot": {
+                "element": [
+                  {
+                    "id": "Patient",
+                    "path": "Patient",
+                    "min": 0,
+                    "max": "*"
+                  },
+                  {
+                    "id": "Patient.name",
+                    "path": "Patient.name",
+                    "min": 1,
+                    "max": "*"
+                  }
+                ]
+              }
+            }
+          },
+          "implementation_guide": {
+            "type": "string",
+            "description": "Implementation Guide name to group this profile under. On create, defaults to \"custom\" if omitted; on update, omitting it preserves the profile's current guide. Cannot be \"us_core\" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.\n",
+            "example": "acme-cardiology"
+          }
+        }
+      },
+      "profiles_ProfileSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The lowercase StructureDefinition id, used as the profile's lookup key.",
+            "example": "custom-patient"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "custom",
+              "builtin"
+            ],
+            "description": "The profile's origin. Listings currently return only custom (uploaded) profiles, so this is always \"custom\" today; built-in (US Core / R4 base) profiles would be surfaced via an opt-in parameter in a future release, not by changing the default behavior.\n",
+            "example": "custom"
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "The FHIR resource type from the StructureDefinition.",
+            "example": "Patient"
+          },
+          "url": {
+            "type": "string",
+            "description": "The canonical URL from the StructureDefinition.",
+            "example": "http://phenoml.com/fhir/StructureDefinition/custom-patient"
+          },
+          "version": {
+            "type": "string",
+            "description": "The version from the StructureDefinition.version field.",
+            "example": "1.0.0"
+          },
+          "fhir_version": {
+            "type": "string",
+            "description": "The base FHIR version the StructureDefinition targets.",
+            "example": "4.0.1"
+          },
+          "implementation_guide": {
+            "type": "string",
+            "description": "The implementation guide the profile belongs to.",
+            "example": "acme-cardiology"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "profiles_ProfileListResponse": {
+        "type": "object",
+        "properties": {
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/profiles_ProfileSummary"
+            }
+          }
+        }
+      },
+      "profiles_ProfileGetResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/profiles_ProfileSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "structure_definition": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/profiles_FHIRResource"
+                  }
+                ],
+                "description": "The full FHIR StructureDefinition JSON."
+              }
+            }
+          }
+        ]
+      },
+      "profiles_FHIRResource": {
+        "type": "object",
+        "description": "A FHIR resource (schema depends on resource type)"
       },
       "tools_Lang2FhirAndCreateRequest": {
         "type": "object",
@@ -11917,6 +12878,14 @@
     {
       "name": "Summary / Templates",
       "description": "Reusable summary templates that drive FHIR-to-text generation."
+    },
+    {
+      "name": "FHIR Artifacts / Implementation Guides",
+      "description": "Manage implementation guides that group custom FHIR profiles."
+    },
+    {
+      "name": "FHIR Artifacts / Profiles",
+      "description": "Manage custom FHIR profiles (StructureDefinitions) as instance-level FHIR artifacts."
     },
     {
       "name": "Tools / MCP Servers",
