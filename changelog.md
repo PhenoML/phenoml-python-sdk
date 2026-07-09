@@ -1,3 +1,16 @@
+## [16.5.0] - 2026-07-09
+### Added
+- **`client.implementation_guides`** and **`client.profiles`** — new top-level service clients (sync and async) for managing FHIR implementation guides and custom StructureDefinition profiles via `list()`, `get()`, `create()`/`update()`, and `delete()` methods.
+- **`ImplementationGuideDetail`**, **`ImplementationGuideListResponse`**, **`ImplementationGuideSummary`**, **`ProfileGetResponse`**, **`ProfileListResponse`**, **`ProfileSummary`**, and **`ProfileUploadRequest`** — new request/response types for the implementation guides and profiles APIs.
+- **`stream_reconnection_enabled`** and **`max_stream_reconnection_attempts`** — new optional parameters on `PhenomlClient`, `AsyncPhenomlClient`, and `RequestOptions` to control automatic SSE stream reconnection.
+- **`CareSiteRow`**, **`DeathRow`**, **`LocationRow`**, **`ObservationPeriodRow`**, and **`ProviderRow`** — new OMOP CDM v5.4 row types exported from `phenoml.fhir2omop` and included as optional lists on `OmopTables`.
+- **`provider_id`**, **`care_site_id`**, and **`location_id`** — new optional fields added to several `phenoml.fhir2omop` row types (`ConditionOccurrenceRow`, `DrugExposureRow`, `MeasurementRow`, `ObservationRow`, `ProcedureOccurrenceRow`, `VisitOccurrenceRow`, `PersonRow`) for richer OMOP mapping fidelity.
+- **`CreateMultiResponseResourcesItem.source_pages`** — new optional `List[int]` field indicating the 1-indexed source document page number(s) a resource was extracted from (populated only by the `/lang2fhir/document/multi` endpoint).
+- **Typed error classes** (`BadRequestError`, `UnauthorizedError`, `ForbiddenError`, `NotFoundError`, `InternalServerError`) added to `phenoml.implementation_guides.errors` and `phenoml.profiles.errors`.
+
+### Changed
+- **`client.lang2fhir.upload_profile(...)`** — deprecated in favor of `client.profiles.profiles.create(...)`; the existing route continues to work and no migration is required until a future removal release.
+
 ## [16.4.0] - 2026-06-23
 ### Added
 - **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.
