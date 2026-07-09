@@ -12,13 +12,16 @@ class ExtractRequestSystem(UniversalBaseModel):
     Code system name. Can be a built-in system or a custom system name.
     
     Built-in systems:
-    * SNOMED_CT_US_LITE - version 20240901
-    * RXNORM - version 11042024
-    * ICD-10-CM - version 2025
-    * ICD-10-PCS - version 2025
-    * LOINC - version 2.78
-    * HPO - version 2025
-    * CPT - version 2025
+    * CPT
+    * HCPCS
+    * HPO
+    * ICD-10
+    * ICD-10-CM
+    * ICD-10-PCS
+    * LOINC
+    * RXNORM
+    * SNOMED_CT_US
+    * SNOMED_CT_US_LITE
     
     Custom systems:
     * Any valid system name uploaded via /construe/upload. Requires a paid plan.
@@ -28,7 +31,7 @@ class ExtractRequestSystem(UniversalBaseModel):
 
     version: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Code system version. Must match the version available in your environment.
+    Specific code system version.
     """
 
     if IS_PYDANTIC_V2:

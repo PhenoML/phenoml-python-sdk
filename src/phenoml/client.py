@@ -20,7 +20,9 @@ if typing.TYPE_CHECKING:
     from .fhir.client import AsyncFhirClient, FhirClient
     from .fhir2omop.client import AsyncFhir2OmopClient, Fhir2OmopClient
     from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
+    from .implementation_guides.client import AsyncImplementationGuidesClient, ImplementationGuidesClient
     from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
+    from .profiles.client import AsyncProfilesClient, ProfilesClient
     from .summary.client import AsyncSummaryClient, SummaryClient
     from .tools.client import AsyncToolsClient, ToolsClient
     from .voice.client import AsyncVoiceClient, VoiceClient
@@ -104,6 +106,8 @@ class PhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -120,6 +124,8 @@ class PhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -138,13 +144,13 @@ class PhenomlClient:
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
-        )
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
@@ -160,6 +166,8 @@ class PhenomlClient:
                 else httpx.Client(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
                 max_retries=_defaulted_max_retries,
+                stream_reconnection_enabled=stream_reconnection_enabled,
+                max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                 logging=logging,
                 token=_token_getter_override if _token_getter_override is not None else token,
             )
@@ -177,6 +185,8 @@ class PhenomlClient:
                     else httpx.Client(timeout=_defaulted_timeout),
                     timeout=_defaulted_timeout,
                     max_retries=_defaulted_max_retries,
+                    stream_reconnection_enabled=stream_reconnection_enabled,
+                    max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                     logging=logging,
                 ),
             )
@@ -191,6 +201,8 @@ class PhenomlClient:
                 else httpx.Client(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
                 max_retries=_defaulted_max_retries,
+                stream_reconnection_enabled=stream_reconnection_enabled,
+                max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                 logging=logging,
             )
         else:
@@ -204,7 +216,9 @@ class PhenomlClient:
         self._fhir: typing.Optional[FhirClient] = None
         self._fhir2omop: typing.Optional[Fhir2OmopClient] = None
         self._fhir_provider: typing.Optional[FhirProviderClient] = None
+        self._implementation_guides: typing.Optional[ImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[Lang2FhirClient] = None
+        self._profiles: typing.Optional[ProfilesClient] = None
         self._summary: typing.Optional[SummaryClient] = None
         self._tools: typing.Optional[ToolsClient] = None
         self._voice: typing.Optional[VoiceClient] = None
@@ -267,12 +281,28 @@ class PhenomlClient:
         return self._fhir_provider
 
     @property
+    def implementation_guides(self):
+        if self._implementation_guides is None:
+            from .implementation_guides.client import ImplementationGuidesClient  # noqa: E402
+
+            self._implementation_guides = ImplementationGuidesClient(client_wrapper=self._client_wrapper)
+        return self._implementation_guides
+
+    @property
     def lang2fhir(self):
         if self._lang2fhir is None:
             from .lang2fhir.client import Lang2FhirClient  # noqa: E402
 
             self._lang2fhir = Lang2FhirClient(client_wrapper=self._client_wrapper)
         return self._lang2fhir
+
+    @property
+    def profiles(self):
+        if self._profiles is None:
+            from .profiles.client import ProfilesClient  # noqa: E402
+
+            self._profiles = ProfilesClient(client_wrapper=self._client_wrapper)
+        return self._profiles
 
     @property
     def summary(self):
@@ -402,6 +432,8 @@ class AsyncPhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -418,6 +450,8 @@ class AsyncPhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
@@ -436,13 +470,13 @@ class AsyncPhenomlClient:
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
+        stream_reconnection_enabled: typing.Optional[bool] = None,
+        max_stream_reconnection_attempts: typing.Optional[int] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
-        )
+        _defaulted_timeout = timeout if timeout is not None else 60 if httpx_client is None else None
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
@@ -456,6 +490,8 @@ class AsyncPhenomlClient:
                 else _make_default_async_client(timeout=_defaulted_timeout, follow_redirects=follow_redirects),
                 timeout=_defaulted_timeout,
                 max_retries=_defaulted_max_retries,
+                stream_reconnection_enabled=stream_reconnection_enabled,
+                max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                 logging=logging,
                 token=_token_getter_override if _token_getter_override is not None else token,
             )
@@ -473,6 +509,8 @@ class AsyncPhenomlClient:
                     else httpx.AsyncClient(timeout=_defaulted_timeout),
                     timeout=_defaulted_timeout,
                     max_retries=_defaulted_max_retries,
+                    stream_reconnection_enabled=stream_reconnection_enabled,
+                    max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                     logging=logging,
                 ),
             )
@@ -486,6 +524,8 @@ class AsyncPhenomlClient:
                 else _make_default_async_client(timeout=_defaulted_timeout, follow_redirects=follow_redirects),
                 timeout=_defaulted_timeout,
                 max_retries=_defaulted_max_retries,
+                stream_reconnection_enabled=stream_reconnection_enabled,
+                max_stream_reconnection_attempts=max_stream_reconnection_attempts,
                 logging=logging,
             )
         else:
@@ -499,7 +539,9 @@ class AsyncPhenomlClient:
         self._fhir: typing.Optional[AsyncFhirClient] = None
         self._fhir2omop: typing.Optional[AsyncFhir2OmopClient] = None
         self._fhir_provider: typing.Optional[AsyncFhirProviderClient] = None
+        self._implementation_guides: typing.Optional[AsyncImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[AsyncLang2FhirClient] = None
+        self._profiles: typing.Optional[AsyncProfilesClient] = None
         self._summary: typing.Optional[AsyncSummaryClient] = None
         self._tools: typing.Optional[AsyncToolsClient] = None
         self._voice: typing.Optional[AsyncVoiceClient] = None
@@ -562,12 +604,28 @@ class AsyncPhenomlClient:
         return self._fhir_provider
 
     @property
+    def implementation_guides(self):
+        if self._implementation_guides is None:
+            from .implementation_guides.client import AsyncImplementationGuidesClient  # noqa: E402
+
+            self._implementation_guides = AsyncImplementationGuidesClient(client_wrapper=self._client_wrapper)
+        return self._implementation_guides
+
+    @property
     def lang2fhir(self):
         if self._lang2fhir is None:
             from .lang2fhir.client import AsyncLang2FhirClient  # noqa: E402
 
             self._lang2fhir = AsyncLang2FhirClient(client_wrapper=self._client_wrapper)
         return self._lang2fhir
+
+    @property
+    def profiles(self):
+        if self._profiles is None:
+            from .profiles.client import AsyncProfilesClient  # noqa: E402
+
+            self._profiles = AsyncProfilesClient(client_wrapper=self._client_wrapper)
+        return self._profiles
 
     @property
     def summary(self):

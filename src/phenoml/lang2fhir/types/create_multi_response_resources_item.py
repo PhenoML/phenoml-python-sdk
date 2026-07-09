@@ -14,11 +14,19 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
         FieldMetadata(alias="tempId"),
         pydantic.Field(alias="tempId", description="Temporary UUID for the resource"),
     ] = None
+    """
+    Temporary UUID for the resource
+    """
+
     resource_type: typing_extensions.Annotated[
         typing.Optional[str],
         FieldMetadata(alias="resourceType"),
         pydantic.Field(alias="resourceType", description="FHIR resource type"),
     ] = None
+    """
+    FHIR resource type
+    """
+
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Context-enriched rewritten text excerpt for this resource
@@ -29,6 +37,21 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
         FieldMetadata(alias="originalText"),
         pydantic.Field(alias="originalText", description="Verbatim text excerpt from the original clinical document"),
     ] = None
+    """
+    Verbatim text excerpt from the original clinical document
+    """
+
+    source_pages: typing_extensions.Annotated[
+        typing.Optional[typing.List[int]],
+        FieldMetadata(alias="sourcePages"),
+        pydantic.Field(
+            alias="sourcePages",
+            description="1-indexed source document page number(s) this resource was extracted from. Populated only by the /lang2fhir/document/multi endpoint; omitted when the source page could not be determined (e.g. raw-text create/multi, or a resource with no verbatim source text).",
+        ),
+    ] = None
+    """
+    1-indexed source document page number(s) this resource was extracted from. Populated only by the /lang2fhir/document/multi endpoint; omitted when the source page could not be determined (e.g. raw-text create/multi, or a resource with no verbatim source text).
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
