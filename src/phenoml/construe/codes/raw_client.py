@@ -46,6 +46,9 @@ class RawCodesClient:
         """
         Converts natural language text into structured medical codes.
 
+        Pass `system.version` to select a specific code system version, for example
+        `umls-2026aa` for UMLS 2026AA-backed systems.
+
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
         Parameters
@@ -188,7 +191,7 @@ class RawCodesClient:
             Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the code system, such as `umls-2026aa`.
 
         cursor : typing.Optional[str]
             Pagination cursor from previous response
@@ -300,7 +303,7 @@ class RawCodesClient:
             cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -420,7 +423,7 @@ class RawCodesClient:
             Natural language text to find semantically similar codes for
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         limit : typing.Optional[int]
             Maximum number of results (default 10, max 50)
@@ -550,7 +553,7 @@ class RawCodesClient:
             Search query (searches code IDs and descriptions)
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         limit : typing.Optional[int]
             Maximum number of results (default 20, max 100)
@@ -662,6 +665,9 @@ class AsyncRawCodesClient:
     ) -> AsyncHttpResponse[ExtractCodesResult]:
         """
         Converts natural language text into structured medical codes.
+
+        Pass `system.version` to select a specific code system version, for example
+        `umls-2026aa` for UMLS 2026AA-backed systems.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -805,7 +811,7 @@ class AsyncRawCodesClient:
             Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the code system, such as `umls-2026aa`.
 
         cursor : typing.Optional[str]
             Pagination cursor from previous response
@@ -917,7 +923,7 @@ class AsyncRawCodesClient:
             cosmetic dot (use "E1165", not "E11.65").
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1037,7 +1043,7 @@ class AsyncRawCodesClient:
             Natural language text to find semantically similar codes for
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         limit : typing.Optional[int]
             Maximum number of results (default 10, max 50)
@@ -1167,7 +1173,7 @@ class AsyncRawCodesClient:
             Search query (searches code IDs and descriptions)
 
         version : typing.Optional[str]
-            Specific version of the code system
+            Specific version of the code system, such as `umls-2026aa`.
 
         limit : typing.Optional[int]
             Maximum number of results (default 20, max 100)

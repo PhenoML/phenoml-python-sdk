@@ -25,11 +25,19 @@ class CohortResponse(UniversalBaseModel):
         FieldMetadata(alias="patientIds"),
         pydantic.Field(alias="patientIds", description="Array of patient IDs that match the cohort criteria"),
     ] = None
+    """
+    Array of patient IDs that match the cohort criteria
+    """
+
     patient_count: typing_extensions.Annotated[
         typing.Optional[int],
         FieldMetadata(alias="patientCount"),
         pydantic.Field(alias="patientCount", description="Total number of patients in the cohort"),
     ] = None
+    """
+    Total number of patients in the cohort
+    """
+
     queries: typing.Optional[typing.List[SearchConcept]] = pydantic.Field(default=None)
     """
     Individual search concepts that were identified and executed

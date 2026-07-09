@@ -1,3 +1,17 @@
+## [16.5.0] - 2026-07-09
+### Added
+- **`client.implementation_guides`** — new sync and async client with `list()`, `get()`, `update()`, and `delete()` methods for managing FHIR implementation guide metadata; includes `ImplementationGuideSummary`, `ImplementationGuideDetail`, and `ImplementationGuideListResponse` models.
+- **`client.profiles.profiles`** — new sync and async client (plus raw variants `RawProfilesClient` / `AsyncRawProfilesClient`) for full CRUD management of custom FHIR StructureDefinition profiles via `fhir/profiles`; exposes `ProfileSummary`, `ProfileGetResponse`, `ProfileListResponse`, `ProfileUploadRequest`, and `ProfileSummarySource`.
+- **New OMOP CDM v5.4 row types and table fields** — `CareSiteRow`, `DeathRow`, `LocationRow`, `ObservationPeriodRow`, and `ProviderRow` added to `phenoml.fhir2omop`; `OmopTables` gains five matching optional table fields; linkage fields (`provider_id`, `care_site_id`, `location_id`) added to several existing row types.
+- **`RequestOptions.timeout`** — new `float` field for per-request timeout in seconds; `timeout_in_seconds` is retained as a deprecated alias.
+
+### Changed
+- **`client.lang2fhir.upload_profile()`** — deprecated in favour of `client.profiles.profiles.create()`; the existing route continues to work until a future removal.
+- **`PhenomlClient` / `AsyncPhenomlClient` timeout defaulting** — when a custom `httpx_client` is supplied, timeout now defaults to `None` instead of reading `httpx_client.timeout.read`.
+- **`ExtractRequestSystem` built-in system list** — updated to include `HCPCS`, `ICD-10`, and `SNOMED_CT_US`; pinned version strings removed from system names.
+- **`EventSource` SSE line-size guard** — raises `SSEError` if a single SSE line exceeds 1 MiB, preventing unbounded memory growth on malformed streams.
+- **`CreateMultiResponseResourcesItem.source_pages`** — new optional `List[int]` field containing 1-indexed source document page numbers for resources extracted by the `/lang2fhir/document/multi` endpoint.
+
 ## [16.4.0] - 2026-06-23
 ### Added
 - **`client.voice.voice.transcribe(...)`** — new sync and async method that accepts raw audio bytes (WAV, FLAC, MP3, OGG/WebM Opus) and returns a `TranscribeResponse` with the full transcript, supporting up to ~5 minutes of audio per request.

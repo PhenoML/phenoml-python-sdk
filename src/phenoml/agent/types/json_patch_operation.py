@@ -33,6 +33,9 @@ class JsonPatchOperation(UniversalBaseModel):
             description="A JSON Pointer string specifying the location in the target document to move the value from (used with move and copy operations)",
         ),
     ] = None
+    """
+    A JSON Pointer string specifying the location in the target document to move the value from (used with move and copy operations)
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

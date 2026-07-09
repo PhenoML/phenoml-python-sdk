@@ -14,11 +14,19 @@ class Lang2FhirAndCreateMultiResponseResourceInfoItem(UniversalBaseModel):
         FieldMetadata(alias="tempId"),
         pydantic.Field(alias="tempId", description="Original temporary UUID"),
     ] = None
+    """
+    Original temporary UUID
+    """
+
     resource_type: typing_extensions.Annotated[
         typing.Optional[str],
         FieldMetadata(alias="resourceType"),
         pydantic.Field(alias="resourceType", description="FHIR resource type"),
     ] = None
+    """
+    FHIR resource type
+    """
+
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     Text excerpt this resource was extracted from
