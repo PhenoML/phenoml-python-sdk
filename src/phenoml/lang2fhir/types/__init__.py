@@ -30,6 +30,7 @@ if typing.TYPE_CHECKING:
     from .fhir_resource import FhirResource
     from .page_classification import PageClassification
     from .page_filter import PageFilter
+    from .profile_upload_request import ProfileUploadRequest
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
     from .upload_profile_response import UploadProfileResponse
@@ -54,6 +55,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirResource": ".fhir_resource",
     "PageClassification": ".page_classification",
     "PageFilter": ".page_filter",
+    "ProfileUploadRequest": ".profile_upload_request",
     "SearchResponse": ".search_response",
     "SearchResponseResourceType": ".search_response_resource_type",
     "UploadProfileResponse": ".upload_profile_response",
@@ -102,6 +104,7 @@ __all__ = [
     "FhirResource",
     "PageClassification",
     "PageFilter",
+    "ProfileUploadRequest",
     "SearchResponse",
     "SearchResponseResourceType",
     "UploadProfileResponse",

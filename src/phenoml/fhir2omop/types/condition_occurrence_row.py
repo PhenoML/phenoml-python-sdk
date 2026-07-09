@@ -15,6 +15,7 @@ class ConditionOccurrenceRow(UniversalBaseModel):
     condition_end_date: typing.Optional[str] = None
     condition_type_concept_id: typing.Optional[int] = None
     visit_occurrence_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
     condition_source_value: typing.Optional[str] = None
     condition_source_concept_id: typing.Optional[int] = None
     condition_status_source_value: typing.Optional[str] = None

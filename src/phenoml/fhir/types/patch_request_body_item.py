@@ -30,6 +30,9 @@ class PatchRequestBodyItem(UniversalBaseModel):
         FieldMetadata(alias="from"),
         pydantic.Field(alias="from", description="Source location for move and copy operations (JSON Pointer)"),
     ] = None
+    """
+    Source location for move and copy operations (JSON Pointer)
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

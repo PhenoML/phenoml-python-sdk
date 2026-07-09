@@ -403,6 +403,12 @@ class RawLang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UploadProfileResponse]:
         """
+        **Deprecated — use `POST /fhir/profiles` instead.** This route continues to work
+        and operates on the same custom profiles, so no migration is required; it
+        will be removed in a future release. Note that `POST /fhir/profiles` does not
+        accept `profile_context`; set implementation-guide context with
+        `PUT /fhir/implementation-guides/{name}`.
+
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
         All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
@@ -440,9 +446,6 @@ class RawLang2FhirClient:
                 "profile": profile,
                 "implementation_guide": implementation_guide,
                 "profile_context": profile_context,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -1197,6 +1200,12 @@ class AsyncRawLang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UploadProfileResponse]:
         """
+        **Deprecated — use `POST /fhir/profiles` instead.** This route continues to work
+        and operates on the same custom profiles, so no migration is required; it
+        will be removed in a future release. Note that `POST /fhir/profiles` does not
+        accept `profile_context`; set implementation-guide context with
+        `PUT /fhir/implementation-guides/{name}`.
+
         Upload a custom FHIR StructureDefinition profile for use with the lang2fhir service.
 
         All metadata is derived from the StructureDefinition JSON itself. The lowercase `id` field
@@ -1234,9 +1243,6 @@ class AsyncRawLang2FhirClient:
                 "profile": profile,
                 "implementation_guide": implementation_guide,
                 "profile_context": profile_context,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

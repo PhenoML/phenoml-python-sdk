@@ -184,7 +184,7 @@ class CodeSystemsClient:
             Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the code system, such as `umls-2026aa`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -227,7 +227,7 @@ class CodeSystemsClient:
             Code system name
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the custom code system.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -271,7 +271,7 @@ class CodeSystemsClient:
             Code system name
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the custom code system.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -481,7 +481,7 @@ class AsyncCodeSystemsClient:
             Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the code system, such as `umls-2026aa`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -532,7 +532,7 @@ class AsyncCodeSystemsClient:
             Code system name
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the custom code system.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -584,7 +584,7 @@ class AsyncCodeSystemsClient:
             Code system name
 
         version : typing.Optional[str]
-            Specific version of the code system. Required if multiple versions exist.
+            Specific version of the custom code system.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
