@@ -15,6 +15,7 @@ class PersonRow(UniversalBaseModel):
     birth_datetime: typing.Optional[str] = None
     race_concept_id: typing.Optional[int] = None
     ethnicity_concept_id: typing.Optional[int] = None
+    location_id: typing.Optional[int] = None
     person_source_value: typing.Optional[str] = None
     gender_source_value: typing.Optional[str] = None
     race_source_value: typing.Optional[str] = None

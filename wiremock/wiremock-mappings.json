@@ -1092,7 +1092,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"FHIR resources mapped to OMOP CDM v5.4\",\n  \"tables\": {\n    \"person\": [\n      {\n        \"person_id\": 1,\n        \"gender_concept_id\": 0,\n        \"year_of_birth\": 1985,\n        \"month_of_birth\": 7,\n        \"day_of_birth\": 22,\n        \"birth_datetime\": \"1985-07-22\",\n        \"race_concept_id\": 0,\n        \"ethnicity_concept_id\": 0,\n        \"person_source_value\": \"patient-1\",\n        \"gender_source_value\": \"female\"\n      }\n    ],\n    \"visit_occurrence\": [\n      {}\n    ],\n    \"condition_occurrence\": [\n      {\n        \"condition_occurrence_id\": 1,\n        \"person_id\": 1,\n        \"condition_concept_id\": 201826,\n        \"condition_start_date\": \"2024-01-15\",\n        \"condition_start_datetime\": \"2024-01-15\",\n        \"condition_type_concept_id\": 32817,\n        \"condition_source_value\": \"http://snomed.info/sct#44054006\",\n        \"condition_source_concept_id\": 201826\n      }\n    ],\n    \"drug_exposure\": [\n      {\n        \"drug_exposure_id\": 1,\n        \"person_id\": 1,\n        \"drug_concept_id\": 40163924,\n        \"drug_exposure_start_date\": \"2024-01-16\",\n        \"drug_exposure_start_datetime\": \"2024-01-16\",\n        \"drug_type_concept_id\": 32817,\n        \"drug_source_value\": \"http://www.nlm.nih.gov/research/umls/rxnorm#860975\",\n        \"drug_source_concept_id\": 40163924\n      }\n    ],\n    \"procedure_occurrence\": [\n      {}\n    ],\n    \"measurement\": [\n      {}\n    ],\n    \"observation\": [\n      {}\n    ]\n  },\n  \"mappings\": [\n    {\n      \"resource_type\": \"Condition\",\n      \"resource_id\": \"condition-1\",\n      \"omop_table\": \"condition_occurrence\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://snomed.info/sct\",\n      \"source_code\": \"44054006\",\n      \"source_name\": \"Type 2 diabetes mellitus\",\n      \"target_vocabulary\": \"SNOMED\",\n      \"target_code\": \"44054006\",\n      \"target_name\": \"Type 2 diabetes mellitus\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    },\n    {\n      \"resource_type\": \"MedicationRequest\",\n      \"resource_id\": \"medreq-1\",\n      \"omop_table\": \"drug_exposure\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://www.nlm.nih.gov/research/umls/rxnorm\",\n      \"source_code\": \"860975\",\n      \"source_name\": \"metformin hydrochloride 500 MG\",\n      \"target_vocabulary\": \"RXNORM\",\n      \"target_code\": \"860975\",\n      \"target_name\": \"metformin hydrochloride 500 MG\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"resource_type\": \"resource_type\",\n      \"resource_id\": \"resource_id\",\n      \"reason\": \"reason\"\n    }\n  ],\n  \"vocab_version\": \"v20240229\",\n  \"summary\": {\n    \"codes_already_standard\": 2,\n    \"codes_normalized\": 0,\n    \"codes_unmapped\": 0,\n    \"off_vocab_rate\": 0\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"FHIR resources mapped to OMOP CDM v5.4\",\n  \"tables\": {\n    \"location\": [\n      {}\n    ],\n    \"care_site\": [\n      {}\n    ],\n    \"provider\": [\n      {}\n    ],\n    \"person\": [\n      {\n        \"person_id\": 1,\n        \"gender_concept_id\": 0,\n        \"year_of_birth\": 1985,\n        \"month_of_birth\": 7,\n        \"day_of_birth\": 22,\n        \"birth_datetime\": \"1985-07-22\",\n        \"race_concept_id\": 0,\n        \"ethnicity_concept_id\": 0,\n        \"person_source_value\": \"patient-1\",\n        \"gender_source_value\": \"female\"\n      }\n    ],\n    \"death\": [\n      {}\n    ],\n    \"observation_period\": [\n      {}\n    ],\n    \"visit_occurrence\": [\n      {}\n    ],\n    \"condition_occurrence\": [\n      {\n        \"condition_occurrence_id\": 1,\n        \"person_id\": 1,\n        \"condition_concept_id\": 201826,\n        \"condition_start_date\": \"2024-01-15\",\n        \"condition_start_datetime\": \"2024-01-15\",\n        \"condition_type_concept_id\": 32817,\n        \"condition_source_value\": \"http://snomed.info/sct#44054006\",\n        \"condition_source_concept_id\": 201826\n      }\n    ],\n    \"drug_exposure\": [\n      {\n        \"drug_exposure_id\": 1,\n        \"person_id\": 1,\n        \"drug_concept_id\": 40163924,\n        \"drug_exposure_start_date\": \"2024-01-16\",\n        \"drug_exposure_start_datetime\": \"2024-01-16\",\n        \"drug_type_concept_id\": 32817,\n        \"drug_source_value\": \"http://www.nlm.nih.gov/research/umls/rxnorm#860975\",\n        \"drug_source_concept_id\": 40163924\n      }\n    ],\n    \"procedure_occurrence\": [\n      {}\n    ],\n    \"measurement\": [\n      {}\n    ],\n    \"observation\": [\n      {}\n    ]\n  },\n  \"mappings\": [\n    {\n      \"resource_type\": \"Condition\",\n      \"resource_id\": \"condition-1\",\n      \"omop_table\": \"condition_occurrence\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://snomed.info/sct\",\n      \"source_code\": \"44054006\",\n      \"source_name\": \"Type 2 diabetes mellitus\",\n      \"target_vocabulary\": \"SNOMED\",\n      \"target_code\": \"44054006\",\n      \"target_name\": \"Type 2 diabetes mellitus\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    },\n    {\n      \"resource_type\": \"MedicationRequest\",\n      \"resource_id\": \"medreq-1\",\n      \"omop_table\": \"drug_exposure\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://www.nlm.nih.gov/research/umls/rxnorm\",\n      \"source_code\": \"860975\",\n      \"source_name\": \"metformin hydrochloride 500 MG\",\n      \"target_vocabulary\": \"RXNORM\",\n      \"target_code\": \"860975\",\n      \"target_name\": \"metformin hydrochloride 500 MG\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"resource_type\": \"resource_type\",\n      \"resource_id\": \"resource_id\",\n      \"reason\": \"reason\"\n    }\n  ],\n  \"vocab_version\": \"v20240229\",\n  \"summary\": {\n    \"codes_already_standard\": 2,\n    \"codes_normalized\": 0,\n    \"codes_unmapped\": 0,\n    \"off_vocab_rate\": 0\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1318,6 +1318,126 @@
       }
     },
     {
+      "id": "111e846f-fd5d-464f-b084-ffe46c48d939",
+      "name": "List implementation guides - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"implementation_guides\": [\n    {\n      \"name\": \"acme-cardiology\",\n      \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n      \"profile_count\": 3,\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "111e846f-fd5d-464f-b084-ffe46c48d939",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "fb571ac0-e76c-48b8-8f80-dd555b3e437c",
+      "name": "Get an implementation guide - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides/{name}",
+        "method": "GET",
+        "pathParameters": {
+          "name": {
+            "equalTo": "acme-cardiology"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"profiles\": [\n    \"custom-patient\",\n    \"acme-vital-signs\"\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fb571ac0-e76c-48b8-8f80-dd555b3e437c",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4dc71309-0a65-40d7-aa0d-0dee3b2d5bea",
+      "name": "Set an implementation guide's profile context - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides/{name}",
+        "method": "PUT",
+        "pathParameters": {
+          "name": {
+            "equalTo": "acme-cardiology"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4dc71309-0a65-40d7-aa0d-0dee3b2d5bea",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "44652922-4793-4275-840e-4dc1b1bde786",
+      "name": "Delete an implementation guide's metadata - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides/{name}",
+        "method": "DELETE",
+        "pathParameters": {
+          "name": {
+            "equalTo": "acme-cardiology"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "44652922-4793-4275-840e-4dc1b1bde786",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "8bddb74a-94e1-409c-bc24-1708e995a652",
       "name": "Create FHIR resource from text - Condition Resource",
       "request": {
@@ -1352,7 +1472,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Smith\"\n            }\n          ],\n          \"gender\": \"male\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Smith\"\n            }\n          ],\n          \"gender\": \"male\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1396,8 +1516,8 @@
       }
     },
     {
-      "id": "1b6fc277-eb82-498e-9f43-558cf079eefc",
-      "name": "Upload custom FHIR profile - default",
+      "id": "7b3c506b-31bf-45fb-a75c-fa3524b34993",
+      "name": "Upload custom FHIR profile (deprecated) - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/profile/upload",
         "method": "POST"
@@ -1409,7 +1529,7 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "1b6fc277-eb82-498e-9f43-558cf079eefc",
+      "uuid": "7b3c506b-31bf-45fb-a75c-fa3524b34993",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1456,12 +1576,163 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Doe\"\n            }\n          ],\n          \"gender\": \"male\",\n          \"birthDate\": \"1979-03-15\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes Mellitus\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:patient-001\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Doe, born 1979-03-15\",\n      \"originalText\": \"John Doe, DOB 1979-03-15\"\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-001\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes Mellitus diagnosis\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\"\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-001\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg prescription\",\n      \"originalText\": \"Prescribed Metformin 500mg\"\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"reason\": \"clinical notes with diagnoses\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Doe\"\n            }\n          ],\n          \"gender\": \"male\",\n          \"birthDate\": \"1979-03-15\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes Mellitus\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:patient-001\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Doe, born 1979-03-15\",\n      \"originalText\": \"John Doe, DOB 1979-03-15\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-001\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes Mellitus diagnosis\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-001\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg prescription\",\n      \"originalText\": \"Prescribed Metformin 500mg\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"reason\": \"clinical notes with diagnoses\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
       "uuid": "b56fde3c-97b6-472e-919f-ddc714cd2705",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "9343ec90-6074-4728-ba0b-3e777524c972",
+      "name": "List custom FHIR profiles - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles",
+        "method": "GET",
+        "queryParameters": {
+          "url": {
+            "equalTo": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"profiles\": [\n    {\n      \"id\": \"custom-patient\",\n      \"source\": \"custom\",\n      \"resource_type\": \"Patient\",\n      \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n      \"version\": \"1.0.0\",\n      \"fhir_version\": \"4.0.1\",\n      \"implementation_guide\": \"acme-cardiology\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9343ec90-6074-4728-ba0b-3e777524c972",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "6d5f3513-4e00-437d-b5ba-fb5a9473da79",
+      "name": "Upload a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles",
+        "method": "POST"
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6d5f3513-4e00-437d-b5ba-fb5a9473da79",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "87ed00f6-b9d1-49bb-acf8-99662a0af94b",
+      "name": "Get a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"structure_definition\": {\n    \"key\": \"value\"\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "87ed00f6-b9d1-49bb-acf8-99662a0af94b",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1f6f2b75-ae61-4017-895f-fe63431d5997",
+      "name": "Update a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}",
+        "method": "PUT",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1f6f2b75-ae61-4017-895f-fe63431d5997",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "45d69580-fac7-4e61-a607-14ab49504115",
+      "name": "Delete a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "45d69580-fac7-4e61-a607-14ab49504115",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -2156,6 +2427,6 @@
     }
   ],
   "meta": {
-    "total": 71
+    "total": 80
   }
 }

@@ -24,6 +24,7 @@ class MeasurementRow(UniversalBaseModel):
     range_low: typing.Optional[float] = None
     range_high: typing.Optional[float] = None
     visit_occurrence_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
     measurement_source_value: typing.Optional[str] = None
     measurement_source_concept_id: typing.Optional[int] = None
     unit_source_value: typing.Optional[str] = None
