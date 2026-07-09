@@ -2,7 +2,6 @@
 ### Added
 - **`client.implementation_guides`** — new sync and async client with `list()`, `get()`, `update()`, and `delete()` methods for managing FHIR implementation guide metadata; includes `ImplementationGuideSummary`, `ImplementationGuideDetail`, and `ImplementationGuideListResponse` models.
 - **`client.profiles.profiles`** — new sync and async client (plus raw variants `RawProfilesClient` / `AsyncRawProfilesClient`) for full CRUD management of custom FHIR StructureDefinition profiles via `fhir/profiles`; exposes `ProfileSummary`, `ProfileGetResponse`, `ProfileListResponse`, `ProfileUploadRequest`, and `ProfileSummarySource`.
-- **`stream_reconnection_enabled`** and **`max_stream_reconnection_attempts`** — new optional constructor and `RequestOptions` fields on `PhenomlClient` / `AsyncPhenomlClient` enabling automatic SSE stream reconnection with exponential backoff.
 - **New OMOP CDM v5.4 row types and table fields** — `CareSiteRow`, `DeathRow`, `LocationRow`, `ObservationPeriodRow`, and `ProviderRow` added to `phenoml.fhir2omop`; `OmopTables` gains five matching optional table fields; linkage fields (`provider_id`, `care_site_id`, `location_id`) added to several existing row types.
 - **`RequestOptions.timeout`** — new `float` field for per-request timeout in seconds; `timeout_in_seconds` is retained as a deprecated alias.
 
