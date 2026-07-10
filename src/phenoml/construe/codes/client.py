@@ -9,6 +9,7 @@ from ..types.extract_request_config import ExtractRequestConfig
 from ..types.extract_request_system import ExtractRequestSystem
 from ..types.get_code_response import GetCodeResponse
 from ..types.list_codes_response import ListCodesResponse
+from ..types.phenocr_extract_request_system import PhenocrExtractRequestSystem
 from ..types.semantic_search_response import SemanticSearchResponse
 from ..types.text_search_response import TextSearchResponse
 from .raw_client import AsyncRawCodesClient, RawCodesClient
@@ -83,6 +84,55 @@ class CodesClient:
         )
         """
         _response = self._raw_client.extract(text=text, system=system, config=config, request_options=request_options)
+        return _response.data
+
+    def phenocr(
+        self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
+    ) -> ExtractCodesResult:
+        """
+        **Alpha:** phenocr is an alpha feature. The API contract — request
+        parameters and response shape — may change as its internals evolve, and
+        results may vary between releases. Do not depend on it for production
+        workloads yet.
+
+        Extracts medical codes from natural language clinical text using phenocr.
+
+        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
+        system name and version are both required.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text to extract codes from
+
+        system : PhenocrExtractRequestSystem
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExtractCodesResult
+            Successfully extracted codes
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+        from phenoml.construe import PhenocrExtractRequestSystem
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.construe.codes.phenocr(
+            text="5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia.",
+            system=PhenocrExtractRequestSystem(
+                name="HPO",
+                version="umls-2026AA",
+            ),
+        )
+        """
+        _response = self._raw_client.phenocr(text=text, system=system, request_options=request_options)
         return _response.data
 
     def list(
@@ -417,6 +467,63 @@ class AsyncCodesClient:
         _response = await self._raw_client.extract(
             text=text, system=system, config=config, request_options=request_options
         )
+        return _response.data
+
+    async def phenocr(
+        self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
+    ) -> ExtractCodesResult:
+        """
+        **Alpha:** phenocr is an alpha feature. The API contract — request
+        parameters and response shape — may change as its internals evolve, and
+        results may vary between releases. Do not depend on it for production
+        workloads yet.
+
+        Extracts medical codes from natural language clinical text using phenocr.
+
+        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
+        system name and version are both required.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text to extract codes from
+
+        system : PhenocrExtractRequestSystem
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ExtractCodesResult
+            Successfully extracted codes
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+        from phenoml.construe import PhenocrExtractRequestSystem
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.construe.codes.phenocr(
+                text="5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia.",
+                system=PhenocrExtractRequestSystem(
+                    name="HPO",
+                    version="umls-2026AA",
+                ),
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.phenocr(text=text, system=system, request_options=request_options)
         return _response.data
 
     async def list(
