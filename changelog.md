@@ -1,3 +1,9 @@
+## [16.7.0] - 2026-07-10
+### Added
+- **`client.construe.codes.phenocr(...)`** — new sync and async method that extracts medical codes from free-text clinical notes using the phenocr engine; supports HPO, ICD-10-CM, and SNOMED_CT_US code systems.
+- **`construe_PhenoCRRequest`** — new request schema with required `text` (natural language input) and `system` fields, used by the phenocr endpoint.
+- **`construe_PhenocrExtractRequestSystem`** — new schema with required `name` and `version` fields for specifying the target terminology system and version (e.g. `HPO` / `umls-2026AA`).
+
 ## [16.6.0] - 2026-07-10
 ### Added
 - **`client.construe.codes.phenocr(...)`** — new sync and async method (plus raw variants) that extracts medical codes from free-text clinical notes using the phenocr engine, supporting HPO, ICD-10-CM, and SNOMED_CT_US code systems.
