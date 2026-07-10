@@ -2,9 +2,6 @@
 ### Fixed
 - **`phenoml.core.client_wrapper`** — restores the released `phenoml/16.7.0` User-Agent value after Fern generated a placeholder string during replay/autoversion recovery.
 
-### Changed
-- **Generator metadata** — regenerated with Fern CLI 5.68.0 and `fernapi/fern-python-sdk` 5.18.0; no API surface changes beyond the version/header metadata and bundled OpenAPI sync.
-
 ## [16.6.0] - 2026-07-10
 ### Added
 - **`client.construe.codes.phenocr(...)`** — new sync and async method (plus raw variants) that extracts medical codes from free-text clinical notes using the phenocr engine, supporting HPO, ICD-10-CM, and SNOMED_CT_US code systems.
