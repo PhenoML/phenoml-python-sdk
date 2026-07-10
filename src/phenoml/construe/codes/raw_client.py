@@ -23,6 +23,7 @@ from ..types.extract_request_config import ExtractRequestConfig
 from ..types.extract_request_system import ExtractRequestSystem
 from ..types.get_code_response import GetCodeResponse
 from ..types.list_codes_response import ListCodesResponse
+from ..types.phenocr_extract_request_system import PhenocrExtractRequestSystem
 from ..types.semantic_search_response import SemanticSearchResponse
 from ..types.text_search_response import TextSearchResponse
 from pydantic import ValidationError
@@ -78,6 +79,135 @@ class RawCodesClient:
                 ),
                 "config": convert_and_respect_annotation_metadata(
                     object_=config, annotation=ExtractRequestConfig, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExtractCodesResult,
+                    parse_obj_as(
+                        type_=ExtractCodesResult,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 504:
+                raise GatewayTimeoutError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def phenocr(
+        self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ExtractCodesResult]:
+        """
+        **Alpha:** phenocr is an alpha feature. The API contract — request
+        parameters and response shape — may change as its internals evolve, and
+        results may vary between releases. Do not depend on it for production
+        workloads yet.
+
+        Extracts medical codes from natural language clinical text using phenocr.
+
+        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
+        system name and version are both required.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text to extract codes from
+
+        system : PhenocrExtractRequestSystem
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ExtractCodesResult]
+            Successfully extracted codes
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "construe/phenocr",
+            method="POST",
+            json={
+                "text": text,
+                "system": convert_and_respect_annotation_metadata(
+                    object_=system, annotation=PhenocrExtractRequestSystem, direction="write"
                 ),
             },
             headers={
@@ -698,6 +828,135 @@ class AsyncRawCodesClient:
                 ),
                 "config": convert_and_respect_annotation_metadata(
                     object_=config, annotation=ExtractRequestConfig, direction="write"
+                ),
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ExtractCodesResult,
+                    parse_obj_as(
+                        type_=ExtractCodesResult,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 504:
+                raise GatewayTimeoutError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def phenocr(
+        self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ExtractCodesResult]:
+        """
+        **Alpha:** phenocr is an alpha feature. The API contract — request
+        parameters and response shape — may change as its internals evolve, and
+        results may vary between releases. Do not depend on it for production
+        workloads yet.
+
+        Extracts medical codes from natural language clinical text using phenocr.
+
+        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
+        system name and version are both required.
+
+        Parameters
+        ----------
+        text : str
+            Natural language text to extract codes from
+
+        system : PhenocrExtractRequestSystem
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ExtractCodesResult]
+            Successfully extracted codes
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "construe/phenocr",
+            method="POST",
+            json={
+                "text": text,
+                "system": convert_and_respect_annotation_metadata(
+                    object_=system, annotation=PhenocrExtractRequestSystem, direction="write"
                 ),
             },
             headers={

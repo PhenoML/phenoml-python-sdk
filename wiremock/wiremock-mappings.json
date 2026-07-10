@@ -718,6 +718,32 @@
       }
     },
     {
+      "id": "f7556cdb-0b20-4df2-b0f0-e1f77e22c6c1",
+      "name": "[Alpha] Extract medical codes with phenocr - HPO Phenotype Extraction",
+      "request": {
+        "urlPathTemplate": "/construe/phenocr",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"system\": {\n    \"name\": \"SNOMED_CT_US_LITE\",\n    \"version\": \"umls-2026aa\"\n  },\n  \"codes\": [\n    {\n      \"code\": \"195967001\",\n      \"description\": \"Asthma\",\n      \"valid\": true,\n      \"reason\": \"reason\",\n      \"is_ancestor\": true,\n      \"citations\": [\n        {\n          \"text\": \"Patient has type 2 diabetes\",\n          \"begin_offset\": 0,\n          \"end_offset\": 27\n        }\n      ],\n      \"categories\": [\n        {\n          \"uri\": \"HP:0025142\",\n          \"label\": \"Constitutional symptom\"\n        }\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f7556cdb-0b20-4df2-b0f0-e1f77e22c6c1",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "45c624e8-db92-4c7d-adc8-856520652e18",
       "name": "List codes in a code system - Browse ICD-10-CM",
       "request": {
@@ -2427,6 +2453,6 @@
     }
   ],
   "meta": {
-    "total": 80
+    "total": 81
   }
 }
