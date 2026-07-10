@@ -209,4 +209,4 @@ patches:
 
         [tool.poetry.extras]
         aiohttp=["aiohttp", "httpx-aiohttp"]
-    status: unresolved
+    status: resolving
