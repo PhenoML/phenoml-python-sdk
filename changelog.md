@@ -1,3 +1,7 @@
+## [16.7.0] - 2026-07-10
+### Changed
+- **Maintenance release** — no public API or behavioral changes.
+
 ## [16.6.0] - 2026-07-10
 ### Added
 - **`client.construe.codes.phenocr(...)`** — new sync and async method (plus raw variants) that extracts medical codes from free-text clinical notes using the phenocr engine, supporting HPO, ICD-10-CM, and SNOMED_CT_US code systems.
