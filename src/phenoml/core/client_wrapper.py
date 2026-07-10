@@ -38,7 +38,7 @@ class BaseClientWrapper:
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Fern-SDK-Name": "phenoml",
-            "X-Fern-SDK-Version": "0.0.0.dev0",
+            "X-Fern-SDK-Version": "16.6.0",
             **(self.get_custom_headers() or {}),
         }
         token = self._get_token()
