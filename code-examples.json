@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.5.0",
-    "specCommit": "0f5e6fc5cd6ac889d00d6733e3b710e4fb90e90e",
+    "sdkVersion": "16.6.0",
+    "specCommit": "8633a870276a5ebdc514a6711e2c401cb45d26b4",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1175,6 +1175,43 @@
               "fieldTemplate": "config={{value}}",
               "kind": "object",
               "required": false
+            }
+          ]
+        }
+      }
+    },
+    "POST /construe/phenocr": {
+      "httpMethod": "POST",
+      "httpPath": "/construe/phenocr",
+      "request": {
+        "body": {
+          "text": "5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia.",
+          "system": {
+            "name": "HPO",
+            "version": "umls-2026AA"
+          }
+        }
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.construe.codes.phenocr({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "text",
+              "fieldTemplate": "text={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "system",
+              "fieldTemplate": "system={{value}}",
+              "kind": "object",
+              "required": true
             }
           ]
         }

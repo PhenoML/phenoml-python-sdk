@@ -1,3 +1,9 @@
+## [16.6.0] - 2026-07-10
+### Added
+- **`client.construe.codes.phenocr(...)`** — new sync and async method (plus raw variants) that extracts medical codes from free-text clinical notes using the phenocr engine, supporting HPO, ICD-10-CM, and SNOMED_CT_US code systems.
+- **`PhenocrExtractRequestSystem`** — new Pydantic model with required `name` and `version` fields for specifying the target terminology system; exported from `phenoml.construe` and `phenoml.construe.types`.
+- **Expanded built-in system catalogue** — `client.construe.codes.list()` now includes UMLS 2026AA–versioned entries for CPT, HCPCS, HPO, ICD-10, ICD-10-CM, ICD-10-PCS, LOINC, RXNORM, `SNOMED_CT_US`, and `SNOMED_CT_US_LITE` alongside existing pinned-version entries.
+
 ## [16.5.0] - 2026-07-09
 ### Added
 - **`client.implementation_guides`** — new sync and async client with `list()`, `get()`, `update()`, and `delete()` methods for managing FHIR implementation guide metadata; includes `ImplementationGuideSummary`, `ImplementationGuideDetail`, and `ImplementationGuideListResponse` models.

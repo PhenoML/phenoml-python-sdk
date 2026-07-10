@@ -7,8 +7,8 @@ on:
 permissions: {}
 
 # Cancel superseded runs on PR branches; never cancel main, since a
-# mid-flight publish would orphan the tag from the PyPI upload and the
-# next run would skip publish because the tag already exists.
+# mid-flight publish could upload to PyPI before the post-publish release
+# tags are finalized.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
@@ -16,6 +16,7 @@ concurrency:
 env:
   PYTHON_VERSION: "3.10"
   POETRY_VERSION: "1.5.1"
+  PYPI_PACKAGE_NAME: phenoml
 
 jobs:
   compile:
@@ -25,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Set up python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
@@ -50,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Set up python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
@@ -67,61 +68,27 @@ jobs:
       - name: Test
         run: poetry run pytest -rP .
 
-  tag:
+  release_gate:
     needs: [ compile, test ]
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
     permissions:
-      contents: write
-    outputs:
-      should_publish: ${{ steps.check.outputs.should_publish }}
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          fetch-depth: 0
-
-      # Verify before tagging: a bad spec discovered later would leave the
-      # version tagged but unpublished, and subsequent runs would skip
-      # publish because the tag already exists.
-      - name: Verify bundled OpenAPI spec
-        uses: PhenoML/sdk-shared-actions/verify-openapi-spec@1.0.3
-        with:
-          spec-path: src/phenoml/openapi/openapi.json
-
-      - name: Extract version and check tag
-        id: check
-        run: |
-          VERSION=$(grep -m1 '^version' pyproject.toml | sed 's/.*"\(.*\)".*/\1/')
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          if git ls-remote --tags origin | grep -q "refs/tags/${VERSION}$"; then
-            echo "Tag $VERSION already exists, skipping"
-            echo "should_publish=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_publish=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Create tag and GitHub release
-        if: steps.check.outputs.should_publish == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "${{ steps.check.outputs.version }}" \
-            --target "${{ github.sha }}" \
-            --title "${{ steps.check.outputs.version }}" \
-            --generate-notes
+      contents: read
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-gate.yml@1.3.0
+    with:
+      version-source: pyproject
+      version-path: pyproject.toml
+      spec-path: src/phenoml/openapi/openapi.json
 
   build-artifact:
-    needs: [ tag ]
-    if: needs.tag.outputs.should_publish == 'true'
+    needs: [ release_gate ]
+    if: needs.release_gate.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Set up python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
@@ -144,8 +111,8 @@ jobs:
           retention-days: 1
 
   publish:
-    needs: [ tag, build-artifact ]
-    if: needs.tag.outputs.should_publish == 'true'
+    needs: [ release_gate, build-artifact ]
+    if: needs.release_gate.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     # Environment-scoped OIDC: the environment's deployment branch rule
     # restricts this job to refs/heads/main, and the PyPI Trusted Publisher
@@ -155,6 +122,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    outputs:
+      published: ${{ steps.verify.outputs.published }}
 
     steps:
       # download-artifact verifies the downloaded bundle against GitHub's
@@ -166,4 +135,53 @@ jobs:
           path: dist
 
       - name: Publish to PyPI
+        id: pypi-publish
+        continue-on-error: true
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        with:
+          skip-existing: true
+
+      - name: Verify PyPI version availability
+        id: verify
+        env:
+          VERSION: ${{ needs.release_gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          if curl -fsS "https://pypi.org/pypi/${PYPI_PACKAGE_NAME}/${VERSION}/json" >/dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::${PYPI_PACKAGE_NAME} ${VERSION} is not available on PyPI."
+          exit 1
+
+  confirm_registry_release:
+    needs: [ release_gate ]
+    if: needs.release_gate.outputs.release_state == 'repair'
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.verify.outputs.published }}
+
+    steps:
+      - name: Verify PyPI version availability
+        id: verify
+        env:
+          VERSION: ${{ needs.release_gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          if curl -fsS "https://pypi.org/pypi/${PYPI_PACKAGE_NAME}/${VERSION}/json" >/dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::${PYPI_PACKAGE_NAME} ${VERSION} is not available on PyPI."
+          exit 1
+
+  release_finalize:
+    needs: [ release_gate, publish, confirm_registry_release ]
+    if: always() && needs.release_gate.result == 'success' && (needs.publish.outputs.published == 'true' || needs.confirm_registry_release.outputs.published == 'true')
+    permissions:
+      contents: write
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-finalize.yml@1.3.0
+    with:
+      version-tag: ${{ needs.release_gate.outputs.version_tag }}
+      origin-commit: ${{ needs.release_gate.outputs.origin_commit }}
+      origin-tag: ${{ needs.release_gate.outputs.origin_tag }}
