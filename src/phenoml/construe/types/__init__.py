@@ -26,6 +26,7 @@ if typing.TYPE_CHECKING:
     from .get_code_system_detail_response_status import GetCodeSystemDetailResponseStatus
     from .list_code_systems_response import ListCodeSystemsResponse
     from .list_codes_response import ListCodesResponse
+    from .phenocr_extract_request_system import PhenocrExtractRequestSystem
     from .semantic_search_response import SemanticSearchResponse
     from .semantic_search_result import SemanticSearchResult
     from .text_search_response import TextSearchResponse
@@ -51,6 +52,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetCodeSystemDetailResponseStatus": ".get_code_system_detail_response_status",
     "ListCodeSystemsResponse": ".list_code_systems_response",
     "ListCodesResponse": ".list_codes_response",
+    "PhenocrExtractRequestSystem": ".phenocr_extract_request_system",
     "SemanticSearchResponse": ".semantic_search_response",
     "SemanticSearchResult": ".semantic_search_result",
     "TextSearchResponse": ".text_search_response",
@@ -100,6 +102,7 @@ __all__ = [
     "GetCodeSystemDetailResponseStatus",
     "ListCodeSystemsResponse",
     "ListCodesResponse",
+    "PhenocrExtractRequestSystem",
     "SemanticSearchResponse",
     "SemanticSearchResult",
     "TextSearchResponse",

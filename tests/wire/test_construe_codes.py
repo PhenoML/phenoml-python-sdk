@@ -1,6 +1,6 @@
 from .conftest import get_client, verify_request_count
 
-from phenoml.construe import ExtractRequestSystem
+from phenoml.construe import ExtractRequestSystem, PhenocrExtractRequestSystem
 
 
 def test_construe_codes_extract() -> None:
@@ -15,6 +15,20 @@ def test_construe_codes_extract() -> None:
         ),
     )
     verify_request_count(test_id, "POST", "/construe/extract", None, 1)
+
+
+def test_construe_codes_phenocr() -> None:
+    """Test phenocr endpoint with WireMock"""
+    test_id = "construe.codes.phenocr.0"
+    client = get_client(test_id)
+    client.construe.codes.phenocr(
+        text="5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia.",
+        system=PhenocrExtractRequestSystem(
+            name="HPO",
+            version="umls-2026AA",
+        ),
+    )
+    verify_request_count(test_id, "POST", "/construe/phenocr", None, 1)
 
 
 def test_construe_codes_list_() -> None:
