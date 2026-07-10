@@ -16,6 +16,7 @@ concurrency:
 env:
   PYTHON_VERSION: "3.10"
   POETRY_VERSION: "1.5.1"
+  PYPI_PACKAGE_NAME: phenoml
 
 jobs:
   compile:
@@ -72,7 +73,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
-    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-gate.yml@1.1.1
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-gate.yml@1.2.0
     with:
       version-source: pyproject
       version-path: pyproject.toml
@@ -121,6 +122,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    outputs:
+      published: ${{ steps.verify.outputs.published }}
 
     steps:
       # download-artifact verifies the downloaded bundle against GitHub's
@@ -132,14 +135,52 @@ jobs:
           path: dist
 
       - name: Publish to PyPI
+        id: pypi-publish
+        continue-on-error: true
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        with:
+          skip-existing: true
+
+      - name: Verify PyPI version availability
+        id: verify
+        env:
+          VERSION: ${{ needs.release_gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          if curl -fsS "https://pypi.org/pypi/${PYPI_PACKAGE_NAME}/${VERSION}/json" >/dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::${PYPI_PACKAGE_NAME} ${VERSION} is not available on PyPI."
+          exit 1
+
+  confirm_registry_release:
+    needs: [ release_gate ]
+    if: github.ref == 'refs/heads/main' && needs.release_gate.outputs.should_publish == 'false'
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.verify.outputs.published }}
+
+    steps:
+      - name: Verify PyPI version availability
+        id: verify
+        env:
+          VERSION: ${{ needs.release_gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          if curl -fsS "https://pypi.org/pypi/${PYPI_PACKAGE_NAME}/${VERSION}/json" >/dev/null; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::${PYPI_PACKAGE_NAME} ${VERSION} is not available on PyPI."
+          exit 1
 
   release_finalize:
-    needs: [ release_gate, publish ]
-    if: needs.release_gate.outputs.should_publish == 'true'
+    needs: [ release_gate, publish, confirm_registry_release ]
+    if: always() && needs.release_gate.result == 'success' && (needs.publish.outputs.published == 'true' || needs.confirm_registry_release.outputs.published == 'true')
     permissions:
       contents: write
-    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-finalize.yml@1.1.1
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-finalize.yml@1.2.0
     with:
       version-tag: ${{ needs.release_gate.outputs.version_tag }}
       origin-commit: ${{ needs.release_gate.outputs.origin_commit }}
