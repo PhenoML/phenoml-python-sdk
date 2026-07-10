@@ -66,19 +66,25 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.17.1
-current_generation: 30a0c7e3e72e9c1761e0fbe764663ff1d4e81253
+  - commit_sha: 9025aae03f8f63f89dcec484ae3dacaf75da551d
+    tree_hash: e3e96468b46385f5a27095ce77463ac96607d4ce
+    timestamp: 2026-07-10T14:56:10.394Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.17.1
+current_generation: 9025aae03f8f63f89dcec484ae3dacaf75da551d
 patches:
   - id: patch-6516695e
     content_hash: sha256:d2b3264c983a6bb7ce6db1b48d80d28aa93b1f5c838f654cd489a6e8569bee20
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: e0932f75557c87fc1914f6c54c5917b59231d3a1
+    base_generation: 9025aae03f8f63f89dcec484ae3dacaf75da551d
     files:
       - pyproject.toml
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index cc86d42..6c649b6 100644
+      index cea8b20..15edd99 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
       @@ -4,7 +4,7 @@ dynamic = ["version"]
@@ -144,7 +150,7 @@ patches:
 
         [tool.poetry.dependencies]
         python = "^3.10"
-        aiohttp = { version = ">=3.14.0,<4", optional = true, python = ">=3.10"}
+        aiohttp = { version = ">=3.14.1,<4", optional = true, python = ">=3.10"}
         httpx = ">=0.21.2"
         httpx-aiohttp = { version = "0.1.8", optional = true, python = ">=3.10"}
         pydantic = ">= 1.9.2"
@@ -166,6 +172,7 @@ patches:
         [tool.pytest.ini_options]
         testpaths = [ "tests" ]
         asyncio_mode = "auto"
+        norecursedirs = [ "src" ]
         markers = [
             "aiohttp: tests that require httpx_aiohttp to be installed",
         ]
@@ -203,4 +210,3 @@ patches:
 
         [tool.poetry.extras]
         aiohttp=["aiohttp", "httpx-aiohttp"]
-    status: unresolved
