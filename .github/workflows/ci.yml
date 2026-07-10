@@ -72,7 +72,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
-    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-gate.yml@1.1.0
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-gate.yml@1.1.1
     with:
       version-source: pyproject
       version-path: pyproject.toml
@@ -139,7 +139,7 @@ jobs:
     if: needs.release_gate.outputs.should_publish == 'true'
     permissions:
       contents: write
-    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-finalize.yml@1.1.0
+    uses: PhenoML/sdk-shared-actions/.github/workflows/sdk-release-finalize.yml@1.1.1
     with:
       version-tag: ${{ needs.release_gate.outputs.version_tag }}
       origin-commit: ${{ needs.release_gate.outputs.origin_commit }}
