@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "0f5e6fc5cd6ac889d00d6733e3b710e4fb90e90e"
+    "version": "bf66f414b3e8dc592dfd9397cec1143ce3db5d2d"
   },
   "x-services": [
     {
@@ -2002,6 +2002,75 @@
                       ]
                     }
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Code system not found"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "503": {
+            "description": "Service temporarily unavailable"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "construe"
+      }
+    },
+    "/construe/phenocr": {
+      "post": {
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_phenocr",
+        "summary": "[Alpha] Extract medical codes with phenocr",
+        "description": "**Alpha:** phenocr is an alpha feature. The API contract \u2014 request\nparameters and response shape \u2014 may change as its internals evolve, and\nresults may vary between releases. Do not depend on it for production\nworkloads yet.\n\nExtracts medical codes from natural language clinical text using phenocr.\n\nSupported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code\nsystem name and version are both required.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/construe_PhenoCRRequest"
+              },
+              "examples": {
+                "hpo_phenotype_extraction": {
+                  "summary": "HPO Phenotype Extraction",
+                  "description": "Extract HPO phenotype terms from a clinical note.",
+                  "value": {
+                    "text": "5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia.",
+                    "system": {
+                      "name": "HPO",
+                      "version": "umls-2026AA"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully extracted codes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/construe_ExtractCodesResult"
                 }
               }
             }
@@ -8465,6 +8534,42 @@
           },
           "config": {
             "$ref": "#/components/schemas/construe_ExtractRequestConfig"
+          }
+        }
+      },
+      "construe_PhenoCRRequest": {
+        "type": "object",
+        "required": [
+          "text",
+          "system"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Natural language text to extract codes from",
+            "example": "5-year-old male with seizures, severe intellectual disability, microcephaly, and hypotonia."
+          },
+          "system": {
+            "$ref": "#/components/schemas/construe_PhenocrExtractRequestSystem"
+          }
+        }
+      },
+      "construe_PhenocrExtractRequestSystem": {
+        "type": "object",
+        "required": [
+          "name",
+          "version"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Code system name. Supported by phenocr: HPO, ICD-10-CM, SNOMED_CT_US.\n",
+            "example": "HPO"
+          },
+          "version": {
+            "type": "string",
+            "description": "Code system version to run against.",
+            "example": "umls-2026AA"
           }
         }
       },
