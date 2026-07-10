@@ -1,6 +1,6 @@
 ## [16.7.0] - 2026-07-10
-### Fixed
-- **`phenoml.core.client_wrapper`** — restores the released `phenoml/16.7.0` User-Agent value after Fern generated a placeholder string during replay/autoversion recovery.
+### Changed
+- **Maintenance release** — no public API or behavioral changes.
 
 ## [16.6.0] - 2026-07-10
 ### Added
