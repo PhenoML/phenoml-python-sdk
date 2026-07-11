@@ -1,3 +1,7 @@
+## [16.7.1] - 2026-07-11
+### Changed
+- **Maintenance release** — no public API or behavioral changes.
+
 ## [16.7.0] - 2026-07-10
 ### Changed
 - **Maintenance release** — no public API or behavioral changes.
