@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "4303ef3d3e7bb2159a5d8301937194e8bb681125"
+    "version": "8c63b16b085fcf9b05835232378d834802257e7a"
   },
   "x-services": [
     {
