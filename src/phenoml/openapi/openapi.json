@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "8c63b16b085fcf9b05835232378d834802257e7a"
+    "version": "851ad9e652b8cdc4613b44375accd3568d302efd"
   },
   "x-services": [
     {
@@ -1448,7 +1448,7 @@
       "post": {
         "operationId": "authtoken_getToken",
         "summary": "Request an access token",
-        "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with expiration information.\n",
+        "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with token expiration information.\n",
         "security": [
           {
             "BasicAuth": []
@@ -11179,7 +11179,7 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
           },
           "provider": {
             "type": "string",
@@ -11298,7 +11298,7 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
           },
           "config": {
             "$ref": "#/components/schemas/lang2fhir_DocumentConfig"
