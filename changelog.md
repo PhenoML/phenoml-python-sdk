@@ -1,3 +1,5 @@
+## [16.7.2] - 2026-07-21
+
 ## [16.7.1] - 2026-07-11
 ### Changed
 - **Maintenance release** — no public API or behavioral changes.
