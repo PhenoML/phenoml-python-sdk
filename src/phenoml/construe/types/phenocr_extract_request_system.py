@@ -9,7 +9,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class PhenocrExtractRequestSystem(UniversalBaseModel):
     name: str = pydantic.Field()
     """
-    Code system name. Supported by phenocr: HPO, ICD-10-CM, SNOMED_CT_US.
+    Code system name. Supported by phenocr: HPO, ICD-10-CM, RXNORM, SNOMED_CT_US.
     """
 
     version: str = pydantic.Field()

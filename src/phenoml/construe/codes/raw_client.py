@@ -183,8 +183,8 @@ class RawCodesClient:
 
         Extracts medical codes from natural language clinical text using phenocr.
 
-        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
-        system name and version are both required.
+        Supported code systems: HPO, ICD-10-CM, RXNORM, and SNOMED_CT_US. The
+        code system name and version are both required.
 
         Parameters
         ----------
@@ -932,8 +932,8 @@ class AsyncRawCodesClient:
 
         Extracts medical codes from natural language clinical text using phenocr.
 
-        Supported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code
-        system name and version are both required.
+        Supported code systems: HPO, ICD-10-CM, RXNORM, and SNOMED_CT_US. The
+        code system name and version are both required.
 
         Parameters
         ----------
