@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "8c63b16b085fcf9b05835232378d834802257e7a"
+    "version": "ea767df873b24fea31f637ad0312b43682018de3"
   },
   "x-services": [
     {
@@ -1448,7 +1448,7 @@
       "post": {
         "operationId": "authtoken_getToken",
         "summary": "Request an access token",
-        "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with expiration information.\n",
+        "description": "OAuth 2.0 client credentials token endpoint (RFC 6749 \u00a74.4).\nAccepts client_id and client_secret in the request body (JSON or\nform-encoded) or via Basic Auth header (RFC 6749 \u00a72.3.1), and\nreturns an access token with token expiration information.\n",
         "security": [
           {
             "BasicAuth": []
@@ -2040,7 +2040,7 @@
         ],
         "operationId": "construe_phenocr",
         "summary": "[Alpha] Extract medical codes with phenocr",
-        "description": "**Alpha:** phenocr is an alpha feature. The API contract \u2014 request\nparameters and response shape \u2014 may change as its internals evolve, and\nresults may vary between releases. Do not depend on it for production\nworkloads yet.\n\nExtracts medical codes from natural language clinical text using phenocr.\n\nSupported code systems: HPO, ICD-10-CM, and SNOMED_CT_US. The code\nsystem name and version are both required.\n",
+        "description": "**Alpha:** phenocr is an alpha feature. The API contract \u2014 request\nparameters and response shape \u2014 may change as its internals evolve, and\nresults may vary between releases. Do not depend on it for production\nworkloads yet.\n\nExtracts medical codes from natural language clinical text using phenocr.\n\nSupported code systems: HPO, ICD-10-CM, RXNORM, and SNOMED_CT_US. The\ncode system name and version are both required.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -8563,7 +8563,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Code system name. Supported by phenocr: HPO, ICD-10-CM, SNOMED_CT_US.\n",
+            "description": "Code system name. Supported by phenocr: HPO, ICD-10-CM, RXNORM, SNOMED_CT_US.\n",
             "example": "HPO"
           },
           "version": {
@@ -11179,7 +11179,7 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
           },
           "provider": {
             "type": "string",
@@ -11298,7 +11298,7 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
           },
           "config": {
             "$ref": "#/components/schemas/lang2fhir_DocumentConfig"
