@@ -1,4 +1,7 @@
 ## [16.7.2] - 2026-07-28
+### Added
+- **TIFF document support** — `client.lang2fhir.document(...)` and `client.lang2fhir.document_multi(...)` (sync and async) now accept TIFF (`image/tiff`) files in addition to PDF, PNG, and JPEG; the file type is auto-detected from content magic bytes.
+- **RXNORM support in phenocr** — `client.construe.codes.phenocr(...)` now supports the `RXNORM` code system alongside `HPO`, `ICD-10-CM`, and `SNOMED_CT_US`.
 
 ## [16.7.1] - 2026-07-11
 ### Changed
