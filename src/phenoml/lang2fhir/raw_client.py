@@ -537,7 +537,7 @@ class RawLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         config : typing.Optional[DocumentConfig]
@@ -690,7 +690,7 @@ class RawLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         provider : typing.Optional[str]
@@ -1334,7 +1334,7 @@ class AsyncRawLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         config : typing.Optional[DocumentConfig]
@@ -1487,7 +1487,7 @@ class AsyncRawLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         provider : typing.Optional[str]
