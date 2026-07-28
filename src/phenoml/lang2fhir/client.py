@@ -295,7 +295,7 @@ class Lang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         config : typing.Optional[DocumentConfig]
@@ -354,7 +354,7 @@ class Lang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         provider : typing.Optional[str]
@@ -712,7 +712,7 @@ class AsyncLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         config : typing.Optional[DocumentConfig]
@@ -779,7 +779,7 @@ class AsyncLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
             File type is auto-detected from content magic bytes.
 
         provider : typing.Optional[str]
