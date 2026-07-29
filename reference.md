@@ -2398,6 +2398,105 @@ client.construe.codes.phenocr(
 </dl>
 </details>
 
+<details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">crosswalk</a>(...) -> CrosswalkResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Maps one source medical code to one or more target code-system URIs using
+shared UMLS CUIs. A successful response is HTTP 200 even when the source
+code or a target has no matches; inspect `reason_code` on the item and
+target entries for miss details.
+
+Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.construe.codes.crosswalk(
+    system="http://hl7.org/fhir/sid/icd-10-cm",
+    code="A02.24",
+    targets=[
+        "http://human-phenotype-ontology.org"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**system:** `str` — Source FHIR code-system URI.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**code:** `str` — Source code to map.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targets:** `typing.List[str]` — Target FHIR code-system URIs.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">list</a>(...) -> ListCodesResponse</code></summary>
 <dl>
 <dd>

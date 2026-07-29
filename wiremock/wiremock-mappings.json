@@ -744,6 +744,32 @@
       }
     },
     {
+      "id": "6a6dd3cf-d76e-427e-9e87-937e5c6b49aa",
+      "name": "Crosswalk a code to target code systems - ICD-10-CM to HPO",
+      "request": {
+        "urlPathTemplate": "/construe/codes/crosswalk",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"resolved_umls_release\": \"2026AA\",\n  \"system\": \"http://hl7.org/fhir/sid/icd-10-cm\",\n  \"code\": \"A02.24\",\n  \"reason_code\": \"NO_SOURCE_CUI\",\n  \"targets\": [\n    {\n      \"system\": \"http://human-phenotype-ontology.org\",\n      \"reason_code\": \"NO_TARGET_MATCHES\",\n      \"matches\": [\n        {\n          \"code\": \"HP:0005661\",\n          \"display\": \"Salmonella infection\",\n          \"cui\": \"C0036111\",\n          \"suppress\": \"N\"\n        }\n      ]\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6a6dd3cf-d76e-427e-9e87-937e5c6b49aa",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "45c624e8-db92-4c7d-adc8-856520652e18",
       "name": "List codes in a code system - Browse ICD-10-CM",
       "request": {
@@ -2453,6 +2479,6 @@
     }
   ],
   "meta": {
-    "total": 81
+    "total": 82
   }
 }
