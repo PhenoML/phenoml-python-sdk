@@ -11,6 +11,9 @@ if typing.TYPE_CHECKING:
     from .code_response import CodeResponse
     from .code_system_details import CodeSystemDetails
     from .code_system_info import CodeSystemInfo
+    from .crosswalk_match import CrosswalkMatch
+    from .crosswalk_response import CrosswalkResponse
+    from .crosswalk_target import CrosswalkTarget
     from .delete_code_system_response import DeleteCodeSystemResponse
     from .export_code_system_response import ExportCodeSystemResponse
     from .extract_codes_result import ExtractCodesResult
@@ -37,6 +40,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CodeResponse": ".code_response",
     "CodeSystemDetails": ".code_system_details",
     "CodeSystemInfo": ".code_system_info",
+    "CrosswalkMatch": ".crosswalk_match",
+    "CrosswalkResponse": ".crosswalk_response",
+    "CrosswalkTarget": ".crosswalk_target",
     "DeleteCodeSystemResponse": ".delete_code_system_response",
     "ExportCodeSystemResponse": ".export_code_system_response",
     "ExtractCodesResult": ".extract_codes_result",
@@ -87,6 +93,9 @@ __all__ = [
     "CodeResponse",
     "CodeSystemDetails",
     "CodeSystemInfo",
+    "CrosswalkMatch",
+    "CrosswalkResponse",
+    "CrosswalkTarget",
     "DeleteCodeSystemResponse",
     "ExportCodeSystemResponse",
     "ExtractCodesResult",

@@ -4,6 +4,7 @@ import typing
 
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
+from ..types.crosswalk_response import CrosswalkResponse
 from ..types.extract_codes_result import ExtractCodesResult
 from ..types.extract_request_config import ExtractRequestConfig
 from ..types.extract_request_system import ExtractRequestSystem
@@ -133,6 +134,60 @@ class CodesClient:
         )
         """
         _response = self._raw_client.phenocr(text=text, system=system, request_options=request_options)
+        return _response.data
+
+    def crosswalk(
+        self,
+        *,
+        system: str,
+        code: str,
+        targets: typing.Sequence[str],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CrosswalkResponse:
+        """
+        Maps one source medical code to one or more target code-system URIs using
+        shared UMLS CUIs. A successful response is HTTP 200 even when the source
+        code or a target has no matches; inspect `reason_code` on the item and
+        target entries for miss details.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
+        Parameters
+        ----------
+        system : str
+            Source FHIR code-system URI.
+
+        code : str
+            Source code to map.
+
+        targets : typing.Sequence[str]
+            Target FHIR code-system URIs.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CrosswalkResponse
+            Crosswalk result for the source code
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.construe.codes.crosswalk(
+            system="http://hl7.org/fhir/sid/icd-10-cm",
+            code="A02.24",
+            targets=["http://human-phenotype-ontology.org"],
+        )
+        """
+        _response = self._raw_client.crosswalk(
+            system=system, code=code, targets=targets, request_options=request_options
+        )
         return _response.data
 
     def list(
@@ -524,6 +579,68 @@ class AsyncCodesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.phenocr(text=text, system=system, request_options=request_options)
+        return _response.data
+
+    async def crosswalk(
+        self,
+        *,
+        system: str,
+        code: str,
+        targets: typing.Sequence[str],
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CrosswalkResponse:
+        """
+        Maps one source medical code to one or more target code-system URIs using
+        shared UMLS CUIs. A successful response is HTTP 200 even when the source
+        code or a target has no matches; inspect `reason_code` on the item and
+        target entries for miss details.
+
+        Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
+        Parameters
+        ----------
+        system : str
+            Source FHIR code-system URI.
+
+        code : str
+            Source code to map.
+
+        targets : typing.Sequence[str]
+            Target FHIR code-system URIs.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CrosswalkResponse
+            Crosswalk result for the source code
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.construe.codes.crosswalk(
+                system="http://hl7.org/fhir/sid/icd-10-cm",
+                code="A02.24",
+                targets=["http://human-phenotype-ontology.org"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.crosswalk(
+            system=system, code=code, targets=targets, request_options=request_options
+        )
         return _response.data
 
     async def list(
