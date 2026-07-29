@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.7.2",
-    "specCommit": "ea767df873b24fea31f637ad0312b43682018de3",
+    "sdkVersion": "16.8.0",
+    "specCommit": "39a46d3227b4dab72fda53e1ee095b0dae45c530",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1445,6 +1445,71 @@
               "fieldTemplate": "version={{value}}",
               "kind": "string",
               "required": false
+            }
+          ]
+        }
+      }
+    },
+    "POST /construe/codes/crosswalk": {
+      "httpMethod": "POST",
+      "httpPath": "/construe/codes/crosswalk",
+      "request": {
+        "body": {
+          "system": "http://hl7.org/fhir/sid/icd-10-cm",
+          "code": "A02.24",
+          "targets": [
+            "http://human-phenotype-ontology.org"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "resolved_umls_release": "2026AA",
+          "system": "http://hl7.org/fhir/sid/icd-10-cm",
+          "code": "A02.24",
+          "targets": [
+            {
+              "system": "http://human-phenotype-ontology.org",
+              "matches": [
+                {
+                  "code": "HP:0005661",
+                  "display": "Salmonella infection",
+                  "cui": "C0036111"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "render": {
+        "callTemplate": "client.construe.codes.crosswalk({{__body__}})",
+        "params": [],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "system",
+              "fieldTemplate": "system={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "code",
+              "fieldTemplate": "code={{value}}",
+              "kind": "string",
+              "required": true
+            },
+            {
+              "jsonKey": "targets",
+              "fieldTemplate": "targets={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
             }
           ]
         }

@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "ea767df873b24fea31f637ad0312b43682018de3"
+    "version": "39a46d3227b4dab72fda53e1ee095b0dae45c530"
   },
   "x-services": [
     {
@@ -2461,6 +2461,96 @@
           },
           "500": {
             "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "construe"
+      }
+    },
+    "/construe/codes/crosswalk": {
+      "post": {
+        "tags": [
+          "Construe / Codes"
+        ],
+        "operationId": "construe_crosswalk",
+        "summary": "Crosswalk a code to target code systems",
+        "description": "Maps one source medical code to one or more target code-system URIs using\nshared UMLS CUIs. A successful response is HTTP 200 even when the source\ncode or a target has no matches; inspect `reason_code` on the item and\ntarget entries for miss details.\n\nUsage of CPT is subject to AMA requirements: see PhenoML Terms of Service.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/construe_CrosswalkRequest"
+              },
+              "examples": {
+                "icd10cm_to_hpo": {
+                  "summary": "ICD-10-CM to HPO",
+                  "value": {
+                    "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                    "code": "A02.24",
+                    "targets": [
+                      "http://human-phenotype-ontology.org"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Crosswalk result for the source code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/construe_CrosswalkResponse"
+                },
+                "examples": {
+                  "icd10cm_to_hpo": {
+                    "summary": "ICD-10-CM to HPO",
+                    "value": {
+                      "resolved_umls_release": "2026AA",
+                      "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                      "code": "A02.24",
+                      "targets": [
+                        {
+                          "system": "http://human-phenotype-ontology.org",
+                          "matches": [
+                            {
+                              "code": "HP:0005661",
+                              "display": "Salmonella infection",
+                              "cui": "C0036111"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request format or parameters"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "413": {
+            "description": "Request is too large"
+          },
+          "501": {
+            "description": "Code crosswalk is not configured"
+          },
+          "502": {
+            "description": "Code crosswalk returned an upstream error"
+          },
+          "503": {
+            "description": "Code crosswalk is temporarily unavailable"
           }
         },
         "security": [
@@ -8797,6 +8887,136 @@
             "type": "integer",
             "description": "Ending byte offset (exclusive), such that input[begin_offset:end_offset] == text",
             "example": 27
+          }
+        }
+      },
+      "construe_CrosswalkRequest": {
+        "title": "CrosswalkRequest",
+        "type": "object",
+        "required": [
+          "system",
+          "code",
+          "targets"
+        ],
+        "properties": {
+          "system": {
+            "type": "string",
+            "description": "Source FHIR code-system URI.",
+            "example": "http://hl7.org/fhir/sid/icd-10-cm"
+          },
+          "code": {
+            "type": "string",
+            "description": "Source code to map.",
+            "example": "A02.24"
+          },
+          "targets": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1000,
+            "description": "Target FHIR code-system URIs.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "http://human-phenotype-ontology.org"
+            ]
+          }
+        }
+      },
+      "construe_CrosswalkResponse": {
+        "title": "CrosswalkResponse",
+        "type": "object",
+        "required": [
+          "resolved_umls_release",
+          "system",
+          "code",
+          "targets"
+        ],
+        "properties": {
+          "resolved_umls_release": {
+            "type": "string",
+            "description": "UMLS release used for the crosswalk.",
+            "example": "2026AA"
+          },
+          "system": {
+            "type": "string",
+            "description": "Source FHIR code-system URI.",
+            "example": "http://hl7.org/fhir/sid/icd-10-cm"
+          },
+          "code": {
+            "type": "string",
+            "description": "Source code that was mapped.",
+            "example": "A02.24"
+          },
+          "reason_code": {
+            "type": "string",
+            "description": "Item-level reason code when the source code could not be mapped.",
+            "example": "NO_SOURCE_CUI"
+          },
+          "targets": {
+            "type": "array",
+            "description": "Crosswalk matches grouped by requested target code-system URI.",
+            "items": {
+              "$ref": "#/components/schemas/construe_CrosswalkTarget"
+            }
+          }
+        }
+      },
+      "construe_CrosswalkTarget": {
+        "title": "CrosswalkTarget",
+        "type": "object",
+        "required": [
+          "system",
+          "matches"
+        ],
+        "properties": {
+          "system": {
+            "type": "string",
+            "description": "Target FHIR code-system URI.",
+            "example": "http://human-phenotype-ontology.org"
+          },
+          "reason_code": {
+            "type": "string",
+            "description": "Target-level reason code when this target has no matches.",
+            "example": "NO_TARGET_MATCHES"
+          },
+          "matches": {
+            "type": "array",
+            "description": "Codes in this target system that share a UMLS CUI with the source code.",
+            "items": {
+              "$ref": "#/components/schemas/construe_CrosswalkMatch"
+            }
+          }
+        }
+      },
+      "construe_CrosswalkMatch": {
+        "title": "CrosswalkMatch",
+        "type": "object",
+        "required": [
+          "code",
+          "display",
+          "cui"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Matched code in the target system.",
+            "example": "HP:0005661"
+          },
+          "display": {
+            "type": "string",
+            "description": "Human-readable target code display.",
+            "example": "Salmonella infection"
+          },
+          "cui": {
+            "type": "string",
+            "description": "UMLS CUI that links the source and target code.",
+            "example": "C0036111"
+          },
+          "suppress": {
+            "type": "string",
+            "description": "UMLS suppressibility flag, when present.",
+            "example": "N"
           }
         }
       },
