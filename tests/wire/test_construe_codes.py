@@ -31,6 +31,18 @@ def test_construe_codes_phenocr() -> None:
     verify_request_count(test_id, "POST", "/construe/phenocr", None, 1)
 
 
+def test_construe_codes_crosswalk() -> None:
+    """Test crosswalk endpoint with WireMock"""
+    test_id = "construe.codes.crosswalk.0"
+    client = get_client(test_id)
+    client.construe.codes.crosswalk(
+        system="http://hl7.org/fhir/sid/icd-10-cm",
+        code="A02.24",
+        targets=["http://human-phenotype-ontology.org"],
+    )
+    verify_request_count(test_id, "POST", "/construe/codes/crosswalk", None, 1)
+
+
 def test_construe_codes_list_() -> None:
     """Test list endpoint with WireMock"""
     test_id = "construe.codes.list_.0"

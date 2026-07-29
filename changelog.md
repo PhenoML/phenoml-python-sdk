@@ -1,3 +1,9 @@
+## [16.8.0] - 2026-07-29
+### Added
+- **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
+- **`CrosswalkResponse`, `CrosswalkTarget`, `CrosswalkMatch`** — new Pydantic models representing the structured crosswalk result, grouped by target code system.
+- **`BadGatewayError`** and **`ContentTooLargeError`** — new error classes raised on HTTP 502 and HTTP 413 responses respectively from the crosswalk endpoint.
+
 ## [16.7.2] - 2026-07-28
 ### Added
 - **TIFF document support** — `client.lang2fhir.document(...)` and `client.lang2fhir.document_multi(...)` (sync and async) now accept TIFF (`image/tiff`) files in addition to PDF, PNG, and JPEG; the file type is auto-detected from content magic bytes.
