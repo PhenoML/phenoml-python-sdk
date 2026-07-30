@@ -1,3 +1,9 @@
+## [16.9.0] - 2026-07-30
+### Added
+- **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
+- **`CrosswalkRequest`** — new Pydantic model for the crosswalk request body, with required `system`, `code`, and `targets` fields.
+- **`CrosswalkResponse`, `CrosswalkTarget`, `CrosswalkMatch`** — new Pydantic models representing the structured crosswalk result, grouped by target code system, including optional `reason_code` and `suppress` fields for miss details.
+
 ## [16.8.0] - 2026-07-29
 ### Added
 - **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
