@@ -1,3 +1,5 @@
+## [16.8.1] - 2026-07-30
+
 ## [16.8.0] - 2026-07-29
 ### Added
 - **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
