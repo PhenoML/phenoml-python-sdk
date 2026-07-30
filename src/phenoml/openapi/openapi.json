@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "39a46d3227b4dab72fda53e1ee095b0dae45c530"
+    "version": "d8385630b0222feea25da5dc8fe7b9a2bf3ae000"
   },
   "x-services": [
     {
@@ -6059,7 +6059,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Upload a custom FHIR profile",
-        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. All metadata (version, resource type, id, url) is derived from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. Code system configuration is auto-extracted from the\nsnapshot. Optionally group the profile under a named implementation guide.\n",
+        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned. Code\nsystem configuration is auto-extracted from the snapshot. Optionally group\nthe profile under a named implementation guide.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -11799,7 +11799,7 @@
                 "$ref": "#/components/schemas/profiles_FHIRResource"
               }
             ],
-            "description": "A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. All metadata (version, resource type, id) is derived from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, it is derived from the final path segment of the canonical url.\n",
+            "description": "A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.\n",
             "example": {
               "resourceType": "StructureDefinition",
               "id": "custom-patient",
