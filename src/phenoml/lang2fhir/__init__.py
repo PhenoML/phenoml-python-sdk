@@ -30,6 +30,8 @@ if typing.TYPE_CHECKING:
         ProfileUploadRequest,
         SearchResponse,
         SearchResponseResourceType,
+        SplitClassification,
+        SplitClassificationOperation,
         UploadProfileResponse,
     )
     from .errors import (
@@ -72,6 +74,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ProfileUploadRequest": ".types",
     "SearchResponse": ".types",
     "SearchResponseResourceType": ".types",
+    "SplitClassification": ".types",
+    "SplitClassificationOperation": ".types",
     "UnauthorizedError": ".errors",
     "UnprocessableEntityError": ".errors",
     "UploadProfileResponse": ".types",
@@ -129,6 +133,8 @@ __all__ = [
     "ProfileUploadRequest",
     "SearchResponse",
     "SearchResponseResourceType",
+    "SplitClassification",
+    "SplitClassificationOperation",
     "UnauthorizedError",
     "UnprocessableEntityError",
     "UploadProfileResponse",
