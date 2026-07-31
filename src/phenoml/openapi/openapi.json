@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "39a46d3227b4dab72fda53e1ee095b0dae45c530"
+    "version": "a5e41450e4420ba14ef5628cbf25c5bca91e2db7"
   },
   "x-services": [
     {
@@ -5145,7 +5145,7 @@
       "post": {
         "operationId": "lang2fhir_documentMulti",
         "summary": "Extract multiple FHIR resources from a document",
-        "description": "Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
+        "description": "Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n\n**Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: \"group\"` keep matching pages and label resources extracted from those pages; classifications with `operation: \"drop\"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -5156,7 +5156,21 @@
               "example": {
                 "version": "R4",
                 "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
-                "provider": "medplum"
+                "provider": "medplum",
+                "config": {
+                  "split_classifications": [
+                    {
+                      "id": "clinical",
+                      "description": "Clinical notes, diagnoses, medications, observations, and patient demographics.",
+                      "operation": "group"
+                    },
+                    {
+                      "id": "admin",
+                      "description": "Administrative boilerplate, insurance forms, and cover sheets.",
+                      "operation": "drop"
+                    }
+                  ]
+                }
               }
             }
           }
@@ -5180,6 +5194,14 @@
                         "fullUrl": "urn:uuid:patient-001",
                         "resource": {
                           "resourceType": "Patient",
+                          "meta": {
+                            "tag": [
+                              {
+                                "system": "https://phenoml.com/fhir/split-classification",
+                                "code": "clinical"
+                              }
+                            ]
+                          },
                           "name": [
                             {
                               "given": [
@@ -5200,6 +5222,14 @@
                         "fullUrl": "urn:uuid:condition-001",
                         "resource": {
                           "resourceType": "Condition",
+                          "meta": {
+                            "tag": [
+                              {
+                                "system": "https://phenoml.com/fhir/split-classification",
+                                "code": "clinical"
+                              }
+                            ]
+                          },
                           "code": {
                             "text": "Type 2 Diabetes Mellitus"
                           },
@@ -5216,6 +5246,14 @@
                         "fullUrl": "urn:uuid:medication-001",
                         "resource": {
                           "resourceType": "MedicationRequest",
+                          "meta": {
+                            "tag": [
+                              {
+                                "system": "https://phenoml.com/fhir/split-classification",
+                                "code": "clinical"
+                              }
+                            ]
+                          },
                           "medicationCodeableConcept": {
                             "text": "Metformin 500mg"
                           },
@@ -5236,6 +5274,7 @@
                       "resourceType": "Patient",
                       "description": "John Doe, born 1979-03-15",
                       "originalText": "John Doe, DOB 1979-03-15",
+                      "group": "clinical",
                       "sourcePages": [
                         1
                       ]
@@ -5245,6 +5284,7 @@
                       "resourceType": "Condition",
                       "description": "Type 2 Diabetes Mellitus diagnosis",
                       "originalText": "diagnosed with Type 2 Diabetes",
+                      "group": "clinical",
                       "sourcePages": [
                         1
                       ]
@@ -5254,9 +5294,30 @@
                       "resourceType": "MedicationRequest",
                       "description": "Metformin 500mg prescription",
                       "originalText": "Prescribed Metformin 500mg",
+                      "group": "clinical",
                       "sourcePages": [
                         2
                       ]
+                    }
+                  ],
+                  "page_classifications": [
+                    {
+                      "page_number": 1,
+                      "include": true,
+                      "classification_id": "clinical",
+                      "reason": "clinical demographics and diagnosis"
+                    },
+                    {
+                      "page_number": 2,
+                      "include": true,
+                      "classification_id": "clinical",
+                      "reason": "clinical medication details"
+                    },
+                    {
+                      "page_number": 3,
+                      "include": false,
+                      "classification_id": "admin",
+                      "reason": "administrative cover sheet"
                     }
                   ]
                 }
@@ -6059,7 +6120,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Upload a custom FHIR profile",
-        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. All metadata (version, resource type, id, url) is derived from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. Code system configuration is auto-extracted from the\nsnapshot. Optionally group the profile under a named implementation guide.\n",
+        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned. Code\nsystem configuration is auto-extracted from the snapshot. Optionally group\nthe profile under a named implementation guide.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -11284,6 +11345,11 @@
                   "description": "Verbatim text excerpt from the original clinical document",
                   "example": "diagnosed with Type 2 Diabetes"
                 },
+                "group": {
+                  "type": "string",
+                  "description": "Split classification id assigned to this resource by the /lang2fhir/document/multi endpoint. Omitted when the resource came only from ungrouped pages or raw-text create/multi.\n",
+                  "example": "clinical"
+                },
                 "sourcePages": {
                   "type": "array",
                   "items": {
@@ -11440,7 +11506,54 @@
         "description": "Optional processing configuration shared across document endpoints.",
         "properties": {
           "page_filter": {
-            "$ref": "#/components/schemas/lang2fhir_PageFilter"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/lang2fhir_PageFilter"
+              }
+            ],
+            "deprecated": true,
+            "description": "Deprecated. Use split_classifications instead."
+          },
+          "split_classifications": {
+            "type": "array",
+            "maxItems": 20,
+            "description": "Optional per-page split classifications. Mutually exclusive with page_filter. This is a caller-defined list, not a fixed taxonomy: choose each classification id and write a natural-language description for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Pages matching operation=drop are removed before extraction. Pages matching operation=group are kept, and extracted resources attributed to those pages include the classification id in response metadata and FHIR meta.tag. Example ids such as clinical and admin are illustrative, not a fixed set.\n",
+            "items": {
+              "$ref": "#/components/schemas/lang2fhir_SplitClassification"
+            }
+          }
+        }
+      },
+      "lang2fhir_SplitClassification": {
+        "type": "object",
+        "title": "SplitClassification",
+        "description": "One caller-defined page classification and the operation to apply when it matches.",
+        "required": [
+          "id",
+          "description",
+          "operation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Unique classification id. The reserved id \"__ungrouped__\" is not allowed.",
+            "example": "labs"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Natural-language description of pages that belong to this classification.",
+            "example": "Laboratory reports and results."
+          },
+          "operation": {
+            "type": "string",
+            "description": "Operation applied to pages assigned this classification.",
+            "enum": [
+              "group",
+              "drop"
+            ],
+            "example": "group"
           }
         }
       },
@@ -11472,6 +11585,11 @@
             "description": "Whether the page was kept (true) or dropped (false) from FHIR extraction.",
             "example": true
           },
+          "classification_id": {
+            "type": "string",
+            "description": "Split classification id assigned to the page. Omitted or empty for the ungrouped/default bucket.",
+            "example": "clinical"
+          },
           "reason": {
             "type": "string",
             "description": "Short LLM-generated explanation of the decision.",
@@ -11489,7 +11607,7 @@
             "properties": {
               "page_classifications": {
                 "type": "array",
-                "description": "Per-page classifier decisions. Populated only when a page_filter was supplied in the request. Contains one entry per input page, including both kept and dropped pages.\n",
+                "description": "Per-page classifier decisions. Populated when page_filter or split_classifications was supplied in the request. Contains one entry per input page, including both kept and dropped pages.\n",
                 "items": {
                   "$ref": "#/components/schemas/lang2fhir_PageClassification"
                 }
@@ -11799,7 +11917,7 @@
                 "$ref": "#/components/schemas/profiles_FHIRResource"
               }
             ],
-            "description": "A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. All metadata (version, resource type, id) is derived from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, it is derived from the final path segment of the canonical url.\n",
+            "description": "A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.\n",
             "example": {
               "resourceType": "StructureDefinition",
               "id": "custom-patient",
