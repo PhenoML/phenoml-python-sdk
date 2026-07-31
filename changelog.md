@@ -1,3 +1,14 @@
+## [16.9.0] - 2026-07-31
+### Added
+- **`SplitClassification`** and **`SplitClassificationOperation`** — new Pydantic models for defining per-page classifiers with an `id`, `description`, and `operation` (`"group"` or `"drop"`), used to control page routing in `document_multi` calls.
+- **`DocumentConfig.split_classifications`** — new optional field accepting a list of `SplitClassification` objects; supersedes the deprecated `page_filter` field for per-page routing.
+- **`CreateMultiResponseResourcesItem.group`** — new optional field carrying the split classification `id` assigned to each extracted FHIR resource when `split_classifications` is used.
+- **`PageClassification.classification_id`** — new optional field indicating which split classification was assigned to a given page in the `page_classifications` response list.
+
+### Changed
+- **`DocumentMultiResponse.page_classifications`** — now populated when either `page_filter` or `split_classifications` is supplied in the request, not only `page_filter`.
+- **`ProfileUploadRequest.structure_definition`** — docstring updated to clarify that omitting `id` now assigns a random UUID instead of deriving it from the canonical URL path segment.
+
 ## [16.8.0] - 2026-07-29
 ### Added
 - **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
