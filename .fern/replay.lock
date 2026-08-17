@@ -115,7 +115,7 @@ patches:
        
        [tool.poetry]
        name = "phenoml"
-      -version = "0.0.0.dev0"
+      -version = "16.9.0"
       +version = "16.8.0"
        description = ""
        readme = "README.md"
