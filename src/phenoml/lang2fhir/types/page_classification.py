@@ -21,6 +21,11 @@ class PageClassification(UniversalBaseModel):
     Whether the page was kept (true) or dropped (false) from FHIR extraction.
     """
 
+    classification_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Split classification id assigned to the page. Omitted or empty for the ungrouped/default bucket.
+    """
+
     reason: typing.Optional[str] = pydantic.Field(default=None)
     """
     Short LLM-generated explanation of the decision.
