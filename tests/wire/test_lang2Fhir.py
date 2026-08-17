@@ -1,5 +1,7 @@
 from .conftest import get_client, verify_request_count
 
+from phenoml.lang2fhir import DocumentConfig, SplitClassification
+
 
 def test_lang2Fhir_create() -> None:
     """Test create endpoint with WireMock"""
@@ -66,5 +68,19 @@ def test_lang2Fhir_document_multi() -> None:
         version="R4",
         content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
         provider="medplum",
+        config=DocumentConfig(
+            split_classifications=[
+                SplitClassification(
+                    id="clinical",
+                    description="Clinical notes, diagnoses, medications, observations, and patient demographics.",
+                    operation="group",
+                ),
+                SplitClassification(
+                    id="admin",
+                    description="Administrative boilerplate, insurance forms, and cover sheets.",
+                    operation="drop",
+                ),
+            ],
+        ),
     )
     verify_request_count(test_id, "POST", "/lang2fhir/document/multi", None, 1)

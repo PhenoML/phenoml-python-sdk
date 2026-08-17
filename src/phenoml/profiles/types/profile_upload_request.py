@@ -10,7 +10,7 @@ from .fhir_resource import FhirResource
 class ProfileUploadRequest(UniversalBaseModel):
     structure_definition: FhirResource = pydantic.Field()
     """
-    A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. All metadata (version, resource type, id) is derived from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, it is derived from the final path segment of the canonical url.
+    A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
     """
 
     implementation_guide: typing.Optional[str] = pydantic.Field(default=None)

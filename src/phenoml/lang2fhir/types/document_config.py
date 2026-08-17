@@ -5,6 +5,8 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .page_filter import PageFilter
+from .resource_review import ResourceReview
+from .split_classification import SplitClassification
 
 
 class DocumentConfig(UniversalBaseModel):
@@ -12,7 +14,17 @@ class DocumentConfig(UniversalBaseModel):
     Optional processing configuration shared across document endpoints.
     """
 
-    page_filter: typing.Optional[PageFilter] = None
+    page_filter: typing.Optional[PageFilter] = pydantic.Field(default=None)
+    """
+    Deprecated. Use split_classifications instead.
+    """
+
+    split_classifications: typing.Optional[typing.List[SplitClassification]] = pydantic.Field(default=None)
+    """
+    Optional per-page split classifications. Mutually exclusive with page_filter. This is a caller-defined list, not a fixed taxonomy: choose each classification id and write a natural-language description for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Pages matching operation=drop are removed before extraction. Pages matching operation=group are kept, and extracted resources attributed to those pages include the classification id in response metadata and FHIR meta.tag. Example ids such as clinical and admin are illustrative, not a fixed set.
+    """
+
+    resource_review: typing.Optional[ResourceReview] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

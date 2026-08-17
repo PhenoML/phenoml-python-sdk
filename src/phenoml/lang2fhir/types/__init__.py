@@ -31,8 +31,15 @@ if typing.TYPE_CHECKING:
     from .page_classification import PageClassification
     from .page_filter import PageFilter
     from .profile_upload_request import ProfileUploadRequest
+    from .resource_review import ResourceReview
+    from .resource_review_finding import ResourceReviewFinding
+    from .resource_review_flagged import ResourceReviewFlagged
+    from .resource_review_result import ResourceReviewResult
+    from .resource_review_target import ResourceReviewTarget
     from .search_response import SearchResponse
     from .search_response_resource_type import SearchResponseResourceType
+    from .split_classification import SplitClassification
+    from .split_classification_operation import SplitClassificationOperation
     from .upload_profile_response import UploadProfileResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "CreateMultiRequestDetectionEffort": ".create_multi_request_detection_effort",
@@ -56,8 +63,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PageClassification": ".page_classification",
     "PageFilter": ".page_filter",
     "ProfileUploadRequest": ".profile_upload_request",
+    "ResourceReview": ".resource_review",
+    "ResourceReviewFinding": ".resource_review_finding",
+    "ResourceReviewFlagged": ".resource_review_flagged",
+    "ResourceReviewResult": ".resource_review_result",
+    "ResourceReviewTarget": ".resource_review_target",
     "SearchResponse": ".search_response",
     "SearchResponseResourceType": ".search_response_resource_type",
+    "SplitClassification": ".split_classification",
+    "SplitClassificationOperation": ".split_classification_operation",
     "UploadProfileResponse": ".upload_profile_response",
 }
 
@@ -105,7 +119,14 @@ __all__ = [
     "PageClassification",
     "PageFilter",
     "ProfileUploadRequest",
+    "ResourceReview",
+    "ResourceReviewFinding",
+    "ResourceReviewFlagged",
+    "ResourceReviewResult",
+    "ResourceReviewTarget",
     "SearchResponse",
     "SearchResponseResourceType",
+    "SplitClassification",
+    "SplitClassificationOperation",
     "UploadProfileResponse",
 ]
