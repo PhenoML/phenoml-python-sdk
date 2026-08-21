@@ -7,6 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .create_multi_response_bundle import CreateMultiResponseBundle
 from .create_multi_response_resources_item import CreateMultiResponseResourcesItem
 from .create_multi_response_validation import CreateMultiResponseValidation
+from .resource_review_result import ResourceReviewResult
 
 
 class CreateMultiResponse(UniversalBaseModel):
@@ -34,6 +35,8 @@ class CreateMultiResponse(UniversalBaseModel):
     """
     FHIR validation results. Present when validation_method is 'check' or 'fix'. Contains results from each validation pass. For 'check', there is one pass. For 'fix', there may be up to 3 passes as the system attempts auto-correction.
     """
+
+    resource_review: typing.Optional[ResourceReviewResult] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
