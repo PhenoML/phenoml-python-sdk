@@ -1,3 +1,16 @@
+## [16.9.0] - 2026-08-21
+### Added
+- **`DocumentConfig.split_classifications`** — new optional field accepting a list of `SplitClassification` objects that instruct the per-page classifier to group or drop pages before FHIR extraction; mutually exclusive with the deprecated `page_filter`.
+- **`DocumentConfig.resource_review`** — new optional field accepting a `ResourceReview` configuration to enable post-extraction LLM-based faithfulness auditing on the multi-document endpoint.
+- **`SplitClassification` and `SplitClassificationOperation`** — new Pydantic models representing a page-split rule with `group` or `drop` operations, passed via `DocumentConfig.split_classifications`.
+- **`ResourceReview`, `ResourceReviewTarget`, `ResourceReviewResult`, `ResourceReviewFlagged`, `ResourceReviewFinding`, and related models** — new Pydantic models for configuring and surfacing resource-review results, including flagged FHIR resources not supported by the source document.
+- **`CreateMultiResponse.resource_review`** — new optional `ResourceReviewResult` field present when resource review was requested and at least one resource was flagged.
+- **`CreateMultiResponseResourcesItem.group` and `PageClassification.classification_id`** — new optional fields that surface the split classification id assigned to each resource or page.
+
+### Changed
+- **`DocumentMultiResponse.page_classifications`** — docstring updated to reflect population when either `page_filter` or `split_classifications` is supplied.
+- **`ProfileUploadRequest.structure_definition`** — documentation clarified: omitting `id` from a StructureDefinition now assigns a random UUID as the lookup key instead of deriving one from the canonical URL path segment.
+
 ## [16.8.0] - 2026-07-29
 ### Added
 - **`client.construe.codes.crosswalk(...)`** — new sync and async method that maps a source medical code to one or more target FHIR code-system URIs using shared UMLS CUIs, returning a `CrosswalkResponse`.
