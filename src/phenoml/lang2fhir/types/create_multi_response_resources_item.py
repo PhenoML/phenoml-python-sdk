@@ -41,6 +41,11 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
     Verbatim text excerpt from the original clinical document
     """
 
+    group: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Split classification id assigned to this resource by the /lang2fhir/document/multi endpoint. Omitted when the resource came only from ungrouped pages or raw-text create/multi.
+    """
+
     source_pages: typing_extensions.Annotated[
         typing.Optional[typing.List[int]],
         FieldMetadata(alias="sourcePages"),
