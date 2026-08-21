@@ -347,6 +347,8 @@ class Lang2FhirClient:
 
         **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
+        **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
+
         Parameters
         ----------
         version : str
@@ -382,6 +384,7 @@ class Lang2FhirClient:
         Examples
         --------
         from phenoml import PhenomlClient
+        from phenoml.lang2fhir import DocumentConfig, SplitClassification
 
         client = PhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -391,6 +394,20 @@ class Lang2FhirClient:
             version="R4",
             content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
             provider="medplum",
+            config=DocumentConfig(
+                split_classifications=[
+                    SplitClassification(
+                        id="clinical",
+                        description="Clinical notes, diagnoses, medications, observations, and patient demographics.",
+                        operation="group",
+                    ),
+                    SplitClassification(
+                        id="admin",
+                        description="Administrative boilerplate, insurance forms, and cover sheets.",
+                        operation="drop",
+                    ),
+                ],
+            ),
         )
         """
         _response = self._raw_client.document_multi(
@@ -772,6 +789,8 @@ class AsyncLang2FhirClient:
 
         **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
+        **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
+
         Parameters
         ----------
         version : str
@@ -809,6 +828,7 @@ class AsyncLang2FhirClient:
         import asyncio
 
         from phenoml import AsyncPhenomlClient
+        from phenoml.lang2fhir import DocumentConfig, SplitClassification
 
         client = AsyncPhenomlClient(
             client_id="YOUR_CLIENT_ID",
@@ -821,6 +841,20 @@ class AsyncLang2FhirClient:
                 version="R4",
                 content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
                 provider="medplum",
+                config=DocumentConfig(
+                    split_classifications=[
+                        SplitClassification(
+                            id="clinical",
+                            description="Clinical notes, diagnoses, medications, observations, and patient demographics.",
+                            operation="group",
+                        ),
+                        SplitClassification(
+                            id="admin",
+                            description="Administrative boilerplate, insurance forms, and cover sheets.",
+                            operation="drop",
+                        ),
+                    ],
+                ),
             )
 
 
