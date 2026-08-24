@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "b40035cbf3c545acdcd1ba3d1a922bee5a5c5ffa"
+    "version": "3d276be6c4d898b4ef76a16567887c9cac2e42a0"
   },
   "x-services": [
     {
@@ -11261,6 +11261,9 @@
               "fix"
             ],
             "default": "none"
+          },
+          "resource_review": {
+            "$ref": "#/components/schemas/lang2fhir_ResourceReview"
           }
         }
       },
@@ -11605,13 +11608,15 @@
       },
       "lang2fhir_ResourceReview": {
         "type": "object",
-        "description": "Opt-in, report-only faithfulness audit (honored by /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. Resources with an unsupported field are pulled out of the returned bundle and reported under resource_review in the response.\n",
+        "description": "Opt-in, report-only faithfulness audit (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. Resources with an unsupported field are pulled out of the returned bundle and reported under resource_review in the response.\n",
         "required": [
           "targets"
         ],
         "properties": {
           "targets": {
             "type": "array",
+            "minItems": 1,
+            "maxItems": 25,
             "description": "The resource types to audit and which date or clinical code field kinds to check.",
             "items": {
               "$ref": "#/components/schemas/lang2fhir_ResourceReviewTarget"
