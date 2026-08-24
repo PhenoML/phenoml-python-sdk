@@ -1,3 +1,13 @@
+## [16.10.0] - 2026-08-24
+### Added
+- **`resource_review` parameter on `client.lang2fhir.create_multi(...)`** — sync and async variants now accept an optional `ResourceReview` configuration to enable post-extraction LLM-based faithfulness auditing, matching the capability already available on `document_multi`.
+- **`CreateMultiResponse.resource_review`** — new optional `ResourceReviewResult` field present when resource review was requested and at least one resource was flagged.
+- **`PageClassification.classification_id`** — new optional string field that surfaces the split-classification id assigned to each page when `split_classifications` is used.
+
+### Changed
+- **`ResourceReview` docstring** — updated to reflect that the faithfulness audit is now honored by both `/lang2fhir/create/multi` and `/lang2fhir/document/multi`.
+- **`DocumentConfig.page_filter`** — marked deprecated in the OpenAPI schema; use `split_classifications` instead.
+
 ## [16.9.0] - 2026-08-21
 ### Added
 - **`DocumentConfig.split_classifications`** — new optional field accepting a list of `SplitClassification` objects that instruct the per-page classifier to group or drop pages before FHIR extraction; mutually exclusive with the deprecated `page_filter`.
