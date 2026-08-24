@@ -14,6 +14,7 @@ from .types.document_multi_request_detection_effort import DocumentMultiRequestD
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
 from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
+from .types.resource_review import ResourceReview
 from .types.search_response import SearchResponse
 from .types.upload_profile_response import UploadProfileResponse
 
@@ -96,6 +97,7 @@ class Lang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
+        resource_review: typing.Optional[ResourceReview] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -125,6 +127,8 @@ class Lang2FhirClient:
         validation_method : typing.Optional[CreateMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
+        resource_review : typing.Optional[ResourceReview]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -153,6 +157,7 @@ class Lang2FhirClient:
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             validation_method=validation_method,
+            resource_review=resource_review,
             request_options=request_options,
         )
         return _response.data
@@ -506,6 +511,7 @@ class AsyncLang2FhirClient:
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
+        resource_review: typing.Optional[ResourceReview] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -534,6 +540,8 @@ class AsyncLang2FhirClient:
 
         validation_method : typing.Optional[CreateMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
+
+        resource_review : typing.Optional[ResourceReview]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -571,6 +579,7 @@ class AsyncLang2FhirClient:
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
             validation_method=validation_method,
+            resource_review=resource_review,
             request_options=request_options,
         )
         return _response.data
