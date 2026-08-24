@@ -4957,6 +4957,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**resource_review:** `typing.Optional[ResourceReview]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
