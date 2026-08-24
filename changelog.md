@@ -1,3 +1,11 @@
+## [16.10.0] - 2026-08-24
+### Added
+- **`resource_review` parameter on `client.lang2fhir.create_multi(...)`** — the opt-in faithfulness audit (`ResourceReview`) is now accepted by the `/lang2fhir/create/multi` endpoint (sync and async), in addition to the existing `/lang2fhir/document/multi` support.
+- **`DocumentConfig.resource_review`** — `resource_review` is now also accepted via `DocumentConfig` on the document endpoints, enabling the faithfulness audit through the document-level config object.
+- **`SplitClassification` schema in OpenAPI** — the spec now formally defines `SplitClassification` with `id`, `description`, and `operation` fields, and documents `DocumentConfig.split_classifications` as mutually exclusive with the deprecated `page_filter`.
+- **`PageClassification.classification_id`** — the `classification_id` field is now included in the OpenAPI schema for `PageClassification`, surfacing the split classification assigned to each page.
+- **`ResourceReviewResult`, `ResourceReviewFlagged`, and `ResourceReviewFinding`** — new OpenAPI schema definitions for the structured resource-review response, including flagged resources and per-field findings.
+
 ## [16.9.0] - 2026-08-21
 ### Added
 - **`DocumentConfig.split_classifications`** — new optional field accepting a list of `SplitClassification` objects that instruct the per-page classifier to group or drop pages before FHIR extraction; mutually exclusive with the deprecated `page_filter`.
