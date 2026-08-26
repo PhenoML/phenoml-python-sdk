@@ -27,6 +27,7 @@ from .types.document_multi_request_detection_effort import DocumentMultiRequestD
 from .types.document_multi_request_validation_method import DocumentMultiRequestValidationMethod
 from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
+from .types.patient_reference import PatientReference
 from .types.resource_review import ResourceReview
 from .types.search_response import SearchResponse
 from .types.upload_profile_response import UploadProfileResponse
@@ -166,6 +167,7 @@ class RawLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
@@ -189,6 +191,8 @@ class RawLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        patient_reference : typing.Optional[PatientReference]
 
         implementation_guide : typing.Optional[str]
             Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
@@ -216,6 +220,9 @@ class RawLang2FhirClient:
                 "text": text,
                 "version": version,
                 "provider": provider,
+                "patient_reference": convert_and_respect_annotation_metadata(
+                    object_=patient_reference, annotation=PatientReference, direction="write"
+                ),
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
@@ -676,6 +683,7 @@ class RawLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
@@ -705,6 +713,8 @@ class RawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        patient_reference : typing.Optional[PatientReference]
+
         implementation_guide : typing.Optional[str]
             Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
@@ -731,6 +741,9 @@ class RawLang2FhirClient:
                 "version": version,
                 "content": content,
                 "provider": provider,
+                "patient_reference": convert_and_respect_annotation_metadata(
+                    object_=patient_reference, annotation=PatientReference, direction="write"
+                ),
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
@@ -971,6 +984,7 @@ class AsyncRawLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
@@ -994,6 +1008,8 @@ class AsyncRawLang2FhirClient:
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
+
+        patient_reference : typing.Optional[PatientReference]
 
         implementation_guide : typing.Optional[str]
             Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
@@ -1021,6 +1037,9 @@ class AsyncRawLang2FhirClient:
                 "text": text,
                 "version": version,
                 "provider": provider,
+                "patient_reference": convert_and_respect_annotation_metadata(
+                    object_=patient_reference, annotation=PatientReference, direction="write"
+                ),
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
@@ -1481,6 +1500,7 @@ class AsyncRawLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[DocumentMultiRequestValidationMethod] = OMIT,
@@ -1510,6 +1530,8 @@ class AsyncRawLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        patient_reference : typing.Optional[PatientReference]
+
         implementation_guide : typing.Optional[str]
             Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
 
@@ -1536,6 +1558,9 @@ class AsyncRawLang2FhirClient:
                 "version": version,
                 "content": content,
                 "provider": provider,
+                "patient_reference": convert_and_respect_annotation_metadata(
+                    object_=patient_reference, annotation=PatientReference, direction="write"
+                ),
                 "implementation_guide": implementation_guide,
                 "detection_effort": detection_effort,
                 "validation_method": validation_method,
