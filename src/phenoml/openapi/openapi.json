@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "3d276be6c4d898b4ef76a16567887c9cac2e42a0"
+    "version": "4a08550f5db230949c7423d0ce5aa7055e8f0d65"
   },
   "x-services": [
     {
@@ -11216,6 +11216,29 @@
         "type": "object",
         "description": "A FHIR resource (schema depends on resource type)"
       },
+      "lang2fhir_PatientReference": {
+        "type": "object",
+        "description": "Optional reference to an existing Patient, by business identifier. If a Patient resource is extracted, this identifier is added to that Patient's identifier list (existing identifiers are kept). If no Patient is extracted, generated clinical resources are linked to this patient as a logical reference (subject.identifier) instead of the request failing, and no placeholder Patient is created. Supply the patient-level identifier (not an order or specimen identifier).\n",
+        "required": [
+          "system",
+          "value"
+        ],
+        "properties": {
+          "system": {
+            "type": "string",
+            "description": "Identifier system (namespace) for the patient identifier.",
+            "example": "urn:acmehealth:patient_index_id"
+          },
+          "value": {
+            "type": "string",
+            "description": "Identifier value for the patient within that system."
+          }
+        },
+        "example": {
+          "system": "urn:acmehealth:patient_index_id",
+          "value": "abc-123"
+        }
+      },
       "lang2fhir_CreateMultiRequest": {
         "type": "object",
         "required": [
@@ -11237,6 +11260,9 @@
             "type": "string",
             "description": "Optional FHIR provider name for provider-specific profiles",
             "example": "canvas"
+          },
+          "patient_reference": {
+            "$ref": "#/components/schemas/lang2fhir_PatientReference"
           },
           "implementation_guide": {
             "type": "string",
@@ -11477,6 +11503,9 @@
             "type": "string",
             "description": "Optional FHIR provider name for provider-specific profiles",
             "example": "canvas"
+          },
+          "patient_reference": {
+            "$ref": "#/components/schemas/lang2fhir_PatientReference"
           },
           "implementation_guide": {
             "type": "string",
