@@ -1,3 +1,12 @@
+## [16.11.0] - 2026-08-26
+### Added
+- **`PatientReference`** — new Pydantic model with `system` and `value` fields representing a business identifier for an existing patient; exported from `phenoml.lang2fhir`.
+- **`patient_reference` parameter on `client.lang2fhir.create_multi(...)` and `client.lang2fhir.document_multi(...)`** — optional `PatientReference` accepted by both the sync and async variants; when provided, the identifier is merged into any extracted Patient resource or attached as a logical subject reference on clinical resources when no Patient is extracted.
+
+### Changed
+- **`ResourceReview` docstring** — updated to reflect that the faithfulness audit is now honored by both `/lang2fhir/create/multi` and `/lang2fhir/document/multi`.
+- **`ResourceReview.targets` validation** — the OpenAPI spec now enforces `minItems: 1` and `maxItems: 25` on the targets array.
+
 ## [16.10.0] - 2026-08-24
 ### Added
 - **`resource_review` parameter on `client.lang2fhir.create_multi(...)`** — the opt-in faithfulness audit (`ResourceReview`) is now accepted by the `/lang2fhir/create/multi` endpoint (sync and async) in addition to the document-multi endpoint; pass a `ResourceReview` object to enable post-extraction LLM auditing on that path.
