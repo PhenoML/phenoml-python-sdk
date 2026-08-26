@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "16.10.0",
-    "specCommit": "3d276be6c4d898b4ef76a16567887c9cac2e42a0",
+    "sdkVersion": "16.11.0",
+    "specCommit": "4a08550f5db230949c7423d0ce5aa7055e8f0d65",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -2915,6 +2915,12 @@
               "required": false
             },
             {
+              "jsonKey": "patient_reference",
+              "fieldTemplate": "patient_reference={{value}}",
+              "kind": "object",
+              "required": false
+            },
+            {
               "jsonKey": "implementation_guide",
               "fieldTemplate": "implementation_guide={{value}}",
               "kind": "string",
@@ -3276,6 +3282,12 @@
               "jsonKey": "provider",
               "fieldTemplate": "provider={{value}}",
               "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "patient_reference",
+              "fieldTemplate": "patient_reference={{value}}",
+              "kind": "object",
               "required": false
             },
             {
