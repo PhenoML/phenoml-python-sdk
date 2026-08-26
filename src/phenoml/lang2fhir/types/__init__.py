@@ -30,6 +30,7 @@ if typing.TYPE_CHECKING:
     from .fhir_resource import FhirResource
     from .page_classification import PageClassification
     from .page_filter import PageFilter
+    from .patient_reference import PatientReference
     from .profile_upload_request import ProfileUploadRequest
     from .resource_review import ResourceReview
     from .resource_review_finding import ResourceReviewFinding
@@ -64,6 +65,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "FhirResource": ".fhir_resource",
     "PageClassification": ".page_classification",
     "PageFilter": ".page_filter",
+    "PatientReference": ".patient_reference",
     "ProfileUploadRequest": ".profile_upload_request",
     "ResourceReview": ".resource_review",
     "ResourceReviewFinding": ".resource_review_finding",
@@ -122,6 +124,7 @@ __all__ = [
     "FhirResource",
     "PageClassification",
     "PageFilter",
+    "PatientReference",
     "ProfileUploadRequest",
     "ResourceReview",
     "ResourceReviewFinding",
