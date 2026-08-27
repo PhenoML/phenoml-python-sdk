@@ -10,6 +10,7 @@ from .raw_client import AsyncRawProfilesClient, RawProfilesClient
 if typing.TYPE_CHECKING:
     from .profiles.client import AsyncProfilesClient as profiles_profiles_client_AsyncProfilesClient
     from .profiles.client import ProfilesClient as profiles_profiles_client_ProfilesClient
+    from .versions.client import AsyncVersionsClient, VersionsClient
 
 
 class ProfilesClient:
@@ -17,6 +18,7 @@ class ProfilesClient:
         self._raw_client = RawProfilesClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._profiles: typing.Optional[profiles_profiles_client_ProfilesClient] = None
+        self._versions: typing.Optional[VersionsClient] = None
 
     @property
     def with_raw_response(self) -> RawProfilesClient:
@@ -37,12 +39,21 @@ class ProfilesClient:
             self._profiles = profiles_profiles_client_ProfilesClient(client_wrapper=self._client_wrapper)
         return self._profiles
 
+    @property
+    def versions(self):
+        if self._versions is None:
+            from .versions.client import VersionsClient  # noqa: E402
+
+            self._versions = VersionsClient(client_wrapper=self._client_wrapper)
+        return self._versions
+
 
 class AsyncProfilesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawProfilesClient(client_wrapper=client_wrapper)
         self._client_wrapper = client_wrapper
         self._profiles: typing.Optional[profiles_profiles_client_AsyncProfilesClient] = None
+        self._versions: typing.Optional[AsyncVersionsClient] = None
 
     @property
     def with_raw_response(self) -> AsyncRawProfilesClient:
@@ -64,3 +75,11 @@ class AsyncProfilesClient:
 
             self._profiles = profiles_profiles_client_AsyncProfilesClient(client_wrapper=self._client_wrapper)
         return self._profiles
+
+    @property
+    def versions(self):
+        if self._versions is None:
+            from .versions.client import AsyncVersionsClient  # noqa: E402
+
+            self._versions = AsyncVersionsClient(client_wrapper=self._client_wrapper)
+        return self._versions

@@ -1659,7 +1659,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"profiles\": [\n    {\n      \"id\": \"custom-patient\",\n      \"source\": \"custom\",\n      \"resource_type\": \"Patient\",\n      \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n      \"version\": \"1.0.0\",\n      \"fhir_version\": \"4.0.1\",\n      \"implementation_guide\": \"acme-cardiology\",\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "body": "{\n  \"profiles\": [\n    {\n      \"id\": \"custom-patient\",\n      \"source\": \"custom\",\n      \"resource_type\": \"Patient\",\n      \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n      \"version\": \"1.0.0\",\n      \"status\": \"active\",\n      \"date\": \"2026-08-24\",\n      \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n      \"fhir_version\": \"4.0.1\",\n      \"implementation_guide\": \"acme-cardiology\",\n      \"created_at\": \"2026-08-24T15:04:05Z\",\n      \"updated_at\": \"2026-08-25T16:04:05Z\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1686,7 +1686,7 @@
       },
       "response": {
         "status": 201,
-        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"status\": \"active\",\n  \"date\": \"2026-08-24\",\n  \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2026-08-24T15:04:05Z\",\n  \"updated_at\": \"2026-08-25T16:04:05Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1717,7 +1717,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"structure_definition\": {\n    \"key\": \"value\"\n  }\n}",
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"status\": \"active\",\n  \"date\": \"2026-08-24\",\n  \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2026-08-24T15:04:05Z\",\n  \"updated_at\": \"2026-08-25T16:04:05Z\",\n  \"structure_definition\": {\n    \"resourceType\": \"StructureDefinition\",\n    \"id\": \"custom-patient\",\n    \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n    \"version\": \"1.0.0\",\n    \"name\": \"CustomPatient\",\n    \"status\": \"active\",\n    \"fhirVersion\": \"4.0.1\",\n    \"kind\": \"resource\",\n    \"abstract\": false,\n    \"type\": \"Patient\",\n    \"baseDefinition\": \"http://hl7.org/fhir/StructureDefinition/Patient\",\n    \"derivation\": \"constraint\",\n    \"snapshot\": {\n      \"element\": [\n        {\n          \"id\": \"Patient\",\n          \"path\": \"Patient\",\n          \"min\": 0,\n          \"max\": \"*\"\n        }\n      ]\n    }\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1748,7 +1748,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"status\": \"active\",\n  \"date\": \"2026-08-24\",\n  \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2026-08-24T15:04:05Z\",\n  \"updated_at\": \"2026-08-25T16:04:05Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1785,6 +1785,136 @@
         }
       },
       "uuid": "45d69580-fac7-4e61-a607-14ab49504115",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ece33377-1b58-43bf-9eb4-15018a2aa8a3",
+      "name": "List versions for a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}/versions",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"versions\": [\n    {\n      \"id\": \"custom-patient\",\n      \"source\": \"custom\",\n      \"resource_type\": \"Patient\",\n      \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n      \"version\": \"2.0.0\",\n      \"status\": \"active\",\n      \"date\": \"2026-08-26\",\n      \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|2.0.0\",\n      \"fhir_version\": \"4.0.1\",\n      \"implementation_guide\": \"acme-cardiology\",\n      \"created_at\": \"2026-08-26T15:04:05Z\",\n      \"updated_at\": \"2026-08-26T15:04:05Z\"\n    },\n    {\n      \"id\": \"custom-patient\",\n      \"source\": \"custom\",\n      \"resource_type\": \"Patient\",\n      \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n      \"version\": \"1.0.0\",\n      \"status\": \"active\",\n      \"date\": \"2026-08-24\",\n      \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n      \"fhir_version\": \"4.0.1\",\n      \"implementation_guide\": \"acme-cardiology\",\n      \"created_at\": \"2026-08-24T15:04:05Z\",\n      \"updated_at\": \"2026-08-24T15:04:05Z\"\n    }\n  ]\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ece33377-1b58-43bf-9eb4-15018a2aa8a3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "75dac82d-0cf5-471e-9221-a2bc87f07808",
+      "name": "Add a retained version to a custom FHIR profile - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}/versions",
+        "method": "POST",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"status\": \"active\",\n  \"date\": \"2026-08-24\",\n  \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2026-08-24T15:04:05Z\",\n  \"updated_at\": \"2026-08-25T16:04:05Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "75dac82d-0cf5-471e-9221-a2bc87f07808",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f7707266-d3fb-4351-a61c-53398a9631a3",
+      "name": "Get a retained custom FHIR profile version - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
+        "method": "GET",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          },
+          "version": {
+            "equalTo": "2.0.0"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"id\": \"custom-patient\",\n  \"source\": \"custom\",\n  \"resource_type\": \"Patient\",\n  \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n  \"version\": \"1.0.0\",\n  \"status\": \"active\",\n  \"date\": \"2026-08-24\",\n  \"canonical\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0\",\n  \"fhir_version\": \"4.0.1\",\n  \"implementation_guide\": \"acme-cardiology\",\n  \"created_at\": \"2026-08-24T15:04:05Z\",\n  \"updated_at\": \"2026-08-25T16:04:05Z\",\n  \"structure_definition\": {\n    \"resourceType\": \"StructureDefinition\",\n    \"id\": \"custom-patient\",\n    \"url\": \"http://phenoml.com/fhir/StructureDefinition/custom-patient\",\n    \"version\": \"1.0.0\",\n    \"name\": \"CustomPatient\",\n    \"status\": \"active\",\n    \"fhirVersion\": \"4.0.1\",\n    \"kind\": \"resource\",\n    \"abstract\": false,\n    \"type\": \"Patient\",\n    \"baseDefinition\": \"http://hl7.org/fhir/StructureDefinition/Patient\",\n    \"derivation\": \"constraint\",\n    \"snapshot\": {\n      \"element\": [\n        {\n          \"id\": \"Patient\",\n          \"path\": \"Patient\",\n          \"min\": 0,\n          \"max\": \"*\"\n        }\n      ]\n    }\n  }\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f7707266-d3fb-4351-a61c-53398a9631a3",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6a0a59a4-4cb6-4ff9-be29-71b9c876d086",
+      "name": "Delete a retained custom FHIR profile version - default",
+      "request": {
+        "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
+        "method": "DELETE",
+        "pathParameters": {
+          "id": {
+            "equalTo": "custom-patient"
+          },
+          "version": {
+            "equalTo": "2.0.0"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "\"\"",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6a0a59a4-4cb6-4ff9-be29-71b9c876d086",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -2479,6 +2609,6 @@
     }
   ],
   "meta": {
-    "total": 82
+    "total": 86
   }
 }
