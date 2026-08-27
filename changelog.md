@@ -1,3 +1,16 @@
+## [17.0.0] - 2026-08-27
+### Breaking Changes
+- **`ProfileSummary`** — fields `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required (non-`Optional`); update all construction and pattern-matching sites to supply all values.
+- **`ProfileGetResponse.structure_definition`** — changed from `Optional[FhirResource]` to a required `FhirResource`; remove any `None` guards around this field.
+- **`ProfileListResponse.profiles`** — changed from `Optional[List[ProfileSummary]]` to a required `List[ProfileSummary]`; remove any `None` checks before iterating.
+
+### Added
+- **`client.profiles.versions`** — new sync and async sub-client for managing immutable versioned StructureDefinition profiles, exposing `list`, `create`, `get`, and `delete` operations targeting `fhir/profiles/{id}/versions`.
+- **`ProfileVersionListResponse`** and **`ProfileVersionCreateRequest`** — new response and request types exported from `phenoml.profiles` for use with the `versions` sub-client.
+- **`RawVersionsClient`** and **`AsyncRawVersionsClient`** — raw HTTP response variants of the versions sub-client for callers needing direct access to response headers and status codes.
+- **`ConflictError`** — new `ApiError` subclass (HTTP 409) raised by `client.profiles.profiles.update()` when a version conflict is detected; catch this to handle conflict responses.
+- **`ProfileSummary.status`**, **`ProfileSummary.date`**, and **`ProfileSummary.canonical`** — new optional fields surfacing publication status, authored date, and version-pinned canonical URL from the StructureDefinition.
+
 ## [16.11.0] - 2026-08-26
 ### Added
 - **`PatientReference`** — new Pydantic model with `system` and `value` fields representing a business identifier for an existing patient; exported from `phenoml.lang2fhir`.
