@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "4a08550f5db230949c7423d0ce5aa7055e8f0d65"
+    "version": "16acd5eee3fa79f3b9acf08b06be4dceccbea836"
   },
   "x-services": [
     {
@@ -6073,13 +6073,13 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "List custom FHIR profiles",
-        "description": "Returns metadata for every custom (uploaded) FHIR profile on this\ninstance, across all implementation guides. The full StructureDefinition\nJSON is omitted from each entry; fetch a single profile by id to retrieve it.\n\nThe `url` query parameter filters by canonical URL. The canonical URL is the\nstable key other platform features use to reference a profile (FHIR's\n`meta.profile`, `baseDefinition`), since StructureDefinition ids are only\nunique within a package. A non-matching filter returns an empty list, not a 404.\n",
+        "description": "Returns metadata for every custom (uploaded) FHIR profile on this\ninstance, across all implementation guides. The full StructureDefinition\nJSON is omitted from each entry; fetch a single profile by id to retrieve it.\n\nThe `url` query parameter filters by canonical URL. The canonical URL is the\nstable key other platform features use to reference a profile (FHIR's\n`meta.profile`, `baseDefinition`), since StructureDefinition ids are only\nunique within a package. An unpinned `url` filter returns metadata for\nthe profile's current StructureDefinition. Pinned `url|version` filters\nresolve a retained version when present; otherwise they can fall back to\nthe profile's current StructureDefinition, whose content can change\nthrough the profile update endpoint. A non-matching filter returns an\nempty list, not a 404.\n",
         "parameters": [
           {
             "name": "url",
             "in": "query",
             "required": false,
-            "description": "Filter by canonical URL. Accepts the FHIR pinned form `url|version` (split on the last `|`); the bare form matches the current version.\n",
+            "description": "Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.\n",
             "schema": {
               "type": "string"
             },
@@ -6120,7 +6120,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Upload a custom FHIR profile",
-        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned. Code\nsystem configuration is auto-extracted from the snapshot. Optionally group\nthe profile under a named implementation guide.\n",
+        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned.\nOptionally group the profile under a named implementation guide.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -6143,7 +6143,7 @@
             }
           },
           "400": {
-            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The id collides with a built-in US Core or R4 base profile\n- A custom profile with the same id or url already exists\n"
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The id collides with a built-in US Core or R4 base profile\n- A custom profile with the same id or url already exists\n- The implementation_guide is reserved or invalid\n"
           },
           "401": {
             "description": "Unauthorized"
@@ -6182,7 +6182,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Get a custom FHIR profile",
-        "description": "Returns a single custom profile by id, including its full StructureDefinition JSON.\n",
+        "description": "Returns a single custom profile by id, including its full StructureDefinition\nJSON.\n",
         "responses": {
           "200": {
             "description": "The requested profile",
@@ -6223,7 +6223,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Update a custom FHIR profile",
-        "description": "Replaces an existing custom profile with a new StructureDefinition. The\n`id` path parameter is authoritative: if the StructureDefinition includes\nan `id` it must match the path parameter, and if it omits one the path\nparameter is used. The FHIR resource type of the profile cannot change.\nCode system configuration is\nre-derived from the new StructureDefinition. When `implementation_guide` is\nomitted, the profile keeps its existing implementation guide. The instance\nstores a single version per canonical URL, so this replaces it in place.\n",
+        "description": "Replaces an existing custom profile with a new StructureDefinition. The\n`id` path parameter is authoritative: if the StructureDefinition includes\nan `id` it must match the path parameter, and if it omits one the path\nparameter is used. The FHIR resource type of the profile cannot change.\nWhen `implementation_guide` is omitted, the profile keeps its existing\nimplementation guide. A retained version string is allowed only when\nre-submitting the profile's current version with an unchanged\nStructureDefinition; otherwise it returns a conflict. While the profile\nhas retained versions, its\ncanonical URL cannot be changed.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -6246,7 +6246,99 @@
             }
           },
           "400": {
-            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The StructureDefinition id does not match the id path parameter\n- The resource type differs from the existing profile\n- The url collides with a built-in profile or another custom profile\n"
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The StructureDefinition id does not match the id path parameter\n- The resource type differs from the existing profile\n- The url collides with a built-in profile or another custom profile\n- The implementation_guide is reserved or invalid\n"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "409": {
+            "description": "Conflict. Possible reasons:\n- The requested StructureDefinition.version is already used by a retained version and this is not an unchanged re-submission of the profile's current version\n- The profile has retained versions and the request changes its canonical URL\n"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "profiles_delete",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Delete a custom FHIR profile",
+        "description": "Permanently deletes a custom profile by id. This also deletes all retained\nversions for that profile so the canonical URL can be reused by a later\nupload.\n",
+        "responses": {
+          "204": {
+            "description": "Profile successfully deleted"
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles/{id}/versions": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The lowercase StructureDefinition id of the custom profile.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "custom-patient"
+        }
+      ],
+      "get": {
+        "operationId": "profiles_listVersions",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "List versions for a custom FHIR profile",
+        "description": "Returns retained versions for a custom profile.\n",
+        "responses": {
+          "200": {
+            "description": "List of profile versions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileVersionListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
           },
           "401": {
             "description": "Unauthorized"
@@ -6268,19 +6360,45 @@
         ],
         "x-service": "fhir_artifacts"
       },
-      "delete": {
-        "operationId": "profiles_delete",
+      "post": {
+        "operationId": "profiles_createVersion",
         "tags": [
           "FHIR Artifacts / Profiles"
         ],
-        "summary": "Delete a custom FHIR profile",
-        "description": "Permanently deletes a custom profile by id.\n",
+        "summary": "Add a retained version to a custom FHIR profile",
+        "description": "Adds an immutable StructureDefinition version to a custom profile. If\nthe profile does not exist, it is created from the submitted version.\nThe StructureDefinition must include a non-empty `version`; its\ncanonical URL and resource type must match the profile when one already\nexists. If it includes an `id`, that id must match the path parameter;\nif it omits `id`, the path parameter is used. Profiles created through\nthis endpoint are grouped under `custom`. Posting the profile's current\nStructureDefinition unchanged retains it as a version.\nVersion strings may contain letters, numbers, and the punctuation\ncharacters `.`, `_`, `~`, `+`, and `-`; they cannot be exactly `.` or\n`..`. Each profile can retain up to 250 versions; delete old\nversions before adding more.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profiles_ProfileVersionCreateRequest"
+              }
+            }
+          }
+        },
         "responses": {
-          "204": {
-            "description": "Profile successfully deleted"
+          "201": {
+            "description": "Profile version successfully created",
+            "headers": {
+              "Location": {
+                "description": "Relative URL of the created profile version.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "/fhir/profiles/custom-patient/versions/2.0.0"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileSummary"
+                }
+              }
+            }
           },
           "400": {
-            "description": "The id is not a valid profile id"
+            "description": "Invalid request, version does not match the profile, or the canonical URL is already used by another profile.\n"
           },
           "401": {
             "description": "Unauthorized"
@@ -6290,6 +6408,109 @@
           },
           "404": {
             "description": "Profile not found"
+          },
+          "409": {
+            "description": "Conflict. Possible reasons:\n- The requested StructureDefinition.version is already in use by a different StructureDefinition: either the profile's current one or a retained version\n- The profile has reached the retained version limit\n"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles/{id}/versions/{version}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The lowercase StructureDefinition id of the custom profile.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "custom-patient"
+        },
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "description": "The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~+-]+$"
+          },
+          "example": "2.0.0"
+        }
+      ],
+      "get": {
+        "operationId": "profiles_getVersion",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Get a retained custom FHIR profile version",
+        "description": "Returns metadata and the full StructureDefinition for one retained\nversion. The returned StructureDefinition's id is the profile id. The\npath version is the authored `StructureDefinition.version` value.\n",
+        "responses": {
+          "200": {
+            "description": "The requested profile version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id or version is invalid"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile or version not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "profiles_deleteVersion",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Delete a retained custom FHIR profile version",
+        "description": "Deletes one retained version from a custom profile. The path\nversion is the authored `StructureDefinition.version` value.\n",
+        "responses": {
+          "204": {
+            "description": "Profile version successfully deleted"
+          },
+          "400": {
+            "description": "The id or version is invalid"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile or version not found"
           },
           "500": {
             "description": "Server error"
@@ -12064,6 +12285,32 @@
         "required": [
           "structure_definition"
         ],
+        "example": {
+          "implementation_guide": "acme-cardiology",
+          "structure_definition": {
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": false,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {
+              "element": [
+                {
+                  "id": "Patient",
+                  "path": "Patient",
+                  "min": 0,
+                  "max": "*"
+                }
+              ]
+            }
+          }
+        },
         "properties": {
           "structure_definition": {
             "allOf": [
@@ -12111,6 +12358,33 @@
       },
       "profiles_ProfileSummary": {
         "type": "object",
+        "description": "Metadata for either a custom profile's current StructureDefinition or one retained version. For retained versions, `source` is always `custom` and `updated_at` is equal to `created_at`.\n",
+        "required": [
+          "id",
+          "source",
+          "resource_type",
+          "url",
+          "version",
+          "canonical",
+          "fhir_version",
+          "implementation_guide",
+          "created_at",
+          "updated_at"
+        ],
+        "example": {
+          "id": "custom-patient",
+          "source": "custom",
+          "resource_type": "Patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "1.0.0",
+          "status": "active",
+          "date": "2026-08-24",
+          "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+          "fhir_version": "4.0.1",
+          "implementation_guide": "acme-cardiology",
+          "created_at": "2026-08-24T15:04:05Z",
+          "updated_at": "2026-08-25T16:04:05Z"
+        },
         "properties": {
           "id": {
             "type": "string",
@@ -12123,7 +12397,7 @@
               "custom",
               "builtin"
             ],
-            "description": "The profile's origin. Listings currently return only custom (uploaded) profiles, so this is always \"custom\" today; built-in (US Core / R4 base) profiles would be surfaced via an opt-in parameter in a future release, not by changing the default behavior.\n",
+            "description": "The profile's origin. Profile management responses currently return custom (uploaded) profiles, so this is always \"custom\" today.\n",
             "example": "custom"
           },
           "resource_type": {
@@ -12141,6 +12415,21 @@
             "description": "The version from the StructureDefinition.version field.",
             "example": "1.0.0"
           },
+          "status": {
+            "type": "string",
+            "description": "The publication status from StructureDefinition.status. Expected FHIR values include `draft`, `active`, `retired`, and `unknown`; the server preserves authored strings.\n",
+            "example": "active"
+          },
+          "date": {
+            "type": "string",
+            "description": "The authored publication date from StructureDefinition.date, when present. This is a FHIR dateTime string and may be less precise than a full timestamp.\n",
+            "example": "2026-08-24"
+          },
+          "canonical": {
+            "type": "string",
+            "description": "The canonical profile reference, including the version pin when present.",
+            "example": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
+          },
           "fhir_version": {
             "type": "string",
             "description": "The base FHIR version the StructureDefinition targets.",
@@ -12157,12 +12446,34 @@
           },
           "updated_at": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp for the profile's current StructureDefinition. For retained versions, this equals `created_at`.\n"
           }
         }
       },
       "profiles_ProfileListResponse": {
         "type": "object",
+        "required": [
+          "profiles"
+        ],
+        "example": {
+          "profiles": [
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "1.0.0",
+              "status": "active",
+              "date": "2026-08-24",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-24T15:04:05Z",
+              "updated_at": "2026-08-25T16:04:05Z"
+            }
+          ]
+        },
         "properties": {
           "profiles": {
             "type": "array",
@@ -12173,12 +12484,54 @@
         }
       },
       "profiles_ProfileGetResponse": {
+        "description": "Metadata and full StructureDefinition JSON for either a custom profile's current StructureDefinition or one retained version.\n",
+        "example": {
+          "id": "custom-patient",
+          "source": "custom",
+          "resource_type": "Patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "1.0.0",
+          "status": "active",
+          "date": "2026-08-24",
+          "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+          "fhir_version": "4.0.1",
+          "implementation_guide": "acme-cardiology",
+          "created_at": "2026-08-24T15:04:05Z",
+          "updated_at": "2026-08-25T16:04:05Z",
+          "structure_definition": {
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "version": "1.0.0",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": false,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {
+              "element": [
+                {
+                  "id": "Patient",
+                  "path": "Patient",
+                  "min": 0,
+                  "max": "*"
+                }
+              ]
+            }
+          }
+        },
         "allOf": [
           {
             "$ref": "#/components/schemas/profiles_ProfileSummary"
           },
           {
             "type": "object",
+            "required": [
+              "structure_definition"
+            ],
             "properties": {
               "structure_definition": {
                 "allOf": [
@@ -12191,6 +12544,82 @@
             }
           }
         ]
+      },
+      "profiles_ProfileVersionCreateRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/profiles_FHIRResource"
+          }
+        ],
+        "description": "A FHIR StructureDefinition as a JSON object. Must include resourceType: StructureDefinition, url, type, version, and a snapshot with elements. The canonical URL and resource type must match the profile when one already exists. If id is present, its lowercased value must match the path id; if omitted, the path id is used. The version may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+        "example": {
+          "resourceType": "StructureDefinition",
+          "id": "custom-patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "2.0.0",
+          "name": "CustomPatient",
+          "status": "active",
+          "fhirVersion": "4.0.1",
+          "kind": "resource",
+          "abstract": false,
+          "type": "Patient",
+          "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+          "derivation": "constraint",
+          "snapshot": {
+            "element": [
+              {
+                "id": "Patient",
+                "path": "Patient"
+              }
+            ]
+          }
+        }
+      },
+      "profiles_ProfileVersionListResponse": {
+        "type": "object",
+        "required": [
+          "versions"
+        ],
+        "example": {
+          "versions": [
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "2.0.0",
+              "status": "active",
+              "date": "2026-08-26",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|2.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-26T15:04:05Z",
+              "updated_at": "2026-08-26T15:04:05Z"
+            },
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "1.0.0",
+              "status": "active",
+              "date": "2026-08-24",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-24T15:04:05Z",
+              "updated_at": "2026-08-24T15:04:05Z"
+            }
+          ]
+        },
+        "properties": {
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/profiles_ProfileSummary"
+            }
+          }
+        }
       },
       "profiles_FHIRResource": {
         "type": "object",
@@ -13482,7 +13911,7 @@
     },
     {
       "name": "FHIR Artifacts / Profiles",
-      "description": "Manage custom FHIR profiles (StructureDefinitions) as instance-level FHIR artifacts."
+      "description": "Manage custom FHIR profiles (StructureDefinitions)."
     },
     {
       "name": "Tools / MCP Servers",
