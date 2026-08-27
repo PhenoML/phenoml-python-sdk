@@ -16,220 +16,25 @@ from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.fhir_resource import FhirResource
 from ..types.profile_get_response import ProfileGetResponse
-from ..types.profile_list_response import ProfileListResponse
 from ..types.profile_summary import ProfileSummary
+from ..types.profile_version_create_request import ProfileVersionCreateRequest
+from ..types.profile_version_list_response import ProfileVersionListResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class RawProfilesClient:
+class RawVersionsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
     def list(
-        self, *, url: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ProfileListResponse]:
-        """
-        Returns metadata for every custom (uploaded) FHIR profile on this
-        instance, across all implementation guides. The full StructureDefinition
-        JSON is omitted from each entry; fetch a single profile by id to retrieve it.
-
-        The `url` query parameter filters by canonical URL. The canonical URL is the
-        stable key other platform features use to reference a profile (FHIR's
-        `meta.profile`, `baseDefinition`), since StructureDefinition ids are only
-        unique within a package. An unpinned `url` filter returns metadata for
-        the profile's current StructureDefinition. Pinned `url|version` filters
-        resolve a retained version when present; otherwise they can fall back to
-        the profile's current StructureDefinition, whose content can change
-        through the profile update endpoint. A non-matching filter returns an
-        empty list, not a 404.
-
-        Parameters
-        ----------
-        url : typing.Optional[str]
-            Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ProfileListResponse]
-            List of uploaded profiles
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "fhir/profiles",
-            method="GET",
-            params={
-                "url": url,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ProfileListResponse,
-                    parse_obj_as(
-                        type_=ProfileListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def create(
-        self,
-        *,
-        structure_definition: FhirResource,
-        implementation_guide: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ProfileSummary]:
-        """
-        Creates a custom profile from a FHIR StructureDefinition supplied as a JSON
-        object. Metadata such as version, resource type, and url is read from the
-        StructureDefinition; the lowercase StructureDefinition id becomes the
-        profile's lookup key. When id is omitted, a random UUID is assigned.
-        Optionally group the profile under a named implementation guide.
-
-        Parameters
-        ----------
-        structure_definition : FhirResource
-            A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
-
-        implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ProfileSummary]
-            Profile successfully created
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            "fhir/profiles",
-            method="POST",
-            json={
-                "structure_definition": structure_definition,
-                "implementation_guide": implementation_guide,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ProfileSummary,
-                    parse_obj_as(
-                        type_=ProfileSummary,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ProfileGetResponse]:
+    ) -> HttpResponse[ProfileVersionListResponse]:
         """
-        Returns a single custom profile by id, including its full StructureDefinition
-        JSON.
+        Returns retained versions for a custom profile.
 
         Parameters
         ----------
@@ -241,20 +46,20 @@ class RawProfilesClient:
 
         Returns
         -------
-        HttpResponse[ProfileGetResponse]
-            The requested profile
+        HttpResponse[ProfileVersionListResponse]
+            List of profile versions
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
+            f"fhir/profiles/{encode_path_param(id)}/versions",
             method="GET",
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ProfileGetResponse,
+                    ProfileVersionListResponse,
                     parse_obj_as(
-                        type_=ProfileGetResponse,  # type: ignore
+                        type_=ProfileVersionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -323,36 +128,29 @@ class RawProfilesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update(
-        self,
-        id: str,
-        *,
-        structure_definition: FhirResource,
-        implementation_guide: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+    def create(
+        self, id: str, *, request: ProfileVersionCreateRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ProfileSummary]:
         """
-        Replaces an existing custom profile with a new StructureDefinition. The
-        `id` path parameter is authoritative: if the StructureDefinition includes
-        an `id` it must match the path parameter, and if it omits one the path
-        parameter is used. The FHIR resource type of the profile cannot change.
-        When `implementation_guide` is omitted, the profile keeps its existing
-        implementation guide. A retained version string is allowed only when
-        re-submitting the profile's current version with an unchanged
-        StructureDefinition; otherwise it returns a conflict. While the profile
-        has retained versions, its
-        canonical URL cannot be changed.
+        Adds an immutable StructureDefinition version to a custom profile. If
+        the profile does not exist, it is created from the submitted version.
+        The StructureDefinition must include a non-empty `version`; its
+        canonical URL and resource type must match the profile when one already
+        exists. If it includes an `id`, that id must match the path parameter;
+        if it omits `id`, the path parameter is used. Profiles created through
+        this endpoint are grouped under `custom`. Posting the profile's current
+        StructureDefinition unchanged retains it as a version.
+        Version strings may contain letters, numbers, and the punctuation
+        characters `.`, `_`, `~`, `+`, and `-`; they cannot be exactly `.` or
+        `..`. Each profile can retain up to 250 versions; delete old
+        versions before adding more.
 
         Parameters
         ----------
         id : str
             The lowercase StructureDefinition id of the custom profile.
 
-        structure_definition : FhirResource
-            A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
-
-        implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+        request : ProfileVersionCreateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -360,15 +158,12 @@ class RawProfilesClient:
         Returns
         -------
         HttpResponse[ProfileSummary]
-            Profile successfully updated
+            Profile version successfully created
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
-            method="PUT",
-            json={
-                "structure_definition": structure_definition,
-                "implementation_guide": implementation_guide,
-            },
+            f"fhir/profiles/{encode_path_param(id)}/versions",
+            method="POST",
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -457,16 +252,123 @@ class RawProfilesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+    def get(
+        self, id: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ProfileGetResponse]:
         """
-        Permanently deletes a custom profile by id. This also deletes all retained
-        versions for that profile so the canonical URL can be reused by a later
-        upload.
+        Returns metadata and the full StructureDefinition for one retained
+        version. The returned StructureDefinition's id is the profile id. The
+        path version is the authored `StructureDefinition.version` value.
 
         Parameters
         ----------
         id : str
             The lowercase StructureDefinition id of the custom profile.
+
+        version : str
+            The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ProfileGetResponse]
+            The requested profile version
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"fhir/profiles/{encode_path_param(id)}/versions/{encode_path_param(version)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ProfileGetResponse,
+                    parse_obj_as(
+                        type_=ProfileGetResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete(
+        self, id: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[None]:
+        """
+        Deletes one retained version from a custom profile. The path
+        version is the authored `StructureDefinition.version` value.
+
+        Parameters
+        ----------
+        id : str
+            The lowercase StructureDefinition id of the custom profile.
+
+        version : str
+            The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -476,7 +378,7 @@ class RawProfilesClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
+            f"fhir/profiles/{encode_path_param(id)}/versions/{encode_path_param(version)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -548,210 +450,15 @@ class RawProfilesClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
-class AsyncRawProfilesClient:
+class AsyncRawVersionsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, url: typing.Optional[str] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ProfileListResponse]:
-        """
-        Returns metadata for every custom (uploaded) FHIR profile on this
-        instance, across all implementation guides. The full StructureDefinition
-        JSON is omitted from each entry; fetch a single profile by id to retrieve it.
-
-        The `url` query parameter filters by canonical URL. The canonical URL is the
-        stable key other platform features use to reference a profile (FHIR's
-        `meta.profile`, `baseDefinition`), since StructureDefinition ids are only
-        unique within a package. An unpinned `url` filter returns metadata for
-        the profile's current StructureDefinition. Pinned `url|version` filters
-        resolve a retained version when present; otherwise they can fall back to
-        the profile's current StructureDefinition, whose content can change
-        through the profile update endpoint. A non-matching filter returns an
-        empty list, not a 404.
-
-        Parameters
-        ----------
-        url : typing.Optional[str]
-            Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ProfileListResponse]
-            List of uploaded profiles
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "fhir/profiles",
-            method="GET",
-            params={
-                "url": url,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ProfileListResponse,
-                    parse_obj_as(
-                        type_=ProfileListResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def create(
-        self,
-        *,
-        structure_definition: FhirResource,
-        implementation_guide: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ProfileSummary]:
-        """
-        Creates a custom profile from a FHIR StructureDefinition supplied as a JSON
-        object. Metadata such as version, resource type, and url is read from the
-        StructureDefinition; the lowercase StructureDefinition id becomes the
-        profile's lookup key. When id is omitted, a random UUID is assigned.
-        Optionally group the profile under a named implementation guide.
-
-        Parameters
-        ----------
-        structure_definition : FhirResource
-            A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
-
-        implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ProfileSummary]
-            Profile successfully created
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            "fhir/profiles",
-            method="POST",
-            json={
-                "structure_definition": structure_definition,
-                "implementation_guide": implementation_guide,
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ProfileSummary,
-                    parse_obj_as(
-                        type_=ProfileSummary,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 500:
-                raise InternalServerError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ProfileGetResponse]:
+    ) -> AsyncHttpResponse[ProfileVersionListResponse]:
         """
-        Returns a single custom profile by id, including its full StructureDefinition
-        JSON.
+        Returns retained versions for a custom profile.
 
         Parameters
         ----------
@@ -763,20 +470,20 @@ class AsyncRawProfilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[ProfileGetResponse]
-            The requested profile
+        AsyncHttpResponse[ProfileVersionListResponse]
+            List of profile versions
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
+            f"fhir/profiles/{encode_path_param(id)}/versions",
             method="GET",
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ProfileGetResponse,
+                    ProfileVersionListResponse,
                     parse_obj_as(
-                        type_=ProfileGetResponse,  # type: ignore
+                        type_=ProfileVersionListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -845,36 +552,29 @@ class AsyncRawProfilesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def update(
-        self,
-        id: str,
-        *,
-        structure_definition: FhirResource,
-        implementation_guide: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+    async def create(
+        self, id: str, *, request: ProfileVersionCreateRequest, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ProfileSummary]:
         """
-        Replaces an existing custom profile with a new StructureDefinition. The
-        `id` path parameter is authoritative: if the StructureDefinition includes
-        an `id` it must match the path parameter, and if it omits one the path
-        parameter is used. The FHIR resource type of the profile cannot change.
-        When `implementation_guide` is omitted, the profile keeps its existing
-        implementation guide. A retained version string is allowed only when
-        re-submitting the profile's current version with an unchanged
-        StructureDefinition; otherwise it returns a conflict. While the profile
-        has retained versions, its
-        canonical URL cannot be changed.
+        Adds an immutable StructureDefinition version to a custom profile. If
+        the profile does not exist, it is created from the submitted version.
+        The StructureDefinition must include a non-empty `version`; its
+        canonical URL and resource type must match the profile when one already
+        exists. If it includes an `id`, that id must match the path parameter;
+        if it omits `id`, the path parameter is used. Profiles created through
+        this endpoint are grouped under `custom`. Posting the profile's current
+        StructureDefinition unchanged retains it as a version.
+        Version strings may contain letters, numbers, and the punctuation
+        characters `.`, `_`, `~`, `+`, and `-`; they cannot be exactly `.` or
+        `..`. Each profile can retain up to 250 versions; delete old
+        versions before adding more.
 
         Parameters
         ----------
         id : str
             The lowercase StructureDefinition id of the custom profile.
 
-        structure_definition : FhirResource
-            A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
-
-        implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+        request : ProfileVersionCreateRequest
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -882,15 +582,12 @@ class AsyncRawProfilesClient:
         Returns
         -------
         AsyncHttpResponse[ProfileSummary]
-            Profile successfully updated
+            Profile version successfully created
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
-            method="PUT",
-            json={
-                "structure_definition": structure_definition,
-                "implementation_guide": implementation_guide,
-            },
+            f"fhir/profiles/{encode_path_param(id)}/versions",
+            method="POST",
+            json=request,
             request_options=request_options,
             omit=OMIT,
         )
@@ -979,18 +676,123 @@ class AsyncRawProfilesClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
+    async def get(
+        self, id: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ProfileGetResponse]:
         """
-        Permanently deletes a custom profile by id. This also deletes all retained
-        versions for that profile so the canonical URL can be reused by a later
-        upload.
+        Returns metadata and the full StructureDefinition for one retained
+        version. The returned StructureDefinition's id is the profile id. The
+        path version is the authored `StructureDefinition.version` value.
 
         Parameters
         ----------
         id : str
             The lowercase StructureDefinition id of the custom profile.
+
+        version : str
+            The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ProfileGetResponse]
+            The requested profile version
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"fhir/profiles/{encode_path_param(id)}/versions/{encode_path_param(version)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ProfileGetResponse,
+                    parse_obj_as(
+                        type_=ProfileGetResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(
+        self, id: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[None]:
+        """
+        Deletes one retained version from a custom profile. The path
+        version is the authored `StructureDefinition.version` value.
+
+        Parameters
+        ----------
+        id : str
+            The lowercase StructureDefinition id of the custom profile.
+
+        version : str
+            The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1000,7 +802,7 @@ class AsyncRawProfilesClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"fhir/profiles/{encode_path_param(id)}",
+            f"fhir/profiles/{encode_path_param(id)}/versions/{encode_path_param(version)}",
             method="DELETE",
             request_options=request_options,
         )
