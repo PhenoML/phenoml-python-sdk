@@ -13,11 +13,21 @@ if typing.TYPE_CHECKING:
         ProfileSummary,
         ProfileSummarySource,
         ProfileUploadRequest,
+        ProfileVersionCreateRequest,
+        ProfileVersionListResponse,
     )
-    from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
-    from . import profiles
+    from .errors import (
+        BadRequestError,
+        ConflictError,
+        ForbiddenError,
+        InternalServerError,
+        NotFoundError,
+        UnauthorizedError,
+    )
+    from . import profiles, versions
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
+    "ConflictError": ".errors",
     "FhirResource": ".types",
     "ForbiddenError": ".errors",
     "InternalServerError": ".errors",
@@ -27,8 +37,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ProfileSummary": ".types",
     "ProfileSummarySource": ".types",
     "ProfileUploadRequest": ".types",
+    "ProfileVersionCreateRequest": ".types",
+    "ProfileVersionListResponse": ".types",
     "UnauthorizedError": ".errors",
     "profiles": ".profiles",
+    "versions": ".versions",
 }
 
 
@@ -55,6 +68,7 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
+    "ConflictError",
     "FhirResource",
     "ForbiddenError",
     "InternalServerError",
@@ -64,6 +78,9 @@ __all__ = [
     "ProfileSummary",
     "ProfileSummarySource",
     "ProfileUploadRequest",
+    "ProfileVersionCreateRequest",
+    "ProfileVersionListResponse",
     "UnauthorizedError",
     "profiles",
+    "versions",
 ]
