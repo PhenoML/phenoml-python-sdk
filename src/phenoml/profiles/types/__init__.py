@@ -12,6 +12,8 @@ if typing.TYPE_CHECKING:
     from .profile_summary import ProfileSummary
     from .profile_summary_source import ProfileSummarySource
     from .profile_upload_request import ProfileUploadRequest
+    from .profile_version_create_request import ProfileVersionCreateRequest
+    from .profile_version_list_response import ProfileVersionListResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "FhirResource": ".fhir_resource",
     "ProfileGetResponse": ".profile_get_response",
@@ -19,6 +21,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ProfileSummary": ".profile_summary",
     "ProfileSummarySource": ".profile_summary_source",
     "ProfileUploadRequest": ".profile_upload_request",
+    "ProfileVersionCreateRequest": ".profile_version_create_request",
+    "ProfileVersionListResponse": ".profile_version_list_response",
 }
 
 
@@ -50,4 +54,6 @@ __all__ = [
     "ProfileSummary",
     "ProfileSummarySource",
     "ProfileUploadRequest",
+    "ProfileVersionCreateRequest",
+    "ProfileVersionListResponse",
 ]

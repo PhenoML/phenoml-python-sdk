@@ -40,12 +40,17 @@ class ProfilesClient:
         The `url` query parameter filters by canonical URL. The canonical URL is the
         stable key other platform features use to reference a profile (FHIR's
         `meta.profile`, `baseDefinition`), since StructureDefinition ids are only
-        unique within a package. A non-matching filter returns an empty list, not a 404.
+        unique within a package. An unpinned `url` filter returns metadata for
+        the profile's current StructureDefinition. Pinned `url|version` filters
+        resolve a retained version when present; otherwise they can fall back to
+        the profile's current StructureDefinition, whose content can change
+        through the profile update endpoint. A non-matching filter returns an
+        empty list, not a 404.
 
         Parameters
         ----------
         url : typing.Optional[str]
-            Filter by canonical URL. Accepts the FHIR pinned form `url|version` (split on the last `|`); the bare form matches the current version.
+            Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -81,9 +86,8 @@ class ProfilesClient:
         Creates a custom profile from a FHIR StructureDefinition supplied as a JSON
         object. Metadata such as version, resource type, and url is read from the
         StructureDefinition; the lowercase StructureDefinition id becomes the
-        profile's lookup key. When id is omitted, a random UUID is assigned. Code
-        system configuration is auto-extracted from the snapshot. Optionally group
-        the profile under a named implementation guide.
+        profile's lookup key. When id is omitted, a random UUID is assigned.
+        Optionally group the profile under a named implementation guide.
 
         Parameters
         ----------
@@ -110,7 +114,25 @@ class ProfilesClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.profiles.profiles.create(
-            structure_definition={"key": "value"},
+            structure_definition={
+                "resourceType": "StructureDefinition",
+                "id": "custom-patient",
+                "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+                "name": "CustomPatient",
+                "status": "active",
+                "fhirVersion": "4.0.1",
+                "kind": "resource",
+                "abstract": False,
+                "type": "Patient",
+                "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+                "derivation": "constraint",
+                "snapshot": {
+                    "element": [
+                        {"id": "Patient", "path": "Patient", "min": 0, "max": "*"}
+                    ]
+                },
+            },
+            implementation_guide="acme-cardiology",
         )
         """
         _response = self._raw_client.create(
@@ -122,7 +144,8 @@ class ProfilesClient:
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ProfileGetResponse:
         """
-        Returns a single custom profile by id, including its full StructureDefinition JSON.
+        Returns a single custom profile by id, including its full StructureDefinition
+        JSON.
 
         Parameters
         ----------
@@ -165,10 +188,12 @@ class ProfilesClient:
         `id` path parameter is authoritative: if the StructureDefinition includes
         an `id` it must match the path parameter, and if it omits one the path
         parameter is used. The FHIR resource type of the profile cannot change.
-        Code system configuration is
-        re-derived from the new StructureDefinition. When `implementation_guide` is
-        omitted, the profile keeps its existing implementation guide. The instance
-        stores a single version per canonical URL, so this replaces it in place.
+        When `implementation_guide` is omitted, the profile keeps its existing
+        implementation guide. A retained version string is allowed only when
+        re-submitting the profile's current version with an unchanged
+        StructureDefinition; otherwise it returns a conflict. While the profile
+        has retained versions, its
+        canonical URL cannot be changed.
 
         Parameters
         ----------
@@ -199,7 +224,25 @@ class ProfilesClient:
         )
         client.profiles.profiles.update(
             id="custom-patient",
-            structure_definition={"key": "value"},
+            structure_definition={
+                "resourceType": "StructureDefinition",
+                "id": "custom-patient",
+                "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+                "name": "CustomPatient",
+                "status": "active",
+                "fhirVersion": "4.0.1",
+                "kind": "resource",
+                "abstract": False,
+                "type": "Patient",
+                "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+                "derivation": "constraint",
+                "snapshot": {
+                    "element": [
+                        {"id": "Patient", "path": "Patient", "min": 0, "max": "*"}
+                    ]
+                },
+            },
+            implementation_guide="acme-cardiology",
         )
         """
         _response = self._raw_client.update(
@@ -212,7 +255,9 @@ class ProfilesClient:
 
     def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Permanently deletes a custom profile by id.
+        Permanently deletes a custom profile by id. This also deletes all retained
+        versions for that profile so the canonical URL can be reused by a later
+        upload.
 
         Parameters
         ----------
@@ -268,12 +313,17 @@ class AsyncProfilesClient:
         The `url` query parameter filters by canonical URL. The canonical URL is the
         stable key other platform features use to reference a profile (FHIR's
         `meta.profile`, `baseDefinition`), since StructureDefinition ids are only
-        unique within a package. A non-matching filter returns an empty list, not a 404.
+        unique within a package. An unpinned `url` filter returns metadata for
+        the profile's current StructureDefinition. Pinned `url|version` filters
+        resolve a retained version when present; otherwise they can fall back to
+        the profile's current StructureDefinition, whose content can change
+        through the profile update endpoint. A non-matching filter returns an
+        empty list, not a 404.
 
         Parameters
         ----------
         url : typing.Optional[str]
-            Filter by canonical URL. Accepts the FHIR pinned form `url|version` (split on the last `|`); the bare form matches the current version.
+            Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -317,9 +367,8 @@ class AsyncProfilesClient:
         Creates a custom profile from a FHIR StructureDefinition supplied as a JSON
         object. Metadata such as version, resource type, and url is read from the
         StructureDefinition; the lowercase StructureDefinition id becomes the
-        profile's lookup key. When id is omitted, a random UUID is assigned. Code
-        system configuration is auto-extracted from the snapshot. Optionally group
-        the profile under a named implementation guide.
+        profile's lookup key. When id is omitted, a random UUID is assigned.
+        Optionally group the profile under a named implementation guide.
 
         Parameters
         ----------
@@ -351,7 +400,25 @@ class AsyncProfilesClient:
 
         async def main() -> None:
             await client.profiles.profiles.create(
-                structure_definition={"key": "value"},
+                structure_definition={
+                    "resourceType": "StructureDefinition",
+                    "id": "custom-patient",
+                    "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+                    "name": "CustomPatient",
+                    "status": "active",
+                    "fhirVersion": "4.0.1",
+                    "kind": "resource",
+                    "abstract": False,
+                    "type": "Patient",
+                    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+                    "derivation": "constraint",
+                    "snapshot": {
+                        "element": [
+                            {"id": "Patient", "path": "Patient", "min": 0, "max": "*"}
+                        ]
+                    },
+                },
+                implementation_guide="acme-cardiology",
             )
 
 
@@ -366,7 +433,8 @@ class AsyncProfilesClient:
 
     async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ProfileGetResponse:
         """
-        Returns a single custom profile by id, including its full StructureDefinition JSON.
+        Returns a single custom profile by id, including its full StructureDefinition
+        JSON.
 
         Parameters
         ----------
@@ -417,10 +485,12 @@ class AsyncProfilesClient:
         `id` path parameter is authoritative: if the StructureDefinition includes
         an `id` it must match the path parameter, and if it omits one the path
         parameter is used. The FHIR resource type of the profile cannot change.
-        Code system configuration is
-        re-derived from the new StructureDefinition. When `implementation_guide` is
-        omitted, the profile keeps its existing implementation guide. The instance
-        stores a single version per canonical URL, so this replaces it in place.
+        When `implementation_guide` is omitted, the profile keeps its existing
+        implementation guide. A retained version string is allowed only when
+        re-submitting the profile's current version with an unchanged
+        StructureDefinition; otherwise it returns a conflict. While the profile
+        has retained versions, its
+        canonical URL cannot be changed.
 
         Parameters
         ----------
@@ -456,7 +526,25 @@ class AsyncProfilesClient:
         async def main() -> None:
             await client.profiles.profiles.update(
                 id="custom-patient",
-                structure_definition={"key": "value"},
+                structure_definition={
+                    "resourceType": "StructureDefinition",
+                    "id": "custom-patient",
+                    "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+                    "name": "CustomPatient",
+                    "status": "active",
+                    "fhirVersion": "4.0.1",
+                    "kind": "resource",
+                    "abstract": False,
+                    "type": "Patient",
+                    "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+                    "derivation": "constraint",
+                    "snapshot": {
+                        "element": [
+                            {"id": "Patient", "path": "Patient", "min": 0, "max": "*"}
+                        ]
+                    },
+                },
+                implementation_guide="acme-cardiology",
             )
 
 
@@ -472,7 +560,9 @@ class AsyncProfilesClient:
 
     async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Permanently deletes a custom profile by id.
+        Permanently deletes a custom profile by id. This also deletes all retained
+        versions for that profile so the canonical URL can be reused by a later
+        upload.
 
         Parameters
         ----------

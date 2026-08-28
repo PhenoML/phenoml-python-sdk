@@ -7,8 +7,8 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .profile_summary import ProfileSummary
 
 
-class ProfileListResponse(UniversalBaseModel):
-    profiles: typing.List[ProfileSummary]
+class ProfileVersionListResponse(UniversalBaseModel):
+    versions: typing.List[ProfileSummary]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
