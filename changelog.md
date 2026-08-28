@@ -1,3 +1,9 @@
+## [17.0.0] - 2026-08-28
+### Added
+- **`client.profiles.versions`** — new `VersionsClient` (and `AsyncVersionsClient`) exposing `list`, `create`, `get`, and `delete` methods for managing immutable StructureDefinition versions on custom FHIR profiles (up to 250 versions per profile).
+- **`ProfileVersionListResponse`** — new Pydantic model returned by `client.profiles.versions.list()`, containing a `versions` list of `ProfileSummary` objects for all retained versions of a custom profile.
+- **`ProfileVersionCreateRequest`** — new type alias for `FhirResource` used as the request body for `client.profiles.versions.create()`; the submitted StructureDefinition must include a non-empty `version` field.
+
 ## [16.11.0] - 2026-08-26
 ### Added
 - **`PatientReference`** — new Pydantic model with `system` and `value` fields representing a business identifier for an existing patient; exported from `phenoml.lang2fhir`.
