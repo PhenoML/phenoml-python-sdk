@@ -4,11 +4,18 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .profile_summary import ProfileSummary
 
 
-class ProfileListResponse(UniversalBaseModel):
-    profiles: typing.List[ProfileSummary]
+class BatchCounts(UniversalBaseModel):
+    """
+    A job's per-status item tally.
+    """
+
+    total: int
+    pending: int
+    processing: int
+    succeeded: int
+    failed: int
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
