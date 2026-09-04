@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "4a08550f5db230949c7423d0ce5aa7055e8f0d65"
+    "version": "e2cfa711e7e5ad04621efc35d12dcfd7d060040d"
   },
   "x-services": [
     {
@@ -4582,6 +4582,491 @@
         "x-service": "fhir"
       }
     },
+    "/lang2fhir/batch": {
+      "post": {
+        "operationId": "batch_create",
+        "summary": "Create a batch job",
+        "description": "Opens an empty batch job. Items arrive on later upload calls and the set\nis sealed at finalize.\n\nSupplying `request_id` makes the create idempotent on that token: a\nretried submit whose response was lost returns the original job rather\nthan opening a second one. This dedupe is scoped to the calling\ncredential.\n\nAn instance may hold at most 4 active (pending or processing) jobs at\nonce; a create past that limit returns `409`. The limit is instance-wide\n\u2014 jobs are shared across the instance's credentials \u2014 so another\ncredential's jobs count against it.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/batch_CreateBatchRequest"
+              },
+              "example": {
+                "request_id": "submit-2025-09-02-batch-001"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Batch job created (or an idempotent replay of an existing job)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_BatchJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g. request_id over its 256-byte limit)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "409": {
+            "description": "The instance is at its 4-job active-batch limit; wait for one to finish"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      },
+      "get": {
+        "operationId": "batch_list",
+        "summary": "List batch jobs",
+        "description": "Returns a page of the instance's batch jobs, newest first, without\nper-job counts. Jobs are shared across the instance's credentials, so\nthis lists every batch job on the instance, not just the calling\ncredential's.\n",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque pagination cursor from a previous page's next_cursor.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size. Defaults to 20; values above 100 are clamped to 100.",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of batch jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_JobListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g. non-integer limit or malformed cursor)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
+    "/lang2fhir/batch/{job_id}/items": {
+      "post": {
+        "operationId": "batch_uploadItem",
+        "summary": "Upload one batch item",
+        "description": "Stores one item of a job from a multipart upload. A batch's items arrive\none per request. The item carries **either** a `document` extraction\n(whose input file rides as raw bytes in the `file` part) **or** a\n`create` extraction (JSON only, no file).\n\nThe upload enforces these rules:\n- Set **exactly one** of `document` or `create`. Setting both, or\n  neither, is a `400`.\n- When `document` is set, `file` is **required** \u2014 it supplies the\n  document's binary content (PDF or image).\n- When `create` is set, `file` is **forbidden** \u2014 a create item carries\n  no file.\n- `document` and `create` must each be a JSON **object**.\n\nOnly the item's structure is checked here: the fields inside `document`\nor `create` are not validated at upload. A body that is well-formed JSON\nbut not a valid request for its endpoint is still accepted with `202`\nand fails later during processing, recorded as an item `error`. A\nwrong-typed field the endpoint cannot decode fails as `invalid_input`; a\nbody that decodes but the pipeline rejects (for example, a missing\nrequired field) fails as `processing_failed`.\n\nSupplying `request_id` makes the upload idempotent on that token. A\nre-upload under the same token overwrites the same item rather than\nadding a second, so a client that lost an upload's response can safely\nre-send it. The response's `deduplicated` is `true` only when the\nre-uploaded payload matches the one already stored; a same-token upload\nwith a changed payload overwrites in place and returns `false`.\n\nSet a `request_id` on **every** upload: re-sending under the same token\nis the only way to repair a lost or incomplete upload, including the one\na finalize `409` reports. Without one, a re-send adds a new item instead\nof replacing the missing one, and the job cannot be finalized.\n\nUploads are rejected once the job has been finalized (`409`), once it\nholds its 500-item limit (`409`), or when the item is too large (`413` \u2014\nsee the raw-file limit in the API description).\n",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "object",
+                    "description": "The JSON body of `POST /lang2fhir/document/multi`, **without**\nits base64 `content` field \u2014 the uploaded `file` supplies the\ncontent. Accepts that endpoint's fields (`version`, `provider`,\n`patient_reference`, `implementation_guide`, `detection_effort`,\n`validation_method`, `config`). This is the **multi**-resource\nbody: it has no single-`resource` field, and the item's result\nis a `DocumentMultiResponse` (a Bundle of resources). Mutually\nexclusive with `create`; requires `file`.\n"
+                  },
+                  "create": {
+                    "type": "object",
+                    "description": "The JSON body of `POST /lang2fhir/create/multi`. Accepts that\nendpoint's fields (`text`, `version`, `provider`,\n`patient_reference`, `implementation_guide`, `detection_effort`,\n`validation_method`, `resource_review`). This is the\n**multi**-resource body: it has no single-`resource` field, and\nthe item's result is a `CreateMultiResponse` (a Bundle of\nresources). Mutually exclusive with `document`; must **not** be\naccompanied by a `file`.\n"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The document's binary content (PDF, PNG, JPEG, or TIFF).\nRequired with `document`; forbidden with `create`.\n"
+                  },
+                  "request_id": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "description": "Optional idempotency token (max 256 bytes). Re-uploading under\nthe same token overwrites the same item instead of adding a\nnew one. The token is scoped to this job; the same token in\nanother job is independent and creates a separate item.\n"
+                  },
+                  "id": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "description": "Optional caller-supplied correlation label (max 512 bytes),\nechoed back on status and result listings so you can match the\nserver's item_id to your own record.\n"
+                  }
+                }
+              },
+              "encoding": {
+                "document": {
+                  "contentType": "application/json"
+                },
+                "create": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Item accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_UploadItemResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid upload \u2014 e.g. both or neither of document/create set, a\nnon-object document/create, a document item missing its file, a\ncreate item carrying a file, or an over-length request_id/id.\n"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Batch job not found"
+          },
+          "409": {
+            "description": "The job is finalized (no longer accepting items) or holds its 500-item limit"
+          },
+          "413": {
+            "description": "The upload is too large. Both size trips return 413: the request body\nexceeding the 32 MiB upload cap, and the item's stored payload\nexceeding the 28 MiB per-item limit (~21 MiB of raw file once\nbase64-encoded).\n"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
+    "/lang2fhir/batch/{job_id}/finalize": {
+      "post": {
+        "operationId": "batch_finalize",
+        "summary": "Finalize a batch job",
+        "description": "Seals the job's item set and starts processing. Takes no request body.\nFinalize is idempotent: a retried finalize succeeds again.\n\nIf a previous upload did not complete, finalize returns a `409`; re-send\nthe missing upload (with the same `request_id`), then finalize.\nFinalizing a job with no items is a `400`.\n",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Job finalized and processing started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_BatchJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The batch has no items to finalize"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Batch job not found"
+          },
+          "409": {
+            "description": "A previous upload did not complete; re-send it with the same request_id, then finalize"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
+    "/lang2fhir/batch/{job_id}": {
+      "get": {
+        "operationId": "batch_get",
+        "summary": "Get a batch job",
+        "description": "Returns a job's record, its per-status item counts, and one page of\nper-item statuses.\n\nItems are listed in a stable order that is not upload order and is the\nsame across pages. Match each entry to your own records by its `id`\n(your correlation label) or `item_id` (from the upload response),\nnever by position.\n",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque pagination cursor from a previous page's next_cursor.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size for the item-status page. Defaults to 20; values above 100 are clamped to 100.",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The job record, counts, and a page of item statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_JobDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g. non-integer limit or malformed cursor)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Batch job not found"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
+    "/lang2fhir/batch/{job_id}/results": {
+      "get": {
+        "operationId": "batch_getResults",
+        "summary": "List a batch job's results",
+        "description": "A lighter status page. Returns the same per-item status entries as\n`GET /lang2fhir/batch/{job_id}`, but without the job record or counts,\nand the entries carry `result_size` rather than any result content. Use\neach entry's `item_id` to fetch that item's result from\n`GET /lang2fhir/batch/{job_id}/results/{item_id}`.\n\nEntries are listed in a stable order that is not upload order and is\nthe same across pages. Match each entry to your own records by its `id`\n(your correlation label) or `item_id` (from the upload response),\nnever by position.\n",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Opaque pagination cursor from a previous page's next_cursor.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size. Defaults to 20; values above 100 are clamped to 100.",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of per-item result statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch_ResultsPageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g. non-integer limit or malformed cursor)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Batch job not found"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
+    "/lang2fhir/batch/{job_id}/results/{item_id}": {
+      "get": {
+        "operationId": "batch_getResult",
+        "summary": "Get one batch item's result",
+        "description": "Streams one item's stored result bytes verbatim as `application/json`.\nThe body is the response the item's synchronous multi endpoint would have\nreturned \u2014 a `DocumentMultiResponse` for a document item or a\n`CreateMultiResponse` for a create item.\n\nOnly a succeeded item has a result: an item that has not succeeded\n(pending, processing, or failed) is a `409`, and a result that has\nexpired is a `404`.\n",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The item's raw result JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "The item's extraction result \u2014 a DocumentMultiResponse (document\nitem) or CreateMultiResponse (create item).\n"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g. empty item_id)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Batch job or item not found, or the result has expired"
+          },
+          "409": {
+            "description": "The item has not succeeded, so it has no result to serve"
+          },
+          "499": {
+            "description": "Client closed request before response was ready"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "504": {
+            "description": "Request timed out"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "lang2fhir"
+      }
+    },
     "/cohort": {
       "post": {
         "operationId": "cohort_analyze",
@@ -4787,7 +5272,7 @@
             "description": "Profile not found"
           },
           "422": {
-            "description": "Generated FHIR resource failed validation"
+            "description": "Generated FHIR resource failed validation or terminology constraints"
           },
           "500": {
             "description": "Server error"
@@ -4907,7 +5392,7 @@
             "description": "Profile not found"
           },
           "422": {
-            "description": "Generated FHIR resource failed validation"
+            "description": "Generated FHIR resource failed validation or terminology constraints"
           },
           "500": {
             "description": "Server error"
@@ -6073,13 +6558,13 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "List custom FHIR profiles",
-        "description": "Returns metadata for every custom (uploaded) FHIR profile on this\ninstance, across all implementation guides. The full StructureDefinition\nJSON is omitted from each entry; fetch a single profile by id to retrieve it.\n\nThe `url` query parameter filters by canonical URL. The canonical URL is the\nstable key other platform features use to reference a profile (FHIR's\n`meta.profile`, `baseDefinition`), since StructureDefinition ids are only\nunique within a package. A non-matching filter returns an empty list, not a 404.\n",
+        "description": "Returns metadata for every custom (uploaded) FHIR profile on this\ninstance, across all implementation guides. The full StructureDefinition\nJSON is omitted from each entry; fetch a single profile by id to retrieve it.\n\nThe `url` query parameter filters by canonical URL. The canonical URL is the\nstable key other platform features use to reference a profile (FHIR's\n`meta.profile`, `baseDefinition`), since StructureDefinition ids are only\nunique within a package. An unpinned `url` filter returns metadata for\nthe profile's current StructureDefinition. Pinned `url|version` filters\nresolve a retained version when present; otherwise they can fall back to\nthe profile's current StructureDefinition, whose content can change\nthrough the profile update endpoint. A non-matching filter returns an\nempty list, not a 404.\n",
         "parameters": [
           {
             "name": "url",
             "in": "query",
             "required": false,
-            "description": "Filter by canonical URL. Accepts the FHIR pinned form `url|version` (split on the last `|`); the bare form matches the current version.\n",
+            "description": "Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.\n",
             "schema": {
               "type": "string"
             },
@@ -6120,7 +6605,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Upload a custom FHIR profile",
-        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned. Code\nsystem configuration is auto-extracted from the snapshot. Optionally group\nthe profile under a named implementation guide.\n",
+        "description": "Creates a custom profile from a FHIR StructureDefinition supplied as a JSON\nobject. Metadata such as version, resource type, and url is read from the\nStructureDefinition; the lowercase StructureDefinition id becomes the\nprofile's lookup key. When id is omitted, a random UUID is assigned.\nOptionally group the profile under a named implementation guide.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -6143,7 +6628,7 @@
             }
           },
           "400": {
-            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The id collides with a built-in US Core or R4 base profile\n- A custom profile with the same id or url already exists\n"
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The id collides with a built-in US Core or R4 base profile\n- A custom profile with the same id or url already exists\n- The implementation_guide is reserved or invalid\n"
           },
           "401": {
             "description": "Unauthorized"
@@ -6182,7 +6667,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Get a custom FHIR profile",
-        "description": "Returns a single custom profile by id, including its full StructureDefinition JSON.\n",
+        "description": "Returns a single custom profile by id, including its full StructureDefinition\nJSON.\n",
         "responses": {
           "200": {
             "description": "The requested profile",
@@ -6223,7 +6708,7 @@
           "FHIR Artifacts / Profiles"
         ],
         "summary": "Update a custom FHIR profile",
-        "description": "Replaces an existing custom profile with a new StructureDefinition. The\n`id` path parameter is authoritative: if the StructureDefinition includes\nan `id` it must match the path parameter, and if it omits one the path\nparameter is used. The FHIR resource type of the profile cannot change.\nCode system configuration is\nre-derived from the new StructureDefinition. When `implementation_guide` is\nomitted, the profile keeps its existing implementation guide. The instance\nstores a single version per canonical URL, so this replaces it in place.\n",
+        "description": "Replaces an existing custom profile with a new StructureDefinition. The\n`id` path parameter is authoritative: if the StructureDefinition includes\nan `id` it must match the path parameter, and if it omits one the path\nparameter is used. The FHIR resource type of the profile cannot change.\nWhen `implementation_guide` is omitted, the profile keeps its existing\nimplementation guide. A retained version string is allowed only when\nre-submitting the profile's current version with an unchanged\nStructureDefinition; otherwise it returns a conflict. While the profile\nhas retained versions, its\ncanonical URL cannot be changed.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -6246,7 +6731,99 @@
             }
           },
           "400": {
-            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The StructureDefinition id does not match the id path parameter\n- The resource type differs from the existing profile\n- The url collides with a built-in profile or another custom profile\n"
+            "description": "Invalid request or profile validation failed. Possible reasons:\n- Missing or invalid StructureDefinition JSON\n- The StructureDefinition id does not match the id path parameter\n- The resource type differs from the existing profile\n- The url collides with a built-in profile or another custom profile\n- The implementation_guide is reserved or invalid\n"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "409": {
+            "description": "Conflict. Possible reasons:\n- The requested StructureDefinition.version is already used by a retained version and this is not an unchanged re-submission of the profile's current version\n- The profile has retained versions and the request changes its canonical URL\n"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "profiles_delete",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Delete a custom FHIR profile",
+        "description": "Permanently deletes a custom profile by id. This also deletes all retained\nversions for that profile so the canonical URL can be reused by a later\nupload.\n",
+        "responses": {
+          "204": {
+            "description": "Profile successfully deleted"
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles/{id}/versions": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The lowercase StructureDefinition id of the custom profile.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "custom-patient"
+        }
+      ],
+      "get": {
+        "operationId": "profiles_listVersions",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "List versions for a custom FHIR profile",
+        "description": "Returns retained versions for a custom profile.\n",
+        "responses": {
+          "200": {
+            "description": "List of profile versions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileVersionListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id is not a valid profile id"
           },
           "401": {
             "description": "Unauthorized"
@@ -6268,19 +6845,45 @@
         ],
         "x-service": "fhir_artifacts"
       },
-      "delete": {
-        "operationId": "profiles_delete",
+      "post": {
+        "operationId": "profiles_createVersion",
         "tags": [
           "FHIR Artifacts / Profiles"
         ],
-        "summary": "Delete a custom FHIR profile",
-        "description": "Permanently deletes a custom profile by id.\n",
+        "summary": "Add a retained version to a custom FHIR profile",
+        "description": "Adds an immutable StructureDefinition version to a custom profile. If\nthe profile does not exist, it is created from the submitted version.\nThe StructureDefinition must include a non-empty `version`; its\ncanonical URL and resource type must match the profile when one already\nexists. If it includes an `id`, that id must match the path parameter;\nif it omits `id`, the path parameter is used. Profiles created through\nthis endpoint are grouped under `custom`. Posting the profile's current\nStructureDefinition unchanged retains it as a version.\nVersion strings may contain letters, numbers, and the punctuation\ncharacters `.`, `_`, `~`, `+`, and `-`; they cannot be exactly `.` or\n`..`. Each profile can retain up to 250 versions; delete old\nversions before adding more.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/profiles_ProfileVersionCreateRequest"
+              }
+            }
+          }
+        },
         "responses": {
-          "204": {
-            "description": "Profile successfully deleted"
+          "201": {
+            "description": "Profile version successfully created",
+            "headers": {
+              "Location": {
+                "description": "Relative URL of the created profile version.",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "/fhir/profiles/custom-patient/versions/2.0.0"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileSummary"
+                }
+              }
+            }
           },
           "400": {
-            "description": "The id is not a valid profile id"
+            "description": "Invalid request, version does not match the profile, or the canonical URL is already used by another profile.\n"
           },
           "401": {
             "description": "Unauthorized"
@@ -6290,6 +6893,109 @@
           },
           "404": {
             "description": "Profile not found"
+          },
+          "409": {
+            "description": "Conflict. Possible reasons:\n- The requested StructureDefinition.version is already in use by a different StructureDefinition: either the profile's current one or a retained version\n- The profile has reached the retained version limit\n"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/profiles/{id}/versions/{version}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The lowercase StructureDefinition id of the custom profile.",
+          "schema": {
+            "type": "string"
+          },
+          "example": "custom-patient"
+        },
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "description": "The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~+-]+$"
+          },
+          "example": "2.0.0"
+        }
+      ],
+      "get": {
+        "operationId": "profiles_getVersion",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Get a retained custom FHIR profile version",
+        "description": "Returns metadata and the full StructureDefinition for one retained\nversion. The returned StructureDefinition's id is the profile id. The\npath version is the authored `StructureDefinition.version` value.\n",
+        "responses": {
+          "200": {
+            "description": "The requested profile version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profiles_ProfileGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The id or version is invalid"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile or version not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      },
+      "delete": {
+        "operationId": "profiles_deleteVersion",
+        "tags": [
+          "FHIR Artifacts / Profiles"
+        ],
+        "summary": "Delete a retained custom FHIR profile version",
+        "description": "Deletes one retained version from a custom profile. The path\nversion is the authored `StructureDefinition.version` value.\n",
+        "responses": {
+          "204": {
+            "description": "Profile version successfully deleted"
+          },
+          "400": {
+            "description": "The id or version is invalid"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - custom profiles are only available on dedicated instances"
+          },
+          "404": {
+            "description": "Profile or version not found"
           },
           "500": {
             "description": "Server error"
@@ -11023,6 +11729,317 @@
           }
         }
       },
+      "batch_CreateBatchRequest": {
+        "type": "object",
+        "description": "Body of a create-batch request. Opens an empty job.",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "Optional client idempotency token. A retried create with the same\ntoken returns the original job instead of opening a second one.\n",
+            "example": "submit-2025-09-02-batch-001"
+          }
+        }
+      },
+      "batch_BatchError": {
+        "type": "object",
+        "description": "A job- or item-level failure. Never contains document or patient content.",
+        "required": [
+          "kind",
+          "message"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "Short stable token to branch on. Item-level kinds: `invalid_input`\n(the stored body was not a valid create/document request),\n`processing_failed` (the conversion failed), `budget_exceeded` (the\nitem ran past its time budget \u2014 600s for a document item, 450s for a\ncreate item), `result_too_large` (the result exceeded the storage\ncap), `input_unavailable` (the input could not be read), and\n`retries_exhausted` / `attempts_exhausted` (buried after too many\nfailed attempts).\nJob-level kinds: `timeout` (the job did not finish within 36 hours\nof creation).\n",
+            "example": "processing_failed"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable description of the failure.",
+            "example": "the item could not be converted"
+          }
+        }
+      },
+      "batch_BatchJob": {
+        "type": "object",
+        "description": "One batch job record.",
+        "required": [
+          "job_id",
+          "status",
+          "finalized",
+          "total_items",
+          "created_at",
+          "updated_at",
+          "expires_at"
+        ],
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "Server-assigned job identifier.",
+            "example": "l2f_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d"
+          },
+          "request_id": {
+            "type": "string",
+            "description": "The idempotency token supplied at create, if any.",
+            "example": "submit-2025-09-02-batch-001"
+          },
+          "status": {
+            "type": "string",
+            "description": "Job status. `completed` means every item has finished \u2014 some may have\nfailed, so check `counts` for the split. `failed` is a whole-job\nfailure (the job could not run at all), distinct from individual item\nfailures, which never fail the job.\n",
+            "enum": [
+              "pending",
+              "processing",
+              "completed",
+              "failed"
+            ],
+            "example": "pending"
+          },
+          "finalized": {
+            "type": "boolean",
+            "description": "Whether the job's item set has been sealed.",
+            "example": false
+          },
+          "total_items": {
+            "type": "integer",
+            "description": "The sealed item count. It is 0 until the job is finalized, so an\nupload response always reports 0; poll the job after finalize for the\nreal count.\n",
+            "example": 12
+          },
+          "error": {
+            "description": "A whole-job failure. Present only on a `failed` job.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/batch_BatchError"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the job finished. Absent until then."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the job and its stored inputs and results are deleted. Set 7\ndays out, with the clock restarting when the job reaches `completed`\nor `failed`. At expiry the job's `request_id` is freed for reuse.\n"
+          }
+        }
+      },
+      "batch_BatchCounts": {
+        "type": "object",
+        "description": "A job's per-status item tally.",
+        "required": [
+          "total",
+          "pending",
+          "processing",
+          "succeeded",
+          "failed"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "example": 12
+          },
+          "pending": {
+            "type": "integer",
+            "example": 3
+          },
+          "processing": {
+            "type": "integer",
+            "example": 2
+          },
+          "succeeded": {
+            "type": "integer",
+            "example": 6
+          },
+          "failed": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "batch_BatchItemStatus": {
+        "type": "object",
+        "description": "One item's status line.",
+        "required": [
+          "item_id",
+          "status",
+          "attempts"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "description": "Server-assigned opaque item ID, used in result URLs.",
+            "example": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+          },
+          "id": {
+            "type": "string",
+            "description": "The caller's correlation label, echoed back; omitted when none was supplied.",
+            "example": "chart-note-0042"
+          },
+          "status": {
+            "type": "string",
+            "description": "Item status.",
+            "enum": [
+              "pending",
+              "processing",
+              "succeeded",
+              "failed"
+            ],
+            "example": "succeeded"
+          },
+          "attempts": {
+            "type": "integer",
+            "description": "Number of processing attempts so far. An item runs up to 3 attempts,\nand only an interruption \u2014 a worker preemption or a recovered internal\nerror \u2014 is retried; a conversion error fails the item with no retry.\n",
+            "example": 1
+          },
+          "detect_retries": {
+            "type": "integer",
+            "format": "int64",
+            "description": "How many times concept detection was re-run for the item because a\npass returned no concepts. Present only on a succeeded item whose\ndetection re-ran at least once; omitted otherwise.\n",
+            "example": 1
+          },
+          "result_size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Size in bytes of the item's stored result. Present once the item has succeeded.",
+            "example": 20482
+          },
+          "error": {
+            "$ref": "#/components/schemas/batch_BatchError"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the item finished. Absent until then."
+          }
+        }
+      },
+      "batch_UploadItemResponse": {
+        "description": "The upload response: the job record plus the ID the server assigned the\nuploaded item.\n",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/batch_BatchJob"
+          },
+          {
+            "type": "object",
+            "required": [
+              "item_id",
+              "deduplicated"
+            ],
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "description": "The server-assigned ID of the uploaded item; use it to fetch the result.",
+                "example": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+              },
+              "id": {
+                "type": "string",
+                "description": "The caller's correlation label, echoed back; omitted when none was supplied.",
+                "example": "chart-note-0042"
+              },
+              "deduplicated": {
+                "type": "boolean",
+                "description": "True only when a repeated `request_id` resolved to an item whose\npayload matched the one already stored. A same-token upload with a\nchanged payload overwrites in place and returns false.\n",
+                "example": false
+              }
+            }
+          }
+        ]
+      },
+      "batch_JobDetailResponse": {
+        "description": "A job's record, its counts, and one page of item statuses.\n",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/batch_BatchJob"
+          },
+          {
+            "type": "object",
+            "required": [
+              "counts",
+              "items",
+              "has_more"
+            ],
+            "properties": {
+              "counts": {
+                "$ref": "#/components/schemas/batch_BatchCounts"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/batch_BatchItemStatus"
+                }
+              },
+              "next_cursor": {
+                "type": "string",
+                "description": "Cursor for the next page, when has_more is true."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether more item statuses remain beyond this page.",
+                "example": false
+              }
+            }
+          }
+        ]
+      },
+      "batch_ResultsPageResponse": {
+        "type": "object",
+        "description": "A page of per-item result statuses, without the job counts.",
+        "required": [
+          "results",
+          "has_more"
+        ],
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/batch_BatchItemStatus"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for the next page, when has_more is true."
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "Whether more results remain beyond this page.",
+            "example": false
+          }
+        }
+      },
+      "batch_JobListResponse": {
+        "type": "object",
+        "description": "A page of job records, without per-job counts.",
+        "required": [
+          "jobs",
+          "has_more"
+        ],
+        "properties": {
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/batch_BatchJob"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for the next page, when has_more is true."
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "Whether more jobs remain beyond this page.",
+            "example": false
+          }
+        }
+      },
       "cohort_CohortRequest": {
         "type": "object",
         "required": [
@@ -12064,6 +13081,32 @@
         "required": [
           "structure_definition"
         ],
+        "example": {
+          "implementation_guide": "acme-cardiology",
+          "structure_definition": {
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": false,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {
+              "element": [
+                {
+                  "id": "Patient",
+                  "path": "Patient",
+                  "min": 0,
+                  "max": "*"
+                }
+              ]
+            }
+          }
+        },
         "properties": {
           "structure_definition": {
             "allOf": [
@@ -12111,6 +13154,33 @@
       },
       "profiles_ProfileSummary": {
         "type": "object",
+        "description": "Metadata for either a custom profile's current StructureDefinition or one retained version. For retained versions, `source` is always `custom` and `updated_at` is equal to `created_at`.\n",
+        "required": [
+          "id",
+          "source",
+          "resource_type",
+          "url",
+          "version",
+          "canonical",
+          "fhir_version",
+          "implementation_guide",
+          "created_at",
+          "updated_at"
+        ],
+        "example": {
+          "id": "custom-patient",
+          "source": "custom",
+          "resource_type": "Patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "1.0.0",
+          "status": "active",
+          "date": "2026-08-24",
+          "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+          "fhir_version": "4.0.1",
+          "implementation_guide": "acme-cardiology",
+          "created_at": "2026-08-24T15:04:05Z",
+          "updated_at": "2026-08-25T16:04:05Z"
+        },
         "properties": {
           "id": {
             "type": "string",
@@ -12123,7 +13193,7 @@
               "custom",
               "builtin"
             ],
-            "description": "The profile's origin. Listings currently return only custom (uploaded) profiles, so this is always \"custom\" today; built-in (US Core / R4 base) profiles would be surfaced via an opt-in parameter in a future release, not by changing the default behavior.\n",
+            "description": "The profile's origin. Profile management responses currently return custom (uploaded) profiles, so this is always \"custom\" today.\n",
             "example": "custom"
           },
           "resource_type": {
@@ -12141,6 +13211,21 @@
             "description": "The version from the StructureDefinition.version field.",
             "example": "1.0.0"
           },
+          "status": {
+            "type": "string",
+            "description": "The publication status from StructureDefinition.status. Expected FHIR values include `draft`, `active`, `retired`, and `unknown`; the server preserves authored strings.\n",
+            "example": "active"
+          },
+          "date": {
+            "type": "string",
+            "description": "The authored publication date from StructureDefinition.date, when present. This is a FHIR dateTime string and may be less precise than a full timestamp.\n",
+            "example": "2026-08-24"
+          },
+          "canonical": {
+            "type": "string",
+            "description": "The canonical profile reference, including the version pin when present.",
+            "example": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
+          },
           "fhir_version": {
             "type": "string",
             "description": "The base FHIR version the StructureDefinition targets.",
@@ -12157,12 +13242,34 @@
           },
           "updated_at": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Last update timestamp for the profile's current StructureDefinition. For retained versions, this equals `created_at`.\n"
           }
         }
       },
       "profiles_ProfileListResponse": {
         "type": "object",
+        "required": [
+          "profiles"
+        ],
+        "example": {
+          "profiles": [
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "1.0.0",
+              "status": "active",
+              "date": "2026-08-24",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-24T15:04:05Z",
+              "updated_at": "2026-08-25T16:04:05Z"
+            }
+          ]
+        },
         "properties": {
           "profiles": {
             "type": "array",
@@ -12173,12 +13280,54 @@
         }
       },
       "profiles_ProfileGetResponse": {
+        "description": "Metadata and full StructureDefinition JSON for either a custom profile's current StructureDefinition or one retained version.\n",
+        "example": {
+          "id": "custom-patient",
+          "source": "custom",
+          "resource_type": "Patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "1.0.0",
+          "status": "active",
+          "date": "2026-08-24",
+          "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+          "fhir_version": "4.0.1",
+          "implementation_guide": "acme-cardiology",
+          "created_at": "2026-08-24T15:04:05Z",
+          "updated_at": "2026-08-25T16:04:05Z",
+          "structure_definition": {
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "version": "1.0.0",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": false,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {
+              "element": [
+                {
+                  "id": "Patient",
+                  "path": "Patient",
+                  "min": 0,
+                  "max": "*"
+                }
+              ]
+            }
+          }
+        },
         "allOf": [
           {
             "$ref": "#/components/schemas/profiles_ProfileSummary"
           },
           {
             "type": "object",
+            "required": [
+              "structure_definition"
+            ],
             "properties": {
               "structure_definition": {
                 "allOf": [
@@ -12191,6 +13340,82 @@
             }
           }
         ]
+      },
+      "profiles_ProfileVersionCreateRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/profiles_FHIRResource"
+          }
+        ],
+        "description": "A FHIR StructureDefinition as a JSON object. Must include resourceType: StructureDefinition, url, type, version, and a snapshot with elements. The canonical URL and resource type must match the profile when one already exists. If id is present, its lowercased value must match the path id; if omitted, the path id is used. The version may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+        "example": {
+          "resourceType": "StructureDefinition",
+          "id": "custom-patient",
+          "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+          "version": "2.0.0",
+          "name": "CustomPatient",
+          "status": "active",
+          "fhirVersion": "4.0.1",
+          "kind": "resource",
+          "abstract": false,
+          "type": "Patient",
+          "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+          "derivation": "constraint",
+          "snapshot": {
+            "element": [
+              {
+                "id": "Patient",
+                "path": "Patient"
+              }
+            ]
+          }
+        }
+      },
+      "profiles_ProfileVersionListResponse": {
+        "type": "object",
+        "required": [
+          "versions"
+        ],
+        "example": {
+          "versions": [
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "2.0.0",
+              "status": "active",
+              "date": "2026-08-26",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|2.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-26T15:04:05Z",
+              "updated_at": "2026-08-26T15:04:05Z"
+            },
+            {
+              "id": "custom-patient",
+              "source": "custom",
+              "resource_type": "Patient",
+              "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+              "version": "1.0.0",
+              "status": "active",
+              "date": "2026-08-24",
+              "canonical": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0",
+              "fhir_version": "4.0.1",
+              "implementation_guide": "acme-cardiology",
+              "created_at": "2026-08-24T15:04:05Z",
+              "updated_at": "2026-08-24T15:04:05Z"
+            }
+          ]
+        },
+        "properties": {
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/profiles_ProfileSummary"
+            }
+          }
+        }
       },
       "profiles_FHIRResource": {
         "type": "object",
@@ -13482,7 +14707,7 @@
     },
     {
       "name": "FHIR Artifacts / Profiles",
-      "description": "Manage custom FHIR profiles (StructureDefinitions) as instance-level FHIR artifacts."
+      "description": "Manage custom FHIR profiles (StructureDefinitions)."
     },
     {
       "name": "Tools / MCP Servers",
