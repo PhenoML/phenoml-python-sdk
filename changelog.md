@@ -1,3 +1,16 @@
+## [17.0.0] - 2026-09-04
+### Breaking Changes
+- **`ProfileSummary`** — fields `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required (non-`Optional`); update all construction sites to supply every field and remove any `None`-guard branches.
+- **`ProfileGetResponse.structure_definition`** — promoted from `Optional[FhirResource]` to a required `FhirResource`; remove any `None` guard around this field.
+- **`ProfileListResponse.profiles`** — promoted from `Optional[List[ProfileSummary]]` to a required `List[ProfileSummary]`; remove any `None` guard around this field.
+
+### Added
+- **`client.lang2fhir_batch`** — new sync and async sub-client (`Lang2FhirBatchClient` / `RawLang2FhirBatchClient`) for managing asynchronous bulk FHIR extraction jobs via `/lang2fhir/batch`; exposes `create`, `upload_item`, `finalize`, `list`, `get`, `get_results`, and `get_result` methods.
+- **`phenoml.lang2fhir_batch` models and errors** — new Pydantic response models (`BatchJob`, `JobListResponse`, `JobDetailResponse`, `ResultsPageResponse`, `UploadItemResponse`, and related status types) and eight typed `ApiError` subclasses (e.g., `ConflictError`, `ContentTooLargeError`, `GatewayTimeoutError`) exported from `phenoml.lang2fhir_batch`.
+- **`client.profiles.versions`** — new sync and async sub-client for managing immutable StructureDefinition versions on custom profiles; exposes `list`, `create`, `get`, and `delete` methods backed by `ProfileVersionListResponse` and `ProfileVersionCreateRequest`.
+- **`ProfileSummary.status`, `.date`, and `.canonical`** — new optional fields surfacing StructureDefinition publication status, authored date, and canonical version-pinned reference.
+- **`ConflictError` (profiles)** — new HTTP 409 `ApiError` subclass raised by `client.profiles.profiles.update()` and the profile versions endpoints on version conflicts; `lang2fhir_batch` module is now exported from the top-level `phenoml` package.
+
 ## [16.11.0] - 2026-08-26
 ### Added
 - **`PatientReference`** — new Pydantic model with `system` and `value` fields representing a business identifier for an existing patient; exported from `phenoml.lang2fhir`.

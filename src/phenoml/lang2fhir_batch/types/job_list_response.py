@@ -4,11 +4,24 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .profile_summary import ProfileSummary
+from .batch_job import BatchJob
 
 
-class ProfileListResponse(UniversalBaseModel):
-    profiles: typing.List[ProfileSummary]
+class JobListResponse(UniversalBaseModel):
+    """
+    A page of job records, without per-job counts.
+    """
+
+    jobs: typing.List[BatchJob]
+    next_cursor: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Cursor for the next page, when has_more is true.
+    """
+
+    has_more: bool = pydantic.Field()
+    """
+    Whether more jobs remain beyond this page.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
