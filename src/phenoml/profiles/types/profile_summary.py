@@ -9,43 +9,65 @@ from .profile_summary_source import ProfileSummarySource
 
 
 class ProfileSummary(UniversalBaseModel):
-    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Metadata for either a custom profile's current StructureDefinition or one retained version. For retained versions, `source` is always `custom` and `updated_at` is equal to `created_at`.
+    """
+
+    id: str = pydantic.Field()
     """
     The lowercase StructureDefinition id, used as the profile's lookup key.
     """
 
-    source: typing.Optional[ProfileSummarySource] = pydantic.Field(default=None)
+    source: ProfileSummarySource = pydantic.Field()
     """
-    The profile's origin. Listings currently return only custom (uploaded) profiles, so this is always "custom" today; built-in (US Core / R4 base) profiles would be surfaced via an opt-in parameter in a future release, not by changing the default behavior.
+    The profile's origin. Profile management responses currently return custom (uploaded) profiles, so this is always "custom" today.
     """
 
-    resource_type: typing.Optional[str] = pydantic.Field(default=None)
+    resource_type: str = pydantic.Field()
     """
     The FHIR resource type from the StructureDefinition.
     """
 
-    url: typing.Optional[str] = pydantic.Field(default=None)
+    url: str = pydantic.Field()
     """
     The canonical URL from the StructureDefinition.
     """
 
-    version: typing.Optional[str] = pydantic.Field(default=None)
+    version: str = pydantic.Field()
     """
     The version from the StructureDefinition.version field.
     """
 
-    fhir_version: typing.Optional[str] = pydantic.Field(default=None)
+    status: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The publication status from StructureDefinition.status. Expected FHIR values include `draft`, `active`, `retired`, and `unknown`; the server preserves authored strings.
+    """
+
+    date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The authored publication date from StructureDefinition.date, when present. This is a FHIR dateTime string and may be less precise than a full timestamp.
+    """
+
+    canonical: str = pydantic.Field()
+    """
+    The canonical profile reference, including the version pin when present.
+    """
+
+    fhir_version: str = pydantic.Field()
     """
     The base FHIR version the StructureDefinition targets.
     """
 
-    implementation_guide: typing.Optional[str] = pydantic.Field(default=None)
+    implementation_guide: str = pydantic.Field()
     """
     The implementation guide the profile belongs to.
     """
 
-    created_at: typing.Optional[dt.datetime] = None
-    updated_at: typing.Optional[dt.datetime] = None
+    created_at: dt.datetime
+    updated_at: dt.datetime = pydantic.Field()
+    """
+    Last update timestamp for the profile's current StructureDefinition. For retained versions, this equals `created_at`.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

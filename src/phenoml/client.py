@@ -22,6 +22,7 @@ if typing.TYPE_CHECKING:
     from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
     from .implementation_guides.client import AsyncImplementationGuidesClient, ImplementationGuidesClient
     from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
+    from .lang2fhir_batch.client import AsyncLang2FhirBatchClient, Lang2FhirBatchClient
     from .profiles.client import AsyncProfilesClient, ProfilesClient
     from .summary.client import AsyncSummaryClient, SummaryClient
     from .tools.client import AsyncToolsClient, ToolsClient
@@ -218,6 +219,7 @@ class PhenomlClient:
         self._fhir_provider: typing.Optional[FhirProviderClient] = None
         self._implementation_guides: typing.Optional[ImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[Lang2FhirClient] = None
+        self._lang2fhir_batch: typing.Optional[Lang2FhirBatchClient] = None
         self._profiles: typing.Optional[ProfilesClient] = None
         self._summary: typing.Optional[SummaryClient] = None
         self._tools: typing.Optional[ToolsClient] = None
@@ -295,6 +297,14 @@ class PhenomlClient:
 
             self._lang2fhir = Lang2FhirClient(client_wrapper=self._client_wrapper)
         return self._lang2fhir
+
+    @property
+    def lang2fhir_batch(self):
+        if self._lang2fhir_batch is None:
+            from .lang2fhir_batch.client import Lang2FhirBatchClient  # noqa: E402
+
+            self._lang2fhir_batch = Lang2FhirBatchClient(client_wrapper=self._client_wrapper)
+        return self._lang2fhir_batch
 
     @property
     def profiles(self):
@@ -541,6 +551,7 @@ class AsyncPhenomlClient:
         self._fhir_provider: typing.Optional[AsyncFhirProviderClient] = None
         self._implementation_guides: typing.Optional[AsyncImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[AsyncLang2FhirClient] = None
+        self._lang2fhir_batch: typing.Optional[AsyncLang2FhirBatchClient] = None
         self._profiles: typing.Optional[AsyncProfilesClient] = None
         self._summary: typing.Optional[AsyncSummaryClient] = None
         self._tools: typing.Optional[AsyncToolsClient] = None
@@ -618,6 +629,14 @@ class AsyncPhenomlClient:
 
             self._lang2fhir = AsyncLang2FhirClient(client_wrapper=self._client_wrapper)
         return self._lang2fhir
+
+    @property
+    def lang2fhir_batch(self):
+        if self._lang2fhir_batch is None:
+            from .lang2fhir_batch.client import AsyncLang2FhirBatchClient  # noqa: E402
+
+            self._lang2fhir_batch = AsyncLang2FhirBatchClient(client_wrapper=self._client_wrapper)
+        return self._lang2fhir_batch
 
     @property
     def profiles(self):
