@@ -9,7 +9,11 @@ from .profile_summary import ProfileSummary
 
 
 class ProfileGetResponse(ProfileSummary):
-    structure_definition: typing.Optional[FhirResource] = pydantic.Field(default=None)
+    """
+    Metadata and full StructureDefinition JSON for either a custom profile's current StructureDefinition or one retained version.
+    """
+
+    structure_definition: FhirResource = pydantic.Field()
     """
     The full FHIR StructureDefinition JSON.
     """
