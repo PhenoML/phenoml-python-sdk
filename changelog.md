@@ -1,3 +1,5 @@
+## [16.11.1] - 2026-09-09
+
 ## [16.11.0] - 2026-08-26
 ### Added
 - **`PatientReference`** — new Pydantic model with `system` and `value` fields representing a business identifier for an existing patient; exported from `phenoml.lang2fhir`.
