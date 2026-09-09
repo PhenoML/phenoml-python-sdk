@@ -1,3 +1,21 @@
+## [17.1.0] - 2026-09-09
+### Added
+- **`client.lang2fhir_batch`** — new sync and async client for async batch FHIR extraction, supporting the full job lifecycle via `create()`, `upload_item()`, `finalize()`, `cancel()`, `get()`, `get_results()`, and `get_result()`.
+- **`client.profiles.versions`** — new sync and async client for managing immutable retained StructureDefinition versions with `list()`, `create()`, `get()`, and `delete()` methods.
+- **New Pydantic models** — `BatchJob`, `BatchError`, `BatchCounts`, `BatchItemStatus`, `UploadItemResponse`, `JobDetailResponse`, `ResultsPageResponse`, `JobListResponse`, `ProfileVersionCreateRequest`, and `ProfileVersionListResponse` added to support the new batch and profile-version APIs.
+- **`ProfileSummary.status`, `.date`, and `.canonical`** — new optional fields exposing each profile's publication status, authored date, and canonical URL.
+- **`get_keepalive_socket_options()`** — new helper that builds cross-platform TCP keepalive socket options for use with `httpx` transports, keeping long-lived idle connections alive through firewalls and NAT devices.
+- **`BaseHttpResponse.response`** — new property exposing the underlying `httpx.Response` object for direct access to raw headers, cookies, and other HTTP metadata.
+- **`quote_path_param()`** — new utility that percent-encodes path segment values (including `/` and `..`), preventing path traversal issues when building URLs from user-supplied data.
+- **`optional_body` support in the HTTP client** — endpoints with a fully optional request body now omit the body and `Content-Type` header entirely when no properties are provided, instead of sending an empty `{}` payload.
+
+### Changed
+- **`PhenomlClient` and `AsyncPhenomlClient` `token` parameter** — now accepts `Union[str, Callable[[], str]]`, so a raw bearer token string can be passed directly without wrapping it in a lambda.
+- **`UniversalBaseModel` alias-coercion** — field-alias introspection is now cached per model class via a `WeakKeyDictionary`, reducing repeated reflection overhead on high-throughput validation paths.
+
+### Fixed
+- **Agent chat SSE streaming** — empty SSE data frames no longer terminate the sync or async stream early; they are skipped so the stream continues until a proper end-of-stream signal is received.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
