@@ -18,7 +18,21 @@ def test_profiles_profiles_create() -> None:
     test_id = "profiles.profiles.create.0"
     client = get_client(test_id)
     client.profiles.profiles.create(
-        structure_definition={"key": "value"},
+        structure_definition={
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": False,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {"element": [{"id": "Patient", "path": "Patient", "min": 0, "max": "*"}]},
+        },
+        implementation_guide="acme-cardiology",
     )
     verify_request_count(test_id, "POST", "/fhir/profiles", None, 1)
 
@@ -39,7 +53,21 @@ def test_profiles_profiles_update() -> None:
     client = get_client(test_id)
     client.profiles.profiles.update(
         id="custom-patient",
-        structure_definition={"key": "value"},
+        structure_definition={
+            "resourceType": "StructureDefinition",
+            "id": "custom-patient",
+            "url": "http://phenoml.com/fhir/StructureDefinition/custom-patient",
+            "name": "CustomPatient",
+            "status": "active",
+            "fhirVersion": "4.0.1",
+            "kind": "resource",
+            "abstract": False,
+            "type": "Patient",
+            "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Patient",
+            "derivation": "constraint",
+            "snapshot": {"element": [{"id": "Patient", "path": "Patient", "min": 0, "max": "*"}]},
+        },
+        implementation_guide="acme-cardiology",
     )
     verify_request_count(test_id, "PUT", "/fhir/profiles/custom-patient", None, 1)
 
