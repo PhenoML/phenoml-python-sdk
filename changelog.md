@@ -1,4 +1,14 @@
-## [16.11.1] - 2026-09-09
+## [17.0.0] - 2026-09-09
+### Breaking Changes
+- **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
+- **`ProfileListResponse.profiles`** — changed from `Optional[List[ProfileSummary]]` to `List[ProfileSummary]`; remove `None` guards for this field.
+- **`ProfileGetResponse.structure_definition`** — changed from `Optional[FhirResource]` to `FhirResource`; remove `None` guards for this field.
+
+### Added
+- **`client.lang2fhir_batch`** — new sync and async client for batch FHIR extraction, supporting `create(...)`, `upload_item(...)`, `finalize(...)`, `cancel(...)`, `get(...)`, `get_results(...)`, `get_result(...)`, and `list(...)` across the job lifecycle.
+- **`BatchJob`, `BatchItemStatus`, `BatchCounts`, `BatchError`, `JobDetailResponse`, `JobListResponse`, `ResultsPageResponse`, and `UploadItemResponse`** — new Pydantic models supporting the batch extraction API.
+- **`client.profiles.versions`** — new sync and async client for immutable StructureDefinition versions, with `list(...)`, `create(...)`, `get(...)`, and `delete(...)` methods.
+- **`ProfileSummary.status`, `ProfileSummary.date`, and `ProfileSummary.canonical`** — new optional fields exposing each profile's publication status, authored date, and canonical URL; profile update and batch methods can now raise `ConflictError` for HTTP 409 responses.
 
 ## [16.11.0] - 2026-08-26
 ### Added

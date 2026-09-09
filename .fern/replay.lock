@@ -123,7 +123,7 @@ generations:
 current_generation: 3ac2feef8a9595d7dea2a99b024322ae61959133
 patches:
   - id: patch-6516695e
-    content_hash: sha256:9d9d74520aa81751b82f128325b7d4eaf58bb7089f1bca156db18143840a9949
+    content_hash: sha256:5caeff601ccd2db4bda36068ff6c1ac7dba46f1c049cccc367a7db553613acad
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
@@ -135,15 +135,6 @@ patches:
       index cea8b20..f3f1f73 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
-      @@ -4,7 +4,7 @@ dynamic = ["version"]
-       
-       [tool.poetry]
-       name = "phenoml"
-      -version = "0.0.0.dev0"
-      +version = "16.11.1"
-       description = ""
-       readme = "README.md"
-       authors = []
       @@ -31,6 +31,9 @@ classifiers = [
        packages = [
            { include = "phenoml", from = "src"}
@@ -162,7 +153,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "16.11.1"
+        version = "17.0.0"
         description = ""
         readme = "README.md"
         authors = []
