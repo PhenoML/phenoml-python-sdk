@@ -5,7 +5,12 @@
       "name": "Create a new agent - default",
       "request": {
         "urlPathTemplate": "/agent/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -32,6 +37,11 @@
       "request": {
         "urlPathTemplate": "/agent/list",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "tags": {
             "equalTo": "tags"
@@ -64,6 +74,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -95,6 +110,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -126,6 +146,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -157,6 +182,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -187,7 +217,12 @@
       "name": "Chat with agent - Query Patient Condition",
       "request": {
         "urlPathTemplate": "/agent/chat",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -213,7 +248,12 @@
       "name": "Chat with agent (streaming) - default",
       "request": {
         "urlPathTemplate": "/agent/stream-chat",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -240,6 +280,11 @@
       "request": {
         "urlPathTemplate": "/agent/chat/messages",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "chat_session_id": {
             "equalTo": "chat_session_id"
@@ -280,7 +325,12 @@
       "name": "Create agent prompt - default",
       "request": {
         "urlPathTemplate": "/agent/prompts",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -306,7 +356,12 @@
       "name": "List agent prompts - default",
       "request": {
         "urlPathTemplate": "/agent/prompts/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -334,6 +389,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -365,6 +425,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -396,6 +461,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -427,6 +497,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -483,7 +558,12 @@
       "name": "Analyze text for patient cohort criteria - default",
       "request": {
         "urlPathTemplate": "/cohort",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -509,7 +589,12 @@
       "name": "Upload custom code system - JSON codes (preferred)",
       "request": {
         "urlPathTemplate": "/construe/upload",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 202,
@@ -535,7 +620,12 @@
       "name": "List available code systems - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -563,6 +653,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -599,6 +694,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "CUSTOM_CODES"
@@ -635,6 +735,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}/export",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "CUSTOM_CODES"
@@ -670,7 +775,12 @@
       "name": "Submit feedback on extraction results - default",
       "request": {
         "urlPathTemplate": "/construe/feedback",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -696,7 +806,12 @@
       "name": "Extract medical codes from text - Basic Extraction",
       "request": {
         "urlPathTemplate": "/construe/extract",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -722,7 +837,12 @@
       "name": "[Alpha] Extract medical codes with phenocr - HPO Phenotype Extraction",
       "request": {
         "urlPathTemplate": "/construe/phenocr",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -748,7 +868,12 @@
       "name": "Crosswalk a code to target code systems - ICD-10-CM to HPO",
       "request": {
         "urlPathTemplate": "/construe/codes/crosswalk",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -775,6 +900,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -817,6 +947,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -856,6 +991,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -898,6 +1038,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -940,6 +1085,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -974,6 +1124,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1008,6 +1163,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1042,6 +1202,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1076,6 +1241,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1110,6 +1280,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1140,7 +1315,12 @@
       "name": "Map FHIR resources to OMOP CDM v5.4 - Mapping result",
       "request": {
         "urlPathTemplate": "/fhir2omop/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1166,7 +1346,12 @@
       "name": "Create FHIR provider - default",
       "request": {
         "urlPathTemplate": "/fhir-provider",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1192,7 +1377,12 @@
       "name": "List FHIR providers - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1220,6 +1410,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "fhir_provider_id"
@@ -1251,6 +1446,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "fhir_provider_id"
@@ -1282,6 +1482,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/add-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1313,6 +1518,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1344,6 +1554,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1374,7 +1589,12 @@
       "name": "List implementation guides - default",
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1402,6 +1622,11 @@
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1433,6 +1658,11 @@
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1464,6 +1694,11 @@
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1494,7 +1729,12 @@
       "name": "Create FHIR resource from text - Condition Resource",
       "request": {
         "urlPathTemplate": "/lang2fhir/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1520,7 +1760,12 @@
       "name": "Extract multiple FHIR resources from text - Full Patient Record",
       "request": {
         "urlPathTemplate": "/lang2fhir/create/multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1546,7 +1791,12 @@
       "name": "Generate FHIR search parameters from text - Search Appointments",
       "request": {
         "urlPathTemplate": "/lang2fhir/search",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1572,7 +1822,12 @@
       "name": "Upload custom FHIR profile (deprecated) - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/profile/upload",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1598,7 +1853,12 @@
       "name": "Convert document to FHIR resource - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/document",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1624,7 +1884,12 @@
       "name": "Extract multiple FHIR resources from a document - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/document/multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1651,6 +1916,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "cursor": {
             "equalTo": "cursor"
@@ -1685,7 +1955,12 @@
       "name": "Create a batch job - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/batch",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 202,
@@ -1712,6 +1987,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/items",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1743,6 +2023,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/finalize",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1774,6 +2059,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/cancel",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1805,6 +2095,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1844,6 +2139,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/results",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1883,6 +2183,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/results/{item_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1917,6 +2222,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "url": {
             "equalTo": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
@@ -1948,7 +2258,12 @@
       "name": "Upload a custom FHIR profile - default",
       "request": {
         "urlPathTemplate": "/fhir/profiles",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1975,6 +2290,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2006,6 +2326,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2037,6 +2362,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2068,6 +2398,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2099,6 +2434,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2130,6 +2470,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2164,6 +2509,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2197,7 +2547,12 @@
       "name": "List all summary templates - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/templates",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2224,7 +2579,12 @@
       "name": "Create a new summary template - Discharge Summary Template",
       "request": {
         "urlPathTemplate": "/fhir2summary/template",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2251,6 +2611,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2282,6 +2647,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2313,6 +2683,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2343,7 +2718,12 @@
       "name": "Generate a summary from FHIR resources - Narrative Summary",
       "request": {
         "urlPathTemplate": "/fhir2summary/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2369,7 +2749,12 @@
       "name": "Create FHIR resource from text and store it - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2395,7 +2780,12 @@
       "name": "Extract and store multiple FHIR resources - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-create-multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2421,7 +2811,12 @@
       "name": "Search FHIR resources from natural language - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-search",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2447,7 +2842,12 @@
       "name": "Analyze patient cohorts - default",
       "request": {
         "urlPathTemplate": "/tools/cohort",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2473,7 +2873,12 @@
       "name": "Create MCP server - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2499,7 +2904,12 @@
       "name": "List MCP servers - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2527,6 +2937,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2558,6 +2973,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2589,6 +3009,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}/list",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2620,6 +3045,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_tool_id": {
             "equalTo": "mcp_server_tool_id"
@@ -2651,6 +3081,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_tool_id": {
             "equalTo": "mcp_server_tool_id"
@@ -2682,6 +3117,11 @@
       "request": {
         "urlPathTemplate": "/workflows",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "verbose": {
             "equalTo": "true"
@@ -2714,6 +3154,11 @@
       "request": {
         "urlPathTemplate": "/workflows",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "verbose": {
             "equalTo": "true"
@@ -2745,6 +3190,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2781,6 +3231,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2817,6 +3272,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2848,6 +3308,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}/execute",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "7a8b9c0d-1234-5678-abcd-ef9876543210"
