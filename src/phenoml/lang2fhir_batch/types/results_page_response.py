@@ -4,11 +4,24 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .profile_summary import ProfileSummary
+from .batch_item_status import BatchItemStatus
 
 
-class ProfileListResponse(UniversalBaseModel):
-    profiles: typing.List[ProfileSummary]
+class ResultsPageResponse(UniversalBaseModel):
+    """
+    A page of per-item result statuses, without the job counts.
+    """
+
+    results: typing.List[BatchItemStatus]
+    next_cursor: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Cursor for the next page, when has_more is true.
+    """
+
+    has_more: bool = pydantic.Field()
+    """
+    Whether more results remain beyond this page.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
