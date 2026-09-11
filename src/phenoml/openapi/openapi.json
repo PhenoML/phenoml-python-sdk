@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "26224ef37e22adb507f28c21e8991d4a27822bde"
+    "version": "bcc6fe3b73d3ac5a6c208e00c2a1ffce7b318c7d"
   },
   "x-services": [
     {
@@ -6574,11 +6574,11 @@
         "tags": [
           "FHIR Artifacts / Implementation Guides"
         ],
-        "summary": "Delete an implementation guide's metadata",
-        "description": "Deletes the stored metadata for an implementation guide \u2014 its\nprofile_context and timestamps. Member profiles keep their\nimplementation_guide assignment, so a guide still referenced by at least\none profile continues to appear in listings, just without context or\ntimestamps.\n",
+        "summary": "Delete an implementation guide family",
+        "description": "Deletes the stored name-level metadata and any exact canonical package\nversions beneath the guide. Legacy member profile assignments are not\nchanged.\n",
         "responses": {
           "204": {
-            "description": "Implementation guide metadata successfully deleted"
+            "description": "Implementation guide family successfully deleted"
           },
           "400": {
             "description": "The name is reserved or malformed"
@@ -6590,10 +6590,121 @@
             "description": "Forbidden - custom profiles are only available on dedicated instances"
           },
           "404": {
-            "description": "No implementation guide metadata exists for this name"
+            "description": "No implementation guide family exists for this name"
           },
           "500": {
             "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "implementation-guides_createVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Publish an exact custom-profile package",
+        "description": "Publishes an exact package beneath this guide family. PR 2 temporarily\npermits one exact package version per guide family; publishing another\nversion returns `409 Conflict` until multi-version package support lands.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/implementation-guides_CreateCanonicalImplementationGuideRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Canonical package published",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ImplementationGuide, profile reference, version, or context"
+          },
+          "404": {
+            "description": "An exact profile reference was not found"
+          },
+          "409": {
+            "description": "A package family URL or exact version already exists"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions/{version}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "description": "The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~+-]+$"
+          },
+          "example": "1.0.0"
+        }
+      ],
+      "get": {
+        "operationId": "implementation-guides_getVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Get an exact custom-profile package",
+        "responses": {
+          "200": {
+            "description": "Exact canonical package",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid guide name or version"
+          },
+          "404": {
+            "description": "Package version not found"
           }
         },
         "security": [
@@ -6832,6 +6943,9 @@
           "404": {
             "description": "Profile not found"
           },
+          "409": {
+            "description": "Profile is pinned by an exact implementation guide package"
+          },
           "500": {
             "description": "Server error"
           }
@@ -7049,6 +7163,9 @@
           },
           "404": {
             "description": "Profile or version not found"
+          },
+          "409": {
+            "description": "Profile version is pinned by an exact implementation guide package"
           },
           "500": {
             "description": "Server error"
@@ -13056,7 +13173,7 @@
       },
       "implementation-guides_ImplementationGuideSummary": {
         "type": "object",
-        "description": "Metadata for an implementation guide. This is an instance-local grouping record, not a complete FHIR ImplementationGuide resource.\n",
+        "description": "Metadata for an implementation guide. Canonical fields are present only for published canonical packages; metadata-only legacy records omit them.\n",
         "properties": {
           "name": {
             "type": "string",
@@ -13072,6 +13189,14 @@
             "type": "integer",
             "description": "The number of custom profiles in this implementation guide.",
             "example": 3
+          },
+          "canonical_url": {
+            "type": "string",
+            "description": "Canonical FHIR ImplementationGuide URL, when the family has an exact package."
+          },
+          "version_count": {
+            "type": "integer",
+            "description": "Number of retained exact package versions."
           },
           "created_at": {
             "type": "string",
@@ -13118,6 +13243,125 @@
             }
           }
         ]
+      },
+      "implementation-guides_CreateCanonicalImplementationGuideRequest": {
+        "type": "object",
+        "required": [
+          "implementation_guide",
+          "profile_refs"
+        ],
+        "properties": {
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "profile_refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 250,
+            "description": "Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.\n",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_context": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Natural-language profile-selection context for this package."
+          }
+        }
+      },
+      "implementation-guides_ImplementationGuideVersionDetail": {
+        "type": "object",
+        "required": [
+          "name",
+          "url",
+          "version",
+          "profile_context",
+          "profiles",
+          "profile_refs",
+          "implementation_guide",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "profile_context": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "implementation-guides_FHIRImplementationGuide": {
+        "type": "object",
+        "description": "A complete authored FHIR ImplementationGuide JSON resource.",
+        "required": [
+          "resourceType",
+          "url",
+          "version"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "ImplementationGuide"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "packageId": {
+            "type": "string"
+          },
+          "fhirVersion": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "implementation-guides_UpdateImplementationGuideRequest": {
         "type": "object",
