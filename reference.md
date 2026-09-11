@@ -4689,11 +4689,9 @@ client.implementation_guides.implementation_guides.update(
 <dl>
 <dd>
 
-Deletes the stored metadata for an implementation guide — its
-profile_context and timestamps. Member profiles keep their
-implementation_guide assignment, so a guide still referenced by at least
-one profile continues to appear in listings, just without context or
-timestamps.
+Deletes the stored name-level metadata and any exact canonical package
+versions beneath the guide. Legacy member profile assignments are not
+changed.
 </dd>
 </dl>
 </dd>
@@ -4736,6 +4734,184 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **name:** `str` — The implementation guide name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">create_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes an exact package beneath this guide family. PR 2 temporarily
+permits one exact package version per guide family; publishing another
+version returns `409 Conflict` until multi-version package support lands.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+from phenoml.implementation_guides import FhirImplementationGuide
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.create_version(
+    name="name",
+    implementation_guide=FhirImplementationGuide(
+        resource_type="ImplementationGuide",
+        url="url",
+        version="version",
+    ),
+    profile_refs=[
+        "profile_refs"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `FhirImplementationGuide` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_refs:** `typing.List[str]` — Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_context:** `typing.Optional[str]` — Natural-language profile-selection context for this package.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">get_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.get_version(
+    name="name",
+    version="1.0.0",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `str` — The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
     
 </dd>
 </dl>
