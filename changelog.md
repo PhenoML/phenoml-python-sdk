@@ -1,3 +1,17 @@
+## [17.1.0] - 2026-09-11
+### Added
+- **`client.implementation_guides.create_version(...)` and `get_version(...)`** — new sync and async methods to publish and retrieve immutable exact canonical FHIR package versions beneath an implementation guide family; return `ImplementationGuideVersionDetail`.
+- **`client.lang2fhir_batch`** — new sync and async client covering the full batch FHIR extraction job lifecycle (`create`, `upload_item`, `finalize`, `cancel`, `get`, `get_results`, `get_result`, `list`).
+- **`client.profiles.versions`** — new sync and async client for managing immutable retained StructureDefinition versions (`list`, `create`, `get`, `delete`).
+- **`FhirImplementationGuide`, `ImplementationGuideVersionDetail`, `ConflictError`, and supporting batch/profile-version models** — new Pydantic models and error class exported from `phenoml.implementation_guides` and `phenoml.implementation_guides.errors`; `ImplementationGuideSummary` gains optional `canonical_url` and `version_count` fields.
+- **`BaseHttpResponse.response`** and **`quote_path_param`** — new property exposing the raw `httpx.Response` and new utility for percent-encoding path segment values.
+
+### Changed
+- **`token` parameter on `PhenomlClient` and `AsyncPhenomlClient`** — now accepts `Union[str, Callable[[], str]]`, allowing a plain bearer token string to be passed directly without wrapping in a lambda.
+- **`client.implementation_guides.delete(...)`** — now also removes any exact canonical package versions beneath the guide in addition to name-level metadata.
+- **`OAuthTokenProvider`** — token refresh calls now explicitly pass `grant_type="client_credentials"` to ensure correct OAuth 2.0 client credentials flow behavior.
+- **HTTP transport** — TCP keepalive probes are now enabled on all connections via `get_keepalive_socket_options()`, and optional-body endpoints no longer send a `Content-Type` header when the body is empty; `httpx-aiohttp` version constraint relaxed from `==0.1.8` to `^0.1.8`.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
