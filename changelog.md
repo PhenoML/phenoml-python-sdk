@@ -1,3 +1,20 @@
+## [17.1.0] - 2026-09-14
+### Added
+- **`client.lang2fhir_batch`** — new sync and async client for asynchronous batch FHIR extraction supporting the full job lifecycle (`create`, `upload_item`, `finalize`, `cancel`, `get`, `get_results`, `get_result`, `list`), along with supporting Pydantic models (`BatchJob`, `BatchError`, `BatchCounts`, `BatchItemStatus`, `UploadItemResponse`, `JobDetailResponse`, `ResultsPageResponse`, `JobListResponse`).
+- **`client.implementation_guides.create_version(...)` and `get_version(...)`** — new sync and async methods to publish and retrieve immutable exact canonical FHIR package versions beneath a guide family; `ConflictError` (HTTP 409) is raised on duplicate versions; new models `FhirImplementationGuide` and `ImplementationGuideVersionDetail` are exported from `phenoml.implementation_guides`.
+- **`client.profiles.versions`** — new sync and async client for immutable retained StructureDefinition versions with `list`, `create`, `get`, and `delete` methods, plus `ProfileVersionCreateRequest` and `ProfileVersionListResponse` models.
+- **`profiles_update` and `profiles_delete`** — new `PUT` and `DELETE` operations on the profiles client for in-place profile replacement and permanent deletion.
+- **New optional fields** — `ImplementationGuideSummary.canonical_url` and `ImplementationGuideSummary.version_count`; `ProfileSummary.status`, `ProfileSummary.date`, and `ProfileSummary.canonical` added to their respective summary models.
+
+### Changed
+- **`token` parameter on `PhenomlClient` and `AsyncPhenomlClient`** — now accepts `Union[str, Callable[[], str]]`, allowing a plain bearer token string to be passed directly without wrapping it in a callable.
+- **`lang2fhir_batch` active-job limit** — the previous 4-active-job cap has been removed; HTTP 409 is no longer raised by `create`, and item-level retry errors now reflect a 30-minute per-attempt platform bound.
+- **`OAuthTokenProvider`** — `grant_type="client_credentials"` is now explicitly sent on every token refresh (sync and async).
+- **HTTP transport** — TCP keepalive is now applied to all connections, and requests with no body no longer send a spurious `Content-Type` header.
+
+### Fixed
+- **Agent chat SSE stream** — empty SSE data frames are now skipped instead of raising a parse error in sync and async streaming responses.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
