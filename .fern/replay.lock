@@ -120,21 +120,36 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.18.1
-current_generation: 3ac2feef8a9595d7dea2a99b024322ae61959133
+  - commit_sha: 9c74e95fe28a9d9e9314aef7c92ca8f588ca3535
+    tree_hash: fa4c7840989099ca9fbdb2708e0a6d2d7eb79b7b
+    timestamp: 2026-09-14T19:28:04.376Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.30.0
+current_generation: 9c74e95fe28a9d9e9314aef7c92ca8f588ca3535
 patches:
   - id: patch-6516695e
-    content_hash: sha256:5caeff601ccd2db4bda36068ff6c1ac7dba46f1c049cccc367a7db553613acad
+    content_hash: sha256:4b07085503a73b0d7551a0483d04ec6c821df4b63f77762193d83acc0307f6db
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: 3ac2feef8a9595d7dea2a99b024322ae61959133
+    base_generation: 9c74e95fe28a9d9e9314aef7c92ca8f588ca3535
     files:
       - pyproject.toml
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index cea8b20..f3f1f73 100644
+      index 1dc545d..4b6ff5e 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
+      @@ -4,7 +4,7 @@ dynamic = ["version"]
+       
+       [tool.poetry]
+       name = "phenoml"
+      -version = "0.0.0.dev0"
+      +version = "17.1.0"
+       description = ""
+       readme = "README.md"
+       authors = []
       @@ -31,6 +31,9 @@ classifiers = [
        packages = [
            { include = "phenoml", from = "src"}
@@ -153,7 +168,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "17.0.0"
+        version = "17.1.0"
         description = ""
         readme = "README.md"
         authors = []
@@ -191,7 +206,7 @@ patches:
         python = "^3.10"
         aiohttp = { version = ">=3.14.1,<4", optional = true, python = ">=3.10"}
         httpx = ">=0.21.2"
-        httpx-aiohttp = { version = "0.1.8", optional = true, python = ">=3.10"}
+        httpx-aiohttp = { version = "^0.1.8", optional = true, python = ">=3.10"}
         pydantic = ">= 1.9.2"
         pydantic-core = ">=2.18.2,<3.0.0"
         typing_extensions = ">= 4.0.0"

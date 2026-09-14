@@ -4689,11 +4689,9 @@ client.implementation_guides.implementation_guides.update(
 <dl>
 <dd>
 
-Deletes the stored metadata for an implementation guide — its
-profile_context and timestamps. Member profiles keep their
-implementation_guide assignment, so a guide still referenced by at least
-one profile continues to appear in listings, just without context or
-timestamps.
+Deletes the stored name-level metadata and any exact canonical package
+versions beneath the guide. Legacy member profile assignments are not
+changed.
 </dd>
 </dl>
 </dd>
@@ -4736,6 +4734,184 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **name:** `str` — The implementation guide name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">create_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes an exact package beneath this guide family. PR 2 temporarily
+permits one exact package version per guide family; publishing another
+version returns `409 Conflict` until multi-version package support lands.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+from phenoml.implementation_guides import FhirImplementationGuide
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.create_version(
+    name="name",
+    implementation_guide=FhirImplementationGuide(
+        resource_type="ImplementationGuide",
+        url="url",
+        version="version",
+    ),
+    profile_refs=[
+        "profile_refs"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `FhirImplementationGuide` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_refs:** `typing.List[str]` — Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_context:** `typing.Optional[str]` — Natural-language profile-selection context for this package.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">get_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.get_version(
+    name="name",
+    version="1.0.0",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `str` — The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
     
 </dd>
 </dl>
@@ -5540,10 +5716,8 @@ credential. A `request_id` whose job was canceled or failed before it
 finalized is released for a fresh replay; once a job is finalized, its
 `request_id` keeps resolving to it even after cancellation.
 
-An instance may hold at most 4 active (pending or processing) jobs at
-once; a create past that limit returns `409`. The limit is instance-wide
-— jobs are shared across the instance's credentials — so another
-credential's jobs count against it.
+There is no limit on how many jobs an instance may hold at once; how many
+items run in parallel is a property of the instance, not of the job count.
 </dd>
 </dl>
 </dd>
@@ -5587,8 +5761,9 @@ client.lang2fhir_batch.create(
 
 **request_id:** `typing.Optional[str]` 
 
-Optional client idempotency token. A retried create with the same
-token returns the original job instead of opening a second one.
+Optional client idempotency token (at most 256 UTF-8 bytes). A
+retried create with the same token returns the original job instead
+of opening a second one.
     
 </dd>
 </dl>
@@ -5754,10 +5929,11 @@ Required with `document`; forbidden with `create`.
 
 **request_id:** `typing.Optional[str]` 
 
-Optional idempotency token (max 256 bytes). Re-uploading under
-the same token overwrites the same item instead of adding a
-new one. The token is scoped to this job; the same token in
-another job is independent and creates a separate item.
+Optional idempotency token (at most 256 UTF-8 bytes).
+Re-uploading under the same token overwrites the same item
+instead of adding a new one. The token is scoped to this job;
+the same token in another job is independent and creates a
+separate item.
     
 </dd>
 </dl>
@@ -5767,9 +5943,9 @@ another job is independent and creates a separate item.
 
 **id:** `typing.Optional[str]` 
 
-Optional caller-supplied correlation label (max 512 bytes),
-echoed back on status and result listings so you can match the
-server's item_id to your own record.
+Optional caller-supplied correlation label (at most 512 UTF-8
+bytes), echoed back on status and result listings so you can
+match the server's item_id to your own record.
     
 </dd>
 </dl>
@@ -5880,8 +6056,8 @@ client.lang2fhir_batch.finalize(
 <dl>
 <dd>
 
-Drives a job to the terminal `canceled` state on request, freeing its
-active-job slot immediately. Takes no request body.
+Drives a job to the terminal `canceled` state on request. Takes no
+request body.
 
 Cancel does not delete the job: the job record and any results already
 produced are preserved for the normal retention window, the same as a
