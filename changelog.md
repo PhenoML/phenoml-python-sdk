@@ -1,3 +1,21 @@
+## [17.1.0] - 2026-09-14
+### Added
+- **`client.implementation_guides.create_version(...)` and `get_version(...)`** — new sync and async methods for publishing and retrieving immutable canonical FHIR package versions beneath an implementation guide family; returns `ImplementationGuideVersionDetail`.
+- **`client.lang2fhir_batch`** — new sync and async client covering the full batch FHIR extraction lifecycle (`create`, `upload_item`, `finalize`, `cancel`, `get`, `get_results`, `get_result`); backed by eight new Pydantic models including `BatchJob` and `JobDetailResponse`.
+- **`client.profiles.versions`** — new sync and async client for immutable retained StructureDefinition versions with `list`, `create`, `get`, and `delete` methods; backed by `ProfileVersionCreateRequest` and `ProfileVersionListResponse`.
+- **`FhirImplementationGuide`, `ImplementationGuideVersionDetail`, and `ConflictError`** — new types exported from `phenoml.implementation_guides`; `ConflictError` is also raised by `client.profiles` methods on HTTP 409.
+- **`ImplementationGuideSummary.canonical_url` / `version_count`** and **`ProfileSummary.status` / `date` / `canonical`** — new optional fields on existing summary models.
+
+### Changed
+- **`token` parameter on `PhenomlClient` and `AsyncPhenomlClient`** — now accepts `Union[str, Callable[[], str]]`, allowing a plain string token to be passed directly without wrapping in a lambda.
+- **`OAuthTokenProvider` and `AsyncOAuthTokenProvider`** — token refresh now explicitly passes `grant_type="client_credentials"` to ensure correct OAuth 2.0 client-credentials flow behaviour.
+- **`client.lang2fhir_batch.create(...)`** — the 4-active-job concurrency cap has been removed; parallelism is now a property of the instance rather than a job-count limit.
+- **HTTP transport** — TCP keepalive probes are now enabled on all connections, and `Content-Type` is suppressed on bodyless optional-body requests.
+- **`httpx-aiohttp` dependency** — version constraint relaxed from `==0.1.8` to `^0.1.8`, permitting compatible patch and minor upgrades.
+
+### Fixed
+- **Agent chat SSE stream** — empty SSE data frames are now skipped instead of being forwarded to the JSON parser, preventing spurious parse errors in sync and async streaming.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
