@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "26224ef37e22adb507f28c21e8991d4a27822bde"
+    "version": "e555f47326197aad510a783942045e7c53476fc5"
   },
   "x-services": [
     {
@@ -4586,7 +4586,7 @@
       "post": {
         "operationId": "batch_create",
         "summary": "Create a batch job",
-        "description": "Opens an empty batch job. Items arrive on later upload calls and the set\nis sealed at finalize.\n\nSupplying `request_id` makes the create idempotent on that token: a\nretried submit whose response was lost returns the original job rather\nthan opening a second one. This dedupe is scoped to the calling\ncredential. A `request_id` whose job was canceled or failed before it\nfinalized is released for a fresh replay; once a job is finalized, its\n`request_id` keeps resolving to it even after cancellation.\n\nAn instance may hold at most 4 active (pending or processing) jobs at\nonce; a create past that limit returns `409`. The limit is instance-wide\n\u2014 jobs are shared across the instance's credentials \u2014 so another\ncredential's jobs count against it.\n",
+        "description": "Opens an empty batch job. Items arrive on later upload calls and the set\nis sealed at finalize.\n\nSupplying `request_id` makes the create idempotent on that token: a\nretried submit whose response was lost returns the original job rather\nthan opening a second one. This dedupe is scoped to the calling\ncredential. A `request_id` whose job was canceled or failed before it\nfinalized is released for a fresh replay; once a job is finalized, its\n`request_id` keeps resolving to it even after cancellation.\n\nThere is no limit on how many jobs an instance may hold at once; how many\nitems run in parallel is a property of the instance, not of the job count.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -4616,9 +4616,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "409": {
-            "description": "The instance is at its 4-job active-batch limit; wait for one to finish"
           },
           "499": {
             "description": "Client closed request before response was ready"
@@ -4860,7 +4857,7 @@
       "post": {
         "operationId": "batch_cancel",
         "summary": "Cancel a batch job",
-        "description": "Drives a job to the terminal `canceled` state on request, freeing its\nactive-job slot immediately. Takes no request body.\n\nCancel does not delete the job: the job record and any results already\nproduced are preserved for the normal retention window, the same as a\n`completed` or `failed` job. Items stop being processed and keep the state\nthey held at cancellation, so a canceled job's `counts` may show\nunfinished items that never resolve.\n\nCancel is idempotent: canceling an already-`canceled` job returns `200`\nwith the job. Canceling a job that has already `completed` or `failed` is\na `409`.\n",
+        "description": "Drives a job to the terminal `canceled` state on request. Takes no\nrequest body.\n\nCancel does not delete the job: the job record and any results already\nproduced are preserved for the normal retention window, the same as a\n`completed` or `failed` job. Items stop being processed and keep the state\nthey held at cancellation, so a canceled job's `counts` may show\nunfinished items that never resolve.\n\nCancel is idempotent: canceling an already-`canceled` job returns `200`\nwith the job. Canceling a job that has already `completed` or `failed` is\na `409`.\n",
         "parameters": [
           {
             "name": "job_id",
@@ -6574,11 +6571,11 @@
         "tags": [
           "FHIR Artifacts / Implementation Guides"
         ],
-        "summary": "Delete an implementation guide's metadata",
-        "description": "Deletes the stored metadata for an implementation guide \u2014 its\nprofile_context and timestamps. Member profiles keep their\nimplementation_guide assignment, so a guide still referenced by at least\none profile continues to appear in listings, just without context or\ntimestamps.\n",
+        "summary": "Delete an implementation guide family",
+        "description": "Deletes the stored name-level metadata and any exact canonical package\nversions beneath the guide. Legacy member profile assignments are not\nchanged.\n",
         "responses": {
           "204": {
-            "description": "Implementation guide metadata successfully deleted"
+            "description": "Implementation guide family successfully deleted"
           },
           "400": {
             "description": "The name is reserved or malformed"
@@ -6590,10 +6587,121 @@
             "description": "Forbidden - custom profiles are only available on dedicated instances"
           },
           "404": {
-            "description": "No implementation guide metadata exists for this name"
+            "description": "No implementation guide family exists for this name"
           },
           "500": {
             "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "implementation-guides_createVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Publish an exact custom-profile package",
+        "description": "Publishes an exact package beneath this guide family. PR 2 temporarily\npermits one exact package version per guide family; publishing another\nversion returns `409 Conflict` until multi-version package support lands.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/implementation-guides_CreateCanonicalImplementationGuideRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Canonical package published",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ImplementationGuide, profile reference, version, or context"
+          },
+          "404": {
+            "description": "An exact profile reference was not found"
+          },
+          "409": {
+            "description": "A package family URL or exact version already exists"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions/{version}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "description": "The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~+-]+$"
+          },
+          "example": "1.0.0"
+        }
+      ],
+      "get": {
+        "operationId": "implementation-guides_getVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Get an exact custom-profile package",
+        "responses": {
+          "200": {
+            "description": "Exact canonical package",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid guide name or version"
+          },
+          "404": {
+            "description": "Package version not found"
           }
         },
         "security": [
@@ -6832,6 +6940,9 @@
           "404": {
             "description": "Profile not found"
           },
+          "409": {
+            "description": "Profile is pinned by an exact implementation guide package"
+          },
           "500": {
             "description": "Server error"
           }
@@ -7049,6 +7160,9 @@
           },
           "404": {
             "description": "Profile or version not found"
+          },
+          "409": {
+            "description": "Profile version is pinned by an exact implementation guide package"
           },
           "500": {
             "description": "Server error"
@@ -11803,7 +11917,7 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "Short stable token to branch on. Item-level kinds: `invalid_input`\n(the stored body was not a valid create/document request),\n`processing_failed` (the conversion failed), `budget_exceeded` (the\nitem ran past its time budget \u2014 600s for a document item, 450s for a\ncreate item), `result_too_large` (the result exceeded the storage\ncap), `input_unavailable` (the input could not be read), and\n`retries_exhausted` / `attempts_exhausted` (buried after too many\nfailed attempts).\nJob-level kinds: `timeout` (the job did not finish within 36 hours\nof creation).\n",
+            "description": "Short stable token to branch on. Item-level kinds: `invalid_input`\n(the stored body was not a valid create/document request),\n`processing_failed` (the conversion failed), `result_too_large` (the\nresult exceeded the storage cap), `input_unavailable` (the input\ncould not be read), and `retries_exhausted` / `attempts_exhausted`\n(buried after too many interrupted attempts; an item has no\nper-item time budget, but a single attempt is bounded by the\nplatform at 30 minutes, and an item cut off three times is buried).\nJob-level kinds: `timeout` (the job did not finish within 36 hours\nof creation).\n",
             "example": "processing_failed"
           },
           "message": {
@@ -11838,7 +11952,7 @@
           },
           "status": {
             "type": "string",
-            "description": "Job status. `completed` means every item has finished \u2014 some may have\nfailed, so check `counts` for the split. `failed` is a whole-job\nfailure (the job could not run at all), distinct from individual item\nfailures, which never fail the job. `canceled` is a caller-requested\ncancellation via `POST /lang2fhir/batch/{job_id}/cancel`; like the\nother terminal states it frees the job's active-job slot and keeps any\nresults already produced readable for the retention window.\n",
+            "description": "Job status. `completed` means every item has finished \u2014 some may have\nfailed, so check `counts` for the split. `failed` is a whole-job\nfailure (the job could not run at all), distinct from individual item\nfailures, which never fail the job. `canceled` is a caller-requested\ncancellation via `POST /lang2fhir/batch/{job_id}/cancel`; like the\nother terminal states it keeps any results already produced readable\nfor the retention window.\n",
             "enum": [
               "pending",
               "processing",
@@ -13056,7 +13170,7 @@
       },
       "implementation-guides_ImplementationGuideSummary": {
         "type": "object",
-        "description": "Metadata for an implementation guide. This is an instance-local grouping record, not a complete FHIR ImplementationGuide resource.\n",
+        "description": "Metadata for an implementation guide. Canonical fields are present only for published canonical packages; metadata-only legacy records omit them.\n",
         "properties": {
           "name": {
             "type": "string",
@@ -13072,6 +13186,14 @@
             "type": "integer",
             "description": "The number of custom profiles in this implementation guide.",
             "example": 3
+          },
+          "canonical_url": {
+            "type": "string",
+            "description": "Canonical FHIR ImplementationGuide URL, when the family has an exact package."
+          },
+          "version_count": {
+            "type": "integer",
+            "description": "Number of retained exact package versions."
           },
           "created_at": {
             "type": "string",
@@ -13118,6 +13240,125 @@
             }
           }
         ]
+      },
+      "implementation-guides_CreateCanonicalImplementationGuideRequest": {
+        "type": "object",
+        "required": [
+          "implementation_guide",
+          "profile_refs"
+        ],
+        "properties": {
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "profile_refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 250,
+            "description": "Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.\n",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_context": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Natural-language profile-selection context for this package."
+          }
+        }
+      },
+      "implementation-guides_ImplementationGuideVersionDetail": {
+        "type": "object",
+        "required": [
+          "name",
+          "url",
+          "version",
+          "profile_context",
+          "profiles",
+          "profile_refs",
+          "implementation_guide",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "profile_context": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "implementation-guides_FHIRImplementationGuide": {
+        "type": "object",
+        "description": "A complete authored FHIR ImplementationGuide JSON resource.",
+        "required": [
+          "resourceType",
+          "url",
+          "version"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "ImplementationGuide"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "packageId": {
+            "type": "string"
+          },
+          "fhirVersion": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "implementation-guides_UpdateImplementationGuideRequest": {
         "type": "object",
