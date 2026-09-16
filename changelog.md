@@ -1,3 +1,21 @@
+## [17.1.0] - 2026-09-16
+### Added
+- **`client.lang2fhir_batch`** — new sync and async client for batch FHIR extraction supporting the full job lifecycle (`create`, `upload_item`, `finalize`, `cancel`, `get`, `get_results`, `get_result`, `list`), along with supporting Pydantic models (`BatchJob`, `BatchError`, `BatchCounts`, `BatchItemStatus`, `UploadItemResponse`, `JobDetailResponse`, `ResultsPageResponse`, `JobListResponse`).
+- **`client.implementation_guides.create_version` and `get_version`** — new sync and async methods to publish and retrieve immutable canonical FHIR package versions beneath a guide family; raises `ConflictError` (HTTP 409) on version collision; backed by new `FhirImplementationGuide` and `ImplementationGuideVersionDetail` models.
+- **`client.profiles.versions`** — new sync and async client for immutable StructureDefinition versions (`list`, `create`, `get`, `delete`), with new `ProfileVersionCreateRequest` and `ProfileVersionListResponse` models; `ProfileSummary` gains optional `status`, `date`, and `canonical` fields.
+- **`ResourceReviewRemediated`** and **`ResourceReviewFinding.unaudited`** — new model and field representing safe auto-remediation actions and unaudited reviewer verdicts in the faithfulness audit flow.
+- **`BaseHttpResponse.response`** — new property exposing the underlying `httpx.Response` for callers needing direct raw HTTP access.
+
+### Changed
+- **`token` parameter on `PhenomlClient` and `AsyncPhenomlClient`** — now accepts `Union[str, Callable[[], str]]`, allowing a plain bearer token string to be passed directly without wrapping in a lambda.
+- **`client.lang2fhir_batch.create`** — the per-instance active-job limit has been lifted; `ConflictError` (HTTP 409) is no longer raised, and parallelism is now governed by instance configuration.
+- **`profiles_update` (PUT `/fhir/profiles/{id}`)** — now returns `409 Conflict` when `StructureDefinition.version` collides with a retained version or the canonical URL is changed while retained versions exist; resolve version conflicts before updating.
+- **HTTP transport** — TCP keepalive socket options are now applied to every connection automatically, keeping idle connections alive through firewalls and NAT devices.
+- **`ImplementationGuideSummary`** — gains optional `canonical_url` and `version_count` fields; `delete` now also removes any exact canonical package versions beneath the guide.
+
+### Fixed
+- **SSE streaming in `client.agent.chat`** — empty SSE data frames are now silently skipped instead of raising a `json.JSONDecodeError` during streaming responses.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.

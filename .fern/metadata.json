@@ -1,17 +1,17 @@
 {
-  "cliVersion": "5.118.0",
+  "cliVersion": "5.123.0",
   "generatorName": "fernapi/fern-python-sdk",
-  "generatorVersion": "5.18.1",
+  "generatorVersion": "5.30.0",
   "generatorConfig": {
     "client_class_name": "PhenomlClient",
     "wire_tests": {
       "enabled": true
     }
   },
-  "originGitCommit": "26224ef37e22adb507f28c21e8991d4a27822bde",
+  "originGitCommit": "fa946cb936f5ab3f646ba13a6fddfc95f817baf3",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
   "requestedVersion": "AUTO",
   "ciProvider": "unknown",
-  "sdkVersion": "17.0.0"
+  "sdkVersion": "17.1.0"
 }

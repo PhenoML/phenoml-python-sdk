@@ -9,27 +9,27 @@ from ...core.serialization import FieldMetadata
 from .resource_review_finding import ResourceReviewFinding
 
 
-class ResourceReviewFlagged(UniversalBaseModel):
+class ResourceReviewRemediated(UniversalBaseModel):
     temp_id: typing_extensions.Annotated[
         typing.Optional[str],
         FieldMetadata(alias="tempId"),
-        pydantic.Field(alias="tempId", description="The urn:uuid of the flagged resource (its former bundle fullUrl)."),
+        pydantic.Field(alias="tempId", description="The urn:uuid of the remediated resource (its bundle fullUrl)."),
     ] = None
     """
-    The urn:uuid of the flagged resource (its former bundle fullUrl).
+    The urn:uuid of the remediated resource (its bundle fullUrl).
     """
 
     resource_type: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType")
     ] = None
-    resource: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
+    action: typing.Optional[typing.Literal["removed_codings"]] = pydantic.Field(default=None)
     """
-    The full generated FHIR resource that was pulled from the bundle.
+    The safe change applied to the resource in the returned bundle.
     """
 
     findings: typing.Optional[typing.List[ResourceReviewFinding]] = pydantic.Field(default=None)
     """
-    The findings that caused the resource to be quarantined.
+    Findings for fields in the pre-remediation resource that caused this action.
     """
 
     if IS_PYDANTIC_V2:

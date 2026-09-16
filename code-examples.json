@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "17.0.0",
-    "specCommit": "26224ef37e22adb507f28c21e8991d4a27822bde",
+    "sdkVersion": "17.1.0",
+    "specCommit": "fa946cb936f5ab3f646ba13a6fddfc95f817baf3",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -3952,6 +3952,77 @@
         "params": [
           {
             "name": "name",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "POST /fhir/implementation-guides/{name}/versions": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir/implementation-guides/{name}/versions",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.create_version(name={{name}}, {{__body__}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "profile_refs",
+              "fieldTemplate": "profile_refs={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "profile_context",
+              "fieldTemplate": "profile_context={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir/implementation-guides/{name}/versions/{version}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/implementation-guides/{name}/versions/{version}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.get_version(name={{name}}, version={{version}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          },
+          {
+            "name": "version",
             "kind": "string"
           }
         ]
