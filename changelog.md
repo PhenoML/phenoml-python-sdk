@@ -1,3 +1,21 @@
+## [17.1.0] - 2026-09-17
+### Added
+- **`client.implementation_guides.create_version(...)` and `get_version(...)`** — new sync and async methods for publishing and retrieving immutable canonical FHIR package versions beneath a named implementation guide family.
+- **`client.lang2fhir_batch`** — new sync and async client covering the full batch FHIR extraction job lifecycle (`create`, `upload_item`, `finalize`, `cancel`, `get`, `get_results`, `get_result`).
+- **`client.profiles.versions`** — new sync and async client for managing immutable retained StructureDefinition versions (`list`, `create`, `get`, `delete`).
+- **`ResourceReviewResult.remediated` and `ResourceReviewFinding.unaudited`** — new optional fields on review results; `remediated` lists resources auto-corrected without quarantine, `unaudited` flags inconclusive findings.
+- **New Pydantic models** — `ImplementationGuideVersionDetail`, `FhirImplementationGuide`, `ResourceReviewRemediated`, `BatchJob`, `BatchError`, `BatchCounts`, `BatchItemStatus`, and related response types added across `phenoml.implementation_guides`, `phenoml.lang2fhir`, and `phenoml.lang2fhir_batch`.
+
+### Changed
+- **`token` parameter on `PhenomlClient` and `AsyncPhenomlClient`** — now accepts `Union[str, Callable[[], str]]`, allowing a plain bearer token string to be passed directly.
+- **`client.lang2fhir.document` and `client.lang2fhir.document_multi`** — now accept RTF and XML/C-CDA content types (dedicated instances only) and raise `ForbiddenError` on HTTP 403.
+- **`implementation_guides.delete(...)`** — now also removes any exact canonical package versions beneath the guide in addition to name-level metadata.
+- **TCP keepalive and `Content-Type` suppression** — the HTTP transport now enables TCP keepalive probes on all connections and omits the `Content-Type` header on bodyless requests.
+- **`ImplementationGuideSummary` and `ProfileSummary`** — gain new optional fields (`canonical_url`, `version_count`, `status`, `date`, `canonical`) exposing publication metadata.
+
+### Fixed
+- **SSE stream handlers in `agent.chat`** — empty SSE data frames are now skipped instead of being passed to the JSON parser, preventing spurious parse errors during streaming.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.

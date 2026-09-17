@@ -4689,11 +4689,9 @@ client.implementation_guides.implementation_guides.update(
 <dl>
 <dd>
 
-Deletes the stored metadata for an implementation guide — its
-profile_context and timestamps. Member profiles keep their
-implementation_guide assignment, so a guide still referenced by at least
-one profile continues to appear in listings, just without context or
-timestamps.
+Deletes the stored name-level metadata and any exact canonical package
+versions beneath the guide. Legacy member profile assignments are not
+changed.
 </dd>
 </dl>
 </dd>
@@ -4736,6 +4734,184 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **name:** `str` — The implementation guide name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">create_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes an exact package beneath this guide family. PR 2 temporarily
+permits one exact package version per guide family; publishing another
+version returns `409 Conflict` until multi-version package support lands.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+from phenoml.implementation_guides import FhirImplementationGuide
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.create_version(
+    name="name",
+    implementation_guide=FhirImplementationGuide(
+        resource_type="ImplementationGuide",
+        url="url",
+        version="version",
+    ),
+    profile_refs=[
+        "profile_refs"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `FhirImplementationGuide` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_refs:** `typing.List[str]` — Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_context:** `typing.Optional[str]` — Natural-language profile-selection context for this package.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">get_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.get_version(
+    name="name",
+    version="1.0.0",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `str` — The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
     
 </dd>
 </dl>
@@ -5179,7 +5355,7 @@ client.lang2fhir.upload_profile(
 <dl>
 <dd>
 
-Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into a structured FHIR resource.
 
 **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
@@ -5208,7 +5384,7 @@ client = PhenomlClient(
 client.lang2fhir.document(
     version="R4",
     resource="questionnaire",
-    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
 )
 
 ```
@@ -5244,8 +5420,11 @@ client.lang2fhir.document(
 **content:** `str` 
 
 Base64 encoded file content.
-Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+RTF and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
+The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
     
 </dd>
 </dl>
@@ -5285,7 +5464,7 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
-Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into multiple FHIR resources,
 returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
 Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
 Resources are linked with proper references (e.g., Conditions reference the Patient).
@@ -5319,7 +5498,7 @@ client = PhenomlClient(
 
 client.lang2fhir.document_multi(
     version="R4",
-    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
     provider="medplum",
     config=DocumentConfig(
         split_classifications=[
@@ -5362,8 +5541,11 @@ client.lang2fhir.document_multi(
 **content:** `str` 
 
 Base64 encoded file content.
-Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+RTF and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
+The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
     
 </dd>
 </dl>
@@ -5540,10 +5722,8 @@ credential. A `request_id` whose job was canceled or failed before it
 finalized is released for a fresh replay; once a job is finalized, its
 `request_id` keeps resolving to it even after cancellation.
 
-An instance may hold at most 4 active (pending or processing) jobs at
-once; a create past that limit returns `409`. The limit is instance-wide
-— jobs are shared across the instance's credentials — so another
-credential's jobs count against it.
+There is no limit on how many jobs an instance may hold at once; how many
+items run in parallel is a property of the instance, not of the job count.
 </dd>
 </dl>
 </dd>
@@ -5587,8 +5767,9 @@ client.lang2fhir_batch.create(
 
 **request_id:** `typing.Optional[str]` 
 
-Optional client idempotency token. A retried create with the same
-token returns the original job instead of opening a second one.
+Optional client idempotency token (at most 256 UTF-8 bytes). A
+retried create with the same token returns the original job instead
+of opening a second one.
     
 </dd>
 </dl>
@@ -5629,7 +5810,7 @@ The upload enforces these rules:
 - Set **exactly one** of `document` or `create`. Setting both, or
   neither, is a `400`.
 - When `document` is set, `file` is **required** — it supplies the
-  document's binary content (PDF or image).
+  document's file content (PDF, image, RTF, or XML/C-CDA).
 - When `create` is set, `file` is **forbidden** — a create item carries
   no file.
 - `document` and `create` must each be a JSON **object**.
@@ -5743,7 +5924,13 @@ accompanied by a `file`.
 
 **file:** `typing.Optional[core.File]` 
 
-The document's binary content (PDF, PNG, JPEG, or TIFF).
+The document's file content (PDF, PNG, JPEG, TIFF, RTF, or
+XML/C-CDA). The document pipeline accepts files up to 20 MiB;
+an upload that passes the storage cap but exceeds this limit
+fails during processing. RTF and XML/C-CDA documents whose
+extracted text exceeds 1 MiB also fail during processing.
+Generic XML must include an XML declaration; C-CDA documents
+rooted at `ClinicalDocument` may omit it.
 Required with `document`; forbidden with `create`.
     
 </dd>
@@ -5754,10 +5941,11 @@ Required with `document`; forbidden with `create`.
 
 **request_id:** `typing.Optional[str]` 
 
-Optional idempotency token (max 256 bytes). Re-uploading under
-the same token overwrites the same item instead of adding a
-new one. The token is scoped to this job; the same token in
-another job is independent and creates a separate item.
+Optional idempotency token (at most 256 UTF-8 bytes).
+Re-uploading under the same token overwrites the same item
+instead of adding a new one. The token is scoped to this job;
+the same token in another job is independent and creates a
+separate item.
     
 </dd>
 </dl>
@@ -5767,9 +5955,9 @@ another job is independent and creates a separate item.
 
 **id:** `typing.Optional[str]` 
 
-Optional caller-supplied correlation label (max 512 bytes),
-echoed back on status and result listings so you can match the
-server's item_id to your own record.
+Optional caller-supplied correlation label (at most 512 UTF-8
+bytes), echoed back on status and result listings so you can
+match the server's item_id to your own record.
     
 </dd>
 </dl>
@@ -5880,8 +6068,8 @@ client.lang2fhir_batch.finalize(
 <dl>
 <dd>
 
-Drives a job to the terminal `canceled` state on request, freeing its
-active-job slot immediately. Takes no request body.
+Drives a job to the terminal `canceled` state on request. Takes no
+request body.
 
 Cancel does not delete the job: the job record and any results already
 produced are preserved for the normal retention window, the same as a

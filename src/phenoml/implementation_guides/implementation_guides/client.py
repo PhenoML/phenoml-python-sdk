@@ -4,9 +4,11 @@ import typing
 
 from ...core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ...core.request_options import RequestOptions
+from ..types.fhir_implementation_guide import FhirImplementationGuide
 from ..types.implementation_guide_detail import ImplementationGuideDetail
 from ..types.implementation_guide_list_response import ImplementationGuideListResponse
 from ..types.implementation_guide_summary import ImplementationGuideSummary
+from ..types.implementation_guide_version_detail import ImplementationGuideVersionDetail
 from .raw_client import AsyncRawImplementationGuidesClient, RawImplementationGuidesClient
 
 # this is used as the default value for optional parameters
@@ -136,11 +138,9 @@ class ImplementationGuidesClient:
 
     def delete(self, name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Deletes the stored metadata for an implementation guide — its
-        profile_context and timestamps. Member profiles keep their
-        implementation_guide assignment, so a guide still referenced by at least
-        one profile continues to appear in listings, just without context or
-        timestamps.
+        Deletes the stored name-level metadata and any exact canonical package
+        versions beneath the guide. Legacy member profile assignments are not
+        changed.
 
         Parameters
         ----------
@@ -167,6 +167,102 @@ class ImplementationGuidesClient:
         )
         """
         _response = self._raw_client.delete(name, request_options=request_options)
+        return _response.data
+
+    def create_version(
+        self,
+        name: str,
+        *,
+        implementation_guide: FhirImplementationGuide,
+        profile_refs: typing.Sequence[str],
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ImplementationGuideVersionDetail:
+        """
+        Publishes an exact package beneath this guide family. PR 2 temporarily
+        permits one exact package version per guide family; publishing another
+        version returns `409 Conflict` until multi-version package support lands.
+
+        Parameters
+        ----------
+        name : str
+
+        implementation_guide : FhirImplementationGuide
+
+        profile_refs : typing.Sequence[str]
+            Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+
+        profile_context : typing.Optional[str]
+            Natural-language profile-selection context for this package.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ImplementationGuideVersionDetail
+            Canonical package published
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+        from phenoml.implementation_guides import FhirImplementationGuide
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.implementation_guides.implementation_guides.create_version(
+            name="name",
+            implementation_guide=FhirImplementationGuide(
+                url="url",
+                version="version",
+            ),
+            profile_refs=["profile_refs"],
+        )
+        """
+        _response = self._raw_client.create_version(
+            name,
+            implementation_guide=implementation_guide,
+            profile_refs=profile_refs,
+            profile_context=profile_context,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_version(
+        self, name: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ImplementationGuideVersionDetail:
+        """
+        Parameters
+        ----------
+        name : str
+
+        version : str
+            The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ImplementationGuideVersionDetail
+            Exact canonical package
+
+        Examples
+        --------
+        from phenoml import PhenomlClient
+
+        client = PhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.implementation_guides.implementation_guides.get_version(
+            name="name",
+            version="1.0.0",
+        )
+        """
+        _response = self._raw_client.get_version(name, version, request_options=request_options)
         return _response.data
 
 
@@ -321,11 +417,9 @@ class AsyncImplementationGuidesClient:
 
     async def delete(self, name: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
-        Deletes the stored metadata for an implementation guide — its
-        profile_context and timestamps. Member profiles keep their
-        implementation_guide assignment, so a guide still referenced by at least
-        one profile continues to appear in listings, just without context or
-        timestamps.
+        Deletes the stored name-level metadata and any exact canonical package
+        versions beneath the guide. Legacy member profile assignments are not
+        changed.
 
         Parameters
         ----------
@@ -360,4 +454,116 @@ class AsyncImplementationGuidesClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(name, request_options=request_options)
+        return _response.data
+
+    async def create_version(
+        self,
+        name: str,
+        *,
+        implementation_guide: FhirImplementationGuide,
+        profile_refs: typing.Sequence[str],
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ImplementationGuideVersionDetail:
+        """
+        Publishes an exact package beneath this guide family. PR 2 temporarily
+        permits one exact package version per guide family; publishing another
+        version returns `409 Conflict` until multi-version package support lands.
+
+        Parameters
+        ----------
+        name : str
+
+        implementation_guide : FhirImplementationGuide
+
+        profile_refs : typing.Sequence[str]
+            Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+
+        profile_context : typing.Optional[str]
+            Natural-language profile-selection context for this package.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ImplementationGuideVersionDetail
+            Canonical package published
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+        from phenoml.implementation_guides import FhirImplementationGuide
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.implementation_guides.implementation_guides.create_version(
+                name="name",
+                implementation_guide=FhirImplementationGuide(
+                    url="url",
+                    version="version",
+                ),
+                profile_refs=["profile_refs"],
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create_version(
+            name,
+            implementation_guide=implementation_guide,
+            profile_refs=profile_refs,
+            profile_context=profile_context,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_version(
+        self, name: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> ImplementationGuideVersionDetail:
+        """
+        Parameters
+        ----------
+        name : str
+
+        version : str
+            The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ImplementationGuideVersionDetail
+            Exact canonical package
+
+        Examples
+        --------
+        import asyncio
+
+        from phenoml import AsyncPhenomlClient
+
+        client = AsyncPhenomlClient(
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.implementation_guides.implementation_guides.get_version(
+                name="name",
+                version="1.0.0",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_version(name, version, request_options=request_options)
         return _response.data
