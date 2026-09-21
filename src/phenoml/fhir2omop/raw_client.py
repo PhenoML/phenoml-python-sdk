@@ -28,52 +28,81 @@ class RawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[CreateOmopResponse]:
         """
-        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
-        (person, visit_occurrence, condition_occurrence, drug_exposure,
-        procedure_occurrence, measurement, observation).
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,
+        grouped by destination table in `tables`.
 
-        Resource support is intentionally limited to the OMOP tables returned by
-        this endpoint:
-        - `Patient` -> `person`
+        Current resource coverage:
+        - `Patient` -> `person`; `deceased[x]` can also produce `death`, and the
+          first address can produce `location`
+        - `observation_period` -> one derived row per person with dated visit,
+          clinical, or death rows, spanning those dates
+        - `Location` -> `location` and `care_site`
+        - `Organization` -> `care_site`; its first address can produce `location`
+        - `HealthcareService` -> `care_site`
+        - `Practitioner` and `PractitionerRole` -> `provider`
         - `Encounter` -> `visit_occurrence`
         - `Condition` -> `condition_occurrence`
         - `Procedure` -> `procedure_occurrence`
         - `MedicationRequest`, `MedicationStatement`, and
           `MedicationAdministration` -> `drug_exposure`
         - `Immunization` -> `drug_exposure`
-        - `Observation` with a numeric `valueQuantity`, `valueInteger`, or
-          numeric-looking `valueString` (for example `"<2"`) -> `measurement`
-        - non-numeric `Observation` -> `observation`
+        - `Observation` -> `measurement` or `observation`. For coded
+          Observations, the resolved OMOP concept domain selects the table; value
+          form only breaks ties. For text-only Observations, numeric values route
+          to `measurement` and nonnumeric values to `observation`.
         - `AllergyIntolerance` -> `observation`
 
-        `Medication` is supported only as reference data for medication
-        resources; it is not emitted as its own row because OMOP CDM has no
-        Medication table. Other reference/admin resources such as `Practitioner`,
-        `Organization`, `Location`, `Coverage`, and `Claim`, and clinical
-        workflow/document resources such as `DiagnosticReport`, `ServiceRequest`,
-        `CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and
-        `DeviceUseStatement`, are currently accepted in a Bundle but are not
-        shaped into OMOP rows. Unsupported resource types are ignored rather than
-        listed under `dropped`; `dropped` is reserved for supported resource types
-        that were missing the subject/patient, code, or medication reference data
-        needed to produce a valid row.
+        `Medication` is reference data for medication resources; it does not
+        create its own row because OMOP CDM has no Medication table. Administrative
+        linkages (provider, care site, and location) are best-effort and limited to
+        references supplied in the request. Their supporting concepts, including
+        provider specialty, country, and place of service, are not mapped.
 
-        Each resource's primary clinical coding is resolved to a standard OMOP
-        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
-        response carries `mappings` (how each source coding resolved, linked back
-        to the row it produced), `dropped` (resources that could not be shaped
-        into a row), `vocab_version` (the OMOP vocabulary release codes were
-        resolved against), and a small `summary` of the resolution outcomes.
+        `DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
+        `Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+        other unsupported resource types are accepted in a Bundle but ignored: they
+        create no row and no `dropped` entry. `dropped` is reserved for supported
+        row-producing resources that could not be shaped because the subject/patient,
+        clinical code/text, or medication data was not usable. A single-Patient
+        Bundle can attribute a supported clinical resource with a missing or
+        unresolvable subject to that sole person; in a multi-Patient Bundle, that
+        resource is dropped instead.
+
+        Coded Observation routing is selected from the resolved OMOP concept
+        domain. Numeric and nonnumeric `value[x]` forms establish the preferred
+        target only when the code is valid for both tables. A text-only
+        Observation has no resolver target, so numeric values route to
+        `measurement` and nonnumeric values to `observation`. Numeric values
+        populate `value_as_number` in the selected row; nonnumeric values
+        populate `value_as_string` for an `observation` or `value_source_value`
+        for a `measurement`. `valueCodeableConcept` remains source text and does
+        not populate `value_as_concept_id`; other unsupported `value[x]` forms
+        and Observation components do not populate separate converted values. A
+        numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
+        measurement's `operator_concept_id`; units remain source text and have
+        `unit_concept_id` of `0`.
+
+        A single standard OMOP `concept_id` is selected for each clinical row
+        after considering all of the resource's supplied codings. Alongside the
+        OMOP rows grouped by table (`tables`), the response carries `mappings`
+        (an entry for every source coding, linked back to the row it produced),
+        `dropped` (resources that could not be shaped into a row),
+        `vocab_version` (the OMOP vocabulary release codes were resolved
+        against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Only the primary clinical coding is resolved, so
-        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`; the one populated non-resolved concept is measurement
+        (`UNCHECKED`). Demographic, visit, categorical-value, and unit concept
+        fields currently remain `0`; the one populated non-resolved concept is
+        measurement
         `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
-        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
-        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        rather than terminology resolution. Clinical `*_source_value` fields
+        preserve the selected FHIR coding (`system#code`, or `code` when no
+        system is supplied), falling back to source text for text-only resources.
+        Other `*_source_value` fields preserve row-specific raw source values,
+        such as resource identifiers, names, units, or status codes, and
+        `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -81,19 +110,30 @@ class RawFhir2OmopClient:
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `dropped` rather than emitted as blank rows. The
-        bundle must contain at least one Patient resource.
+        `dropped` rather than emitted as blank rows. The Bundle must contain at
+        least one Patient resource.
+
+        All row IDs start at `1` for each request and are not stable or global.
+        For clinical conversion rows whose resource supplies an `id`, `mappings`
+        associates each row with that source FHIR resource ID. A `person` row
+        retains the Patient ID or its first identifier value in
+        `person_source_value`, when present; other reference and derived rows do
+        not uniformly carry a FHIR resource ID. Input resources without those
+        source identifiers cannot be correlated across responses from the
+        returned rows alone. Consumers combining responses need to establish
+        their own stable keys and remap every primary and foreign key together.
 
         Parameters
         ----------
         fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle). Must contain at least one
             Patient resource. Supported row-producing resources are Patient,
-            Encounter, Condition, Procedure, MedicationRequest,
+            Location, Organization, HealthcareService, Practitioner,
+            PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
             MedicationStatement, MedicationAdministration, Immunization,
             Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
-            table. Other resource types are accepted but ignored.
+            table. Unsupported resource types are accepted in a Bundle but ignored.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -187,52 +227,81 @@ class AsyncRawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[CreateOmopResponse]:
         """
-        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
-        (person, visit_occurrence, condition_occurrence, drug_exposure,
-        procedure_occurrence, measurement, observation).
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,
+        grouped by destination table in `tables`.
 
-        Resource support is intentionally limited to the OMOP tables returned by
-        this endpoint:
-        - `Patient` -> `person`
+        Current resource coverage:
+        - `Patient` -> `person`; `deceased[x]` can also produce `death`, and the
+          first address can produce `location`
+        - `observation_period` -> one derived row per person with dated visit,
+          clinical, or death rows, spanning those dates
+        - `Location` -> `location` and `care_site`
+        - `Organization` -> `care_site`; its first address can produce `location`
+        - `HealthcareService` -> `care_site`
+        - `Practitioner` and `PractitionerRole` -> `provider`
         - `Encounter` -> `visit_occurrence`
         - `Condition` -> `condition_occurrence`
         - `Procedure` -> `procedure_occurrence`
         - `MedicationRequest`, `MedicationStatement`, and
           `MedicationAdministration` -> `drug_exposure`
         - `Immunization` -> `drug_exposure`
-        - `Observation` with a numeric `valueQuantity`, `valueInteger`, or
-          numeric-looking `valueString` (for example `"<2"`) -> `measurement`
-        - non-numeric `Observation` -> `observation`
+        - `Observation` -> `measurement` or `observation`. For coded
+          Observations, the resolved OMOP concept domain selects the table; value
+          form only breaks ties. For text-only Observations, numeric values route
+          to `measurement` and nonnumeric values to `observation`.
         - `AllergyIntolerance` -> `observation`
 
-        `Medication` is supported only as reference data for medication
-        resources; it is not emitted as its own row because OMOP CDM has no
-        Medication table. Other reference/admin resources such as `Practitioner`,
-        `Organization`, `Location`, `Coverage`, and `Claim`, and clinical
-        workflow/document resources such as `DiagnosticReport`, `ServiceRequest`,
-        `CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and
-        `DeviceUseStatement`, are currently accepted in a Bundle but are not
-        shaped into OMOP rows. Unsupported resource types are ignored rather than
-        listed under `dropped`; `dropped` is reserved for supported resource types
-        that were missing the subject/patient, code, or medication reference data
-        needed to produce a valid row.
+        `Medication` is reference data for medication resources; it does not
+        create its own row because OMOP CDM has no Medication table. Administrative
+        linkages (provider, care site, and location) are best-effort and limited to
+        references supplied in the request. Their supporting concepts, including
+        provider specialty, country, and place of service, are not mapped.
 
-        Each resource's primary clinical coding is resolved to a standard OMOP
-        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
-        response carries `mappings` (how each source coding resolved, linked back
-        to the row it produced), `dropped` (resources that could not be shaped
-        into a row), `vocab_version` (the OMOP vocabulary release codes were
-        resolved against), and a small `summary` of the resolution outcomes.
+        `DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
+        `Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+        other unsupported resource types are accepted in a Bundle but ignored: they
+        create no row and no `dropped` entry. `dropped` is reserved for supported
+        row-producing resources that could not be shaped because the subject/patient,
+        clinical code/text, or medication data was not usable. A single-Patient
+        Bundle can attribute a supported clinical resource with a missing or
+        unresolvable subject to that sole person; in a multi-Patient Bundle, that
+        resource is dropped instead.
+
+        Coded Observation routing is selected from the resolved OMOP concept
+        domain. Numeric and nonnumeric `value[x]` forms establish the preferred
+        target only when the code is valid for both tables. A text-only
+        Observation has no resolver target, so numeric values route to
+        `measurement` and nonnumeric values to `observation`. Numeric values
+        populate `value_as_number` in the selected row; nonnumeric values
+        populate `value_as_string` for an `observation` or `value_source_value`
+        for a `measurement`. `valueCodeableConcept` remains source text and does
+        not populate `value_as_concept_id`; other unsupported `value[x]` forms
+        and Observation components do not populate separate converted values. A
+        numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
+        measurement's `operator_concept_id`; units remain source text and have
+        `unit_concept_id` of `0`.
+
+        A single standard OMOP `concept_id` is selected for each clinical row
+        after considering all of the resource's supplied codings. Alongside the
+        OMOP rows grouped by table (`tables`), the response carries `mappings`
+        (an entry for every source coding, linked back to the row it produced),
+        `dropped` (resources that could not be shaped into a row),
+        `vocab_version` (the OMOP vocabulary release codes were resolved
+        against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Only the primary clinical coding is resolved, so
-        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`; the one populated non-resolved concept is measurement
+        (`UNCHECKED`). Demographic, visit, categorical-value, and unit concept
+        fields currently remain `0`; the one populated non-resolved concept is
+        measurement
         `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
-        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
-        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        rather than terminology resolution. Clinical `*_source_value` fields
+        preserve the selected FHIR coding (`system#code`, or `code` when no
+        system is supplied), falling back to source text for text-only resources.
+        Other `*_source_value` fields preserve row-specific raw source values,
+        such as resource identifiers, names, units, or status codes, and
+        `*_type_concept_id` is set to `32817` (EHR).
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -240,19 +309,30 @@ class AsyncRawFhir2OmopClient:
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `dropped` rather than emitted as blank rows. The
-        bundle must contain at least one Patient resource.
+        `dropped` rather than emitted as blank rows. The Bundle must contain at
+        least one Patient resource.
+
+        All row IDs start at `1` for each request and are not stable or global.
+        For clinical conversion rows whose resource supplies an `id`, `mappings`
+        associates each row with that source FHIR resource ID. A `person` row
+        retains the Patient ID or its first identifier value in
+        `person_source_value`, when present; other reference and derived rows do
+        not uniformly carry a FHIR resource ID. Input resources without those
+        source identifiers cannot be correlated across responses from the
+        returned rows alone. Consumers combining responses need to establish
+        their own stable keys and remap every primary and foreign key together.
 
         Parameters
         ----------
         fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle). Must contain at least one
             Patient resource. Supported row-producing resources are Patient,
-            Encounter, Condition, Procedure, MedicationRequest,
+            Location, Organization, HealthcareService, Practitioner,
+            PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
             MedicationStatement, MedicationAdministration, Immunization,
             Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
-            table. Other resource types are accepted but ignored.
+            table. Unsupported resource types are accepted in a Bundle but ignored.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
