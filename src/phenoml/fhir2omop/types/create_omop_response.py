@@ -29,9 +29,9 @@ class CreateOmopResponse(UniversalBaseModel):
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The OMOP vocabulary release the clinical codes were resolved against
-    (e.g. "v20240229"), for reproducibility. Present when at least one
-    coded concept was resolved.
+    The OMOP vocabulary release returned for coded concept resolution
+    (for example, "v20240229"), for reproducibility. It is generally
+    absent for requests containing only text-only resources.
     """
 
     summary: typing.Optional[Summary] = None
