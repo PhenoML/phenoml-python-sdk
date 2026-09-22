@@ -1,3 +1,21 @@
+## [18.0.0] - 2026-09-22
+### Breaking Changes
+- **`MappingEntry.mapping_status`** — now uses the `MappingEntryMappingStatus` enum instead of `str`; update manually constructed values to `ALREADY_STANDARD`, `MAPPED`, `UNCHECKED`, or `UNMAPPED`.
+
+### Added
+- **`client.implementation_guides.implementation_guides.create_version(...)` / `.get_version(...)`** — publish and retrieve exact canonical implementation-guide packages using `FhirImplementationGuide`, `CreateCanonicalImplementationGuideRequest`, and `ImplementationGuideVersionDetail`.
+- **`ResourceReviewResult.remediated`** — surfaces resources retained after unsupported codings are safely removed, alongside the existing quarantined `flagged` resources.
+- **`PhenomlClient` / `AsyncPhenomlClient`** — accept either a bearer-token string or a token callable.
+- **`CreateRequestResource`** — adds `familymemberhistory`, `medicationadministration`, and `medicationstatement` extraction profiles.
+
+### Changed
+- **`client.fhir2omop.create(...)`** — now maps additional administrative FHIR resources and reports the expanded OMOP conversion semantics in the typed client documentation.
+- **`client.lang2fhir.document(...)` / `.document_multi(...)`** — now accept RTF and XML/C-CDA documents in addition to PDF and image inputs, subject to the documented dedicated-instance and size limits.
+- **`OAuthTokenProvider` / `AsyncOAuthTokenProvider`** — client-credentials token requests now explicitly send `grant_type=client_credentials`.
+
+### Fixed
+- **`BaseClientWrapper.get_headers()`** — now reports the released SDK version in the default User-Agent header.
+
 ## [17.0.1] - 2026-09-21
 
 ## [17.0.0] - 2026-09-09
