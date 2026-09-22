@@ -9,10 +9,15 @@
 ### Changed
 - **`client.fhir2omop.create(...)`** — now maps additional administrative FHIR resources and reports the expanded OMOP conversion semantics in the typed client documentation.
 - **`client.lang2fhir.document(...)` / `.document_multi(...)`** — now accept RTF and XML/C-CDA documents in addition to PDF and image inputs, subject to the documented dedicated-instance and size limits.
+- **`client.lang2fhir_batch.create(...)`** — no longer limits an instance to four pending or processing batch jobs; item parallelism remains controlled by the instance configuration.
 - **`OAuthTokenProvider` / `AsyncOAuthTokenProvider`** — client-credentials token requests now explicitly send `grant_type=client_credentials`.
 
 ### Fixed
 - **`BaseClientWrapper.get_headers()`** — now reports the released SDK version in the default User-Agent header.
+- **`instance_url`** — no longer overrides an explicitly supplied `base_url`.
+- **`client.profiles.profiles.delete(...)` / `client.profiles.versions.delete(...)`** — now raise the typed `ConflictError` when the service rejects a deletion with HTTP 409.
+- **`BaseHttpResponse.response`** — exposes the underlying `httpx.Response` on raw-response wrappers.
+- **HTTP transport** — enables TCP keepalive so long-running, non-streaming requests are less likely to be dropped by idle connection reaping.
 
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
