@@ -15,12 +15,10 @@ class BatchError(UniversalBaseModel):
     """
     Short stable token to branch on. Item-level kinds: `invalid_input`
     (the stored body was not a valid create/document request),
-    `processing_failed` (the conversion failed), `budget_exceeded` (the
-    item ran past its time budget — 600s for a document item, 450s for a
-    create item), `result_too_large` (the result exceeded the storage
-    cap), `input_unavailable` (the input could not be read), and
-    `retries_exhausted` / `attempts_exhausted` (buried after too many
-    failed attempts).
+    `processing_failed` (the conversion failed), `result_too_large` (the
+    result exceeded the storage cap), `input_unavailable` (the input
+    could not be read), and `retries_exhausted` / `attempts_exhausted`
+    (the item could not complete after repeated interruptions).
     Job-level kinds: `timeout` (the job did not finish within 36 hours
     of creation).
     """

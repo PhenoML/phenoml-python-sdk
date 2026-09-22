@@ -63,8 +63,8 @@ class PhenomlClient:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    token : typing.Callable[[], str]
-        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
+    token : typing.Union[str, typing.Callable[[], str]]
+        Authenticate by providing a pre-generated bearer token, or a callable that returns one. In this mode, OAuth client credentials are not required.
 
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -130,7 +130,7 @@ class PhenomlClient:
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
-        token: typing.Callable[[], str],
+        token: typing.Union[str, typing.Callable[[], str]],
     ): ...
     def __init__(
         self,
@@ -141,7 +141,7 @@ class PhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
-        token: typing.Optional[typing.Callable[[], str]] = None,
+        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
@@ -155,7 +155,12 @@ class PhenomlClient:
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
-            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
+            _environment_url_templates = {
+                PhenomlClientEnvironment.DEFAULT: "https://{instanceUrl}",
+            }
+            _url_template = _environment_url_templates.get(environment, "https://{instanceUrl}")
+            if base_url is None:
+                base_url = _url_template.format(instanceUrl=_instance_url)
         if token is not None:
             self._client_wrapper = SyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -398,8 +403,8 @@ class AsyncPhenomlClient:
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    token : typing.Callable[[], str]
-        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
+    token : typing.Union[str, typing.Callable[[], str]]
+        Authenticate by providing a pre-generated bearer token, or a callable that returns one. In this mode, OAuth client credentials are not required.
 
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -465,7 +470,7 @@ class AsyncPhenomlClient:
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
-        token: typing.Callable[[], str],
+        token: typing.Union[str, typing.Callable[[], str]],
     ): ...
     def __init__(
         self,
@@ -476,7 +481,7 @@ class AsyncPhenomlClient:
         headers: typing.Optional[typing.Dict[str, str]] = None,
         client_id: typing.Optional[str] = os.getenv("PHENOML_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PHENOML_CLIENT_SECRET"),
-        token: typing.Optional[typing.Callable[[], str]] = None,
+        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         max_retries: typing.Optional[int] = None,
@@ -490,7 +495,12 @@ class AsyncPhenomlClient:
         _defaulted_max_retries = max_retries if max_retries is not None else 2
         if instance_url is not None:
             _instance_url = instance_url if instance_url is not None else "experiment.app.pheno.ml"
-            base_url = "https://{instanceUrl}".format(instanceUrl=_instance_url)
+            _environment_url_templates = {
+                PhenomlClientEnvironment.DEFAULT: "https://{instanceUrl}",
+            }
+            _url_template = _environment_url_templates.get(environment, "https://{instanceUrl}")
+            if base_url is None:
+                base_url = _url_template.format(instanceUrl=_instance_url)
         if token is not None:
             self._client_wrapper = AsyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),

@@ -8,7 +8,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class PatientReference(UniversalBaseModel):
     """
-    Optional reference to an existing Patient, by business identifier. If a Patient resource is extracted, this identifier is added to that Patient's identifier list (existing identifiers are kept). If no Patient is extracted, generated clinical resources are linked to this patient as a logical reference (subject.identifier) instead of the request failing, and no placeholder Patient is created. Supply the patient-level identifier (not an order or specimen identifier).
+    Business identifier for the document's primary patient. When Lang2FHIR identifies that Patient in generated output, it adds this identifier to the Patient's identifier list (preserving existing identifiers). If no Patient is generated, Lang2FHIR uses it in logical references on generated clinical resources. Supply the patient-level identifier (not an order or specimen identifier).
     """
 
     system: str = pydantic.Field()
