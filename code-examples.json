@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "17.0.0",
-    "specCommit": "26224ef37e22adb507f28c21e8991d4a27822bde",
+    "sdkVersion": "17.0.1",
+    "specCommit": "70c52e949023cff024c8c9dfaccaecd12617548e",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -3008,7 +3008,10 @@
                 "auto",
                 "appointment",
                 "condition-encounter-diagnosis",
+                "familymemberhistory",
+                "medicationadministration",
                 "medicationrequest",
+                "medicationstatement",
                 "careplan",
                 "condition-problems-health-concerns",
                 "coverage",
@@ -3122,6 +3125,12 @@
               "jsonKey": "provider",
               "fieldTemplate": "provider={{value}}",
               "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "primary_patient",
+              "fieldTemplate": "primary_patient={{value}}",
+              "kind": "object",
               "required": false
             },
             {
@@ -3250,7 +3259,7 @@
         "body": {
           "version": "R4",
           "resource": "questionnaire",
-          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)"
         }
       },
       "response": {
@@ -3312,7 +3321,7 @@
       "request": {
         "body": {
           "version": "R4",
-          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
           "provider": "medplum",
           "config": {
             "split_classifications": [
@@ -3492,6 +3501,12 @@
               "jsonKey": "provider",
               "fieldTemplate": "provider={{value}}",
               "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "primary_patient",
+              "fieldTemplate": "primary_patient={{value}}",
+              "kind": "object",
               "required": false
             },
             {
@@ -3952,6 +3967,77 @@
         "params": [
           {
             "name": "name",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "POST /fhir/implementation-guides/{name}/versions": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir/implementation-guides/{name}/versions",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.create_version(name={{name}}, {{__body__}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "profile_refs",
+              "fieldTemplate": "profile_refs={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "profile_context",
+              "fieldTemplate": "profile_context={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir/implementation-guides/{name}/versions/{version}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/implementation-guides/{name}/versions/{version}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.get_version(name={{name}}, version={{version}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          },
+          {
+            "name": "version",
             "kind": "string"
           }
         ]

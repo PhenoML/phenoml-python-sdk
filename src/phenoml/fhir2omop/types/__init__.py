@@ -14,6 +14,7 @@ if typing.TYPE_CHECKING:
     from .drug_exposure_row import DrugExposureRow
     from .location_row import LocationRow
     from .mapping_entry import MappingEntry
+    from .mapping_entry_mapping_status import MappingEntryMappingStatus
     from .measurement_row import MeasurementRow
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
@@ -32,6 +33,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DrugExposureRow": ".drug_exposure_row",
     "LocationRow": ".location_row",
     "MappingEntry": ".mapping_entry",
+    "MappingEntryMappingStatus": ".mapping_entry_mapping_status",
     "MeasurementRow": ".measurement_row",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
@@ -74,6 +76,7 @@ __all__ = [
     "DrugExposureRow",
     "LocationRow",
     "MappingEntry",
+    "MappingEntryMappingStatus",
     "MeasurementRow",
     "ObservationPeriodRow",
     "ObservationRow",

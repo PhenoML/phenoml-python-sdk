@@ -90,16 +90,15 @@ class Lang2FhirBatchClient:
         finalized is released for a fresh replay; once a job is finalized, its
         `request_id` keeps resolving to it even after cancellation.
 
-        An instance may hold at most 4 active (pending or processing) jobs at
-        once; a create past that limit returns `409`. The limit is instance-wide
-        — jobs are shared across the instance's credentials — so another
-        credential's jobs count against it.
+        There is no limit on how many jobs an instance may hold at once; how many
+        items run in parallel is a property of the instance, not of the job count.
 
         Parameters
         ----------
         request_id : typing.Optional[str]
-            Optional client idempotency token. A retried create with the same
-            token returns the original job instead of opening a second one.
+            Optional client idempotency token (at most 256 UTF-8 bytes). A
+            retried create with the same token returns the original job instead
+            of opening a second one.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -145,7 +144,7 @@ class Lang2FhirBatchClient:
         - Set **exactly one** of `document` or `create`. Setting both, or
           neither, is a `400`.
         - When `document` is set, `file` is **required** — it supplies the
-          document's binary content (PDF or image).
+          document's file content (PDF, image, RTF, or XML/C-CDA).
         - When `create` is set, `file` is **forbidden** — a create item carries
           no file.
         - `document` and `create` must each be a JSON **object**.
@@ -182,35 +181,38 @@ class Lang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/document/multi`, **without**
             its base64 `content` field — the uploaded `file` supplies the
             content. Accepts that endpoint's fields (`version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `config`). This is the **multi**-resource
             body: it has no single-`resource` field, and the item's result
             is a `DocumentMultiResponse` (a Bundle of resources). Mutually
-            exclusive with `create`; requires `file`.
+            exclusive with `create`; requires `file`. Do not combine
+            `primary_patient` with `patient_reference`.
 
         create : typing.Optional[typing.Dict[str, typing.Any]]
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `resource_review`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be
-            accompanied by a `file`.
+            accompanied by a `file`. Do not combine `primary_patient` with
+            `patient_reference`.
 
         file : typing.Optional[core.File]
             See core.File for more documentation
 
         request_id : typing.Optional[str]
-            Optional idempotency token (max 256 bytes). Re-uploading under
-            the same token overwrites the same item instead of adding a
-            new one. The token is scoped to this job; the same token in
-            another job is independent and creates a separate item.
+            Optional idempotency token (at most 256 UTF-8 bytes).
+            Re-uploading under the same token overwrites the same item
+            instead of adding a new one. The token is scoped to this job;
+            the same token in another job is independent and creates a
+            separate item.
 
         id : typing.Optional[str]
-            Optional caller-supplied correlation label (max 512 bytes),
-            echoed back on status and result listings so you can match the
-            server's item_id to your own record.
+            Optional caller-supplied correlation label (at most 512 UTF-8
+            bytes), echoed back on status and result listings so you can
+            match the server's item_id to your own record.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -281,8 +283,8 @@ class Lang2FhirBatchClient:
 
     def cancel(self, job_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> BatchJob:
         """
-        Drives a job to the terminal `canceled` state on request, freeing its
-        active-job slot immediately. Takes no request body.
+        Drives a job to the terminal `canceled` state on request. Takes no
+        request body.
 
         Cancel does not delete the job: the job record and any results already
         produced are preserved for the normal retention window, the same as a
@@ -554,16 +556,15 @@ class AsyncLang2FhirBatchClient:
         finalized is released for a fresh replay; once a job is finalized, its
         `request_id` keeps resolving to it even after cancellation.
 
-        An instance may hold at most 4 active (pending or processing) jobs at
-        once; a create past that limit returns `409`. The limit is instance-wide
-        — jobs are shared across the instance's credentials — so another
-        credential's jobs count against it.
+        There is no limit on how many jobs an instance may hold at once; how many
+        items run in parallel is a property of the instance, not of the job count.
 
         Parameters
         ----------
         request_id : typing.Optional[str]
-            Optional client idempotency token. A retried create with the same
-            token returns the original job instead of opening a second one.
+            Optional client idempotency token (at most 256 UTF-8 bytes). A
+            retried create with the same token returns the original job instead
+            of opening a second one.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -617,7 +618,7 @@ class AsyncLang2FhirBatchClient:
         - Set **exactly one** of `document` or `create`. Setting both, or
           neither, is a `400`.
         - When `document` is set, `file` is **required** — it supplies the
-          document's binary content (PDF or image).
+          document's file content (PDF, image, RTF, or XML/C-CDA).
         - When `create` is set, `file` is **forbidden** — a create item carries
           no file.
         - `document` and `create` must each be a JSON **object**.
@@ -654,35 +655,38 @@ class AsyncLang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/document/multi`, **without**
             its base64 `content` field — the uploaded `file` supplies the
             content. Accepts that endpoint's fields (`version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `config`). This is the **multi**-resource
             body: it has no single-`resource` field, and the item's result
             is a `DocumentMultiResponse` (a Bundle of resources). Mutually
-            exclusive with `create`; requires `file`.
+            exclusive with `create`; requires `file`. Do not combine
+            `primary_patient` with `patient_reference`.
 
         create : typing.Optional[typing.Dict[str, typing.Any]]
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `resource_review`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be
-            accompanied by a `file`.
+            accompanied by a `file`. Do not combine `primary_patient` with
+            `patient_reference`.
 
         file : typing.Optional[core.File]
             See core.File for more documentation
 
         request_id : typing.Optional[str]
-            Optional idempotency token (max 256 bytes). Re-uploading under
-            the same token overwrites the same item instead of adding a
-            new one. The token is scoped to this job; the same token in
-            another job is independent and creates a separate item.
+            Optional idempotency token (at most 256 UTF-8 bytes).
+            Re-uploading under the same token overwrites the same item
+            instead of adding a new one. The token is scoped to this job;
+            the same token in another job is independent and creates a
+            separate item.
 
         id : typing.Optional[str]
-            Optional caller-supplied correlation label (max 512 bytes),
-            echoed back on status and result listings so you can match the
-            server's item_id to your own record.
+            Optional caller-supplied correlation label (at most 512 UTF-8
+            bytes), echoed back on status and result listings so you can
+            match the server's item_id to your own record.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -769,8 +773,8 @@ class AsyncLang2FhirBatchClient:
 
     async def cancel(self, job_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> BatchJob:
         """
-        Drives a job to the terminal `canceled` state on request, freeing its
-        active-job slot immediately. Takes no request body.
+        Drives a job to the terminal `canceled` state on request. Takes no
+        request body.
 
         Cancel does not delete the job: the job record and any results already
         produced are preserved for the normal retention window, the same as a

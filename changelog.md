@@ -1,3 +1,5 @@
+## [17.0.1] - 2026-09-22
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.
