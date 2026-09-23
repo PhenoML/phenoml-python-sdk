@@ -6,13 +6,17 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .fhir_implementation_guide import FhirImplementationGuide
     from .implementation_guide_detail import ImplementationGuideDetail
     from .implementation_guide_list_response import ImplementationGuideListResponse
     from .implementation_guide_summary import ImplementationGuideSummary
+    from .implementation_guide_version_detail import ImplementationGuideVersionDetail
 _dynamic_imports: typing.Dict[str, str] = {
+    "FhirImplementationGuide": ".fhir_implementation_guide",
     "ImplementationGuideDetail": ".implementation_guide_detail",
     "ImplementationGuideListResponse": ".implementation_guide_list_response",
     "ImplementationGuideSummary": ".implementation_guide_summary",
+    "ImplementationGuideVersionDetail": ".implementation_guide_version_detail",
 }
 
 
@@ -37,4 +41,10 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["ImplementationGuideDetail", "ImplementationGuideListResponse", "ImplementationGuideSummary"]
+__all__ = [
+    "FhirImplementationGuide",
+    "ImplementationGuideDetail",
+    "ImplementationGuideListResponse",
+    "ImplementationGuideSummary",
+    "ImplementationGuideVersionDetail",
+]
