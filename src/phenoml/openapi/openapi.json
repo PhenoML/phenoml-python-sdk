@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "26224ef37e22adb507f28c21e8991d4a27822bde"
+    "version": "f6f18cc011ec52d8504a6c613f29508c8eab2dd8"
   },
   "x-services": [
     {
@@ -3274,7 +3274,7 @@
       "post": {
         "operationId": "fhir2omop_create",
         "summary": "Map FHIR resources to OMOP CDM v5.4",
-        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows\n(person, visit_occurrence, condition_occurrence, drug_exposure,\nprocedure_occurrence, measurement, observation).\n\nResource support is intentionally limited to the OMOP tables returned by\nthis endpoint:\n- `Patient` -> `person`\n- `Encounter` -> `visit_occurrence`\n- `Condition` -> `condition_occurrence`\n- `Procedure` -> `procedure_occurrence`\n- `MedicationRequest`, `MedicationStatement`, and\n  `MedicationAdministration` -> `drug_exposure`\n- `Immunization` -> `drug_exposure`\n- `Observation` with a numeric `valueQuantity`, `valueInteger`, or\n  numeric-looking `valueString` (for example `\"<2\"`) -> `measurement`\n- non-numeric `Observation` -> `observation`\n- `AllergyIntolerance` -> `observation`\n\n`Medication` is supported only as reference data for medication\nresources; it is not emitted as its own row because OMOP CDM has no\nMedication table. Other reference/admin resources such as `Practitioner`,\n`Organization`, `Location`, `Coverage`, and `Claim`, and clinical\nworkflow/document resources such as `DiagnosticReport`, `ServiceRequest`,\n`CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and\n`DeviceUseStatement`, are currently accepted in a Bundle but are not\nshaped into OMOP rows. Unsupported resource types are ignored rather than\nlisted under `dropped`; `dropped` is reserved for supported resource types\nthat were missing the subject/patient, code, or medication reference data\nneeded to produce a valid row.\n\nEach resource's primary clinical coding is resolved to a standard OMOP\n`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the\nresponse carries `mappings` (how each source coding resolved, linked back\nto the row it produced), `dropped` (resources that could not be shaped\ninto a row), `vocab_version` (the OMOP vocabulary release codes were\nresolved against), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` is reported, not omitted (OMOP \"no matching\nconcept\" semantics): it covers both a coding with no standard match\n(`UNMAPPED`) and an unverified suggestion for a text-only resource\n(`UNCHECKED`). Only the primary clinical coding is resolved, so\n`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are\nalways `0`; the one populated non-resolved concept is measurement\n`operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)\nrather than the resolver. Each `*_source_value` carries the verbatim FHIR\ncoding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The\nbundle must contain at least one Patient resource.\n",
+        "description": "Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,\ngrouped by destination table in `tables`.\n\nCurrent resource coverage:\n- `Patient` -> `person`; `deceased[x]` can also produce `death`, and the\n  first address can produce `location`\n- `observation_period` -> one derived row per person with dated visit,\n  clinical, or death rows, spanning those dates\n- `Location` -> `location` and `care_site`\n- `Organization` -> `care_site`; its first address can produce `location`\n- `HealthcareService` -> `care_site`\n- `Practitioner` and `PractitionerRole` -> `provider`\n- `Encounter` -> `visit_occurrence`\n- `Condition` -> `condition_occurrence`\n- `Procedure` -> `procedure_occurrence`\n- `MedicationRequest`, `MedicationStatement`, and\n  `MedicationAdministration` -> `drug_exposure`\n- `Immunization` -> `drug_exposure`\n- `Observation` -> `measurement` or `observation`. For coded\n  Observations, the resolved OMOP concept domain selects the table; value\n  form only breaks ties. For text-only Observations, numeric values route\n  to `measurement` and nonnumeric values to `observation`.\n- `AllergyIntolerance` -> `observation`\n\n`Medication` is reference data for medication resources; it does not\ncreate its own row because OMOP CDM has no Medication table. Administrative\nlinkages (provider, care site, and location) are best-effort and limited to\nreferences supplied in the request. Their supporting concepts, including\nprovider specialty, country, and place of service, are not mapped.\n\n`DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,\n`Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and\nother unsupported resource types are accepted in a Bundle but ignored: they\ncreate no row and no `dropped` entry. `dropped` is reserved for supported\nrow-producing resources that could not be shaped because the subject/patient,\nclinical code/text, or medication data was not usable. A single-Patient\nBundle can attribute a supported clinical resource with a missing or\nunresolvable subject to that sole person; in a multi-Patient Bundle, that\nresource is dropped instead.\n\nCoded Observation routing is selected from the resolved OMOP concept\ndomain. Numeric and nonnumeric `value[x]` forms establish the preferred\ntarget only when the code is valid for both tables. A text-only\nObservation has no resolver target, so numeric values route to\n`measurement` and nonnumeric values to `observation`. Numeric values\npopulate `value_as_number` in the selected row; nonnumeric values\npopulate `value_as_string` for an `observation` or `value_source_value`\nfor a `measurement`. `valueCodeableConcept` remains source text and does\nnot populate `value_as_concept_id`; other unsupported `value[x]` forms\nand Observation components do not populate separate converted values. A\nnumeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a\nmeasurement's `operator_concept_id`; units remain source text and have\n`unit_concept_id` of `0`.\n\nA single standard OMOP `concept_id` is selected for each clinical row\nafter considering all of the resource's supplied codings. Alongside the\nOMOP rows grouped by table (`tables`), the response carries `mappings`\n(an entry for every source coding, linked back to the row it produced),\n`dropped` (resources that could not be shaped into a row),\n`vocab_version` (the OMOP vocabulary release codes were resolved\nagainst), and a small `summary` of the resolution outcomes.\n\nA `concept_id` of `0` is reported, not omitted (OMOP \"no matching\nconcept\" semantics): it covers both a coding with no standard match\n(`UNMAPPED`) and an unverified suggestion for a text-only resource\n(`UNCHECKED`). Demographic, visit, categorical-value, and unit concept\nfields currently remain `0`; the one populated non-resolved concept is\nmeasurement\n`operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)\nrather than terminology resolution. Clinical `*_source_value` fields\npreserve the selected FHIR coding (`system#code`, or `code` when no\nsystem is supplied), falling back to source text for text-only resources.\nKnown OID-form coding systems are accepted as either FHIR OID URNs (for\nexample, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and\nare normalized to their canonical system URLs before terminology\nresolution. `*_source_value` and `mappings[].source_system` report that\ncanonical URL, so the OID and URL forms produce the same mapping. An\nunknown OID is not rewritten and may be `UNMAPPED`.\nOther `*_source_value` fields preserve row-specific raw source values,\nsuch as resource identifiers, names, units, or status codes, and\n`*_type_concept_id` is set to `32817` (EHR).\n\nMedication codes are resolved whether they appear inline\n(`medicationCodeableConcept`) or via a `medicationReference` to a contained,\nrelative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.\nResources that cannot be shaped into a row \u2014 a medication with no usable\ncode, resolvable reference, or display, or any clinical resource whose\nsubject/patient reference cannot be tied to a person \u2014 are reported under\n`dropped` rather than emitted as blank rows. The Bundle must contain at\nleast one Patient resource.\n\nAll row IDs start at `1` for each request and are not stable or global.\nFor clinical conversion rows whose resource supplies an `id`, `mappings`\nassociates each row with that source FHIR resource ID. A `person` row\nretains the Patient ID or its first identifier value in\n`person_source_value`, when present; other reference and derived rows do\nnot uniformly carry a FHIR resource ID. Input resources without those\nsource identifiers cannot be correlated across responses from the\nreturned rows alone. Consumers combining responses need to establish\ntheir own stable keys and remap every primary and foreign key together.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -3350,6 +3350,46 @@
                       ]
                     }
                   }
+                },
+                "oid_form_coding": {
+                  "summary": "OID-form LOINC coding",
+                  "description": "Known FHIR OID URNs are accepted for `Coding.system`. This\nLOINC OID is resolved as `http://loinc.org`; responses use\nthat canonical URL in source fields and mappings.\n",
+                  "value": {
+                    "fhir_resources": {
+                      "resourceType": "Bundle",
+                      "type": "collection",
+                      "entry": [
+                        {
+                          "resource": {
+                            "resourceType": "Patient",
+                            "id": "patient-1"
+                          }
+                        },
+                        {
+                          "resource": {
+                            "resourceType": "Observation",
+                            "id": "hemoglobin-1",
+                            "subject": {
+                              "reference": "Patient/patient-1"
+                            },
+                            "code": {
+                              "coding": [
+                                {
+                                  "system": "urn:oid:2.16.840.1.113883.6.1",
+                                  "code": "718-7",
+                                  "display": "Hemoglobin"
+                                }
+                              ]
+                            },
+                            "valueQuantity": {
+                              "value": 13.5,
+                              "unit": "g/dL"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
@@ -3366,7 +3406,7 @@
                 "examples": {
                   "mapping_result": {
                     "summary": "Mapping result",
-                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status and a `target_code` equal to the\nsource code. Illustrative `concept_id` values.\n",
+                    "description": "The example bundle mapped to OMOP. Both source codes are already\nstandard, so each clinical row carries its own OMOP `concept_id`\nwith `ALREADY_STANDARD` status and a `target_code` equal to the\nsource code. The concept IDs and vocabulary version illustrate\nthe response shape; production values depend on the vocabulary\nrelease used for the request.\n",
                     "value": {
                       "success": true,
                       "message": "FHIR resources mapped to OMOP CDM v5.4",
@@ -4586,7 +4626,7 @@
       "post": {
         "operationId": "batch_create",
         "summary": "Create a batch job",
-        "description": "Opens an empty batch job. Items arrive on later upload calls and the set\nis sealed at finalize.\n\nSupplying `request_id` makes the create idempotent on that token: a\nretried submit whose response was lost returns the original job rather\nthan opening a second one. This dedupe is scoped to the calling\ncredential. A `request_id` whose job was canceled or failed before it\nfinalized is released for a fresh replay; once a job is finalized, its\n`request_id` keeps resolving to it even after cancellation.\n\nAn instance may hold at most 4 active (pending or processing) jobs at\nonce; a create past that limit returns `409`. The limit is instance-wide\n\u2014 jobs are shared across the instance's credentials \u2014 so another\ncredential's jobs count against it.\n",
+        "description": "Opens an empty batch job. Items arrive on later upload calls and the set\nis sealed at finalize.\n\nSupplying `request_id` makes the create idempotent on that token: a\nretried submit whose response was lost returns the original job rather\nthan opening a second one. This dedupe is scoped to the calling\ncredential. A `request_id` whose job was canceled or failed before it\nfinalized is released for a fresh replay; once a job is finalized, its\n`request_id` keeps resolving to it even after cancellation.\n\nThere is no limit on how many jobs an instance may hold at once; how many\nitems run in parallel is a property of the instance, not of the job count.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -4616,9 +4656,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "409": {
-            "description": "The instance is at its 4-job active-batch limit; wait for one to finish"
           },
           "499": {
             "description": "Client closed request before response was ready"
@@ -4702,7 +4739,7 @@
       "post": {
         "operationId": "batch_uploadItem",
         "summary": "Upload one batch item",
-        "description": "Stores one item of a job from a multipart upload. A batch's items arrive\none per request. The item carries **either** a `document` extraction\n(whose input file rides as raw bytes in the `file` part) **or** a\n`create` extraction (JSON only, no file).\n\nThe upload enforces these rules:\n- Set **exactly one** of `document` or `create`. Setting both, or\n  neither, is a `400`.\n- When `document` is set, `file` is **required** \u2014 it supplies the\n  document's binary content (PDF or image).\n- When `create` is set, `file` is **forbidden** \u2014 a create item carries\n  no file.\n- `document` and `create` must each be a JSON **object**.\n\nOnly the item's structure is checked here: the fields inside `document`\nor `create` are not validated at upload. A body that is well-formed JSON\nbut not a valid request for its endpoint is still accepted with `202`\nand fails later during processing, recorded as an item `error`. A\nwrong-typed field the endpoint cannot decode fails as `invalid_input`; a\nbody that decodes but the pipeline rejects (for example, a missing\nrequired field) fails as `processing_failed`.\n\nSupplying `request_id` makes the upload idempotent on that token. A\nre-upload under the same token overwrites the same item rather than\nadding a second, so a client that lost an upload's response can safely\nre-send it. The response's `deduplicated` is `true` only when the\nre-uploaded payload matches the one already stored; a same-token upload\nwith a changed payload overwrites in place and returns `false`.\n\nSet a `request_id` on **every** upload: re-sending under the same token\nis the only way to repair a lost or incomplete upload, including the one\na finalize `409` reports. Without one, a re-send adds a new item instead\nof replacing the missing one, and the job cannot be finalized.\n\nUploads are rejected once the job has been finalized (`409`), once it\nholds its 500-item limit (`409`), or when the item is too large (`413` \u2014\nsee the raw-file limit in the API description).\n",
+        "description": "Stores one item of a job from a multipart upload. A batch's items arrive\none per request. The item carries **either** a `document` extraction\n(whose input file rides as raw bytes in the `file` part) **or** a\n`create` extraction (JSON only, no file).\n\nThe upload enforces these rules:\n- Set **exactly one** of `document` or `create`. Setting both, or\n  neither, is a `400`.\n- When `document` is set, `file` is **required** \u2014 it supplies the\n  document's file content (PDF, image, RTF, or XML/C-CDA).\n- When `create` is set, `file` is **forbidden** \u2014 a create item carries\n  no file.\n- `document` and `create` must each be a JSON **object**.\n\nOnly the item's structure is checked here: the fields inside `document`\nor `create` are not validated at upload. A body that is well-formed JSON\nbut not a valid request for its endpoint is still accepted with `202`\nand fails later during processing, recorded as an item `error`. A\nwrong-typed field the endpoint cannot decode fails as `invalid_input`; a\nbody that decodes but the pipeline rejects (for example, a missing\nrequired field) fails as `processing_failed`.\n\nSupplying `request_id` makes the upload idempotent on that token. A\nre-upload under the same token overwrites the same item rather than\nadding a second, so a client that lost an upload's response can safely\nre-send it. The response's `deduplicated` is `true` only when the\nre-uploaded payload matches the one already stored; a same-token upload\nwith a changed payload overwrites in place and returns `false`.\n\nSet a `request_id` on **every** upload: re-sending under the same token\nis the only way to repair a lost or incomplete upload, including the one\na finalize `409` reports. Without one, a re-send adds a new item instead\nof replacing the missing one, and the job cannot be finalized.\n\nUploads are rejected once the job has been finalized (`409`), once it\nholds its 500-item limit (`409`), or when the item is too large (`413` \u2014\nsee the raw-file limit in the API description).\n",
         "parameters": [
           {
             "name": "job_id",
@@ -4722,26 +4759,24 @@
                 "properties": {
                   "document": {
                     "type": "object",
-                    "description": "The JSON body of `POST /lang2fhir/document/multi`, **without**\nits base64 `content` field \u2014 the uploaded `file` supplies the\ncontent. Accepts that endpoint's fields (`version`, `provider`,\n`patient_reference`, `implementation_guide`, `detection_effort`,\n`validation_method`, `config`). This is the **multi**-resource\nbody: it has no single-`resource` field, and the item's result\nis a `DocumentMultiResponse` (a Bundle of resources). Mutually\nexclusive with `create`; requires `file`.\n"
+                    "description": "The JSON body of `POST /lang2fhir/document/multi`, **without**\nits base64 `content` field \u2014 the uploaded `file` supplies the\ncontent. Accepts that endpoint's fields (`version`, `provider`,\n`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,\n`validation_method`, `config`). This is the **multi**-resource\nbody: it has no single-`resource` field, and the item's result\nis a `DocumentMultiResponse` (a Bundle of resources). Mutually\nexclusive with `create`; requires `file`. Do not combine\n`primary_patient` with `patient_reference`.\n"
                   },
                   "create": {
                     "type": "object",
-                    "description": "The JSON body of `POST /lang2fhir/create/multi`. Accepts that\nendpoint's fields (`text`, `version`, `provider`,\n`patient_reference`, `implementation_guide`, `detection_effort`,\n`validation_method`, `resource_review`). This is the\n**multi**-resource body: it has no single-`resource` field, and\nthe item's result is a `CreateMultiResponse` (a Bundle of\nresources). Mutually exclusive with `document`; must **not** be\naccompanied by a `file`.\n"
+                    "description": "The JSON body of `POST /lang2fhir/create/multi`. Accepts that\nendpoint's fields (`text`, `version`, `provider`,\n`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,\n`validation_method`, `resource_review`). This is the\n**multi**-resource body: it has no single-`resource` field, and\nthe item's result is a `CreateMultiResponse` (a Bundle of\nresources). Mutually exclusive with `document`; must **not** be\naccompanied by a `file`. Do not combine `primary_patient` with\n`patient_reference`.\n"
                   },
                   "file": {
                     "type": "string",
                     "format": "binary",
-                    "description": "The document's binary content (PDF, PNG, JPEG, or TIFF).\nRequired with `document`; forbidden with `create`.\n"
+                    "description": "The document's file content (PDF, PNG, JPEG, TIFF, RTF, or\nXML/C-CDA). The document pipeline accepts files up to 20 MiB;\nan upload that passes the storage cap but exceeds this limit\nfails during processing. RTF and XML/C-CDA documents whose\nextracted text exceeds 1 MiB also fail during processing.\nGeneric XML must include an XML declaration; C-CDA documents\nrooted at `ClinicalDocument` may omit it.\nRequired with `document`; forbidden with `create`.\n"
                   },
                   "request_id": {
                     "type": "string",
-                    "maxLength": 256,
-                    "description": "Optional idempotency token (max 256 bytes). Re-uploading under\nthe same token overwrites the same item instead of adding a\nnew one. The token is scoped to this job; the same token in\nanother job is independent and creates a separate item.\n"
+                    "description": "Optional idempotency token (at most 256 UTF-8 bytes).\nRe-uploading under the same token overwrites the same item\ninstead of adding a new one. The token is scoped to this job;\nthe same token in another job is independent and creates a\nseparate item.\n"
                   },
                   "id": {
                     "type": "string",
-                    "maxLength": 512,
-                    "description": "Optional caller-supplied correlation label (max 512 bytes),\nechoed back on status and result listings so you can match the\nserver's item_id to your own record.\n"
+                    "description": "Optional caller-supplied correlation label (at most 512 UTF-8\nbytes), echoed back on status and result listings so you can\nmatch the server's item_id to your own record.\n"
                   }
                 }
               },
@@ -4860,7 +4895,7 @@
       "post": {
         "operationId": "batch_cancel",
         "summary": "Cancel a batch job",
-        "description": "Drives a job to the terminal `canceled` state on request, freeing its\nactive-job slot immediately. Takes no request body.\n\nCancel does not delete the job: the job record and any results already\nproduced are preserved for the normal retention window, the same as a\n`completed` or `failed` job. Items stop being processed and keep the state\nthey held at cancellation, so a canceled job's `counts` may show\nunfinished items that never resolve.\n\nCancel is idempotent: canceling an already-`canceled` job returns `200`\nwith the job. Canceling a job that has already `completed` or `failed` is\na `409`.\n",
+        "description": "Drives a job to the terminal `canceled` state on request. Takes no\nrequest body.\n\nCancel does not delete the job: the job record and any results already\nproduced are preserved for the normal retention window, the same as a\n`completed` or `failed` job. Items stop being processed and keep the state\nthey held at cancellation, so a canceled job's `counts` may show\nunfinished items that never resolve.\n\nCancel is idempotent: canceling an already-`canceled` job returns `200`\nwith the job. Canceling a job that has already `completed` or `failed` is\na `409`.\n",
         "parameters": [
           {
             "name": "job_id",
@@ -5605,7 +5640,7 @@
       "post": {
         "operationId": "lang2fhir_document",
         "summary": "Convert document to FHIR resource",
-        "description": "Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
+        "description": "Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into a structured FHIR resource.\n\n**Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -5616,7 +5651,7 @@
               "example": {
                 "version": "R4",
                 "resource": "questionnaire",
-                "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+                "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)"
               }
             }
           }
@@ -5655,6 +5690,9 @@
           "401": {
             "description": "Unauthorized"
           },
+          "403": {
+            "description": "Forbidden - RTF and XML/C-CDA uploads are only available on dedicated instances"
+          },
           "404": {
             "description": "Profile not found"
           },
@@ -5683,7 +5721,7 @@
       "post": {
         "operationId": "lang2fhir_documentMulti",
         "summary": "Extract multiple FHIR resources from a document",
-        "description": "Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n\n**Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: \"group\"` keep matching pages and label resources extracted from those pages; classifications with `operation: \"drop\"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.\n",
+        "description": "Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into multiple FHIR resources,\nreturned as a transaction Bundle. Combines document text extraction with multi-resource detection.\nAutomatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.\nResources are linked with proper references (e.g., Conditions reference the Patient).\n\n**Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: \"urn:phenoml:lang2fhir-generated-id\"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.\n\n**Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: \"group\"` keep matching pages and label resources extracted from those pages; classifications with `operation: \"drop\"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.\n",
         "requestBody": {
           "required": true,
           "content": {
@@ -5693,7 +5731,7 @@
               },
               "example": {
                 "version": "R4",
-                "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+                "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
                 "provider": "medplum",
                 "config": {
                   "split_classifications": [
@@ -5867,6 +5905,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - RTF and XML/C-CDA uploads are only available on dedicated instances"
           },
           "404": {
             "description": "Profile not found"
@@ -6574,11 +6615,11 @@
         "tags": [
           "FHIR Artifacts / Implementation Guides"
         ],
-        "summary": "Delete an implementation guide's metadata",
-        "description": "Deletes the stored metadata for an implementation guide \u2014 its\nprofile_context and timestamps. Member profiles keep their\nimplementation_guide assignment, so a guide still referenced by at least\none profile continues to appear in listings, just without context or\ntimestamps.\n",
+        "summary": "Delete an implementation guide family",
+        "description": "Deletes the stored name-level metadata and any exact canonical package\nversions beneath the guide. Legacy member profile assignments are not\nchanged.\n",
         "responses": {
           "204": {
-            "description": "Implementation guide metadata successfully deleted"
+            "description": "Implementation guide family successfully deleted"
           },
           "400": {
             "description": "The name is reserved or malformed"
@@ -6590,10 +6631,121 @@
             "description": "Forbidden - custom profiles are only available on dedicated instances"
           },
           "404": {
-            "description": "No implementation guide metadata exists for this name"
+            "description": "No implementation guide family exists for this name"
           },
           "500": {
             "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "implementation-guides_createVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Publish an exact custom-profile package",
+        "description": "Publishes an exact package beneath this guide family. PR 2 temporarily\npermits one exact package version per guide family; publishing another\nversion returns `409 Conflict` until multi-version package support lands.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/implementation-guides_CreateCanonicalImplementationGuideRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Canonical package published",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ImplementationGuide, profile reference, version, or context"
+          },
+          "404": {
+            "description": "An exact profile reference was not found"
+          },
+          "409": {
+            "description": "A package family URL or exact version already exists"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-service": "fhir_artifacts"
+      }
+    },
+    "/fhir/implementation-guides/{name}/versions/{version}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "version",
+          "in": "path",
+          "required": true,
+          "description": "The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.\n",
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._~+-]+$"
+          },
+          "example": "1.0.0"
+        }
+      ],
+      "get": {
+        "operationId": "implementation-guides_getVersion",
+        "tags": [
+          "FHIR Artifacts / Implementation Guides"
+        ],
+        "summary": "Get an exact custom-profile package",
+        "responses": {
+          "200": {
+            "description": "Exact canonical package",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/implementation-guides_ImplementationGuideVersionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid guide name or version"
+          },
+          "404": {
+            "description": "Package version not found"
           }
         },
         "security": [
@@ -6832,6 +6984,9 @@
           "404": {
             "description": "Profile not found"
           },
+          "409": {
+            "description": "Profile is pinned by an exact implementation guide package"
+          },
           "500": {
             "description": "Server error"
           }
@@ -7049,6 +7204,9 @@
           },
           "404": {
             "description": "Profile or version not found"
+          },
+          "409": {
+            "description": "Profile version is pinned by an exact implementation guide package"
           },
           "500": {
             "description": "Server error"
@@ -10278,7 +10436,7 @@
           "fhir_resources": {
             "type": "object",
             "additionalProperties": true,
-            "description": "FHIR resources (single resource or Bundle). Must contain at least one\nPatient resource. Supported row-producing resources are Patient,\nEncounter, Condition, Procedure, MedicationRequest,\nMedicationStatement, MedicationAdministration, Immunization,\nObservation, and AllergyIntolerance. Standalone Medication resources\nare consumed by medication references rather than mapped to their own\ntable. Other resource types are accepted but ignored.\n"
+            "description": "FHIR resources (single resource or Bundle). Must contain at least one\nPatient resource. Supported row-producing resources are Patient,\nLocation, Organization, HealthcareService, Practitioner,\nPractitionerRole, Encounter, Condition, Procedure, MedicationRequest,\nMedicationStatement, MedicationAdministration, Immunization,\nObservation, and AllergyIntolerance. Standalone Medication resources\nare consumed by medication references rather than mapped to their own\ntable. Unsupported resource types are accepted in a Bundle but ignored.\n"
           }
         }
       },
@@ -10310,7 +10468,7 @@
           },
           "vocab_version": {
             "type": "string",
-            "description": "The OMOP vocabulary release the clinical codes were resolved against\n(e.g. \"v20240229\"), for reproducibility. Present when at least one\ncoded concept was resolved.\n"
+            "description": "The OMOP vocabulary release returned for coded concept resolution\n(for example, \"v20240229\"), for reproducibility. It is generally\nabsent for requests containing only text-only resources.\n"
           },
           "summary": {
             "$ref": "#/components/schemas/fhir2omop_Summary"
@@ -10319,7 +10477,7 @@
       },
       "fhir2omop_OmopTables": {
         "type": "object",
-        "description": "OMOP CDM v5.4 rows grouped by destination table.",
+        "description": "OMOP CDM v5.4 rows grouped by destination table. IDs are sequential and\nscoped to one response; they are not stable keys across requests.\n",
         "properties": {
           "location": {
             "type": "array",
@@ -10978,6 +11136,12 @@
           },
           "mapping_status": {
             "type": "string",
+            "enum": [
+              "ALREADY_STANDARD",
+              "MAPPED",
+              "UNCHECKED",
+              "UNMAPPED"
+            ],
             "description": "ALREADY_STANDARD (source coding is already a standard OMOP concept),\nMAPPED (source coding was mapped to a standard concept), UNCHECKED (a\nstandard code was suggested \u2014 e.g. for a text-only resource \u2014 but not\nverified against the OMOP vocabulary, so `concept_id` stays `0`), or\nUNMAPPED (no standard concept found).\n"
           },
           "note": {
@@ -10987,24 +11151,24 @@
       },
       "fhir2omop_Summary": {
         "type": "object",
-        "description": "The request's data-quality headline: how the coded concepts split across\nresolution outcomes, and the share that was not already in a target\nstandard vocabulary. Each coded resource is counted once (per resolved\nconcept), even when it carried several codings \u2014 unlike `mappings`, which\nhas one entry per coding.\n",
+        "description": "The request's data-quality headline: how resolution outcomes split, and\nthe share that was not already in a target standard vocabulary. Each\nrow-producing clinical resource is counted once, even when it carried\nseveral codings \u2014 unlike `mappings`, which has one entry per coding.\n",
         "properties": {
           "codes_already_standard": {
             "type": "integer",
-            "description": "Coded concepts already a standard OMOP concept (ALREADY_STANDARD)."
+            "description": "Resolution outcomes already a standard OMOP concept (ALREADY_STANDARD)."
           },
           "codes_normalized": {
             "type": "integer",
-            "description": "Coded concepts mapped or suggested to a standard concept (MAPPED or UNCHECKED)."
+            "description": "Resolution outcomes mapped or suggested to a standard concept (MAPPED or UNCHECKED)."
           },
           "codes_unmapped": {
             "type": "integer",
-            "description": "Coded concepts with no standard concept found (UNMAPPED)."
+            "description": "Resolution outcomes with no standard concept found (UNMAPPED)."
           },
           "off_vocab_rate": {
             "type": "number",
             "format": "double",
-            "description": "Share of coded concepts not already standard ((normalized + unmapped) / total)."
+            "description": "Share of resolution outcomes not already standard ((normalized + unmapped) / total)."
           }
         }
       },
@@ -11788,7 +11952,7 @@
         "properties": {
           "request_id": {
             "type": "string",
-            "description": "Optional client idempotency token. A retried create with the same\ntoken returns the original job instead of opening a second one.\n",
+            "description": "Optional client idempotency token (at most 256 UTF-8 bytes). A\nretried create with the same token returns the original job instead\nof opening a second one.\n",
             "example": "submit-2025-09-02-batch-001"
           }
         }
@@ -11803,7 +11967,7 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "Short stable token to branch on. Item-level kinds: `invalid_input`\n(the stored body was not a valid create/document request),\n`processing_failed` (the conversion failed), `budget_exceeded` (the\nitem ran past its time budget \u2014 600s for a document item, 450s for a\ncreate item), `result_too_large` (the result exceeded the storage\ncap), `input_unavailable` (the input could not be read), and\n`retries_exhausted` / `attempts_exhausted` (buried after too many\nfailed attempts).\nJob-level kinds: `timeout` (the job did not finish within 36 hours\nof creation).\n",
+            "description": "Short stable token to branch on. Item-level kinds: `invalid_input`\n(the stored body was not a valid create/document request),\n`processing_failed` (the conversion failed), `result_too_large` (the\nresult exceeded the storage cap), `input_unavailable` (the input\ncould not be read), and `retries_exhausted` / `attempts_exhausted`\n(the item could not complete after repeated interruptions).\nJob-level kinds: `timeout` (the job did not finish within 36 hours\nof creation).\n",
             "example": "processing_failed"
           },
           "message": {
@@ -11838,7 +12002,7 @@
           },
           "status": {
             "type": "string",
-            "description": "Job status. `completed` means every item has finished \u2014 some may have\nfailed, so check `counts` for the split. `failed` is a whole-job\nfailure (the job could not run at all), distinct from individual item\nfailures, which never fail the job. `canceled` is a caller-requested\ncancellation via `POST /lang2fhir/batch/{job_id}/cancel`; like the\nother terminal states it frees the job's active-job slot and keeps any\nresults already produced readable for the retention window.\n",
+            "description": "Job status. `completed` means every item has finished \u2014 some may have\nfailed, so check `counts` for the split. `failed` is a whole-job\nfailure (the job could not run at all), distinct from individual item\nfailures, which never fail the job. `canceled` is a caller-requested\ncancellation via `POST /lang2fhir/batch/{job_id}/cancel`; like the\nother terminal states it keeps any results already produced readable\nfor the retention window.\n",
             "enum": [
               "pending",
               "processing",
@@ -11951,7 +12115,7 @@
           },
           "attempts": {
             "type": "integer",
-            "description": "Number of processing attempts so far. An item runs up to 3 attempts,\nand only an interruption \u2014 a worker preemption or a recovered internal\nerror \u2014 is retried; a conversion error fails the item with no retry.\n",
+            "description": "Number of processing attempts started so far. The service may retry\ninterrupted work; a conversion error fails the item without retry.\n",
             "example": 1
           },
           "detect_retries": {
@@ -12170,13 +12334,16 @@
           },
           "resource": {
             "type": "string",
-            "description": "Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported US Core profile. Recommended to use the supported US Core Profiles for validated results but you can also use any custom profile you've uploaded (if you're a develop or launch customer) \n",
+            "description": "Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).\n",
             "example": "condition-encounter-diagnosis",
             "enum": [
               "auto",
               "appointment",
               "condition-encounter-diagnosis",
+              "familymemberhistory",
+              "medicationadministration",
               "medicationrequest",
+              "medicationstatement",
               "careplan",
               "condition-problems-health-concerns",
               "coverage",
@@ -12289,7 +12456,7 @@
       },
       "lang2fhir_PatientReference": {
         "type": "object",
-        "description": "Optional reference to an existing Patient, by business identifier. If a Patient resource is extracted, this identifier is added to that Patient's identifier list (existing identifiers are kept). If no Patient is extracted, generated clinical resources are linked to this patient as a logical reference (subject.identifier) instead of the request failing, and no placeholder Patient is created. Supply the patient-level identifier (not an order or specimen identifier).\n",
+        "description": "Business identifier for the document's primary patient. When Lang2FHIR identifies that Patient in generated output, it adds this identifier to the Patient's identifier list (preserving existing identifiers). If no Patient is generated, Lang2FHIR uses it in logical references on generated clinical resources. Supply the patient-level identifier (not an order or specimen identifier).\n",
         "required": [
           "system",
           "value"
@@ -12308,6 +12475,71 @@
         "example": {
           "system": "urn:acmehealth:patient_index_id",
           "value": "abc-123"
+        }
+      },
+      "lang2fhir_PrimaryPatientName": {
+        "type": "object",
+        "description": "The known portions of the primary patient's name. Provide a non-empty family name or at least one non-empty given name.\n",
+        "properties": {
+          "family": {
+            "type": "string",
+            "description": "Family name.",
+            "example": "Smith"
+          },
+          "given": {
+            "type": "array",
+            "description": "Given names. Matching succeeds when a generated name has a supplied given name.",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Jane"
+            ]
+          }
+        }
+      },
+      "lang2fhir_PrimaryPatient": {
+        "type": "object",
+        "minProperties": 1,
+        "description": "Partial context for the patient the document is primarily about. This is not a complete FHIR Patient resource. Lang2FHIR uses the available context to identify a generated primary Patient reliably. An identifier supplied here is added to that Patient; when no Patient is generated, it is used in logical references on generated clinical resources.\n",
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/lang2fhir_PatientReference"
+          },
+          "name": {
+            "$ref": "#/components/schemas/lang2fhir_PrimaryPatientName"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Complete date of birth in YYYY-MM-DD format.",
+            "example": "1980-03-12"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female",
+              "other",
+              "unknown"
+            ],
+            "description": "Administrative gender. This corroborates another match but does not identify a patient alone.",
+            "example": "female"
+          }
+        },
+        "example": {
+          "identifier": {
+            "system": "urn:acmehealth:patient_index_id",
+            "value": "abc-123"
+          },
+          "name": {
+            "family": "Smith",
+            "given": [
+              "Jane"
+            ]
+          },
+          "birthDate": "1980-03-12",
+          "gender": "female"
         }
       },
       "lang2fhir_CreateMultiRequest": {
@@ -12332,12 +12564,17 @@
             "description": "Optional FHIR provider name for provider-specific profiles",
             "example": "canvas"
           },
+          "primary_patient": {
+            "$ref": "#/components/schemas/lang2fhir_PrimaryPatient"
+          },
           "patient_reference": {
-            "$ref": "#/components/schemas/lang2fhir_PatientReference"
+            "$ref": "#/components/schemas/lang2fhir_PatientReference",
+            "deprecated": true,
+            "description": "Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient."
           },
           "implementation_guide": {
             "type": "string",
-            "description": "Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.\n",
+            "description": "Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.\n",
             "example": "acme-cardiology"
           },
           "detection_effort": {
@@ -12568,19 +12805,24 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).\nRTF and XML/C-CDA uploads are available on dedicated instances only.\nFile type is auto-detected from content magic bytes.\nThe decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.\nGeneric XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.\n"
           },
           "provider": {
             "type": "string",
             "description": "Optional FHIR provider name for provider-specific profiles",
             "example": "canvas"
           },
+          "primary_patient": {
+            "$ref": "#/components/schemas/lang2fhir_PrimaryPatient"
+          },
           "patient_reference": {
-            "$ref": "#/components/schemas/lang2fhir_PatientReference"
+            "$ref": "#/components/schemas/lang2fhir_PatientReference",
+            "deprecated": true,
+            "description": "Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient."
           },
           "implementation_guide": {
             "type": "string",
-            "description": "Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.\n",
+            "description": "Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.\n",
             "example": "acme-cardiology"
           },
           "detection_effort": {
@@ -12708,7 +12950,7 @@
       },
       "lang2fhir_ResourceReview": {
         "type": "object",
-        "description": "Opt-in, report-only faithfulness audit (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. Resources with an unsupported field are pulled out of the returned bundle and reported under resource_review in the response.\n",
+        "description": "Opt-in faithfulness audit (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. An unsupported individual coding is removed when another coding remains in its concept. Resources with an unsupported structural field, a profile-required coding, or no coding remaining in an affected concept, are pulled out of the returned bundle and reported under resource_review in the response.\n",
         "required": [
           "targets"
         ],
@@ -12754,13 +12996,20 @@
       },
       "lang2fhir_ResourceReviewResult": {
         "type": "object",
-        "description": "Present when resource_review was requested and at least one resource was flagged.\n",
+        "description": "Present when resource_review was requested and at least one resource was quarantined or safely remediated. The returned bundle is authoritative and contains the post-review representation of every retained resource.\n",
         "properties": {
           "flagged": {
             "type": "array",
-            "description": "Resources pulled from the bundle because a reviewed field was not supported by the source.",
+            "description": "Resources pulled from the bundle because an unsupported finding could not be safely repaired.",
             "items": {
               "$ref": "#/components/schemas/lang2fhir_ResourceReviewFlagged"
+            }
+          },
+          "remediated": {
+            "type": "array",
+            "description": "Resources retained in the bundle after unsupported codings were safely removed.",
+            "items": {
+              "$ref": "#/components/schemas/lang2fhir_ResourceReviewRemediated"
             }
           }
         }
@@ -12783,7 +13032,35 @@
           },
           "findings": {
             "type": "array",
-            "description": "The unsupported fields that caused the resource to be flagged.",
+            "description": "The findings that caused the resource to be quarantined.",
+            "items": {
+              "$ref": "#/components/schemas/lang2fhir_ResourceReviewFinding"
+            }
+          }
+        }
+      },
+      "lang2fhir_ResourceReviewRemediated": {
+        "type": "object",
+        "properties": {
+          "tempId": {
+            "type": "string",
+            "description": "The urn:uuid of the remediated resource (its bundle fullUrl).",
+            "example": "urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8"
+          },
+          "resourceType": {
+            "type": "string",
+            "example": "Condition"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "removed_codings"
+            ],
+            "description": "The safe change applied to the resource in the returned bundle."
+          },
+          "findings": {
+            "type": "array",
+            "description": "Findings for fields in the pre-remediation resource that caused this action.",
             "items": {
               "$ref": "#/components/schemas/lang2fhir_ResourceReviewFinding"
             }
@@ -12812,8 +13089,13 @@
           },
           "supported": {
             "type": "boolean",
-            "description": "Always false for a flagged finding.",
+            "description": "False when the reviewer found the field unsupported. Do not treat this field as a verdict when unaudited is true.",
             "example": false
+          },
+          "unaudited": {
+            "type": "boolean",
+            "description": "True when the reviewer did not return a verdict for this field; the resource was quarantined without treating the finding as evidence that the value is unsupported.",
+            "example": true
           },
           "rationale": {
             "type": "string",
@@ -12861,7 +13143,7 @@
           },
           "content": {
             "type": "string",
-            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).\nFile type is auto-detected from content magic bytes.\n"
+            "description": "Base64 encoded file content.\nSupported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).\nRTF and XML/C-CDA uploads are available on dedicated instances only.\nFile type is auto-detected from content magic bytes.\nThe decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.\nGeneric XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.\n"
           },
           "config": {
             "$ref": "#/components/schemas/lang2fhir_DocumentConfig"
@@ -13056,7 +13338,7 @@
       },
       "implementation-guides_ImplementationGuideSummary": {
         "type": "object",
-        "description": "Metadata for an implementation guide. This is an instance-local grouping record, not a complete FHIR ImplementationGuide resource.\n",
+        "description": "Metadata for an implementation guide. Canonical fields are present only for published canonical packages; metadata-only legacy records omit them.\n",
         "properties": {
           "name": {
             "type": "string",
@@ -13072,6 +13354,14 @@
             "type": "integer",
             "description": "The number of custom profiles in this implementation guide.",
             "example": 3
+          },
+          "canonical_url": {
+            "type": "string",
+            "description": "Canonical FHIR ImplementationGuide URL, when the family has an exact package."
+          },
+          "version_count": {
+            "type": "integer",
+            "description": "Number of retained exact package versions."
           },
           "created_at": {
             "type": "string",
@@ -13118,6 +13408,125 @@
             }
           }
         ]
+      },
+      "implementation-guides_CreateCanonicalImplementationGuideRequest": {
+        "type": "object",
+        "required": [
+          "implementation_guide",
+          "profile_refs"
+        ],
+        "properties": {
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "profile_refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 250,
+            "description": "Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.\n",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_context": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Natural-language profile-selection context for this package."
+          }
+        }
+      },
+      "implementation-guides_ImplementationGuideVersionDetail": {
+        "type": "object",
+        "required": [
+          "name",
+          "url",
+          "version",
+          "profile_context",
+          "profiles",
+          "profile_refs",
+          "implementation_guide",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "profile_context": {
+            "type": "string"
+          },
+          "profiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "profile_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "implementation_guide": {
+            "$ref": "#/components/schemas/implementation-guides_FHIRImplementationGuide"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "implementation-guides_FHIRImplementationGuide": {
+        "type": "object",
+        "description": "A complete authored FHIR ImplementationGuide JSON resource.",
+        "required": [
+          "resourceType",
+          "url",
+          "version"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "ImplementationGuide"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "packageId": {
+            "type": "string"
+          },
+          "fhirVersion": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "implementation-guides_UpdateImplementationGuideRequest": {
         "type": "object",
