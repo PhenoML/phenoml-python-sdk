@@ -10,16 +10,66 @@ class DrugExposureRow(UniversalBaseModel):
     drug_exposure_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
     drug_concept_id: typing.Optional[int] = None
-    drug_exposure_start_date: typing.Optional[str] = None
-    drug_exposure_start_datetime: typing.Optional[str] = None
-    drug_exposure_end_date: typing.Optional[str] = None
+    drug_exposure_start_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from the resource-specific direct timing source, such as effective[x], occurrenceDateTime, or MedicationRequest.authoredOn.
+    """
+
+    drug_exposure_start_datetime: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date-time precision from the resource-specific direct timing source when supplied.
+    """
+
+    drug_exposure_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Explicit FHIR Period end, or same-day inferred end for a structured instantaneous administration or immunization. Omitted when no source-supported end is available.
+    """
+
+    drug_exposure_end_datetime: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date-time precision from an explicit FHIR Period end or a structured instantaneous administration or immunization.
+    """
+
+    verbatim_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from an explicit FHIR Period.end only; inferred same-day ends are not verbatim source values.
+    """
+
     drug_type_concept_id: typing.Optional[int] = None
     stop_reason: typing.Optional[str] = None
-    sig: typing.Optional[str] = None
+    refills: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Direct MedicationRequest.dispenseRequest.numberOfRepeatsAllowed value, when supplied.
+    """
+
+    days_supply: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Direct positive whole-day MedicationRequest.dispenseRequest.expectedSupplyDuration; no dose or quantity conversion is applied.
+    """
+
+    sig: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Newline-joined non-empty FHIR Dosage.text instructions in source order.
+    """
+
+    route_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Target-valid OMOP Route concept for an unambiguous coded FHIR route; `0` for an unmapped coded route, omitted for absent, text-only, or conflicting routes.
+    """
+
+    lot_number: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Direct FHIR R4 Immunization.lotNumber value.
+    """
+
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
     drug_source_value: typing.Optional[str] = None
     drug_source_concept_id: typing.Optional[int] = None
+    route_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Selected source coding or text for an unambiguous FHIR route.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

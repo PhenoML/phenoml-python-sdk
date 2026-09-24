@@ -5,7 +5,12 @@
       "name": "Create a new agent - default",
       "request": {
         "urlPathTemplate": "/agent/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -32,6 +37,11 @@
       "request": {
         "urlPathTemplate": "/agent/list",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "tags": {
             "equalTo": "tags"
@@ -64,6 +74,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -95,6 +110,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -126,6 +146,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -157,6 +182,11 @@
       "request": {
         "urlPathTemplate": "/agent/{id}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -187,7 +217,12 @@
       "name": "Chat with agent - Query Patient Condition",
       "request": {
         "urlPathTemplate": "/agent/chat",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -213,7 +248,12 @@
       "name": "Chat with agent (streaming) - default",
       "request": {
         "urlPathTemplate": "/agent/stream-chat",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -240,6 +280,11 @@
       "request": {
         "urlPathTemplate": "/agent/chat/messages",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "chat_session_id": {
             "equalTo": "chat_session_id"
@@ -280,7 +325,12 @@
       "name": "Create agent prompt - default",
       "request": {
         "urlPathTemplate": "/agent/prompts",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -306,7 +356,12 @@
       "name": "List agent prompts - default",
       "request": {
         "urlPathTemplate": "/agent/prompts/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -334,6 +389,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -365,6 +425,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -396,6 +461,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -427,6 +497,11 @@
       "request": {
         "urlPathTemplate": "/agent/prompts/{id}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -483,7 +558,12 @@
       "name": "Analyze text for patient cohort criteria - default",
       "request": {
         "urlPathTemplate": "/cohort",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -509,7 +589,12 @@
       "name": "Upload custom code system - JSON codes (preferred)",
       "request": {
         "urlPathTemplate": "/construe/upload",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 202,
@@ -535,7 +620,12 @@
       "name": "List available code systems - default",
       "request": {
         "urlPathTemplate": "/construe/codes/systems",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -563,6 +653,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -599,6 +694,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "CUSTOM_CODES"
@@ -635,6 +735,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/systems/{codesystem}/export",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "CUSTOM_CODES"
@@ -670,7 +775,12 @@
       "name": "Submit feedback on extraction results - default",
       "request": {
         "urlPathTemplate": "/construe/feedback",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -696,7 +806,12 @@
       "name": "Extract medical codes from text - Basic Extraction",
       "request": {
         "urlPathTemplate": "/construe/extract",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -722,7 +837,12 @@
       "name": "[Alpha] Extract medical codes with phenocr - HPO Phenotype Extraction",
       "request": {
         "urlPathTemplate": "/construe/phenocr",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -748,7 +868,12 @@
       "name": "Crosswalk a code to target code systems - ICD-10-CM to HPO",
       "request": {
         "urlPathTemplate": "/construe/codes/crosswalk",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -775,6 +900,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -817,6 +947,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/{codeID}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -856,6 +991,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/semantic",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -898,6 +1038,11 @@
       "request": {
         "urlPathTemplate": "/construe/codes/{codesystem}/search/text",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "codesystem": {
             "equalTo": "ICD-10-CM"
@@ -940,6 +1085,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -974,6 +1124,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1008,6 +1163,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1042,6 +1202,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1076,6 +1241,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir/{fhir_path}",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1110,6 +1280,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/fhir",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "550e8400-e29b-41d4-a716-446655440000"
@@ -1136,20 +1311,25 @@
       }
     },
     {
-      "id": "a7d8dc82-74e1-4559-913a-04a444d02bc1",
-      "name": "Map FHIR resources to OMOP CDM v5.4 - Mapping result",
+      "id": "320c1df7-9ebd-4cd0-91a6-4aa888e82c78",
+      "name": "Map FHIR resources to OMOP CDM v5.4 - Bundle with a referenced medication",
       "request": {
         "urlPathTemplate": "/fhir2omop/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"FHIR resources mapped to OMOP CDM v5.4\",\n  \"tables\": {\n    \"location\": [\n      {}\n    ],\n    \"care_site\": [\n      {}\n    ],\n    \"provider\": [\n      {}\n    ],\n    \"person\": [\n      {\n        \"person_id\": 1,\n        \"gender_concept_id\": 0,\n        \"year_of_birth\": 1985,\n        \"month_of_birth\": 7,\n        \"day_of_birth\": 22,\n        \"birth_datetime\": \"1985-07-22\",\n        \"race_concept_id\": 0,\n        \"ethnicity_concept_id\": 0,\n        \"person_source_value\": \"patient-1\",\n        \"gender_source_value\": \"female\"\n      }\n    ],\n    \"death\": [\n      {}\n    ],\n    \"observation_period\": [\n      {}\n    ],\n    \"visit_occurrence\": [\n      {}\n    ],\n    \"condition_occurrence\": [\n      {\n        \"condition_occurrence_id\": 1,\n        \"person_id\": 1,\n        \"condition_concept_id\": 201826,\n        \"condition_start_date\": \"2024-01-15\",\n        \"condition_start_datetime\": \"2024-01-15\",\n        \"condition_type_concept_id\": 32817,\n        \"condition_source_value\": \"http://snomed.info/sct#44054006\",\n        \"condition_source_concept_id\": 201826\n      }\n    ],\n    \"drug_exposure\": [\n      {\n        \"drug_exposure_id\": 1,\n        \"person_id\": 1,\n        \"drug_concept_id\": 40163924,\n        \"drug_exposure_start_date\": \"2024-01-16\",\n        \"drug_exposure_start_datetime\": \"2024-01-16\",\n        \"drug_type_concept_id\": 32817,\n        \"drug_source_value\": \"http://www.nlm.nih.gov/research/umls/rxnorm#860975\",\n        \"drug_source_concept_id\": 40163924\n      }\n    ],\n    \"procedure_occurrence\": [\n      {}\n    ],\n    \"measurement\": [\n      {}\n    ],\n    \"observation\": [\n      {}\n    ]\n  },\n  \"mappings\": [\n    {\n      \"resource_type\": \"Condition\",\n      \"resource_id\": \"condition-1\",\n      \"omop_table\": \"condition_occurrence\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://snomed.info/sct\",\n      \"source_code\": \"44054006\",\n      \"source_name\": \"Type 2 diabetes mellitus\",\n      \"target_vocabulary\": \"SNOMED\",\n      \"target_code\": \"44054006\",\n      \"target_name\": \"Type 2 diabetes mellitus\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    },\n    {\n      \"resource_type\": \"MedicationRequest\",\n      \"resource_id\": \"medreq-1\",\n      \"omop_table\": \"drug_exposure\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://www.nlm.nih.gov/research/umls/rxnorm\",\n      \"source_code\": \"860975\",\n      \"source_name\": \"metformin hydrochloride 500 MG\",\n      \"target_vocabulary\": \"RXNORM\",\n      \"target_code\": \"860975\",\n      \"target_name\": \"metformin hydrochloride 500 MG\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"resource_type\": \"resource_type\",\n      \"resource_id\": \"resource_id\",\n      \"reason\": \"reason\"\n    }\n  ],\n  \"vocab_version\": \"v20240229\",\n  \"summary\": {\n    \"codes_already_standard\": 2,\n    \"codes_normalized\": 0,\n    \"codes_unmapped\": 0,\n    \"off_vocab_rate\": 0\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"FHIR resources mapped to OMOP CDM v5.4\",\n  \"tables\": {\n    \"location\": [\n      {}\n    ],\n    \"care_site\": [\n      {}\n    ],\n    \"provider\": [\n      {}\n    ],\n    \"person\": [\n      {\n        \"person_id\": 1,\n        \"gender_concept_id\": 0,\n        \"year_of_birth\": 1985,\n        \"month_of_birth\": 7,\n        \"day_of_birth\": 22,\n        \"birth_datetime\": \"1985-07-22\",\n        \"race_concept_id\": 0,\n        \"ethnicity_concept_id\": 0,\n        \"person_source_value\": \"patient-1\",\n        \"gender_source_value\": \"female\"\n      }\n    ],\n    \"death\": [\n      {}\n    ],\n    \"observation_period\": [\n      {}\n    ],\n    \"visit_occurrence\": [\n      {}\n    ],\n    \"condition_occurrence\": [\n      {\n        \"condition_occurrence_id\": 1,\n        \"person_id\": 1,\n        \"condition_concept_id\": 201826,\n        \"condition_start_date\": \"2024-01-15\",\n        \"condition_start_datetime\": \"2024-01-15\",\n        \"condition_type_concept_id\": 32817,\n        \"condition_source_value\": \"http://snomed.info/sct#44054006\",\n        \"condition_source_concept_id\": 201826\n      }\n    ],\n    \"drug_exposure\": [\n      {\n        \"drug_exposure_id\": 1,\n        \"person_id\": 1,\n        \"drug_concept_id\": 40163924,\n        \"drug_exposure_start_date\": \"2024-01-16\",\n        \"drug_exposure_start_datetime\": \"2024-01-16\",\n        \"drug_type_concept_id\": 32838,\n        \"drug_source_value\": \"http://www.nlm.nih.gov/research/umls/rxnorm#860975\",\n        \"drug_source_concept_id\": 40163924\n      }\n    ],\n    \"procedure_occurrence\": [\n      {}\n    ],\n    \"measurement\": [\n      {}\n    ],\n    \"observation\": [\n      {}\n    ]\n  },\n  \"mappings\": [\n    {\n      \"resource_type\": \"Condition\",\n      \"resource_id\": \"condition-1\",\n      \"omop_table\": \"condition_occurrence\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://snomed.info/sct\",\n      \"source_code\": \"44054006\",\n      \"source_name\": \"Type 2 diabetes mellitus\",\n      \"target_vocabulary\": \"SNOMED\",\n      \"target_code\": \"44054006\",\n      \"target_name\": \"Type 2 diabetes mellitus\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    },\n    {\n      \"resource_type\": \"MedicationRequest\",\n      \"resource_id\": \"medreq-1\",\n      \"omop_table\": \"drug_exposure\",\n      \"omop_id\": 1,\n      \"source_system\": \"http://www.nlm.nih.gov/research/umls/rxnorm\",\n      \"source_code\": \"860975\",\n      \"source_name\": \"metformin hydrochloride 500 MG\",\n      \"target_vocabulary\": \"RXNORM\",\n      \"target_code\": \"860975\",\n      \"target_name\": \"metformin hydrochloride 500 MG\",\n      \"mapping_status\": \"ALREADY_STANDARD\",\n      \"note\": \"note\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"resource_type\": \"resource_type\",\n      \"resource_id\": \"resource_id\",\n      \"reason\": \"reason\"\n    }\n  ],\n  \"vocab_version\": \"v20240229\",\n  \"summary\": {\n    \"codes_already_standard\": 2,\n    \"codes_normalized\": 0,\n    \"codes_unmapped\": 0,\n    \"off_vocab_rate\": 0\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
       },
-      "uuid": "a7d8dc82-74e1-4559-913a-04a444d02bc1",
+      "uuid": "320c1df7-9ebd-4cd0-91a6-4aa888e82c78",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1166,7 +1346,12 @@
       "name": "Create FHIR provider - default",
       "request": {
         "urlPathTemplate": "/fhir-provider",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1192,7 +1377,12 @@
       "name": "List FHIR providers - default",
       "request": {
         "urlPathTemplate": "/fhir-provider/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1220,6 +1410,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "fhir_provider_id"
@@ -1251,6 +1446,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "fhir_provider_id"
@@ -1282,6 +1482,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/add-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1313,6 +1518,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/set-active-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1344,6 +1554,11 @@
       "request": {
         "urlPathTemplate": "/fhir-provider/{fhir_provider_id}/remove-auth-config",
         "method": "PATCH",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "fhir_provider_id": {
             "equalTo": "1716d214-de93-43a4-aa6b-a878d864e2ad"
@@ -1374,11 +1589,16 @@
       "name": "List implementation guides - default",
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"implementation_guides\": [\n    {\n      \"name\": \"acme-cardiology\",\n      \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n      \"profile_count\": 3,\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
+        "body": "{\n  \"implementation_guides\": [\n    {\n      \"name\": \"acme-cardiology\",\n      \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n      \"profile_count\": 3,\n      \"canonical_url\": \"canonical_url\",\n      \"version_count\": 1,\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1402,6 +1622,11 @@
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1410,7 +1635,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"profiles\": [\n    \"custom-patient\",\n    \"acme-vital-signs\"\n  ]\n}",
+        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"canonical_url\": \"canonical_url\",\n  \"version_count\": 1,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"profiles\": [\n    \"custom-patient\",\n    \"acme-vital-signs\"\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1433,6 +1658,11 @@
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1441,7 +1671,7 @@
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "body": "{\n  \"name\": \"acme-cardiology\",\n  \"profile_context\": \"When the text mentions phenotypic features, prefer the hpo-observation profile over Condition.\",\n  \"profile_count\": 3,\n  \"canonical_url\": \"canonical_url\",\n  \"version_count\": 1,\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1459,11 +1689,16 @@
       }
     },
     {
-      "id": "44652922-4793-4275-840e-4dc1b1bde786",
-      "name": "Delete an implementation guide's metadata - default",
+      "id": "2678a6e7-10b0-4621-ad5c-67980574a8f8",
+      "name": "Delete an implementation guide family - default",
       "request": {
         "urlPathTemplate": "/fhir/implementation-guides/{name}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "name": {
             "equalTo": "acme-cardiology"
@@ -1477,7 +1712,82 @@
           "Content-Type": "application/json"
         }
       },
-      "uuid": "44652922-4793-4275-840e-4dc1b1bde786",
+      "uuid": "2678a6e7-10b0-4621-ad5c-67980574a8f8",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a7a30315-de87-4485-a1e4-15eeea48b530",
+      "name": "Publish an exact custom-profile package - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides/{name}/versions",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "name": {
+            "equalTo": "name"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": "{\n  \"name\": \"name\",\n  \"url\": \"url\",\n  \"version\": \"version\",\n  \"profile_context\": \"profile_context\",\n  \"profiles\": [\n    \"profiles\"\n  ],\n  \"profile_refs\": [\n    \"profile_refs\"\n  ],\n  \"implementation_guide\": {\n    \"resourceType\": \"ImplementationGuide\",\n    \"id\": \"id\",\n    \"url\": \"url\",\n    \"version\": \"version\",\n    \"name\": \"name\",\n    \"status\": \"status\",\n    \"packageId\": \"packageId\",\n    \"fhirVersion\": [\n      \"fhirVersion\"\n    ]\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a7a30315-de87-4485-a1e4-15eeea48b530",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "bfd69c60-e799-438e-a780-2c4c1fd1a9a8",
+      "name": "Get an exact custom-profile package - default",
+      "request": {
+        "urlPathTemplate": "/fhir/implementation-guides/{name}/versions/{version}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "name": {
+            "equalTo": "name"
+          },
+          "version": {
+            "equalTo": "1.0.0"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"name\": \"name\",\n  \"url\": \"url\",\n  \"version\": \"version\",\n  \"profile_context\": \"profile_context\",\n  \"profiles\": [\n    \"profiles\"\n  ],\n  \"profile_refs\": [\n    \"profile_refs\"\n  ],\n  \"implementation_guide\": {\n    \"resourceType\": \"ImplementationGuide\",\n    \"id\": \"id\",\n    \"url\": \"url\",\n    \"version\": \"version\",\n    \"name\": \"name\",\n    \"status\": \"status\",\n    \"packageId\": \"packageId\",\n    \"fhirVersion\": [\n      \"fhirVersion\"\n    ]\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "bfd69c60-e799-438e-a780-2c4c1fd1a9a8",
       "persistent": true,
       "priority": 3,
       "metadata": {
@@ -1494,7 +1804,12 @@
       "name": "Create FHIR resource from text - Condition Resource",
       "request": {
         "urlPathTemplate": "/lang2fhir/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1520,11 +1835,16 @@
       "name": "Extract multiple FHIR resources from text - Full Patient Record",
       "request": {
         "urlPathTemplate": "/lang2fhir/create/multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Smith\"\n            }\n          ],\n          \"gender\": \"male\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"resource_review\": {\n    \"flagged\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Smith\"\n            }\n          ],\n          \"gender\": \"male\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"code\": {\n            \"text\": \"Type 2 Diabetes\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Smith (DOB 1980-05-12) was diagnosed with Type 2 Diabetes during office visit on 2025-03-01 with Dr. Chen\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"resource_review\": {\n    \"flagged\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"unaudited\": true,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ],\n    \"remediated\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"unaudited\": true,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ]\n  }\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1546,7 +1866,12 @@
       "name": "Generate FHIR search parameters from text - Search Appointments",
       "request": {
         "urlPathTemplate": "/lang2fhir/search",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1572,7 +1897,12 @@
       "name": "Upload custom FHIR profile (deprecated) - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/profile/upload",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1598,7 +1928,12 @@
       "name": "Convert document to FHIR resource - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/document",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -1624,11 +1959,16 @@
       "name": "Extract multiple FHIR resources from a document - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/document/multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
-        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Doe\"\n            }\n          ],\n          \"gender\": \"male\",\n          \"birthDate\": \"1979-03-15\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"code\": {\n            \"text\": \"Type 2 Diabetes Mellitus\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:patient-001\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Doe, born 1979-03-15\",\n      \"originalText\": \"John Doe, DOB 1979-03-15\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-001\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes Mellitus diagnosis\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-001\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg prescription\",\n      \"originalText\": \"Prescribed Metformin 500mg\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"resource_review\": {\n    \"flagged\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"classification_id\": \"clinical\",\n      \"reason\": \"clinical demographics and diagnosis\"\n    },\n    {\n      \"page_number\": 2,\n      \"include\": true,\n      \"classification_id\": \"clinical\",\n      \"reason\": \"clinical medication details\"\n    },\n    {\n      \"page_number\": 3,\n      \"include\": false,\n      \"classification_id\": \"admin\",\n      \"reason\": \"administrative cover sheet\"\n    }\n  ]\n}",
+        "body": "{\n  \"success\": true,\n  \"message\": \"Successfully extracted 3 resources\",\n  \"bundle\": {\n    \"resourceType\": \"Bundle\",\n    \"type\": \"transaction\",\n    \"entry\": [\n      {\n        \"fullUrl\": \"urn:uuid:patient-001\",\n        \"resource\": {\n          \"resourceType\": \"Patient\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"name\": [\n            {\n              \"given\": [\n                \"John\"\n              ],\n              \"family\": \"Doe\"\n            }\n          ],\n          \"gender\": \"male\",\n          \"birthDate\": \"1979-03-15\"\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Patient\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:condition-001\",\n        \"resource\": {\n          \"resourceType\": \"Condition\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"code\": {\n            \"text\": \"Type 2 Diabetes Mellitus\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"Condition\"\n        }\n      },\n      {\n        \"fullUrl\": \"urn:uuid:medication-001\",\n        \"resource\": {\n          \"resourceType\": \"MedicationRequest\",\n          \"meta\": {\n            \"tag\": [\n              {\n                \"system\": \"https://phenoml.com/fhir/split-classification\",\n                \"code\": \"clinical\"\n              }\n            ]\n          },\n          \"medicationCodeableConcept\": {\n            \"text\": \"Metformin 500mg\"\n          },\n          \"subject\": {\n            \"reference\": \"urn:uuid:patient-001\"\n          }\n        },\n        \"request\": {\n          \"method\": \"POST\",\n          \"url\": \"MedicationRequest\"\n        }\n      }\n    ]\n  },\n  \"resources\": [\n    {\n      \"tempId\": \"urn:uuid:patient-001\",\n      \"resourceType\": \"Patient\",\n      \"description\": \"John Doe, born 1979-03-15\",\n      \"originalText\": \"John Doe, DOB 1979-03-15\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:condition-001\",\n      \"resourceType\": \"Condition\",\n      \"description\": \"Type 2 Diabetes Mellitus diagnosis\",\n      \"originalText\": \"diagnosed with Type 2 Diabetes\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        1\n      ]\n    },\n    {\n      \"tempId\": \"urn:uuid:medication-001\",\n      \"resourceType\": \"MedicationRequest\",\n      \"description\": \"Metformin 500mg prescription\",\n      \"originalText\": \"Prescribed Metformin 500mg\",\n      \"group\": \"clinical\",\n      \"sourcePages\": [\n        2\n      ]\n    }\n  ],\n  \"validation\": {\n    \"passes\": [\n      {}\n    ],\n    \"fixed\": true,\n    \"attempts\": 1,\n    \"summary\": \"summary\"\n  },\n  \"resource_review\": {\n    \"flagged\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"unaudited\": true,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ],\n    \"remediated\": [\n      {\n        \"tempId\": \"urn:uuid:a842c4bc-f6cb-4555-9741-ac3aec4ef0b8\",\n        \"resourceType\": \"Condition\",\n        \"findings\": [\n          {\n            \"fieldPath\": \"onsetDateTime\",\n            \"value\": \"2024-01-15\",\n            \"supported\": false,\n            \"unaudited\": true,\n            \"rationale\": \"Date is the visit date, not when the condition began.\"\n          }\n        ]\n      }\n    ]\n  },\n  \"page_classifications\": [\n    {\n      \"page_number\": 1,\n      \"include\": true,\n      \"classification_id\": \"clinical\",\n      \"reason\": \"clinical demographics and diagnosis\"\n    },\n    {\n      \"page_number\": 2,\n      \"include\": true,\n      \"classification_id\": \"clinical\",\n      \"reason\": \"clinical medication details\"\n    },\n    {\n      \"page_number\": 3,\n      \"include\": false,\n      \"classification_id\": \"admin\",\n      \"reason\": \"administrative cover sheet\"\n    }\n  ]\n}",
         "headers": {
           "Content-Type": "application/json"
         }
@@ -1651,6 +1991,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "cursor": {
             "equalTo": "cursor"
@@ -1685,7 +2030,12 @@
       "name": "Create a batch job - default",
       "request": {
         "urlPathTemplate": "/lang2fhir/batch",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 202,
@@ -1712,6 +2062,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/items",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1743,6 +2098,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/finalize",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1774,6 +2134,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/cancel",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1805,6 +2170,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1844,6 +2214,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/results",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1883,6 +2258,11 @@
       "request": {
         "urlPathTemplate": "/lang2fhir/batch/{job_id}/results/{item_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "job_id": {
             "equalTo": "job_id"
@@ -1917,6 +2297,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "url": {
             "equalTo": "http://phenoml.com/fhir/StructureDefinition/custom-patient|1.0.0"
@@ -1948,7 +2333,12 @@
       "name": "Upload a custom FHIR profile - default",
       "request": {
         "urlPathTemplate": "/fhir/profiles",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 201,
@@ -1975,6 +2365,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2006,6 +2401,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2037,6 +2437,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2068,6 +2473,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2099,6 +2509,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2130,6 +2545,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2164,6 +2584,11 @@
       "request": {
         "urlPathTemplate": "/fhir/profiles/{id}/versions/{version}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "custom-patient"
@@ -2197,7 +2622,12 @@
       "name": "List all summary templates - default",
       "request": {
         "urlPathTemplate": "/fhir2summary/templates",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2224,7 +2654,12 @@
       "name": "Create a new summary template - Discharge Summary Template",
       "request": {
         "urlPathTemplate": "/fhir2summary/template",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2251,6 +2686,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2282,6 +2722,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2313,6 +2758,11 @@
       "request": {
         "urlPathTemplate": "/fhir2summary/template/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2343,7 +2793,12 @@
       "name": "Generate a summary from FHIR resources - Narrative Summary",
       "request": {
         "urlPathTemplate": "/fhir2summary/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2369,7 +2824,12 @@
       "name": "Create FHIR resource from text and store it - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2395,7 +2855,12 @@
       "name": "Extract and store multiple FHIR resources - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-create-multi",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2421,7 +2886,12 @@
       "name": "Search FHIR resources from natural language - default",
       "request": {
         "urlPathTemplate": "/tools/lang2fhir-and-search",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2447,7 +2917,12 @@
       "name": "Analyze patient cohorts - default",
       "request": {
         "urlPathTemplate": "/tools/cohort",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2473,7 +2948,12 @@
       "name": "Create MCP server - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/create",
-        "method": "POST"
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2499,7 +2979,12 @@
       "name": "List MCP servers - default",
       "request": {
         "urlPathTemplate": "/tools/mcp-server/list",
-        "method": "GET"
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
       },
       "response": {
         "status": 200,
@@ -2527,6 +3012,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2558,6 +3048,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2589,6 +3084,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/{mcp_server_id}/list",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_id": {
             "equalTo": "mcp_server_id"
@@ -2620,6 +3120,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_tool_id": {
             "equalTo": "mcp_server_tool_id"
@@ -2651,6 +3156,11 @@
       "request": {
         "urlPathTemplate": "/tools/mcp-server/tool/{mcp_server_tool_id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "mcp_server_tool_id": {
             "equalTo": "mcp_server_tool_id"
@@ -2682,6 +3192,11 @@
       "request": {
         "urlPathTemplate": "/workflows",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "verbose": {
             "equalTo": "true"
@@ -2714,6 +3229,11 @@
       "request": {
         "urlPathTemplate": "/workflows",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "queryParameters": {
           "verbose": {
             "equalTo": "true"
@@ -2745,6 +3265,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2781,6 +3306,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "PUT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2817,6 +3347,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}",
         "method": "DELETE",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "id"
@@ -2848,6 +3383,11 @@
       "request": {
         "urlPathTemplate": "/workflows/{id}/execute",
         "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
         "pathParameters": {
           "id": {
             "equalTo": "7a8b9c0d-1234-5678-abcd-ef9876543210"
@@ -2875,6 +3415,6 @@
     }
   ],
   "meta": {
-    "total": 94
+    "total": 96
   }
 }

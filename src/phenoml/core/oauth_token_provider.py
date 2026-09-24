@@ -31,7 +31,9 @@ class OAuthTokenProvider:
             return self._refresh()
 
     def _refresh(self) -> str:
-        token_response = self._auth_client.get_token(client_id=self._client_id, client_secret=self._client_secret)
+        token_response = self._auth_client.get_token(
+            client_id=self._client_id, client_secret=self._client_secret, grant_type="client_credentials"
+        )
         self._access_token = token_response.access_token
         self._expires_at = self._get_expires_at(
             expires_in_seconds=token_response.expires_in, buffer_in_minutes=self.BUFFER_IN_MINUTES
@@ -62,7 +64,9 @@ class AsyncOAuthTokenProvider:
             return await self._refresh()
 
     async def _refresh(self) -> str:
-        token_response = await self._auth_client.get_token(client_id=self._client_id, client_secret=self._client_secret)
+        token_response = await self._auth_client.get_token(
+            client_id=self._client_id, client_secret=self._client_secret, grant_type="client_credentials"
+        )
         self._access_token = token_response.access_token
         self._expires_at = self._get_expires_at(
             expires_in_seconds=token_response.expires_in, buffer_in_minutes=self.BUFFER_IN_MINUTES
