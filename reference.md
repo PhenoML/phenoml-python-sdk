@@ -3719,52 +3719,135 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dl>
 <dd>
 
-Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
-(person, visit_occurrence, condition_occurrence, drug_exposure,
-procedure_occurrence, measurement, observation).
+Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,
+grouped by destination table in `tables`.
 
-Resource support is intentionally limited to the OMOP tables returned by
-this endpoint:
-- `Patient` -> `person`
+Standards basis: [FHIR R4 (v4.0.1)](https://hl7.org/fhir/R4/) defines
+the accepted source elements and [OMOP CDM
+v5.4](https://ohdsi.github.io/CommonDataModel/cdm54.html) defines the
+output columns. The published [Vulcan FHIR-to-OMOP IG
+v1.0.0](https://hl7.org/fhir/uv/omop/) is an informative FHIR R5
+baseline; this endpoint documents and implements the equivalent R4
+source elements, rather than accepting R5-only fields.
+
+This response is a source-faithful mapping result, not a complete CDM
+load pipeline. CDM v5.4 requires `drug_exposure_end_date`; when a FHIR
+medication source supplies neither an explicit end nor a safe
+instantaneous-event interpretation, the response leaves the end absent
+rather than inferring it from a validity period, quantity, dose, or
+refill count. A downstream ETL must apply its own documented duration
+policy before loading such rows into a strictly conformant CDM instance.
+
+Current resource coverage:
+- `Patient` -> `person`; `deceased[x]` can also produce `death`, and the
+  first address can produce `location`
+- `observation_period` -> one request-local derived row per person with
+  valid dated visit, clinical, or death rows, spanning those dates; this
+  is not enrollment or capture-completeness evidence
+- `Location` -> `location` and `care_site`
+- `Organization` -> `care_site`; its first address can produce `location`
+- `HealthcareService` -> `care_site`
+- `Practitioner` and `PractitionerRole` -> `provider`
 - `Encounter` -> `visit_occurrence`
 - `Condition` -> `condition_occurrence`
 - `Procedure` -> `procedure_occurrence`
 - `MedicationRequest`, `MedicationStatement`, and
   `MedicationAdministration` -> `drug_exposure`
 - `Immunization` -> `drug_exposure`
-- `Observation` with a numeric `valueQuantity`, `valueInteger`, or
-  numeric-looking `valueString` (for example `"<2"`) -> `measurement`
-- non-numeric `Observation` -> `observation`
+- `Observation` -> `measurement` or `observation`. For coded
+  Observations, the resolved OMOP concept domain selects the table; value
+  form only breaks ties. For text-only Observations, numeric values route
+  to `measurement` and nonnumeric values to `observation`.
 - `AllergyIntolerance` -> `observation`
 
-`Medication` is supported only as reference data for medication
-resources; it is not emitted as its own row because OMOP CDM has no
-Medication table. Other reference/admin resources such as `Practitioner`,
-`Organization`, `Location`, `Coverage`, and `Claim`, and clinical
-workflow/document resources such as `DiagnosticReport`, `ServiceRequest`,
-`CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and
-`DeviceUseStatement`, are currently accepted in a Bundle but are not
-shaped into OMOP rows. Unsupported resource types are ignored rather than
-listed under `dropped`; `dropped` is reserved for supported resource types
-that were missing the subject/patient, code, or medication reference data
-needed to produce a valid row.
+`Medication` is reference data for medication resources; it does not
+create its own row because OMOP CDM has no Medication table. Administrative
+linkages (provider, care site, and location) are best-effort and limited to
+references supplied in the request. `Patient.managingOrganization` is a
+record custodian, not a care-delivery site. Their supporting concepts,
+including provider specialty, country, and place of service, are not mapped.
 
-Each resource's primary clinical coding is resolved to a standard OMOP
-`concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
-response carries `mappings` (how each source coding resolved, linked back
-to the row it produced), `dropped` (resources that could not be shaped
-into a row), `vocab_version` (the OMOP vocabulary release codes were
-resolved against), and a small `summary` of the resolution outcomes.
+`DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
+`Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+other unsupported resource types are accepted in a Bundle but ignored: they
+create no row and no `dropped` entry. `dropped` is reserved for supported
+row-producing resources that could not be shaped because the subject/patient,
+clinical code/text, or medication data was not usable. A single-Patient
+Bundle uses the sole Patient only when `subject`/`patient` is absent. An
+explicit subject/patient reference that is unresolved, ambiguous, or
+unsupported drops the clinical resource in every request scope.
+
+Coded Observation routing is selected from the resolved OMOP concept
+domain. Numeric and nonnumeric `value[x]` forms establish the preferred
+target only when the code is valid for both tables. A text-only
+Observation has no resolver target, so numeric values route to
+`measurement` and nonnumeric values to `observation`. Numeric values
+populate `value_as_number` in the selected row; nonnumeric values
+populate `value_as_string` for an `observation` or `value_source_value`
+for a `measurement`. `valueCodeableConcept` remains source text and does
+not populate `value_as_concept_id`; other unsupported `value[x]` forms
+and Observation components do not populate separate converted values. A
+numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
+measurement's `operator_concept_id`; units remain source text and have
+`unit_concept_id` of `0`.
+
+A standard OMOP `concept_id` is selected for each primary clinical coding
+after considering all of the resource's supplied codings. An unambiguous
+coded medication route is resolved independently to
+`drug_exposure.route_concept_id`. Alongside the OMOP rows grouped by
+table (`tables`), the response carries `mappings` (an entry for every
+supported source coding that is sent to resolution, linked back to the
+row it produced),
+`dropped` (resources that could not be shaped into a row),
+`vocab_version` (the OMOP vocabulary release codes were resolved
+against), and a small `summary` of the resolution outcomes.
 
 A `concept_id` of `0` is reported, not omitted (OMOP "no matching
 concept" semantics): it covers both a coding with no standard match
 (`UNMAPPED`) and an unverified suggestion for a text-only resource
-(`UNCHECKED`). Only the primary clinical coding is resolved, so
-`gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-always `0`; the one populated non-resolved concept is measurement
+(`UNCHECKED`). Demographic, visit, categorical-value, and unit concept
+fields currently remain `0`; the one populated non-resolved concept is
+measurement
 `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
-rather than the resolver. Each `*_source_value` carries the verbatim FHIR
-coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+rather than terminology resolution. Clinical `*_source_value` fields
+preserve the selected FHIR coding (`system#code`, or `code` when no
+system is supplied), falling back to source text for text-only resources.
+Known OID-form coding systems are accepted as either FHIR OID URNs (for
+example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
+are normalized to their canonical system URLs before terminology
+resolution. `*_source_value` and `mappings[].source_system` report that
+canonical URL, so the OID and URL forms produce the same mapping. An
+unknown OID is not rewritten and may be `UNMAPPED`.
+Other `*_source_value` fields preserve row-specific raw source values,
+such as resource identifiers, names, units, or status codes.
+`MedicationRequest` uses `32838` (EHR prescription) for
+`drug_type_concept_id`; other current resources use `32817` (EHR). This
+is a coarse provenance policy: it does not infer patient-reported,
+medication-history, or other more-specific type concepts from FHIR
+status fields.
+
+Direct FHIR R4 timing and medication detail policy:
+- `MedicationStatement.effectiveDateTime` and `effectivePeriod.start`
+  populate drug start fields; `effectivePeriod.end` also populates drug
+  end date/datetime and `verbatim_end_date`. `dateAsserted` is recorded
+  time, not exposure timing.
+- `MedicationAdministration.effectiveDateTime` is a single-event,
+  same-day exposure; an explicit `effectivePeriod.end` populates
+  source-supported end and verbatim-end fields. A start-only
+  administration period keeps its start and leaves the end absent.
+  `Immunization.occurrenceDateTime` is also a single-event, same-day
+  exposure.
+- `MedicationRequest.authoredOn` is an order-date start fallback, not
+  proof of administration. Direct allowed repeats, whole-day expected
+  supply, and all non-empty dosage text are preserved; its validity
+  period is not exposure duration.
+- Coded dosage routes and `Immunization.route` are target-validated in
+  the OMOP Route domain. Conflicting routes are left unset; route
+  codings shared by every dosage instruction identify the same route.
+  `Immunization.lotNumber` is preserved; its `expirationDate` is not an
+  exposure end.
+- `Condition.abatementDateTime` and `abatementPeriod.end` populate
+  `condition_end_date`. Core CDM v5.4 has no procedure-end column.
 
 Medication codes are resolved whether they appear inline
 (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -3772,8 +3855,27 @@ relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
 Resources that cannot be shaped into a row — a medication with no usable
 code, resolvable reference, or display, or any clinical resource whose
 subject/patient reference cannot be tied to a person — are reported under
-`dropped` rather than emitted as blank rows. The
-bundle must contain at least one Patient resource.
+`dropped` rather than emitted as blank rows. The Bundle must contain at
+least one Patient resource.
+
+Structural references resolve only to top-level resources supplied in the
+request, by `Type/id` or an exactly matching Bundle `fullUrl` (including
+`urn:uuid`). Contained references are supported only for medication code
+lookup. Every nonzero structural foreign key targets a row in the same
+response. Missing optional links remain null without a diagnostic; an
+explicit optional reference that is unresolved, ambiguous, conflicting
+with the row's person, or unsupported remains null and is returned in
+`diagnostics` with its source path and outcome.
+
+All row IDs start at `1` for each request and are not stable or global.
+For clinical conversion rows whose resource supplies an `id`, `mappings`
+associates each row with that source FHIR resource ID. A `person` row
+retains the Patient ID or its first identifier value in
+`person_source_value`, when present; other reference and derived rows do
+not uniformly carry a FHIR resource ID. Input resources without those
+source identifiers cannot be correlated across responses from the
+returned rows alone. Consumers combining responses need to establish
+their own stable keys and remap every primary and foreign key together.
 </dd>
 </dl>
 </dd>
@@ -3823,11 +3925,12 @@ client.fhir2omop.create(
 
 FHIR resources (single resource or Bundle). Must contain at least one
 Patient resource. Supported row-producing resources are Patient,
-Encounter, Condition, Procedure, MedicationRequest,
+Location, Organization, HealthcareService, Practitioner,
+PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
 MedicationStatement, MedicationAdministration, Immunization,
 Observation, and AllergyIntolerance. Standalone Medication resources
 are consumed by medication references rather than mapped to their own
-table. Other resource types are accepted but ignored.
+table. Unsupported resource types are accepted in a Bundle but ignored.
     
 </dd>
 </dl>
@@ -4689,11 +4792,9 @@ client.implementation_guides.implementation_guides.update(
 <dl>
 <dd>
 
-Deletes the stored metadata for an implementation guide — its
-profile_context and timestamps. Member profiles keep their
-implementation_guide assignment, so a guide still referenced by at least
-one profile continues to appear in listings, just without context or
-timestamps.
+Deletes the stored name-level metadata and any exact canonical package
+versions beneath the guide. Legacy member profile assignments are not
+changed.
 </dd>
 </dl>
 </dd>
@@ -4736,6 +4837,184 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **name:** `str` — The implementation guide name.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">create_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Publishes an exact package beneath this guide family. PR 2 temporarily
+permits one exact package version per guide family; publishing another
+version returns `409 Conflict` until multi-version package support lands.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+from phenoml.implementation_guides import FhirImplementationGuide
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.create_version(
+    name="name",
+    implementation_guide=FhirImplementationGuide(
+        resource_type="ImplementationGuide",
+        url="url",
+        version="version",
+    ),
+    profile_refs=[
+        "profile_refs"
+    ],
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `FhirImplementationGuide` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_refs:** `typing.List[str]` — Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**profile_context:** `typing.Optional[str]` — Natural-language profile-selection context for this package.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">get_version</a>(...) -> ImplementationGuideVersionDetail</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from phenoml import PhenomlClient
+from phenoml.environment import PhenomlClientEnvironment
+
+client = PhenomlClient(
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PhenomlClientEnvironment.DEFAULT,
+)
+
+client.implementation_guides.implementation_guides.get_version(
+    name="name",
+    version="1.0.0",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**version:** `str` — The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
     
 </dd>
 </dl>
@@ -4822,7 +5101,7 @@ client.lang2fhir.create(
 <dl>
 <dd>
 
-**resource:** `CreateRequestResource` — Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported US Core profile. Recommended to use the supported US Core Profiles for validated results but you can also use any custom profile you've uploaded (if you're a develop or launch customer) 
+**resource:** `CreateRequestResource` — Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
     
 </dd>
 </dl>
@@ -4933,7 +5212,7 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
-**patient_reference:** `typing.Optional[PatientReference]` 
+**primary_patient:** `typing.Optional[PrimaryPatient]` 
     
 </dd>
 </dl>
@@ -4941,7 +5220,15 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
-**implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+**patient_reference:** `typing.Optional[PatientReference]` — Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
     
 </dd>
 </dl>
@@ -5179,7 +5466,7 @@ client.lang2fhir.upload_profile(
 <dl>
 <dd>
 
-Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into a structured FHIR resource.
 
 **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 </dd>
@@ -5208,7 +5495,7 @@ client = PhenomlClient(
 client.lang2fhir.document(
     version="R4",
     resource="questionnaire",
-    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
 )
 
 ```
@@ -5244,8 +5531,11 @@ client.lang2fhir.document(
 **content:** `str` 
 
 Base64 encoded file content.
-Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+RTF and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
+The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
     
 </dd>
 </dl>
@@ -5285,7 +5575,7 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
-Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into multiple FHIR resources,
 returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
 Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
 Resources are linked with proper references (e.g., Conditions reference the Patient).
@@ -5319,7 +5609,7 @@ client = PhenomlClient(
 
 client.lang2fhir.document_multi(
     version="R4",
-    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+    content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
     provider="medplum",
     config=DocumentConfig(
         split_classifications=[
@@ -5362,8 +5652,11 @@ client.lang2fhir.document_multi(
 **content:** `str` 
 
 Base64 encoded file content.
-Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+RTF and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
+The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
     
 </dd>
 </dl>
@@ -5379,7 +5672,7 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
-**patient_reference:** `typing.Optional[PatientReference]` 
+**primary_patient:** `typing.Optional[PrimaryPatient]` 
     
 </dd>
 </dl>
@@ -5387,7 +5680,15 @@ File type is auto-detected from content magic bytes.
 <dl>
 <dd>
 
-**implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+**patient_reference:** `typing.Optional[PatientReference]` — Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
     
 </dd>
 </dl>
@@ -5530,20 +5831,11 @@ client.lang2fhir_batch.list(
 <dl>
 <dd>
 
-Opens an empty batch job. Items arrive on later upload calls and the set
-is sealed at finalize.
+Opens an empty job; upload items, then finalize it to start processing.
 
-Supplying `request_id` makes the create idempotent on that token: a
-retried submit whose response was lost returns the original job rather
-than opening a second one. This dedupe is scoped to the calling
-credential. A `request_id` whose job was canceled or failed before it
-finalized is released for a fresh replay; once a job is finalized, its
-`request_id` keeps resolving to it even after cancellation.
-
-An instance may hold at most 4 active (pending or processing) jobs at
-once; a create past that limit returns `409`. The limit is instance-wide
-— jobs are shared across the instance's credentials — so another
-credential's jobs count against it.
+`request_id` makes creation idempotent: a retry returns the original
+job. A token is released when its job is canceled or fails before
+finalization; otherwise it continues to resolve to that job.
 </dd>
 </dl>
 </dd>
@@ -5587,8 +5879,9 @@ client.lang2fhir_batch.create(
 
 **request_id:** `typing.Optional[str]` 
 
-Optional client idempotency token. A retried create with the same
-token returns the original job instead of opening a second one.
+Optional client idempotency token (at most 256 UTF-8 bytes). A
+retried create with the same token returns the original job instead
+of opening a second one.
     
 </dd>
 </dl>
@@ -5620,43 +5913,22 @@ token returns the original job instead of opening a second one.
 <dl>
 <dd>
 
-Stores one item of a job from a multipart upload. A batch's items arrive
-one per request. The item carries **either** a `document` extraction
-(whose input file rides as raw bytes in the `file` part) **or** a
-`create` extraction (JSON only, no file).
+Stores one multipart item. Set **either** `document` with a raw `file`,
+or JSON-only `create`.
 
-The upload enforces these rules:
-- Set **exactly one** of `document` or `create`. Setting both, or
-  neither, is a `400`.
-- When `document` is set, `file` is **required** — it supplies the
-  document's binary content (PDF or image).
-- When `create` is set, `file` is **forbidden** — a create item carries
-  no file.
-- `document` and `create` must each be a JSON **object**.
+Set exactly one JSON object. `document` requires `file`; `create`
+forbids it. Violations return `400`.
 
-Only the item's structure is checked here: the fields inside `document`
-or `create` are not validated at upload. A body that is well-formed JSON
-but not a valid request for its endpoint is still accepted with `202`
-and fails later during processing, recorded as an item `error`. A
-wrong-typed field the endpoint cannot decode fails as `invalid_input`; a
-body that decodes but the pipeline rejects (for example, a missing
-required field) fails as `processing_failed`.
+Upload validates only the envelope. Endpoint request validation happens
+during processing: decoding failures are `invalid_input`; other pipeline
+failures are `processing_failed`.
 
-Supplying `request_id` makes the upload idempotent on that token. A
-re-upload under the same token overwrites the same item rather than
-adding a second, so a client that lost an upload's response can safely
-re-send it. The response's `deduplicated` is `true` only when the
-re-uploaded payload matches the one already stored; a same-token upload
-with a changed payload overwrites in place and returns `false`.
+Use `request_id` for every upload so retries replace the same item.
+`deduplicated` is true only for an unchanged payload; a changed payload
+overwrites the item and returns false.
 
-Set a `request_id` on **every** upload: re-sending under the same token
-is the only way to repair a lost or incomplete upload, including the one
-a finalize `409` reports. Without one, a re-send adds a new item instead
-of replacing the missing one, and the job cannot be finalized.
-
-Uploads are rejected once the job has been finalized (`409`), once it
-holds its 500-item limit (`409`), or when the item is too large (`413` —
-see the raw-file limit in the API description).
+Uploads return `409` after finalization or at the item limit, and `413`
+when the item is too large.
 </dd>
 </dl>
 </dd>
@@ -5712,11 +5984,12 @@ client.lang2fhir_batch.upload_item(
 The JSON body of `POST /lang2fhir/document/multi`, **without**
 its base64 `content` field — the uploaded `file` supplies the
 content. Accepts that endpoint's fields (`version`, `provider`,
-`patient_reference`, `implementation_guide`, `detection_effort`,
+`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
 `validation_method`, `config`). This is the **multi**-resource
 body: it has no single-`resource` field, and the item's result
 is a `DocumentMultiResponse` (a Bundle of resources). Mutually
-exclusive with `create`; requires `file`.
+exclusive with `create`; requires `file`. Do not combine
+`primary_patient` with `patient_reference`.
     
 </dd>
 </dl>
@@ -5728,12 +6001,13 @@ exclusive with `create`; requires `file`.
 
 The JSON body of `POST /lang2fhir/create/multi`. Accepts that
 endpoint's fields (`text`, `version`, `provider`,
-`patient_reference`, `implementation_guide`, `detection_effort`,
+`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
 `validation_method`, `resource_review`). This is the
 **multi**-resource body: it has no single-`resource` field, and
 the item's result is a `CreateMultiResponse` (a Bundle of
 resources). Mutually exclusive with `document`; must **not** be
-accompanied by a `file`.
+accompanied by a `file`. Do not combine `primary_patient` with
+`patient_reference`.
     
 </dd>
 </dl>
@@ -5743,7 +6017,13 @@ accompanied by a `file`.
 
 **file:** `typing.Optional[core.File]` 
 
-The document's binary content (PDF, PNG, JPEG, or TIFF).
+The document's file content (PDF, PNG, JPEG, TIFF, RTF, or
+XML/C-CDA). The document pipeline accepts files up to 20 MiB;
+an upload that passes the storage cap but exceeds this limit
+fails during processing. RTF and XML/C-CDA documents whose
+extracted text exceeds 1 MiB also fail during processing.
+Generic XML must include an XML declaration; C-CDA documents
+rooted at `ClinicalDocument` may omit it.
 Required with `document`; forbidden with `create`.
     
 </dd>
@@ -5754,10 +6034,11 @@ Required with `document`; forbidden with `create`.
 
 **request_id:** `typing.Optional[str]` 
 
-Optional idempotency token (max 256 bytes). Re-uploading under
-the same token overwrites the same item instead of adding a
-new one. The token is scoped to this job; the same token in
-another job is independent and creates a separate item.
+Optional idempotency token (at most 256 UTF-8 bytes).
+Re-uploading under the same token overwrites the same item
+instead of adding a new one. The token is scoped to this job;
+the same token in another job is independent and creates a
+separate item.
     
 </dd>
 </dl>
@@ -5767,9 +6048,9 @@ another job is independent and creates a separate item.
 
 **id:** `typing.Optional[str]` 
 
-Optional caller-supplied correlation label (max 512 bytes),
-echoed back on status and result listings so you can match the
-server's item_id to your own record.
+Optional caller-supplied correlation label (at most 512 UTF-8
+bytes), echoed back on status and result listings so you can
+match the server's item_id to your own record.
     
 </dd>
 </dl>
@@ -5880,8 +6161,8 @@ client.lang2fhir_batch.finalize(
 <dl>
 <dd>
 
-Drives a job to the terminal `canceled` state on request, freeing its
-active-job slot immediately. Takes no request body.
+Drives a job to the terminal `canceled` state on request. Takes no
+request body.
 
 Cancel does not delete the job: the job record and any results already
 produced are preserved for the normal retention window, the same as a
