@@ -7,6 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .dropped_resource import DroppedResource
 from .mapping_entry import MappingEntry
 from .omop_tables import OmopTables
+from .reference_diagnostic import ReferenceDiagnostic
 from .summary import Summary
 
 
@@ -16,22 +17,32 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     mappings: typing.Optional[typing.List[MappingEntry]] = pydantic.Field(default=None)
     """
-    One entry per source coding (or one entry for a text-only resource with no coding), describing how it resolved and linking back to the row it produced.
+    One entry per supported source coding (or one entry for a text-only primary resource with no coding), describing how it resolved and linking back to the row it produced. A coded route is a separate entry linked to its medication or vaccine row.
     """
 
     dropped: typing.Optional[typing.List[DroppedResource]] = pydantic.Field(default=None)
     """
     Supported resource instances that could not be shaped into an OMOP
-    row because required subject/patient, code, or medication reference
-    data was missing. Unsupported resource types are ignored and do not
-    appear here.
+    row because required clinical data was missing, or an explicit
+    subject/patient reference was unresolved, ambiguous, or unsupported.
+    Unsupported resource types are ignored and do not appear here.
+    """
+
+    diagnostics: typing.Optional[typing.List[ReferenceDiagnostic]] = pydantic.Field(default=None)
+    """
+    Explanations for explicit references that could not safely produce
+    an OMOP link, or explicit subject/patient references that caused a
+    clinical row to be dropped. Missing optional references are normal
+    and do not produce a diagnostic. References resolve only against
+    resources supplied in this request. Outcomes distinguish unresolved,
+    ambiguous, conflicting, and unsupported references.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The OMOP vocabulary release the clinical codes were resolved against
-    (e.g. "v20240229"), for reproducibility. Present when at least one
-    coded concept was resolved.
+    The OMOP vocabulary release returned for coded concept resolution
+    (for example, "v20240229"), for reproducibility. It is generally
+    absent for requests containing only text-only resources.
     """
 
     summary: typing.Optional[Summary] = None

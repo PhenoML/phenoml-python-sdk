@@ -6,15 +6,31 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import ImplementationGuideDetail, ImplementationGuideListResponse, ImplementationGuideSummary
-    from .errors import BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError
+    from .types import (
+        FhirImplementationGuide,
+        ImplementationGuideDetail,
+        ImplementationGuideListResponse,
+        ImplementationGuideSummary,
+        ImplementationGuideVersionDetail,
+    )
+    from .errors import (
+        BadRequestError,
+        ConflictError,
+        ForbiddenError,
+        InternalServerError,
+        NotFoundError,
+        UnauthorizedError,
+    )
     from . import implementation_guides
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
+    "ConflictError": ".errors",
+    "FhirImplementationGuide": ".types",
     "ForbiddenError": ".errors",
     "ImplementationGuideDetail": ".types",
     "ImplementationGuideListResponse": ".types",
     "ImplementationGuideSummary": ".types",
+    "ImplementationGuideVersionDetail": ".types",
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
     "UnauthorizedError": ".errors",
@@ -45,10 +61,13 @@ def __dir__():
 
 __all__ = [
     "BadRequestError",
+    "ConflictError",
+    "FhirImplementationGuide",
     "ForbiddenError",
     "ImplementationGuideDetail",
     "ImplementationGuideListResponse",
     "ImplementationGuideSummary",
+    "ImplementationGuideVersionDetail",
     "InternalServerError",
     "NotFoundError",
     "UnauthorizedError",
