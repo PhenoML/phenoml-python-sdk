@@ -8,31 +8,33 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class Summary(UniversalBaseModel):
     """
-    The request's data-quality headline: how the coded concepts split across
-    resolution outcomes, and the share that was not already in a target
-    standard vocabulary. Each coded resource is counted once (per resolved
-    concept), even when it carried several codings — unlike `mappings`, which
-    has one entry per coding.
+    The request's data-quality headline: how row-producing coded concepts
+    and selected routes split, and the share that was not already in a
+    target standard vocabulary. Each is counted once even when it carried
+    several codings — unlike `mappings`, which has one entry per coding. For
+    example, a medication code and its selected coded route on the same
+    `drug_exposure` row are separate outcomes; independently checked
+    report-only alternate route codings do not alter `summary`.
     """
 
     codes_already_standard: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Coded concepts already a standard OMOP concept (ALREADY_STANDARD).
+    Resolution outcomes already a standard OMOP concept (ALREADY_STANDARD).
     """
 
     codes_normalized: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Coded concepts mapped or suggested to a standard concept (MAPPED or UNCHECKED).
+    Resolution outcomes mapped or suggested to a standard concept (MAPPED or UNCHECKED).
     """
 
     codes_unmapped: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Coded concepts with no standard concept found (UNMAPPED).
+    Resolution outcomes with no standard concept found (UNMAPPED).
     """
 
     off_vocab_rate: typing.Optional[float] = pydantic.Field(default=None)
     """
-    Share of coded concepts not already standard ((normalized + unmapped) / total).
+    Share of resolution outcomes not already standard ((normalized + unmapped) / total).
     """
 
     if IS_PYDANTIC_V2:
