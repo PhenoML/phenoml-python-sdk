@@ -15,6 +15,7 @@ from .types.document_multi_request_validation_method import DocumentMultiRequest
 from .types.document_multi_response import DocumentMultiResponse
 from .types.fhir_resource import FhirResource
 from .types.patient_reference import PatientReference
+from .types.primary_patient import PrimaryPatient
 from .types.resource_review import ResourceReview
 from .types.search_response import SearchResponse
 from .types.upload_profile_response import UploadProfileResponse
@@ -57,7 +58,7 @@ class Lang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported US Core profile. Recommended to use the supported US Core Profiles for validated results but you can also use any custom profile you've uploaded (if you're a develop or launch customer)
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -95,6 +96,7 @@ class Lang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        primary_patient: typing.Optional[PrimaryPatient] = OMIT,
         patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
@@ -120,10 +122,13 @@ class Lang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        primary_patient : typing.Optional[PrimaryPatient]
+
         patient_reference : typing.Optional[PatientReference]
+            Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -158,6 +163,7 @@ class Lang2FhirClient:
             text=text,
             version=version,
             provider=provider,
+            primary_patient=primary_patient,
             patient_reference=patient_reference,
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
@@ -291,7 +297,7 @@ class Lang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+        Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into a structured FHIR resource.
 
         **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
@@ -305,8 +311,11 @@ class Lang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+            RTF and XML/C-CDA uploads are available on dedicated instances only.
             File type is auto-detected from content magic bytes.
+            The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+            Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
 
         config : typing.Optional[DocumentConfig]
 
@@ -329,7 +338,7 @@ class Lang2FhirClient:
         client.lang2fhir.document(
             version="R4",
             resource="questionnaire",
-            content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+            content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
         )
         """
         _response = self._raw_client.document(
@@ -343,6 +352,7 @@ class Lang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        primary_patient: typing.Optional[PrimaryPatient] = OMIT,
         patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
@@ -351,7 +361,7 @@ class Lang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentMultiResponse:
         """
-        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
@@ -367,16 +377,22 @@ class Lang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+            RTF and XML/C-CDA uploads are available on dedicated instances only.
             File type is auto-detected from content magic bytes.
+            The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+            Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        primary_patient : typing.Optional[PrimaryPatient]
+
         patient_reference : typing.Optional[PatientReference]
+            Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -405,7 +421,7 @@ class Lang2FhirClient:
         )
         client.lang2fhir.document_multi(
             version="R4",
-            content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+            content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
             provider="medplum",
             config=DocumentConfig(
                 split_classifications=[
@@ -427,6 +443,7 @@ class Lang2FhirClient:
             version=version,
             content=content,
             provider=provider,
+            primary_patient=primary_patient,
             patient_reference=patient_reference,
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
@@ -471,7 +488,7 @@ class AsyncLang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported US Core profile. Recommended to use the supported US Core Profiles for validated results but you can also use any custom profile you've uploaded (if you're a develop or launch customer)
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -517,6 +534,7 @@ class AsyncLang2FhirClient:
         text: str,
         version: typing.Optional[str] = OMIT,
         provider: typing.Optional[str] = OMIT,
+        primary_patient: typing.Optional[PrimaryPatient] = OMIT,
         patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
@@ -542,10 +560,13 @@ class AsyncLang2FhirClient:
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        primary_patient : typing.Optional[PrimaryPatient]
+
         patient_reference : typing.Optional[PatientReference]
+            Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -588,6 +609,7 @@ class AsyncLang2FhirClient:
             text=text,
             version=version,
             provider=provider,
+            primary_patient=primary_patient,
             patient_reference=patient_reference,
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
@@ -737,7 +759,7 @@ class AsyncLang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FhirResource:
         """
-        Extracts text from a document (PDF or image) and converts it into a structured FHIR resource.
+        Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into a structured FHIR resource.
 
         **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
@@ -751,8 +773,11 @@ class AsyncLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+            RTF and XML/C-CDA uploads are available on dedicated instances only.
             File type is auto-detected from content magic bytes.
+            The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+            Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
 
         config : typing.Optional[DocumentConfig]
 
@@ -780,7 +805,7 @@ class AsyncLang2FhirClient:
             await client.lang2fhir.document(
                 version="R4",
                 resource="questionnaire",
-                content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+                content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
             )
 
 
@@ -797,6 +822,7 @@ class AsyncLang2FhirClient:
         version: str,
         content: str,
         provider: typing.Optional[str] = OMIT,
+        primary_patient: typing.Optional[PrimaryPatient] = OMIT,
         patient_reference: typing.Optional[PatientReference] = OMIT,
         implementation_guide: typing.Optional[str] = OMIT,
         detection_effort: typing.Optional[DocumentMultiRequestDetectionEffort] = OMIT,
@@ -805,7 +831,7 @@ class AsyncLang2FhirClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DocumentMultiResponse:
         """
-        Extracts text from a document (PDF or image) and converts it into multiple FHIR resources,
+        Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into multiple FHIR resources,
         returned as a transaction Bundle. Combines document text extraction with multi-resource detection.
         Automatically detects Patient, Condition, MedicationRequest, Observation, and other resource types.
         Resources are linked with proper references (e.g., Conditions reference the Patient).
@@ -821,16 +847,22 @@ class AsyncLang2FhirClient:
 
         content : str
             Base64 encoded file content.
-            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff).
+            Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
+            RTF and XML/C-CDA uploads are available on dedicated instances only.
             File type is auto-detected from content magic bytes.
+            The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
+            Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
 
         provider : typing.Optional[str]
             Optional FHIR provider name for provider-specific profiles
 
+        primary_patient : typing.Optional[PrimaryPatient]
+
         patient_reference : typing.Optional[PatientReference]
+            Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside US Core profiles during resource detection. US Core is always the base layer; custom IG profiles are additive.
+            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
             Detection effort. 'standard' runs detection once, 'deep' runs detection multiple times for higher recall.
@@ -864,7 +896,7 @@ class AsyncLang2FhirClient:
         async def main() -> None:
             await client.lang2fhir.document_multi(
                 version="R4",
-                content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+                content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
                 provider="medplum",
                 config=DocumentConfig(
                     split_classifications=[
@@ -889,6 +921,7 @@ class AsyncLang2FhirClient:
             version=version,
             content=content,
             provider=provider,
+            primary_patient=primary_patient,
             patient_reference=patient_reference,
             implementation_guide=implementation_guide,
             detection_effort=detection_effort,
