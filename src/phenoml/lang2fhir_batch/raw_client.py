@@ -151,26 +151,18 @@ class RawLang2FhirBatchClient:
         self, *, request_id: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[BatchJob]:
         """
-        Opens an empty batch job. Items arrive on later upload calls and the set
-        is sealed at finalize.
+        Opens an empty job; upload items, then finalize it to start processing.
 
-        Supplying `request_id` makes the create idempotent on that token: a
-        retried submit whose response was lost returns the original job rather
-        than opening a second one. This dedupe is scoped to the calling
-        credential. A `request_id` whose job was canceled or failed before it
-        finalized is released for a fresh replay; once a job is finalized, its
-        `request_id` keeps resolving to it even after cancellation.
-
-        An instance may hold at most 4 active (pending or processing) jobs at
-        once; a create past that limit returns `409`. The limit is instance-wide
-        — jobs are shared across the instance's credentials — so another
-        credential's jobs count against it.
+        `request_id` makes creation idempotent: a retry returns the original
+        job. A token is released when its job is canceled or fails before
+        finalization; otherwise it continues to resolve to that job.
 
         Parameters
         ----------
         request_id : typing.Optional[str]
-            Optional client idempotency token. A retried create with the same
-            token returns the original job instead of opening a second one.
+            Optional client idempotency token (at most 256 UTF-8 bytes). A
+            retried create with the same token returns the original job instead
+            of opening a second one.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -215,17 +207,6 @@ class RawLang2FhirBatchClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 409:
-                raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -289,43 +270,22 @@ class RawLang2FhirBatchClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[UploadItemResponse]:
         """
-        Stores one item of a job from a multipart upload. A batch's items arrive
-        one per request. The item carries **either** a `document` extraction
-        (whose input file rides as raw bytes in the `file` part) **or** a
-        `create` extraction (JSON only, no file).
+        Stores one multipart item. Set **either** `document` with a raw `file`,
+        or JSON-only `create`.
 
-        The upload enforces these rules:
-        - Set **exactly one** of `document` or `create`. Setting both, or
-          neither, is a `400`.
-        - When `document` is set, `file` is **required** — it supplies the
-          document's binary content (PDF or image).
-        - When `create` is set, `file` is **forbidden** — a create item carries
-          no file.
-        - `document` and `create` must each be a JSON **object**.
+        Set exactly one JSON object. `document` requires `file`; `create`
+        forbids it. Violations return `400`.
 
-        Only the item's structure is checked here: the fields inside `document`
-        or `create` are not validated at upload. A body that is well-formed JSON
-        but not a valid request for its endpoint is still accepted with `202`
-        and fails later during processing, recorded as an item `error`. A
-        wrong-typed field the endpoint cannot decode fails as `invalid_input`; a
-        body that decodes but the pipeline rejects (for example, a missing
-        required field) fails as `processing_failed`.
+        Upload validates only the envelope. Endpoint request validation happens
+        during processing: decoding failures are `invalid_input`; other pipeline
+        failures are `processing_failed`.
 
-        Supplying `request_id` makes the upload idempotent on that token. A
-        re-upload under the same token overwrites the same item rather than
-        adding a second, so a client that lost an upload's response can safely
-        re-send it. The response's `deduplicated` is `true` only when the
-        re-uploaded payload matches the one already stored; a same-token upload
-        with a changed payload overwrites in place and returns `false`.
+        Use `request_id` for every upload so retries replace the same item.
+        `deduplicated` is true only for an unchanged payload; a changed payload
+        overwrites the item and returns false.
 
-        Set a `request_id` on **every** upload: re-sending under the same token
-        is the only way to repair a lost or incomplete upload, including the one
-        a finalize `409` reports. Without one, a re-send adds a new item instead
-        of replacing the missing one, and the job cannot be finalized.
-
-        Uploads are rejected once the job has been finalized (`409`), once it
-        holds its 500-item limit (`409`), or when the item is too large (`413` —
-        see the raw-file limit in the API description).
+        Uploads return `409` after finalization or at the item limit, and `413`
+        when the item is too large.
 
         Parameters
         ----------
@@ -335,35 +295,38 @@ class RawLang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/document/multi`, **without**
             its base64 `content` field — the uploaded `file` supplies the
             content. Accepts that endpoint's fields (`version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `config`). This is the **multi**-resource
             body: it has no single-`resource` field, and the item's result
             is a `DocumentMultiResponse` (a Bundle of resources). Mutually
-            exclusive with `create`; requires `file`.
+            exclusive with `create`; requires `file`. Do not combine
+            `primary_patient` with `patient_reference`.
 
         create : typing.Optional[typing.Dict[str, typing.Any]]
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `resource_review`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be
-            accompanied by a `file`.
+            accompanied by a `file`. Do not combine `primary_patient` with
+            `patient_reference`.
 
         file : typing.Optional[core.File]
             See core.File for more documentation
 
         request_id : typing.Optional[str]
-            Optional idempotency token (max 256 bytes). Re-uploading under
-            the same token overwrites the same item instead of adding a
-            new one. The token is scoped to this job; the same token in
-            another job is independent and creates a separate item.
+            Optional idempotency token (at most 256 UTF-8 bytes).
+            Re-uploading under the same token overwrites the same item
+            instead of adding a new one. The token is scoped to this job;
+            the same token in another job is independent and creates a
+            separate item.
 
         id : typing.Optional[str]
-            Optional caller-supplied correlation label (max 512 bytes),
-            echoed back on status and result listings so you can match the
-            server's item_id to your own record.
+            Optional caller-supplied correlation label (at most 512 UTF-8
+            bytes), echoed back on status and result listings so you can
+            match the server's item_id to your own record.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -630,8 +593,8 @@ class RawLang2FhirBatchClient:
 
     def cancel(self, job_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[BatchJob]:
         """
-        Drives a job to the terminal `canceled` state on request, freeing its
-        active-job slot immediately. Takes no request body.
+        Drives a job to the terminal `canceled` state on request. Takes no
+        request body.
 
         Cancel does not delete the job: the job record and any results already
         produced are preserved for the normal retention window, the same as a
@@ -1255,26 +1218,18 @@ class AsyncRawLang2FhirBatchClient:
         self, *, request_id: typing.Optional[str] = OMIT, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[BatchJob]:
         """
-        Opens an empty batch job. Items arrive on later upload calls and the set
-        is sealed at finalize.
+        Opens an empty job; upload items, then finalize it to start processing.
 
-        Supplying `request_id` makes the create idempotent on that token: a
-        retried submit whose response was lost returns the original job rather
-        than opening a second one. This dedupe is scoped to the calling
-        credential. A `request_id` whose job was canceled or failed before it
-        finalized is released for a fresh replay; once a job is finalized, its
-        `request_id` keeps resolving to it even after cancellation.
-
-        An instance may hold at most 4 active (pending or processing) jobs at
-        once; a create past that limit returns `409`. The limit is instance-wide
-        — jobs are shared across the instance's credentials — so another
-        credential's jobs count against it.
+        `request_id` makes creation idempotent: a retry returns the original
+        job. A token is released when its job is canceled or fails before
+        finalization; otherwise it continues to resolve to that job.
 
         Parameters
         ----------
         request_id : typing.Optional[str]
-            Optional client idempotency token. A retried create with the same
-            token returns the original job instead of opening a second one.
+            Optional client idempotency token (at most 256 UTF-8 bytes). A
+            retried create with the same token returns the original job instead
+            of opening a second one.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1319,17 +1274,6 @@ class AsyncRawLang2FhirBatchClient:
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 409:
-                raise ConflictError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -1393,43 +1337,22 @@ class AsyncRawLang2FhirBatchClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[UploadItemResponse]:
         """
-        Stores one item of a job from a multipart upload. A batch's items arrive
-        one per request. The item carries **either** a `document` extraction
-        (whose input file rides as raw bytes in the `file` part) **or** a
-        `create` extraction (JSON only, no file).
+        Stores one multipart item. Set **either** `document` with a raw `file`,
+        or JSON-only `create`.
 
-        The upload enforces these rules:
-        - Set **exactly one** of `document` or `create`. Setting both, or
-          neither, is a `400`.
-        - When `document` is set, `file` is **required** — it supplies the
-          document's binary content (PDF or image).
-        - When `create` is set, `file` is **forbidden** — a create item carries
-          no file.
-        - `document` and `create` must each be a JSON **object**.
+        Set exactly one JSON object. `document` requires `file`; `create`
+        forbids it. Violations return `400`.
 
-        Only the item's structure is checked here: the fields inside `document`
-        or `create` are not validated at upload. A body that is well-formed JSON
-        but not a valid request for its endpoint is still accepted with `202`
-        and fails later during processing, recorded as an item `error`. A
-        wrong-typed field the endpoint cannot decode fails as `invalid_input`; a
-        body that decodes but the pipeline rejects (for example, a missing
-        required field) fails as `processing_failed`.
+        Upload validates only the envelope. Endpoint request validation happens
+        during processing: decoding failures are `invalid_input`; other pipeline
+        failures are `processing_failed`.
 
-        Supplying `request_id` makes the upload idempotent on that token. A
-        re-upload under the same token overwrites the same item rather than
-        adding a second, so a client that lost an upload's response can safely
-        re-send it. The response's `deduplicated` is `true` only when the
-        re-uploaded payload matches the one already stored; a same-token upload
-        with a changed payload overwrites in place and returns `false`.
+        Use `request_id` for every upload so retries replace the same item.
+        `deduplicated` is true only for an unchanged payload; a changed payload
+        overwrites the item and returns false.
 
-        Set a `request_id` on **every** upload: re-sending under the same token
-        is the only way to repair a lost or incomplete upload, including the one
-        a finalize `409` reports. Without one, a re-send adds a new item instead
-        of replacing the missing one, and the job cannot be finalized.
-
-        Uploads are rejected once the job has been finalized (`409`), once it
-        holds its 500-item limit (`409`), or when the item is too large (`413` —
-        see the raw-file limit in the API description).
+        Uploads return `409` after finalization or at the item limit, and `413`
+        when the item is too large.
 
         Parameters
         ----------
@@ -1439,35 +1362,38 @@ class AsyncRawLang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/document/multi`, **without**
             its base64 `content` field — the uploaded `file` supplies the
             content. Accepts that endpoint's fields (`version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `config`). This is the **multi**-resource
             body: it has no single-`resource` field, and the item's result
             is a `DocumentMultiResponse` (a Bundle of resources). Mutually
-            exclusive with `create`; requires `file`.
+            exclusive with `create`; requires `file`. Do not combine
+            `primary_patient` with `patient_reference`.
 
         create : typing.Optional[typing.Dict[str, typing.Any]]
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
-            `patient_reference`, `implementation_guide`, `detection_effort`,
+            `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort`,
             `validation_method`, `resource_review`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be
-            accompanied by a `file`.
+            accompanied by a `file`. Do not combine `primary_patient` with
+            `patient_reference`.
 
         file : typing.Optional[core.File]
             See core.File for more documentation
 
         request_id : typing.Optional[str]
-            Optional idempotency token (max 256 bytes). Re-uploading under
-            the same token overwrites the same item instead of adding a
-            new one. The token is scoped to this job; the same token in
-            another job is independent and creates a separate item.
+            Optional idempotency token (at most 256 UTF-8 bytes).
+            Re-uploading under the same token overwrites the same item
+            instead of adding a new one. The token is scoped to this job;
+            the same token in another job is independent and creates a
+            separate item.
 
         id : typing.Optional[str]
-            Optional caller-supplied correlation label (max 512 bytes),
-            echoed back on status and result listings so you can match the
-            server's item_id to your own record.
+            Optional caller-supplied correlation label (at most 512 UTF-8
+            bytes), echoed back on status and result listings so you can
+            match the server's item_id to your own record.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -1736,8 +1662,8 @@ class AsyncRawLang2FhirBatchClient:
         self, job_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[BatchJob]:
         """
-        Drives a job to the terminal `canceled` state on request, freeing its
-        active-job slot immediately. Takes no request body.
+        Drives a job to the terminal `canceled` state on request. Takes no
+        request body.
 
         Cancel does not delete the job: the job record and any results already
         produced are preserved for the normal retention window, the same as a
