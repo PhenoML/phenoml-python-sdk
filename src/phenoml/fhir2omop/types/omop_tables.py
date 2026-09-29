@@ -20,7 +20,8 @@ from .visit_occurrence_row import VisitOccurrenceRow
 
 class OmopTables(UniversalBaseModel):
     """
-    OMOP CDM v5.4 rows grouped by destination table.
+    OMOP CDM v5.4 rows grouped by destination table. IDs are sequential and
+    scoped to one response; they are not stable keys across requests.
     """
 
     location: typing.Optional[typing.List[LocationRow]] = None

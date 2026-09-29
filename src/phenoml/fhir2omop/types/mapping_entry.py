@@ -4,11 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .mapping_entry_mapping_status import MappingEntryMappingStatus
 
 
 class MappingEntry(UniversalBaseModel):
     """
-    How one source coding (or a text-only resource's free text) resolved to an OMOP standard concept.
+    How one source coding (or a text-only primary resource's free text) resolved to an OMOP standard concept. A coded medication route is a separate entry linked to the same drug_exposure row as its medication or vaccine coding.
     """
 
     resource_type: typing.Optional[str] = None
@@ -34,7 +35,7 @@ class MappingEntry(UniversalBaseModel):
     """
 
     target_name: typing.Optional[str] = None
-    mapping_status: typing.Optional[str] = pydantic.Field(default=None)
+    mapping_status: typing.Optional[MappingEntryMappingStatus] = pydantic.Field(default=None)
     """
     ALREADY_STANDARD (source coding is already a standard OMOP concept),
     MAPPED (source coding was mapped to a standard concept), UNCHECKED (a
