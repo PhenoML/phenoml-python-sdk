@@ -14,6 +14,7 @@ if typing.TYPE_CHECKING:
     from .drug_exposure_row import DrugExposureRow
     from .location_row import LocationRow
     from .mapping_entry import MappingEntry
+    from .mapping_entry_mapping_status import MappingEntryMappingStatus
     from .measurement_row import MeasurementRow
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
@@ -21,6 +22,8 @@ if typing.TYPE_CHECKING:
     from .person_row import PersonRow
     from .procedure_occurrence_row import ProcedureOccurrenceRow
     from .provider_row import ProviderRow
+    from .reference_diagnostic import ReferenceDiagnostic
+    from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
     from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
@@ -32,6 +35,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DrugExposureRow": ".drug_exposure_row",
     "LocationRow": ".location_row",
     "MappingEntry": ".mapping_entry",
+    "MappingEntryMappingStatus": ".mapping_entry_mapping_status",
     "MeasurementRow": ".measurement_row",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
@@ -39,6 +43,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PersonRow": ".person_row",
     "ProcedureOccurrenceRow": ".procedure_occurrence_row",
     "ProviderRow": ".provider_row",
+    "ReferenceDiagnostic": ".reference_diagnostic",
+    "ReferenceDiagnosticOutcome": ".reference_diagnostic_outcome",
     "Summary": ".summary",
     "VisitOccurrenceRow": ".visit_occurrence_row",
 }
@@ -74,6 +80,7 @@ __all__ = [
     "DrugExposureRow",
     "LocationRow",
     "MappingEntry",
+    "MappingEntryMappingStatus",
     "MeasurementRow",
     "ObservationPeriodRow",
     "ObservationRow",
@@ -81,6 +88,8 @@ __all__ = [
     "PersonRow",
     "ProcedureOccurrenceRow",
     "ProviderRow",
+    "ReferenceDiagnostic",
+    "ReferenceDiagnosticOutcome",
     "Summary",
     "VisitOccurrenceRow",
 ]
