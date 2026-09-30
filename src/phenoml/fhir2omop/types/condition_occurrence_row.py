@@ -12,7 +12,11 @@ class ConditionOccurrenceRow(UniversalBaseModel):
     condition_concept_id: typing.Optional[int] = None
     condition_start_date: typing.Optional[str] = None
     condition_start_datetime: typing.Optional[str] = None
-    condition_end_date: typing.Optional[str] = None
+    condition_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from FHIR R4 Condition.abatementDateTime or abatementPeriod.end when supplied.
+    """
+
     condition_type_concept_id: typing.Optional[int] = None
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
