@@ -4,11 +4,12 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .mapping_entry_mapping_status import MappingEntryMappingStatus
 
 
 class MappingEntry(UniversalBaseModel):
     """
-    How one source coding (or a text-only resource's free text) resolved to an OMOP standard concept.
+    How one source coding (or a text-only primary resource's free text) resolved to an OMOP standard concept. `omop_table`, `omop_field`, and `omop_id` link it to the row and concept field it produced. A coded medication route is a separate entry linked to the same drug_exposure row as its medication or vaccine coding. `selected` identifies the coding rendered in the associated clinical `*_source_value`; it is false for alternate codings and text-only rows.
     """
 
     resource_type: typing.Optional[str] = None
@@ -19,6 +20,11 @@ class MappingEntry(UniversalBaseModel):
     The id of the OMOP row this coding produced (e.g. `condition_occurrence_id`),
     within `omop_table`. A resource with multiple codings yields one entry
     per coding, all sharing this id.
+    """
+
+    omop_field: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The OMOP concept-ID field populated from this source coding, such as `condition_concept_id` or `route_concept_id`.
     """
 
     source_system: typing.Optional[str] = None
@@ -34,13 +40,18 @@ class MappingEntry(UniversalBaseModel):
     """
 
     target_name: typing.Optional[str] = None
-    mapping_status: typing.Optional[str] = pydantic.Field(default=None)
+    mapping_status: typing.Optional[MappingEntryMappingStatus] = pydantic.Field(default=None)
     """
     ALREADY_STANDARD (source coding is already a standard OMOP concept),
     MAPPED (source coding was mapped to a standard concept), UNCHECKED (a
     standard code was suggested — e.g. for a text-only resource — but not
     verified against the OMOP vocabulary, so `concept_id` stays `0`), or
     UNMAPPED (no standard concept found).
+    """
+
+    selected: bool = pydantic.Field()
+    """
+    Whether this source coding was selected for the linked clinical `*_source_value` field. Always present; false for alternate codings and text-only rows.
     """
 
     note: typing.Optional[str] = None
