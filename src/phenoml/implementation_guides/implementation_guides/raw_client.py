@@ -10,14 +10,18 @@ from ...core.jsonable_encoder import encode_path_param
 from ...core.parse_error import ParsingError
 from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
+from ...core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
+from ..errors.conflict_error import ConflictError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.internal_server_error import InternalServerError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.fhir_implementation_guide import FhirImplementationGuide
 from ..types.implementation_guide_detail import ImplementationGuideDetail
 from ..types.implementation_guide_list_response import ImplementationGuideListResponse
 from ..types.implementation_guide_summary import ImplementationGuideSummary
+from ..types.implementation_guide_version_detail import ImplementationGuideVersionDetail
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -308,11 +312,9 @@ class RawImplementationGuidesClient:
 
     def delete(self, name: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
-        Deletes the stored metadata for an implementation guide — its
-        profile_context and timestamps. Member profiles keep their
-        implementation_guide assignment, so a guide still referenced by at least
-        one profile continues to appear in listings, just without context or
-        timestamps.
+        Deletes the stored name-level metadata and any exact canonical package
+        versions beneath the guide. Legacy member profile assignments are not
+        changed.
 
         Parameters
         ----------
@@ -380,6 +382,173 @@ class RawImplementationGuidesClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create_version(
+        self,
+        name: str,
+        *,
+        implementation_guide: FhirImplementationGuide,
+        profile_refs: typing.Sequence[str],
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ImplementationGuideVersionDetail]:
+        """
+        Publishes an exact package beneath this guide family. PR 2 temporarily
+        permits one exact package version per guide family; publishing another
+        version returns `409 Conflict` until multi-version package support lands.
+
+        Parameters
+        ----------
+        name : str
+
+        implementation_guide : FhirImplementationGuide
+
+        profile_refs : typing.Sequence[str]
+            Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+
+        profile_context : typing.Optional[str]
+            Natural-language profile-selection context for this package.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ImplementationGuideVersionDetail]
+            Canonical package published
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"fhir/implementation-guides/{encode_path_param(name)}/versions",
+            method="POST",
+            json={
+                "implementation_guide": convert_and_respect_annotation_metadata(
+                    object_=implementation_guide, annotation=FhirImplementationGuide, direction="write"
+                ),
+                "profile_refs": profile_refs,
+                "profile_context": profile_context,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ImplementationGuideVersionDetail,
+                    parse_obj_as(
+                        type_=ImplementationGuideVersionDetail,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get_version(
+        self, name: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ImplementationGuideVersionDetail]:
+        """
+        Parameters
+        ----------
+        name : str
+
+        version : str
+            The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ImplementationGuideVersionDetail]
+            Exact canonical package
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"fhir/implementation-guides/{encode_path_param(name)}/versions/{encode_path_param(version)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ImplementationGuideVersionDetail,
+                    parse_obj_as(
+                        type_=ImplementationGuideVersionDetail,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -685,11 +854,9 @@ class AsyncRawImplementationGuidesClient:
         self, name: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
-        Deletes the stored metadata for an implementation guide — its
-        profile_context and timestamps. Member profiles keep their
-        implementation_guide assignment, so a guide still referenced by at least
-        one profile continues to appear in listings, just without context or
-        timestamps.
+        Deletes the stored name-level metadata and any exact canonical package
+        versions beneath the guide. Legacy member profile assignments are not
+        changed.
 
         Parameters
         ----------
@@ -757,6 +924,173 @@ class AsyncRawImplementationGuidesClient:
                 )
             if _response.status_code == 500:
                 raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create_version(
+        self,
+        name: str,
+        *,
+        implementation_guide: FhirImplementationGuide,
+        profile_refs: typing.Sequence[str],
+        profile_context: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ImplementationGuideVersionDetail]:
+        """
+        Publishes an exact package beneath this guide family. PR 2 temporarily
+        permits one exact package version per guide family; publishing another
+        version returns `409 Conflict` until multi-version package support lands.
+
+        Parameters
+        ----------
+        name : str
+
+        implementation_guide : FhirImplementationGuide
+
+        profile_refs : typing.Sequence[str]
+            Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
+
+        profile_context : typing.Optional[str]
+            Natural-language profile-selection context for this package.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ImplementationGuideVersionDetail]
+            Canonical package published
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"fhir/implementation-guides/{encode_path_param(name)}/versions",
+            method="POST",
+            json={
+                "implementation_guide": convert_and_respect_annotation_metadata(
+                    object_=implementation_guide, annotation=FhirImplementationGuide, direction="write"
+                ),
+                "profile_refs": profile_refs,
+                "profile_context": profile_context,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ImplementationGuideVersionDetail,
+                    parse_obj_as(
+                        type_=ImplementationGuideVersionDetail,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 409:
+                raise ConflictError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get_version(
+        self, name: str, version: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ImplementationGuideVersionDetail]:
+        """
+        Parameters
+        ----------
+        name : str
+
+        version : str
+            The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ImplementationGuideVersionDetail]
+            Exact canonical package
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"fhir/implementation-guides/{encode_path_param(name)}/versions/{encode_path_param(version)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ImplementationGuideVersionDetail,
+                    parse_obj_as(
+                        type_=ImplementationGuideVersionDetail,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
