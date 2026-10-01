@@ -10,7 +10,11 @@ class MeasurementRow(UniversalBaseModel):
     measurement_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
     measurement_concept_id: typing.Optional[int] = None
-    measurement_date: typing.Optional[str] = None
+    measurement_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Observation.effectiveDateTime, effectivePeriod.start, or effectiveInstant.
+    """
+
     measurement_datetime: typing.Optional[str] = None
     measurement_type_concept_id: typing.Optional[int] = None
     value_as_number: typing.Optional[float] = None
