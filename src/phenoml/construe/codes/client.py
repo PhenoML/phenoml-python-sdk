@@ -200,7 +200,7 @@ class CodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListCodesResponse:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -255,7 +255,7 @@ class CodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCodeResponse:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -653,7 +653,7 @@ class AsyncCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListCodesResponse:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -716,7 +716,7 @@ class AsyncCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCodeResponse:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 

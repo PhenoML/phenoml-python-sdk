@@ -10,9 +10,17 @@ class VisitOccurrenceRow(UniversalBaseModel):
     visit_occurrence_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
     visit_concept_id: typing.Optional[int] = None
-    visit_start_date: typing.Optional[str] = None
+    visit_start_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Encounter.period.start.
+    """
+
     visit_start_datetime: typing.Optional[str] = None
-    visit_end_date: typing.Optional[str] = None
+    visit_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Encounter.period.end.
+    """
+
     visit_end_datetime: typing.Optional[str] = None
     visit_type_concept_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
