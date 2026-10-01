@@ -14,12 +14,27 @@ class ProviderRow(UniversalBaseModel):
     specialty_concept_id: typing.Optional[int] = None
     care_site_id: typing.Optional[int] = None
     year_of_birth: typing.Optional[int] = None
-    gender_concept_id: typing.Optional[int] = None
-    provider_source_value: typing.Optional[str] = None
+    gender_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    For recorded `Practitioner.gender`, `male` and `female` resolve to validated OMOP Gender concepts. `other`, `unknown`, and absent values remain `0`.
+    """
+
+    provider_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The source practitioner identity. A Practitioner contained by a PractitionerRole is scoped as `PractitionerRole/<role-source-value>#<contained-id>` so identical local contained IDs do not collide; an id-less parent uses an explicitly marked response-local role ordinal such as `@role-index:1`.
+    """
+
     specialty_source_value: typing.Optional[str] = None
     specialty_source_concept_id: typing.Optional[int] = None
-    gender_source_value: typing.Optional[str] = None
-    gender_source_concept_id: typing.Optional[int] = None
+    gender_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The recorded FHIR administrative-gender value for this Provider.
+    """
+
+    gender_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Remains `0` for FHIR administrative-gender enum-policy results.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

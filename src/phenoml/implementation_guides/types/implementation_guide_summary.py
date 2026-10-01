@@ -9,7 +9,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class ImplementationGuideSummary(UniversalBaseModel):
     """
-    Metadata for an implementation guide. This is an instance-local grouping record, not a complete FHIR ImplementationGuide resource.
+    Metadata for an implementation guide. Canonical fields are present only for published canonical packages; metadata-only legacy records omit them.
     """
 
     name: typing.Optional[str] = pydantic.Field(default=None)
@@ -25,6 +25,16 @@ class ImplementationGuideSummary(UniversalBaseModel):
     profile_count: typing.Optional[int] = pydantic.Field(default=None)
     """
     The number of custom profiles in this implementation guide.
+    """
+
+    canonical_url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Canonical FHIR ImplementationGuide URL, when the family has an exact package.
+    """
+
+    version_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Number of retained exact package versions.
     """
 
     created_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
