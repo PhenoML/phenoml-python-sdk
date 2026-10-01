@@ -8,7 +8,11 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class DeathRow(UniversalBaseModel):
     person_id: typing.Optional[int] = None
-    death_date: typing.Optional[str] = None
+    death_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Patient.deceasedDateTime; unset for a boolean-only or partial value.
+    """
+
     death_datetime: typing.Optional[str] = None
     death_type_concept_id: typing.Optional[int] = None
     cause_concept_id: typing.Optional[int] = None

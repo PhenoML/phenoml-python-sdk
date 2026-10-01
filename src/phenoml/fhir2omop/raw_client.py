@@ -28,72 +28,306 @@ class RawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[CreateOmopResponse]:
         """
-        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
-        (person, visit_occurrence, condition_occurrence, drug_exposure,
-        procedure_occurrence, measurement, observation).
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,
+        grouped by destination table in `tables`.
 
-        Resource support is intentionally limited to the OMOP tables returned by
-        this endpoint:
-        - `Patient` -> `person`
+        Standards basis: [FHIR R4 (v4.0.1)](https://hl7.org/fhir/R4/) defines
+        the accepted source elements and [OMOP CDM
+        v5.4](https://ohdsi.github.io/CommonDataModel/cdm54.html) defines the
+        output columns. The published [Vulcan FHIR-to-OMOP IG
+        v1.0.0](https://hl7.org/fhir/uv/omop/) is an informative FHIR R5
+        baseline; this endpoint documents and implements the equivalent R4
+        source elements, rather than accepting R5-only fields.
+
+        This response is a mapping result, not a complete CDM load pipeline.
+        When a source cannot supply a field that CDM v5.4 requires, the row is
+        still returned with that field unset; the value is not inferred. Common
+        cases are `year_of_birth` without a usable `birthDate`,
+        `drug_exposure_end_date` without an explicit end or single-event timing,
+        and a required event date (such as `condition_start_date`,
+        `procedure_date`, or `death_date`) whose source has no timing with at
+        least day precision. Apply your own policy to such rows before loading
+        them into a strictly conformant CDM instance.
+
+        Current resource coverage:
+        - `Patient` -> `person`; `deceased[x]` can also produce `death`, the
+          first address can produce `location`, and more than one supplied race
+          produces `observation` race rows (see Patient demographics below)
+        - `observation_period` -> one request-local derived row per person,
+          spanning the populated dates of that person's visit, clinical, and
+          death rows; this is not enrollment or capture-completeness evidence
+        - `Location` -> `location` and `care_site`
+        - `Organization` -> `care_site`; its first address can produce `location`
+        - `HealthcareService` -> `care_site`
+        - `Practitioner` and `PractitionerRole` -> `provider`
         - `Encounter` -> `visit_occurrence`
         - `Condition` -> `condition_occurrence`
         - `Procedure` -> `procedure_occurrence`
         - `MedicationRequest`, `MedicationStatement`, and
           `MedicationAdministration` -> `drug_exposure`
         - `Immunization` -> `drug_exposure`
-        - `Observation` with a numeric `valueQuantity`, `valueInteger`, or
-          numeric-looking `valueString` (for example `"<2"`) -> `measurement`
-        - non-numeric `Observation` -> `observation`
+        - `Observation` -> `measurement` or `observation`. For coded
+          Observations, the resolved OMOP concept domain selects the table; value
+          form only breaks ties. For text-only Observations, numeric values route
+          to `measurement` and nonnumeric values to `observation`.
         - `AllergyIntolerance` -> `observation`
 
-        `Medication` is supported only as reference data for medication
-        resources; it is not emitted as its own row because OMOP CDM has no
-        Medication table. Other reference/admin resources such as `Practitioner`,
-        `Organization`, `Location`, `Coverage`, and `Claim`, and clinical
-        workflow/document resources such as `DiagnosticReport`, `ServiceRequest`,
-        `CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and
-        `DeviceUseStatement`, are currently accepted in a Bundle but are not
-        shaped into OMOP rows. Unsupported resource types are ignored rather than
-        listed under `dropped`; `dropped` is reserved for supported resource types
-        that were missing the subject/patient, code, or medication reference data
-        needed to produce a valid row.
+        `Medication` is reference data for medication resources; it does not
+        create its own row because OMOP CDM has no Medication table. Administrative
+        linkages (provider, care site, and location) are best-effort and limited to
+        references supplied in the request. `Patient.managingOrganization` is a
+        record custodian, not a care-delivery site. Provider specialty is not
+        mapped. Recorded `Practitioner.gender` is distinct from Person
+        demographics: `male` and `female` resolve to validated OMOP Gender
+        concepts in `provider.gender_concept_id`; `other`, `unknown`, and absent
+        gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
+        and CMS Place of Service codings in `Location.type` are resolved to
+        `care_site.place_of_service_concept_id`.
+        A `PractitionerRole` that identifies one supplied `Practitioner` aliases
+        that canonical provider: by a top-level structural reference, a
+        parent-contained `#id` reference, or an exact `identifier.system` and
+        `identifier.value` match against a top-level Practitioner. No remote
+        identifier lookup is performed. When `Reference.type` is present it must
+        be `Practitioner`; duplicate contained IDs and identifier matches are
+        ambiguous. An explicit reference that is unresolved, ambiguous, or
+        unsupported retains a role-fallback provider row and is returned in
+        `diagnostics`. `provider_role_contexts` preserves role-specific
+        specialty and care-site context that a canonical OMOP provider row cannot
+        represent together.
 
-        Each resource's primary clinical coding is resolved to a standard OMOP
-        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
-        response carries `mappings` (how each source coding resolved, linked back
-        to the row it produced), `dropped` (resources that could not be shaped
-        into a row), `vocab_version` (the OMOP vocabulary release codes were
-        resolved against), and a small `summary` of the resolution outcomes.
+        Patient demographics:
+        - Sex at birth, race, and ethnicity are read from these US Core
+          extensions, with their US Core 6.1.0 structures and value sets, on
+          any Patient (US Core profile conformance is not required). Sex at
+          birth falls back to Patient `gender`. Other extensions, including US
+          Core sex and gender identity, are ignored.
+          - Birth sex:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex`
+            (`valueCode` from `http://hl7.org/fhir/us/core/ValueSet/birthsex`)
+          - Race:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-race`
+            (`ombCategory` from
+            `http://hl7.org/fhir/us/core/ValueSet/omb-race-category`)
+          - Ethnicity:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity`
+            (`ombCategory` from
+            `http://hl7.org/fhir/us/core/ValueSet/omb-ethnicity-category`)
+        - `gender_concept_id` is sex at birth. A supplied birth sex always
+          decides it: `M` and `F` are resolved; `UNK`, `ASKU`, `OTH`, a code
+          outside the value set, conflicting values, and a birth sex without
+          `valueCode` leave it `0`, and Patient `gender` is not used.
+        - Without a birth sex, Patient `gender` `male` or `female` is resolved
+          under the OMOP convention that the supplied gender represents sex at
+          birth; `other` and `unknown` keep concept `0`.
+        - `gender_source_value` is the chosen source code (`F` for birth sex,
+          `female` for Patient `gender`).
+        - Each race category is resolved separately, and null flavors (`UNK`,
+          `ASKU`) are ignored. One distinct standard race sets
+          `race_concept_id`. More than one sets it to `1546847` (More than one
+          race) and adds one `observation` row per race, with
+          `observation_concept_id` `4013886` (Race), the race in
+          `value_as_concept_id`, `observation_type_concept_id` `32817`, the
+          category code in `value_source_value`, and no
+          `observation_source_value` or `observation_date`. A loading pipeline
+          that requires `observation_date` must apply its own date policy.
+        - The single non-null ethnicity category is resolved, and null flavors
+          are ignored; more than one distinct category leaves
+          `ethnicity_concept_id` `0`. Ethnicity is not derived from race, and
+          no demographic is inferred from names, addresses, or other
+          extensions.
+        - `race_source_value` and `ethnicity_source_value` list every supplied
+          category and detailed code in source order, joined with `|`, or the
+          extension text when no code is supplied. Detailed codes and text are
+          not resolved.
+        - Every supplied birth sex, gender, and OMB category code has a
+          `mappings` entry whose `note` names its source and outcome. When a
+          birth sex is supplied, Patient `gender` is reported unselected with
+          the note `FHIR administrative gender; not used, birth sex supplied`.
+          Conflicting values and a birth sex without `valueCode` are also
+          returned in `diagnostics` with path `extension:birthsex` or
+          `extension:ethnicity`. `summary` counts each demographic field once,
+          as described under `Summary`.
+        - Differences from the reference conventions: Vulcan's example gender
+          ConceptMap maps `other` and `unknown` to concepts, which stay `0`
+          here; more than one race follows the OHDSI THEMIS convention, also
+          used by Vulcan, rather than the CDM 5.4 note that mixed races use
+          `0`; and Vulcan's suggested `observation` rows for multiple
+          ethnicities are not produced.
+
+        `DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
+        `Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+        other unsupported resource types are accepted in a Bundle but ignored: they
+        create no row and no `dropped` entry. `dropped` is reserved for supported
+        row-producing resources that could not be shaped because the subject/patient,
+        clinical code/text, or medication data was not usable. A single-Patient
+        Bundle uses the sole Patient only when `subject`/`patient` is absent. An
+        explicit subject/patient reference that is unresolved, ambiguous, or
+        unsupported drops the clinical resource in every request scope.
+
+        Coded Observation routing is selected from the resolved OMOP concept
+        domain. Numeric and nonnumeric `value[x]` forms establish the preferred
+        target only when the code is valid for both tables. A text-only
+        Observation has no resolver target, so numeric values route to
+        `measurement` and nonnumeric values to `observation`. Numeric values
+        populate `value_as_number` in the selected row; other non-coded values
+        populate `value_as_string` for an `observation` or `value_source_value`
+        for a `measurement`. Coded `valueCodeableConcept` values are resolved
+        against the selected row's `value_as_concept_id` and use the selected
+        bare code in `value_source_value`, leaving an `observation`'s
+        `value_as_string` empty; unmapped or target-invalid coded values remain
+        `0`.
+        Other unsupported `value[x]` forms and Observation components do not
+        populate separate converted values. A
+        numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
+        measurement's `operator_concept_id`; units remain source text and have
+        `unit_concept_id` of `0`.
+
+        A standard OMOP `concept_id` is selected for each primary clinical coding
+        after considering all of the resource's supplied codings. An unambiguous
+        coded medication route is resolved independently to
+        `drug_exposure.route_concept_id`. Alongside the OMOP rows grouped by
+        table (`tables`), the response carries `mappings` (an entry for every
+        supported source coding, linked back to the row it produced; some, such
+        as demographic null flavors, are reported without being resolved),
+        `provider_role_contexts` (source role details linked to provider rows),
+        `dropped` (resources that could not be shaped into a row),
+        `diagnostics` (explicit references that could not safely create a link,
+        and conflicting or unsupported Patient demographic extensions),
+        `vocab_version` (the OMOP vocabulary release codes were resolved
+        against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Only the primary clinical coding is resolved, so
-        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`; the one populated non-resolved concept is measurement
-        `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
-        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
-        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        (`UNCHECKED`). Visit and unit concept fields currently remain `0`;
+        Person demographics and Provider recorded gender follow the policies
+        above. Coded Observation values may populate `value_as_concept_id`.
+        Concepts set by a fixed convention rather than terminology resolution
+        are measurement `operator_concept_id`, set from a value comparator (`<`,
+        `<=`, `>`, `>=`), and the multiple-race concepts described above. Clinical
+        `*_source_value` fields contain the selected FHIR code (or source text
+        for text-only resources).
+        The corresponding selected `mappings` entry preserves the coding system
+        and full source-coding provenance.
+        Known OID-form coding systems are accepted as either FHIR OID URNs (for
+        example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
+        are normalized to their canonical system URLs before terminology
+        resolution. `mappings[].source_system` reports that canonical URL, so the
+        OID and URL forms produce the same mapping. An unknown OID is not
+        rewritten and may be `UNMAPPED`.
+        Other `*_source_value` fields preserve row-specific raw source values,
+        such as resource identifiers, names, units, or status codes.
+        `MedicationRequest` uses `32838` (EHR prescription) for
+        `drug_type_concept_id`; other current resources use `32817` (EHR). This
+        is a coarse provenance policy: it does not infer patient-reported,
+        medication-history, or other more-specific type concepts from FHIR
+        status fields.
+
+        Dates and datetimes:
+        - A `*_date` is the calendar date (`YYYY-MM-DD`) of a source value with
+          at least day precision. A `*_datetime` is set only when that value
+          has a time of day, as local time without a UTC offset
+          (`YYYY-MM-DDTHH:MM:SS`, with fractional seconds to microseconds when
+          supplied): `2024-01-15T23:30:00-05:00` becomes `2024-01-15T23:30:00`.
+          A datetime without a timezone is read as local time.
+        - A partial date (`2024` or `2024-03`) leaves both columns unset. It
+          still counts as that source's value, so later sources in the list
+          below are not used.
+        - Free-text timing (such as `onsetString`), `Age` and `Range` forms, and
+          values that are not dates are ignored, so a later source in the list
+          is used if there is one.
+        - Other than the sources below and the same-day ends of single-event
+          medication records, no date is imputed: partial dates are not
+          completed, and a row is not dated from another resource such as its
+          Encounter.
+        - Date values never cause a request to be rejected, and the response
+          does not report which date elements were unusable.
+
+        Timing sources, in priority order where several are listed:
+        - `Patient`: `birthDate` sets `year_of_birth`, `month_of_birth`, and
+          `day_of_birth` from the parts it supplies; `birth_datetime` is not
+          set. `deceasedDateTime` sets the `death` dates.
+        - `Practitioner`: `birthDate` sets the provider's `year_of_birth`.
+        - `Encounter`: `period.start` and `period.end`.
+        - `Condition`: start from `onsetDateTime` or `onsetPeriod.start`, then
+          `recordedDate` (when the condition was recorded, not when it began);
+          end from `abatementDateTime` or `abatementPeriod.end`.
+        - `Procedure`: start from `performedDateTime` or
+          `performedPeriod.start`; end from `performedPeriod.end` only.
+        - `Observation`: `effectiveDateTime`, `effectivePeriod.start`, or
+          `effectiveInstant`.
+        - `AllergyIntolerance`: `recordedDate`, then `onsetDateTime` or
+          `onsetPeriod.start`.
+        - `MedicationStatement`: start from `effectiveDateTime` or
+          `effectivePeriod.start`; end and `verbatim_end_date` from
+          `effectivePeriod.end`. `dateAsserted` records when the statement was
+          made and is not used.
+        - `MedicationAdministration`: an `effectiveDateTime` is a single event
+          that sets both start and end; an `effectivePeriod` sets the start
+          and, when present, the end and `verbatim_end_date`.
+        - `Immunization`: `occurrenceDateTime` is a single event that sets both
+          start and end; `expirationDate` is not used.
+        - `MedicationRequest`: `authoredOn`, the order date, sets the start; it
+          is not evidence of administration. No end is set, and the validity
+          period is not used as an exposure duration.
+        - Differences from the Vulcan maps: `birth_datetime` is not set from
+          `birthDate`, Condition also reads `onsetPeriod.start`, and
+          AllergyIntolerance falls back to its onset when `recordedDate` is
+          missing.
+
+        Medication details:
+        - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
+          `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
+        - All non-empty dosage text is preserved in `sig`.
+        - Coded dosage routes and `Immunization.route` are target-validated in
+          the OMOP Route domain. Conflicting routes are left unset; route
+          codings shared by every dosage instruction identify the same route.
+        - `Immunization.lotNumber` is preserved in `lot_number`.
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
         relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
+        A reference that resolves to another resource type is dropped even when it
+        supplies display text; an unresolved or display-only reference may use
+        its display as text-only medication input.
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `dropped` rather than emitted as blank rows. The
-        bundle must contain at least one Patient resource.
+        `dropped` rather than emitted as blank rows. The Bundle must contain at
+        least one Patient resource.
+
+        Structural references resolve only to top-level resources supplied in the
+        request, by `Type/id` or an exactly matching Bundle `fullUrl` (including
+        `urn:uuid`). Contained references are supported for medication code lookup
+        and `PractitionerRole.practitioner` enrichment; the latter also supports
+        exact request-local identifier matching without a remote lookup. Every
+        nonzero structural foreign key targets a row in the same response. Missing
+        optional links remain unset without a diagnostic; an explicit optional
+        reference that is unresolved, ambiguous, conflicting with the row's
+        person, or unsupported remains unset and is returned in `diagnostics`
+        with its source path and outcome.
+
+        All row IDs start at `1` for each request and are not stable or global.
+        For clinical conversion rows whose resource supplies an `id`, `mappings`
+        associates each row with that source FHIR resource ID. A `person` row
+        retains the Patient ID or its first identifier value in
+        `person_source_value`, when present; other reference and derived rows do
+        not uniformly carry a FHIR resource ID. Input resources without those
+        source identifiers cannot be correlated across responses from the
+        returned rows alone. Consumers combining responses need to establish
+        their own stable keys and remap every primary and foreign key together.
 
         Parameters
         ----------
         fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle). Must contain at least one
             Patient resource. Supported row-producing resources are Patient,
-            Encounter, Condition, Procedure, MedicationRequest,
+            Location, Organization, HealthcareService, Practitioner,
+            PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
             MedicationStatement, MedicationAdministration, Immunization,
             Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
-            table. Other resource types are accepted but ignored.
+            table. Unsupported resource types are accepted in a Bundle but ignored.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -187,72 +421,306 @@ class AsyncRawFhir2OmopClient:
         self, *, fhir_resources: typing.Dict[str, typing.Any], request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[CreateOmopResponse]:
         """
-        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows
-        (person, visit_occurrence, condition_occurrence, drug_exposure,
-        procedure_occurrence, measurement, observation).
+        Maps a FHIR R4 resource or Bundle into OMOP Common Data Model v5.4 rows,
+        grouped by destination table in `tables`.
 
-        Resource support is intentionally limited to the OMOP tables returned by
-        this endpoint:
-        - `Patient` -> `person`
+        Standards basis: [FHIR R4 (v4.0.1)](https://hl7.org/fhir/R4/) defines
+        the accepted source elements and [OMOP CDM
+        v5.4](https://ohdsi.github.io/CommonDataModel/cdm54.html) defines the
+        output columns. The published [Vulcan FHIR-to-OMOP IG
+        v1.0.0](https://hl7.org/fhir/uv/omop/) is an informative FHIR R5
+        baseline; this endpoint documents and implements the equivalent R4
+        source elements, rather than accepting R5-only fields.
+
+        This response is a mapping result, not a complete CDM load pipeline.
+        When a source cannot supply a field that CDM v5.4 requires, the row is
+        still returned with that field unset; the value is not inferred. Common
+        cases are `year_of_birth` without a usable `birthDate`,
+        `drug_exposure_end_date` without an explicit end or single-event timing,
+        and a required event date (such as `condition_start_date`,
+        `procedure_date`, or `death_date`) whose source has no timing with at
+        least day precision. Apply your own policy to such rows before loading
+        them into a strictly conformant CDM instance.
+
+        Current resource coverage:
+        - `Patient` -> `person`; `deceased[x]` can also produce `death`, the
+          first address can produce `location`, and more than one supplied race
+          produces `observation` race rows (see Patient demographics below)
+        - `observation_period` -> one request-local derived row per person,
+          spanning the populated dates of that person's visit, clinical, and
+          death rows; this is not enrollment or capture-completeness evidence
+        - `Location` -> `location` and `care_site`
+        - `Organization` -> `care_site`; its first address can produce `location`
+        - `HealthcareService` -> `care_site`
+        - `Practitioner` and `PractitionerRole` -> `provider`
         - `Encounter` -> `visit_occurrence`
         - `Condition` -> `condition_occurrence`
         - `Procedure` -> `procedure_occurrence`
         - `MedicationRequest`, `MedicationStatement`, and
           `MedicationAdministration` -> `drug_exposure`
         - `Immunization` -> `drug_exposure`
-        - `Observation` with a numeric `valueQuantity`, `valueInteger`, or
-          numeric-looking `valueString` (for example `"<2"`) -> `measurement`
-        - non-numeric `Observation` -> `observation`
+        - `Observation` -> `measurement` or `observation`. For coded
+          Observations, the resolved OMOP concept domain selects the table; value
+          form only breaks ties. For text-only Observations, numeric values route
+          to `measurement` and nonnumeric values to `observation`.
         - `AllergyIntolerance` -> `observation`
 
-        `Medication` is supported only as reference data for medication
-        resources; it is not emitted as its own row because OMOP CDM has no
-        Medication table. Other reference/admin resources such as `Practitioner`,
-        `Organization`, `Location`, `Coverage`, and `Claim`, and clinical
-        workflow/document resources such as `DiagnosticReport`, `ServiceRequest`,
-        `CarePlan`, `DocumentReference`, `Composition`, `Specimen`, and
-        `DeviceUseStatement`, are currently accepted in a Bundle but are not
-        shaped into OMOP rows. Unsupported resource types are ignored rather than
-        listed under `dropped`; `dropped` is reserved for supported resource types
-        that were missing the subject/patient, code, or medication reference data
-        needed to produce a valid row.
+        `Medication` is reference data for medication resources; it does not
+        create its own row because OMOP CDM has no Medication table. Administrative
+        linkages (provider, care site, and location) are best-effort and limited to
+        references supplied in the request. `Patient.managingOrganization` is a
+        record custodian, not a care-delivery site. Provider specialty is not
+        mapped. Recorded `Practitioner.gender` is distinct from Person
+        demographics: `male` and `female` resolve to validated OMOP Gender
+        concepts in `provider.gender_concept_id`; `other`, `unknown`, and absent
+        gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
+        and CMS Place of Service codings in `Location.type` are resolved to
+        `care_site.place_of_service_concept_id`.
+        A `PractitionerRole` that identifies one supplied `Practitioner` aliases
+        that canonical provider: by a top-level structural reference, a
+        parent-contained `#id` reference, or an exact `identifier.system` and
+        `identifier.value` match against a top-level Practitioner. No remote
+        identifier lookup is performed. When `Reference.type` is present it must
+        be `Practitioner`; duplicate contained IDs and identifier matches are
+        ambiguous. An explicit reference that is unresolved, ambiguous, or
+        unsupported retains a role-fallback provider row and is returned in
+        `diagnostics`. `provider_role_contexts` preserves role-specific
+        specialty and care-site context that a canonical OMOP provider row cannot
+        represent together.
 
-        Each resource's primary clinical coding is resolved to a standard OMOP
-        `concept_id`. Alongside the OMOP rows grouped by table (`tables`), the
-        response carries `mappings` (how each source coding resolved, linked back
-        to the row it produced), `dropped` (resources that could not be shaped
-        into a row), `vocab_version` (the OMOP vocabulary release codes were
-        resolved against), and a small `summary` of the resolution outcomes.
+        Patient demographics:
+        - Sex at birth, race, and ethnicity are read from these US Core
+          extensions, with their US Core 6.1.0 structures and value sets, on
+          any Patient (US Core profile conformance is not required). Sex at
+          birth falls back to Patient `gender`. Other extensions, including US
+          Core sex and gender identity, are ignored.
+          - Birth sex:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex`
+            (`valueCode` from `http://hl7.org/fhir/us/core/ValueSet/birthsex`)
+          - Race:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-race`
+            (`ombCategory` from
+            `http://hl7.org/fhir/us/core/ValueSet/omb-race-category`)
+          - Ethnicity:
+            `http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity`
+            (`ombCategory` from
+            `http://hl7.org/fhir/us/core/ValueSet/omb-ethnicity-category`)
+        - `gender_concept_id` is sex at birth. A supplied birth sex always
+          decides it: `M` and `F` are resolved; `UNK`, `ASKU`, `OTH`, a code
+          outside the value set, conflicting values, and a birth sex without
+          `valueCode` leave it `0`, and Patient `gender` is not used.
+        - Without a birth sex, Patient `gender` `male` or `female` is resolved
+          under the OMOP convention that the supplied gender represents sex at
+          birth; `other` and `unknown` keep concept `0`.
+        - `gender_source_value` is the chosen source code (`F` for birth sex,
+          `female` for Patient `gender`).
+        - Each race category is resolved separately, and null flavors (`UNK`,
+          `ASKU`) are ignored. One distinct standard race sets
+          `race_concept_id`. More than one sets it to `1546847` (More than one
+          race) and adds one `observation` row per race, with
+          `observation_concept_id` `4013886` (Race), the race in
+          `value_as_concept_id`, `observation_type_concept_id` `32817`, the
+          category code in `value_source_value`, and no
+          `observation_source_value` or `observation_date`. A loading pipeline
+          that requires `observation_date` must apply its own date policy.
+        - The single non-null ethnicity category is resolved, and null flavors
+          are ignored; more than one distinct category leaves
+          `ethnicity_concept_id` `0`. Ethnicity is not derived from race, and
+          no demographic is inferred from names, addresses, or other
+          extensions.
+        - `race_source_value` and `ethnicity_source_value` list every supplied
+          category and detailed code in source order, joined with `|`, or the
+          extension text when no code is supplied. Detailed codes and text are
+          not resolved.
+        - Every supplied birth sex, gender, and OMB category code has a
+          `mappings` entry whose `note` names its source and outcome. When a
+          birth sex is supplied, Patient `gender` is reported unselected with
+          the note `FHIR administrative gender; not used, birth sex supplied`.
+          Conflicting values and a birth sex without `valueCode` are also
+          returned in `diagnostics` with path `extension:birthsex` or
+          `extension:ethnicity`. `summary` counts each demographic field once,
+          as described under `Summary`.
+        - Differences from the reference conventions: Vulcan's example gender
+          ConceptMap maps `other` and `unknown` to concepts, which stay `0`
+          here; more than one race follows the OHDSI THEMIS convention, also
+          used by Vulcan, rather than the CDM 5.4 note that mixed races use
+          `0`; and Vulcan's suggested `observation` rows for multiple
+          ethnicities are not produced.
+
+        `DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
+        `Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+        other unsupported resource types are accepted in a Bundle but ignored: they
+        create no row and no `dropped` entry. `dropped` is reserved for supported
+        row-producing resources that could not be shaped because the subject/patient,
+        clinical code/text, or medication data was not usable. A single-Patient
+        Bundle uses the sole Patient only when `subject`/`patient` is absent. An
+        explicit subject/patient reference that is unresolved, ambiguous, or
+        unsupported drops the clinical resource in every request scope.
+
+        Coded Observation routing is selected from the resolved OMOP concept
+        domain. Numeric and nonnumeric `value[x]` forms establish the preferred
+        target only when the code is valid for both tables. A text-only
+        Observation has no resolver target, so numeric values route to
+        `measurement` and nonnumeric values to `observation`. Numeric values
+        populate `value_as_number` in the selected row; other non-coded values
+        populate `value_as_string` for an `observation` or `value_source_value`
+        for a `measurement`. Coded `valueCodeableConcept` values are resolved
+        against the selected row's `value_as_concept_id` and use the selected
+        bare code in `value_source_value`, leaving an `observation`'s
+        `value_as_string` empty; unmapped or target-invalid coded values remain
+        `0`.
+        Other unsupported `value[x]` forms and Observation components do not
+        populate separate converted values. A
+        numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
+        measurement's `operator_concept_id`; units remain source text and have
+        `unit_concept_id` of `0`.
+
+        A standard OMOP `concept_id` is selected for each primary clinical coding
+        after considering all of the resource's supplied codings. An unambiguous
+        coded medication route is resolved independently to
+        `drug_exposure.route_concept_id`. Alongside the OMOP rows grouped by
+        table (`tables`), the response carries `mappings` (an entry for every
+        supported source coding, linked back to the row it produced; some, such
+        as demographic null flavors, are reported without being resolved),
+        `provider_role_contexts` (source role details linked to provider rows),
+        `dropped` (resources that could not be shaped into a row),
+        `diagnostics` (explicit references that could not safely create a link,
+        and conflicting or unsupported Patient demographic extensions),
+        `vocab_version` (the OMOP vocabulary release codes were resolved
+        against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Only the primary clinical coding is resolved, so
-        `gender`/`race`/`ethnicity`/`visit`/`value`/`unit` `concept_id`s are
-        always `0`; the one populated non-resolved concept is measurement
-        `operator_concept_id`, set from a value comparator (`<`, `<=`, `>`, `>=`)
-        rather than the resolver. Each `*_source_value` carries the verbatim FHIR
-        coding (`system#code`), and `*_type_concept_id` is set to `32817` (EHR).
+        (`UNCHECKED`). Visit and unit concept fields currently remain `0`;
+        Person demographics and Provider recorded gender follow the policies
+        above. Coded Observation values may populate `value_as_concept_id`.
+        Concepts set by a fixed convention rather than terminology resolution
+        are measurement `operator_concept_id`, set from a value comparator (`<`,
+        `<=`, `>`, `>=`), and the multiple-race concepts described above. Clinical
+        `*_source_value` fields contain the selected FHIR code (or source text
+        for text-only resources).
+        The corresponding selected `mappings` entry preserves the coding system
+        and full source-coding provenance.
+        Known OID-form coding systems are accepted as either FHIR OID URNs (for
+        example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
+        are normalized to their canonical system URLs before terminology
+        resolution. `mappings[].source_system` reports that canonical URL, so the
+        OID and URL forms produce the same mapping. An unknown OID is not
+        rewritten and may be `UNMAPPED`.
+        Other `*_source_value` fields preserve row-specific raw source values,
+        such as resource identifiers, names, units, or status codes.
+        `MedicationRequest` uses `32838` (EHR prescription) for
+        `drug_type_concept_id`; other current resources use `32817` (EHR). This
+        is a coarse provenance policy: it does not infer patient-reported,
+        medication-history, or other more-specific type concepts from FHIR
+        status fields.
+
+        Dates and datetimes:
+        - A `*_date` is the calendar date (`YYYY-MM-DD`) of a source value with
+          at least day precision. A `*_datetime` is set only when that value
+          has a time of day, as local time without a UTC offset
+          (`YYYY-MM-DDTHH:MM:SS`, with fractional seconds to microseconds when
+          supplied): `2024-01-15T23:30:00-05:00` becomes `2024-01-15T23:30:00`.
+          A datetime without a timezone is read as local time.
+        - A partial date (`2024` or `2024-03`) leaves both columns unset. It
+          still counts as that source's value, so later sources in the list
+          below are not used.
+        - Free-text timing (such as `onsetString`), `Age` and `Range` forms, and
+          values that are not dates are ignored, so a later source in the list
+          is used if there is one.
+        - Other than the sources below and the same-day ends of single-event
+          medication records, no date is imputed: partial dates are not
+          completed, and a row is not dated from another resource such as its
+          Encounter.
+        - Date values never cause a request to be rejected, and the response
+          does not report which date elements were unusable.
+
+        Timing sources, in priority order where several are listed:
+        - `Patient`: `birthDate` sets `year_of_birth`, `month_of_birth`, and
+          `day_of_birth` from the parts it supplies; `birth_datetime` is not
+          set. `deceasedDateTime` sets the `death` dates.
+        - `Practitioner`: `birthDate` sets the provider's `year_of_birth`.
+        - `Encounter`: `period.start` and `period.end`.
+        - `Condition`: start from `onsetDateTime` or `onsetPeriod.start`, then
+          `recordedDate` (when the condition was recorded, not when it began);
+          end from `abatementDateTime` or `abatementPeriod.end`.
+        - `Procedure`: start from `performedDateTime` or
+          `performedPeriod.start`; end from `performedPeriod.end` only.
+        - `Observation`: `effectiveDateTime`, `effectivePeriod.start`, or
+          `effectiveInstant`.
+        - `AllergyIntolerance`: `recordedDate`, then `onsetDateTime` or
+          `onsetPeriod.start`.
+        - `MedicationStatement`: start from `effectiveDateTime` or
+          `effectivePeriod.start`; end and `verbatim_end_date` from
+          `effectivePeriod.end`. `dateAsserted` records when the statement was
+          made and is not used.
+        - `MedicationAdministration`: an `effectiveDateTime` is a single event
+          that sets both start and end; an `effectivePeriod` sets the start
+          and, when present, the end and `verbatim_end_date`.
+        - `Immunization`: `occurrenceDateTime` is a single event that sets both
+          start and end; `expirationDate` is not used.
+        - `MedicationRequest`: `authoredOn`, the order date, sets the start; it
+          is not evidence of administration. No end is set, and the validity
+          period is not used as an exposure duration.
+        - Differences from the Vulcan maps: `birth_datetime` is not set from
+          `birthDate`, Condition also reads `onsetPeriod.start`, and
+          AllergyIntolerance falls back to its onset when `recordedDate` is
+          missing.
+
+        Medication details:
+        - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
+          `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
+        - All non-empty dosage text is preserved in `sig`.
+        - Coded dosage routes and `Immunization.route` are target-validated in
+          the OMOP Route domain. Conflicting routes are left unset; route
+          codings shared by every dosage instruction identify the same route.
+        - `Immunization.lotNumber` is preserved in `lot_number`.
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
         relative (`Type/id`), or bundle-entry (`urn:uuid`) `Medication` resource.
+        A reference that resolves to another resource type is dropped even when it
+        supplies display text; an unresolved or display-only reference may use
+        its display as text-only medication input.
         Resources that cannot be shaped into a row — a medication with no usable
         code, resolvable reference, or display, or any clinical resource whose
         subject/patient reference cannot be tied to a person — are reported under
-        `dropped` rather than emitted as blank rows. The
-        bundle must contain at least one Patient resource.
+        `dropped` rather than emitted as blank rows. The Bundle must contain at
+        least one Patient resource.
+
+        Structural references resolve only to top-level resources supplied in the
+        request, by `Type/id` or an exactly matching Bundle `fullUrl` (including
+        `urn:uuid`). Contained references are supported for medication code lookup
+        and `PractitionerRole.practitioner` enrichment; the latter also supports
+        exact request-local identifier matching without a remote lookup. Every
+        nonzero structural foreign key targets a row in the same response. Missing
+        optional links remain unset without a diagnostic; an explicit optional
+        reference that is unresolved, ambiguous, conflicting with the row's
+        person, or unsupported remains unset and is returned in `diagnostics`
+        with its source path and outcome.
+
+        All row IDs start at `1` for each request and are not stable or global.
+        For clinical conversion rows whose resource supplies an `id`, `mappings`
+        associates each row with that source FHIR resource ID. A `person` row
+        retains the Patient ID or its first identifier value in
+        `person_source_value`, when present; other reference and derived rows do
+        not uniformly carry a FHIR resource ID. Input resources without those
+        source identifiers cannot be correlated across responses from the
+        returned rows alone. Consumers combining responses need to establish
+        their own stable keys and remap every primary and foreign key together.
 
         Parameters
         ----------
         fhir_resources : typing.Dict[str, typing.Any]
             FHIR resources (single resource or Bundle). Must contain at least one
             Patient resource. Supported row-producing resources are Patient,
-            Encounter, Condition, Procedure, MedicationRequest,
+            Location, Organization, HealthcareService, Practitioner,
+            PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
             MedicationStatement, MedicationAdministration, Immunization,
             Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
-            table. Other resource types are accepted but ignored.
+            table. Unsupported resource types are accepted in a Bundle but ignored.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
