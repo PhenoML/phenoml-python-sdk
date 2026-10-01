@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .care_site_row import CareSiteRow
+    from .coding import Coding
     from .condition_occurrence_row import ConditionOccurrenceRow
     from .create_omop_response import CreateOmopResponse
     from .death_row import DeathRow
@@ -14,17 +15,25 @@ if typing.TYPE_CHECKING:
     from .drug_exposure_row import DrugExposureRow
     from .location_row import LocationRow
     from .mapping_entry import MappingEntry
+    from .mapping_entry_mapping_status import MappingEntryMappingStatus
     from .measurement_row import MeasurementRow
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
     from .person_row import PersonRow
     from .procedure_occurrence_row import ProcedureOccurrenceRow
+    from .provider_role_care_site import ProviderRoleCareSite
+    from .provider_role_codeable_concept import ProviderRoleCodeableConcept
+    from .provider_role_context import ProviderRoleContext
+    from .provider_role_practitioner_identifier import ProviderRolePractitionerIdentifier
     from .provider_row import ProviderRow
+    from .reference_diagnostic import ReferenceDiagnostic
+    from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
     from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
     "CareSiteRow": ".care_site_row",
+    "Coding": ".coding",
     "ConditionOccurrenceRow": ".condition_occurrence_row",
     "CreateOmopResponse": ".create_omop_response",
     "DeathRow": ".death_row",
@@ -32,13 +41,20 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DrugExposureRow": ".drug_exposure_row",
     "LocationRow": ".location_row",
     "MappingEntry": ".mapping_entry",
+    "MappingEntryMappingStatus": ".mapping_entry_mapping_status",
     "MeasurementRow": ".measurement_row",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
     "PersonRow": ".person_row",
     "ProcedureOccurrenceRow": ".procedure_occurrence_row",
+    "ProviderRoleCareSite": ".provider_role_care_site",
+    "ProviderRoleCodeableConcept": ".provider_role_codeable_concept",
+    "ProviderRoleContext": ".provider_role_context",
+    "ProviderRolePractitionerIdentifier": ".provider_role_practitioner_identifier",
     "ProviderRow": ".provider_row",
+    "ReferenceDiagnostic": ".reference_diagnostic",
+    "ReferenceDiagnosticOutcome": ".reference_diagnostic_outcome",
     "Summary": ".summary",
     "VisitOccurrenceRow": ".visit_occurrence_row",
 }
@@ -67,6 +83,7 @@ def __dir__():
 
 __all__ = [
     "CareSiteRow",
+    "Coding",
     "ConditionOccurrenceRow",
     "CreateOmopResponse",
     "DeathRow",
@@ -74,13 +91,20 @@ __all__ = [
     "DrugExposureRow",
     "LocationRow",
     "MappingEntry",
+    "MappingEntryMappingStatus",
     "MeasurementRow",
     "ObservationPeriodRow",
     "ObservationRow",
     "OmopTables",
     "PersonRow",
     "ProcedureOccurrenceRow",
+    "ProviderRoleCareSite",
+    "ProviderRoleCodeableConcept",
+    "ProviderRoleContext",
+    "ProviderRolePractitionerIdentifier",
     "ProviderRow",
+    "ReferenceDiagnostic",
+    "ReferenceDiagnosticOutcome",
     "Summary",
     "VisitOccurrenceRow",
 ]
