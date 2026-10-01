@@ -10,8 +10,18 @@ class ProcedureOccurrenceRow(UniversalBaseModel):
     procedure_occurrence_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
     procedure_concept_id: typing.Optional[int] = None
-    procedure_date: typing.Optional[str] = None
+    procedure_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Procedure.performedDateTime or performedPeriod.start.
+    """
+
     procedure_datetime: typing.Optional[str] = None
+    procedure_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Date from Procedure.performedPeriod.end.
+    """
+
+    procedure_end_datetime: typing.Optional[str] = None
     procedure_type_concept_id: typing.Optional[int] = None
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
