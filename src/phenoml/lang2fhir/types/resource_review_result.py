@@ -5,16 +5,22 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .resource_review_flagged import ResourceReviewFlagged
+from .resource_review_remediated import ResourceReviewRemediated
 
 
 class ResourceReviewResult(UniversalBaseModel):
     """
-    Present when resource_review was requested and at least one resource was flagged.
+    Present when resource_review was requested and at least one resource was quarantined or safely remediated. The returned bundle is authoritative and contains the post-review representation of every retained resource.
     """
 
     flagged: typing.Optional[typing.List[ResourceReviewFlagged]] = pydantic.Field(default=None)
     """
-    Resources pulled from the bundle because a reviewed field was not supported by the source.
+    Resources pulled from the bundle because an unsupported finding could not be safely repaired.
+    """
+
+    remediated: typing.Optional[typing.List[ResourceReviewRemediated]] = pydantic.Field(default=None)
+    """
+    Resources retained in the bundle after unsupported codings were safely removed.
     """
 
     if IS_PYDANTIC_V2:
