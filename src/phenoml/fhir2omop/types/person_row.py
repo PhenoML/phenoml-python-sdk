@@ -9,13 +9,31 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class PersonRow(UniversalBaseModel):
     person_id: typing.Optional[int] = None
     gender_concept_id: typing.Optional[int] = None
-    year_of_birth: typing.Optional[int] = None
-    month_of_birth: typing.Optional[int] = None
-    day_of_birth: typing.Optional[int] = None
-    birth_datetime: typing.Optional[str] = None
+    year_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Year from Patient.birthDate.
+    """
+
+    month_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Month from Patient.birthDate, when it supplies one.
+    """
+
+    day_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Day from Patient.birthDate, when it supplies one.
+    """
+
+    birth_datetime: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Not set; Patient.birthDate has no time of day.
+    """
+
     race_concept_id: typing.Optional[int] = None
     ethnicity_concept_id: typing.Optional[int] = None
     location_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
+    care_site_id: typing.Optional[int] = None
     person_source_value: typing.Optional[str] = None
     gender_source_value: typing.Optional[str] = None
     race_source_value: typing.Optional[str] = None
