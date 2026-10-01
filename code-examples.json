@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "17.0.0",
-    "specCommit": "26224ef37e22adb507f28c21e8991d4a27822bde",
+    "sdkVersion": "17.0.1",
+    "specCommit": "807c17c3ff3148f3d33023da7beaf24001785465",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -1909,15 +1909,26 @@
             "person": [
               {
                 "person_id": 1,
-                "gender_concept_id": 0,
+                "gender_concept_id": 8532,
                 "year_of_birth": 1985,
                 "month_of_birth": 7,
                 "day_of_birth": 22,
-                "birth_datetime": "1985-07-22",
                 "race_concept_id": 0,
                 "ethnicity_concept_id": 0,
                 "person_source_value": "patient-1",
-                "gender_source_value": "female"
+                "gender_source_value": "female",
+                "gender_source_concept_id": 0,
+                "race_source_concept_id": 0,
+                "ethnicity_source_concept_id": 0
+              }
+            ],
+            "observation_period": [
+              {
+                "observation_period_id": 1,
+                "person_id": 1,
+                "observation_period_start_date": "2024-01-15",
+                "observation_period_end_date": "2024-01-16",
+                "period_type_concept_id": 32817
               }
             ],
             "condition_occurrence": [
@@ -1926,9 +1937,8 @@
                 "person_id": 1,
                 "condition_concept_id": 201826,
                 "condition_start_date": "2024-01-15",
-                "condition_start_datetime": "2024-01-15",
                 "condition_type_concept_id": 32817,
-                "condition_source_value": "http://snomed.info/sct#44054006",
+                "condition_source_value": "44054006",
                 "condition_source_concept_id": 201826
               }
             ],
@@ -1938,18 +1948,34 @@
                 "person_id": 1,
                 "drug_concept_id": 40163924,
                 "drug_exposure_start_date": "2024-01-16",
-                "drug_exposure_start_datetime": "2024-01-16",
-                "drug_type_concept_id": 32817,
-                "drug_source_value": "http://www.nlm.nih.gov/research/umls/rxnorm#860975",
+                "drug_type_concept_id": 32838,
+                "drug_source_value": "860975",
                 "drug_source_concept_id": 40163924
               }
             ]
           },
           "mappings": [
             {
+              "resource_type": "Patient",
+              "resource_id": "patient-1",
+              "omop_table": "person",
+              "omop_field": "gender_concept_id",
+              "omop_id": 1,
+              "source_system": "http://hl7.org/fhir/administrative-gender",
+              "source_code": "female",
+              "source_name": "female",
+              "target_vocabulary": "Gender",
+              "target_code": "F",
+              "target_name": "FEMALE",
+              "mapping_status": "MAPPED",
+              "selected": true,
+              "note": "FHIR administrative gender; assumed sex at birth"
+            },
+            {
               "resource_type": "Condition",
               "resource_id": "condition-1",
               "omop_table": "condition_occurrence",
+              "omop_field": "condition_concept_id",
               "omop_id": 1,
               "source_system": "http://snomed.info/sct",
               "source_code": "44054006",
@@ -1957,12 +1983,14 @@
               "target_vocabulary": "SNOMED",
               "target_code": "44054006",
               "target_name": "Type 2 diabetes mellitus",
-              "mapping_status": "ALREADY_STANDARD"
+              "mapping_status": "ALREADY_STANDARD",
+              "selected": true
             },
             {
               "resource_type": "MedicationRequest",
               "resource_id": "medreq-1",
               "omop_table": "drug_exposure",
+              "omop_field": "drug_concept_id",
               "omop_id": 1,
               "source_system": "http://www.nlm.nih.gov/research/umls/rxnorm",
               "source_code": "860975",
@@ -1970,15 +1998,16 @@
               "target_vocabulary": "RXNORM",
               "target_code": "860975",
               "target_name": "metformin hydrochloride 500 MG",
-              "mapping_status": "ALREADY_STANDARD"
+              "mapping_status": "ALREADY_STANDARD",
+              "selected": true
             }
           ],
-          "vocab_version": "v20240229",
+          "vocab_version": "v20260227",
           "summary": {
             "codes_already_standard": 2,
-            "codes_normalized": 0,
+            "codes_normalized": 1,
             "codes_unmapped": 0,
-            "off_vocab_rate": 0
+            "off_vocab_rate": 0.3333333333333333
           }
         }
       },
@@ -3008,7 +3037,10 @@
                 "auto",
                 "appointment",
                 "condition-encounter-diagnosis",
+                "familymemberhistory",
+                "medicationadministration",
                 "medicationrequest",
+                "medicationstatement",
                 "careplan",
                 "condition-problems-health-concerns",
                 "coverage",
@@ -3122,6 +3154,12 @@
               "jsonKey": "provider",
               "fieldTemplate": "provider={{value}}",
               "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "primary_patient",
+              "fieldTemplate": "primary_patient={{value}}",
+              "kind": "object",
               "required": false
             },
             {
@@ -3250,7 +3288,7 @@
         "body": {
           "version": "R4",
           "resource": "questionnaire",
-          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)"
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)"
         }
       },
       "response": {
@@ -3312,7 +3350,7 @@
       "request": {
         "body": {
           "version": "R4",
-          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+          "content": "JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
           "provider": "medplum",
           "config": {
             "split_classifications": [
@@ -3492,6 +3530,12 @@
               "jsonKey": "provider",
               "fieldTemplate": "provider={{value}}",
               "kind": "string",
+              "required": false
+            },
+            {
+              "jsonKey": "primary_patient",
+              "fieldTemplate": "primary_patient={{value}}",
+              "kind": "object",
               "required": false
             },
             {
@@ -3952,6 +3996,77 @@
         "params": [
           {
             "name": "name",
+            "kind": "string"
+          }
+        ]
+      }
+    },
+    "POST /fhir/implementation-guides/{name}/versions": {
+      "httpMethod": "POST",
+      "httpPath": "/fhir/implementation-guides/{name}/versions",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.create_version(name={{name}}, {{__body__}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          }
+        ],
+        "body": {
+          "fieldSeparator": ", ",
+          "fields": [
+            {
+              "jsonKey": "implementation_guide",
+              "fieldTemplate": "implementation_guide={{value}}",
+              "kind": "object",
+              "required": true
+            },
+            {
+              "jsonKey": "profile_refs",
+              "fieldTemplate": "profile_refs={{value}}",
+              "kind": "list",
+              "required": true,
+              "items": {
+                "jsonKey": "",
+                "fieldTemplate": "{{value}}",
+                "kind": "string",
+                "required": true
+              }
+            },
+            {
+              "jsonKey": "profile_context",
+              "fieldTemplate": "profile_context={{value}}",
+              "kind": "string",
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "GET /fhir/implementation-guides/{name}/versions/{version}": {
+      "httpMethod": "GET",
+      "httpPath": "/fhir/implementation-guides/{name}/versions/{version}",
+      "request": {
+        "body": null
+      },
+      "response": {
+        "body": null
+      },
+      "render": {
+        "callTemplate": "client.implementation_guides.implementation_guides.get_version(name={{name}}, version={{version}})",
+        "params": [
+          {
+            "name": "name",
+            "kind": "string"
+          },
+          {
+            "name": "version",
             "kind": "string"
           }
         ]
