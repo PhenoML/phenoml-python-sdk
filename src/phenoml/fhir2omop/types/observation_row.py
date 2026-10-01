@@ -10,7 +10,11 @@ class ObservationRow(UniversalBaseModel):
     observation_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
     observation_concept_id: typing.Optional[int] = None
-    observation_date: typing.Optional[str] = None
+    observation_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    For an Observation, date from effectiveDateTime, effectivePeriod.start, or effectiveInstant. For an AllergyIntolerance, date from recordedDate, otherwise onsetDateTime or onsetPeriod.start.
+    """
+
     observation_datetime: typing.Optional[str] = None
     observation_type_concept_id: typing.Optional[int] = None
     value_as_number: typing.Optional[float] = None
