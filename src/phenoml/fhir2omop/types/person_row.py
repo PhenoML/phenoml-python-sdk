@@ -8,18 +8,74 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class PersonRow(UniversalBaseModel):
     person_id: typing.Optional[int] = None
-    gender_concept_id: typing.Optional[int] = None
-    year_of_birth: typing.Optional[int] = None
-    month_of_birth: typing.Optional[int] = None
-    day_of_birth: typing.Optional[int] = None
-    birth_datetime: typing.Optional[str] = None
-    race_concept_id: typing.Optional[int] = None
-    ethnicity_concept_id: typing.Optional[int] = None
+    gender_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Standard OMOP Gender concept for sex at birth, from US Core birth sex when supplied, otherwise from Patient `gender` `male` or `female`. `0` for absent, unknown, other, unsupported, or conflicting values.
+    """
+
+    year_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Year from Patient.birthDate.
+    """
+
+    month_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Month from Patient.birthDate, when it supplies one.
+    """
+
+    day_of_birth: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Day from Patient.birthDate, when it supplies one.
+    """
+
+    birth_datetime: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Not set; Patient.birthDate has no time of day.
+    """
+
+    race_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Standard OMOP Race concept from a US Core race OMB category; `1546847` (More than one race) when more than one distinct race resolves, with each race in an `observation` row. `0` when no category resolves.
+    """
+
+    ethnicity_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Standard OMOP Ethnicity concept from the US Core ethnicity OMB category. `0` when absent, unresolved, or conflicting; never derived from race.
+    """
+
     location_id: typing.Optional[int] = None
+    provider_id: typing.Optional[int] = None
+    care_site_id: typing.Optional[int] = None
     person_source_value: typing.Optional[str] = None
-    gender_source_value: typing.Optional[str] = None
-    race_source_value: typing.Optional[str] = None
-    ethnicity_source_value: typing.Optional[str] = None
+    gender_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The selected sex-at-birth source code: the US Core birth sex `valueCode`, or Patient `gender` when no birth sex is supplied. Conflicting birth sex values are joined with `|`; empty when the birth sex has no `valueCode`.
+    """
+
+    gender_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP source concept of the selected sex-at-birth code, when that code is itself an OMOP source concept; `0` otherwise, as for FHIR administrative gender codes.
+    """
+
+    race_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Every supplied US Core race category and detailed code, joined with `|` in source order, or the extension text when no code is supplied.
+    """
+
+    race_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP source concept of a single resolved race code, when that code is itself an OMOP source concept; `0` otherwise, including when more than one race resolves.
+    """
+
+    ethnicity_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Every supplied US Core ethnicity category and detailed code, joined with `|` in source order, or the extension text when no code is supplied.
+    """
+
+    ethnicity_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP source concept of the resolved ethnicity code, when that code is itself an OMOP source concept; `0` otherwise.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
