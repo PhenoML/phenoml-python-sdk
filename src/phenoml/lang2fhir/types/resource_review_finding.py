@@ -27,7 +27,12 @@ class ResourceReviewFinding(UniversalBaseModel):
     value: typing.Optional[str] = None
     supported: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Always false for a flagged finding.
+    False when the reviewer found the field unsupported. Do not treat this field as a verdict when unaudited is true.
+    """
+
+    unaudited: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    True when the reviewer did not return a verdict for this field; the resource was quarantined without treating the finding as evidence that the value is unsupported.
     """
 
     rationale: typing.Optional[str] = pydantic.Field(default=None)
