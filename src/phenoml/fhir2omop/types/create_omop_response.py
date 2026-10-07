@@ -7,6 +7,8 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .dropped_resource import DroppedResource
 from .mapping_entry import MappingEntry
 from .omop_tables import OmopTables
+from .provider_role_context import ProviderRoleContext
+from .reference_diagnostic import ReferenceDiagnostic
 from .summary import Summary
 
 
@@ -16,22 +18,47 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     mappings: typing.Optional[typing.List[MappingEntry]] = pydantic.Field(default=None)
     """
-    One entry per source coding (or one entry for a text-only resource with no coding), describing how it resolved and linking back to the row it produced.
+    One entry per supported source coding (or one entry for a text-only primary resource with no coding), describing how it resolved and linking back to the row it produced. A coded route or Observation valueCodeableConcept is a separate entry linked to its medication, vaccine, or observation row. A Patient demographic code links to its person row, or to its `observation` race row when the person has more than one race.
+    """
+
+    provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
+    """
+    Additive FHIR provenance for every supplied PractitionerRole. Each
+    context identifies the canonical or role-fallback provider row and
+    preserves source role facts that OMOP's singular provider columns
+    cannot represent together.
     """
 
     dropped: typing.Optional[typing.List[DroppedResource]] = pydantic.Field(default=None)
     """
     Supported resource instances that could not be shaped into an OMOP
-    row because required subject/patient, code, or medication reference
-    data was missing. Unsupported resource types are ignored and do not
-    appear here.
+    row because the subject/patient, clinical code or text, or medication
+    data was missing or unusable, including an explicit subject/patient
+    reference that was unresolved, ambiguous, or unsupported. A resource
+    that lacks only a date or another CDM-required field is returned as a
+    row instead. Unsupported resource types are ignored and do not appear
+    here.
+    """
+
+    diagnostics: typing.Optional[typing.List[ReferenceDiagnostic]] = pydantic.Field(default=None)
+    """
+    Explanations for explicit references that could not safely produce
+    an OMOP link or canonicalize a `PractitionerRole` provider identity, or explicit
+    subject/patient references that caused a clinical row to be dropped.
+    Missing optional references are normal and do not produce a diagnostic.
+    References resolve only against resources supplied in this request.
+    Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported
+    references. Patient demographic extensions that conflict, or a birth
+    sex without `valueCode`, are also reported here; their `path` is
+    `extension:birthsex` or `extension:ethnicity` and they have no
+    `reference`.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The OMOP vocabulary release the clinical codes were resolved against
-    (e.g. "v20240229"), for reproducibility. Present when at least one
-    coded concept was resolved.
+    The OMOP vocabulary release used for coded concept resolution
+    (for example, "v20260227"), for reproducibility. Omitted when no
+    vocabulary resolution was performed.
     """
 
     summary: typing.Optional[Summary] = None
