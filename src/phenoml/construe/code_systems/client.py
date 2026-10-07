@@ -143,7 +143,7 @@ class CodeSystemsClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListCodeSystemsResponse:
         """
-        Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
+        Returns the catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 
         Parameters
         ----------
@@ -432,7 +432,7 @@ class AsyncCodeSystemsClient:
 
     async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListCodeSystemsResponse:
         """
-        Returns the terminology server's catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
+        Returns the catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
 
         Parameters
         ----------
