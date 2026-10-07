@@ -40,6 +40,7 @@ def test_fhir2Omop_create() -> None:
                         "resourceType": "MedicationRequest",
                         "id": "medreq-1",
                         "status": "active",
+                        "intent": "order",
                         "subject": {"reference": "Patient/patient-1"},
                         "medicationReference": {"reference": "#med0"},
                         "authoredOn": "2024-01-16",

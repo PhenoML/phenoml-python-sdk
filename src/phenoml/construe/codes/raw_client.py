@@ -11,7 +11,6 @@ from ...core.parse_error import ParsingError
 from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
 from ...core.serialization import convert_and_respect_annotation_metadata
-from ..errors.bad_gateway_error import BadGatewayError
 from ..errors.bad_request_error import BadRequestError
 from ..errors.content_too_large_error import ContentTooLargeError
 from ..errors.gateway_timeout_error import GatewayTimeoutError
@@ -179,10 +178,9 @@ class RawCodesClient:
         self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ExtractCodesResult]:
         """
-        **Alpha:** phenocr is an alpha feature. The API contract — request
-        parameters and response shape — may change as its internals evolve, and
-        results may vary between releases. Do not depend on it for production
-        workloads yet.
+        **Alpha:** phenocr is an alpha feature. Request parameters, response
+        shape, and results may change between releases. Do not depend on it for
+        production workloads yet.
 
         Extracts medical codes from natural language clinical text using phenocr.
 
@@ -396,30 +394,8 @@ class RawCodesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 501:
-                raise NotImplementedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
+            if _response.status_code == 500:
+                raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -448,7 +424,7 @@ class RawCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ListCodesResponse]:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -556,7 +532,7 @@ class RawCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetCodeResponse]:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -1062,10 +1038,9 @@ class AsyncRawCodesClient:
         self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ExtractCodesResult]:
         """
-        **Alpha:** phenocr is an alpha feature. The API contract — request
-        parameters and response shape — may change as its internals evolve, and
-        results may vary between releases. Do not depend on it for production
-        workloads yet.
+        **Alpha:** phenocr is an alpha feature. Request parameters, response
+        shape, and results may change between releases. Do not depend on it for
+        production workloads yet.
 
         Extracts medical codes from natural language clinical text using phenocr.
 
@@ -1279,30 +1254,8 @@ class AsyncRawCodesClient:
                         ),
                     ),
                 )
-            if _response.status_code == 501:
-                raise NotImplementedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 502:
-                raise BadGatewayError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 503:
-                raise ServiceUnavailableError(
+            if _response.status_code == 500:
+                raise InternalServerError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -1331,7 +1284,7 @@ class AsyncRawCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ListCodesResponse]:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -1439,7 +1392,7 @@ class AsyncRawCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetCodeResponse]:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
