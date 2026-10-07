@@ -91,10 +91,9 @@ class CodesClient:
         self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
     ) -> ExtractCodesResult:
         """
-        **Alpha:** phenocr is an alpha feature. The API contract — request
-        parameters and response shape — may change as its internals evolve, and
-        results may vary between releases. Do not depend on it for production
-        workloads yet.
+        **Alpha:** phenocr is an alpha feature. Request parameters, response
+        shape, and results may change between releases. Do not depend on it for
+        production workloads yet.
 
         Extracts medical codes from natural language clinical text using phenocr.
 
@@ -200,7 +199,7 @@ class CodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListCodesResponse:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -255,7 +254,7 @@ class CodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCodeResponse:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -528,10 +527,9 @@ class AsyncCodesClient:
         self, *, text: str, system: PhenocrExtractRequestSystem, request_options: typing.Optional[RequestOptions] = None
     ) -> ExtractCodesResult:
         """
-        **Alpha:** phenocr is an alpha feature. The API contract — request
-        parameters and response shape — may change as its internals evolve, and
-        results may vary between releases. Do not depend on it for production
-        workloads yet.
+        **Alpha:** phenocr is an alpha feature. Request parameters, response
+        shape, and results may change between releases. Do not depend on it for
+        production workloads yet.
 
         Extracts medical codes from natural language clinical text using phenocr.
 
@@ -653,7 +651,7 @@ class AsyncCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ListCodesResponse:
         """
-        Returns a paginated list of all codes in the specified code system from the terminology server.
+        Returns a paginated list of all codes in the specified code system.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 
@@ -716,7 +714,7 @@ class AsyncCodesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> GetCodeResponse:
         """
-        Looks up a specific code in the terminology server and returns its details.
+        Looks up a specific code and returns its details.
 
         Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
 

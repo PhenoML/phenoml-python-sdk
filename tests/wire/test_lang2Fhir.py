@@ -55,7 +55,7 @@ def test_lang2Fhir_document() -> None:
     client.lang2fhir.document(
         version="R4",
         resource="questionnaire",
-        content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+        content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
     )
     verify_request_count(test_id, "POST", "/lang2fhir/document", None, 1)
 
@@ -66,7 +66,7 @@ def test_lang2Fhir_document_multi() -> None:
     client = get_client(test_id)
     client.lang2fhir.document_multi(
         version="R4",
-        content="JVBERi0xLjQKJeLjz9MK...(base64-encoded PDF or image bytes)",
+        content="JVBERi0xLjQKJeLjz9MK...(base64-encoded document bytes)",
         provider="medplum",
         config=DocumentConfig(
             split_classifications=[
