@@ -14,6 +14,7 @@
 - **`ResourceReviewResult.remediated`, `ResourceReviewRemediated`, and `ResourceReviewFinding.unaudited`** — report safe coding removals and distinguish fields without an audit verdict.
 - **`PhenomlClient(token=...)` and `AsyncPhenomlClient(token=...)`** — explicitly accept a token string as well as a callable token supplier.
 - **`BaseHttpResponse.response`** — exposes the underlying `httpx.Response` on raw response wrappers.
+- **`phenoml.core.http_client.get_keepalive_socket_options()`** — returns platform-appropriate TCP keepalive socket options for custom HTTP transports.
 
 ### Changed
 - **`phenoml.fhir2omop.MappingEntryMappingStatus`** — describes response mapping statuses with named literal values while retaining an `Any` fallback for unknown future values; this is a response typing improvement.
