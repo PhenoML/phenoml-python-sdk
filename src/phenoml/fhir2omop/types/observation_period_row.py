@@ -9,8 +9,16 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class ObservationPeriodRow(UniversalBaseModel):
     observation_period_id: typing.Optional[int] = None
     person_id: typing.Optional[int] = None
-    observation_period_start_date: typing.Optional[str] = None
-    observation_period_end_date: typing.Optional[str] = None
+    observation_period_start_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Earliest populated date among the person's visit, clinical, and death rows in this request; not enrollment evidence.
+    """
+
+    observation_period_end_date: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Latest populated date, including end dates, among the person's visit, clinical, and death rows in this request; not enrollment evidence.
+    """
+
     period_type_concept_id: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:

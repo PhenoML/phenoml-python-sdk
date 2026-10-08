@@ -37,10 +37,8 @@ if typing.TYPE_CHECKING:
         TextSearchResult,
     )
     from .errors import (
-        BadGatewayError,
         BadRequestError,
         ConflictError,
-        ContentTooLargeError,
         FailedDependencyError,
         ForbiddenError,
         GatewayTimeoutError,
@@ -53,7 +51,6 @@ if typing.TYPE_CHECKING:
     from . import code_systems, codes
     from .code_systems import UploadRequestFormat, UploadResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "BadGatewayError": ".errors",
     "BadRequestError": ".errors",
     "Citation": ".types",
     "CodeCategory": ".types",
@@ -61,7 +58,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CodeSystemDetails": ".types",
     "CodeSystemInfo": ".types",
     "ConflictError": ".errors",
-    "ContentTooLargeError": ".errors",
     "CrosswalkMatch": ".types",
     "CrosswalkResponse": ".types",
     "CrosswalkTarget": ".types",
@@ -122,7 +118,6 @@ def __dir__():
 
 
 __all__ = [
-    "BadGatewayError",
     "BadRequestError",
     "Citation",
     "CodeCategory",
@@ -130,7 +125,6 @@ __all__ = [
     "CodeSystemDetails",
     "CodeSystemInfo",
     "ConflictError",
-    "ContentTooLargeError",
     "CrosswalkMatch",
     "CrosswalkResponse",
     "CrosswalkTarget",
