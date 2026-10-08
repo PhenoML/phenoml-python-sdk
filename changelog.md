@@ -1,13 +1,10 @@
 ## [18.0.0] - 2026-10-08
 ### Breaking Changes
-
 - **`phenoml.construe.BadGatewayError`, `phenoml.construe.ContentTooLargeError`, `phenoml.fhir2omop.ServiceUnavailableError`, `phenoml.lang2fhir_batch.ContentTooLargeError`, and `phenoml.voice.ContentTooLargeError`** — removed exported error classes; replace their imports and catches with `phenoml.core.api_error.ApiError` and inspect `status_code`.
-- **FHIR-to-OMOP backend output** — clinical `*_source_value` fields now contain the selected bare code instead of `system#code`; read the coding system from `mappings[].source_system`. For `MedicationRequest`, `drug_type_concept_id` changes from `32817` (EHR) to `32838` (EHR prescription). Update loaders and comparisons that depend on the previous values; these are server-side behavior changes reflected in this SDK's contract.
+- **FHIR-to-OMOP backend output** — clinical `*_source_value` fields now contain the selected bare code instead of `system#code`; read the coding system from `mappings[].source_system`. For `MedicationRequest`, `drug_type_concept_id` changes from `32817` (EHR) to `32838` (EHR prescription). Update loaders and comparisons that depend on the previous values; these server-side changes also affect clients using older SDK versions.
 
 ### Added
-
 - **`phenoml.fhir2omop.MappingEntry.selected`** — identifies whether a source coding was selected for the linked row's `*_source_value`; returned on every mapping entry and false for alternate codings and text-only rows.
-
 - **`client.fhir2omop.create(..., vocab_version=...)`** — accepts an optional OMOP vocabulary release for reproducible coded-concept resolution in sync and async clients.
 - **`phenoml.fhir2omop.CreateOmopResponse.provider_role_contexts` and `.diagnostics`** — add practitioner-role provenance and reference-resolution diagnostics with `ProviderRoleContext`, its supporting models, `Coding`, and `ReferenceDiagnostic`.
 - **`phenoml.fhir2omop.MappingEntry.omop_field`, `PersonRow`, `DrugExposureRow`, `ConditionOccurrenceRow`, and `ProcedureOccurrenceRow`** — add concept-field provenance, person provider/care-site and demographic source-concept fields, drug route/refill/supply/lot/end-date fields, and condition/procedure end timestamps.
@@ -22,7 +19,6 @@
 - **`client.construe.codes.crosswalk(...)`** — now throws `phenoml.construe.InternalServerError` on HTTP 500.
 
 ### Changed
-
 - **`phenoml.fhir2omop.MappingEntryMappingStatus`** — describes response mapping statuses with named literal values while retaining an `Any` fallback for unknown future values; this is a response typing improvement.
 - **FHIR-to-OMOP conversion / `phenoml.fhir2omop.Summary`** — documentation describes expanded resource coverage, source-supported dates, clinical-event eligibility, demographic resolution, and outcome-based summary counts.
 - **`client.lang2fhir.create_multi(..., patient_reference=...)`, `.document_multi(..., patient_reference=...)`, and Lang2FHIR `detection_effort` parameters** — marked deprecated with existing call sites retained; use `primary_patient.identifier` for patient identifiers and do not combine it with `patient_reference`.
@@ -36,13 +32,11 @@
 - **`aiohttp` extra** — loosens `httpx-aiohttp` from exactly `0.1.8` to `^0.1.8`, allowing compatible updates before `0.2.0`.
 
 ### Fixed
-
 - **`PhenomlClient(base_url=..., instance_url=...)` and `AsyncPhenomlClient(base_url=..., instance_url=...)`** — preserve an explicitly supplied base URL when an instance hostname is also provided.
 - **`OAuthTokenProvider` and `AsyncOAuthTokenProvider`** — credential-based token refresh explicitly sends `grant_type=client_credentials`.
 - **`client.agent.chat.stream(...)`** — skips empty SSE events; the async usage example now calls the stream factory without `await` before iterating.
 
 ### Compatibility notes
-
 - **`client.fhir2omop.create(...)`** — Python validates server responses and raises `ParsingError` if a mapping lacks `selected`; dedicated instances must include the backend change introduced on 2026-09-30 before adopting 18.0.0.
 
 ## [17.0.0] - 2026-09-09
