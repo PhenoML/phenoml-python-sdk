@@ -10,7 +10,6 @@ if typing.TYPE_CHECKING:
     from .errors import (
         BadGatewayError,
         BadRequestError,
-        ContentTooLargeError,
         GatewayTimeoutError,
         PaymentRequiredError,
         ServiceUnavailableError,
@@ -20,7 +19,6 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "BadGatewayError": ".errors",
     "BadRequestError": ".errors",
-    "ContentTooLargeError": ".errors",
     "GatewayTimeoutError": ".errors",
     "PaymentRequiredError": ".errors",
     "ServiceUnavailableError": ".errors",
@@ -54,7 +52,6 @@ def __dir__():
 __all__ = [
     "BadGatewayError",
     "BadRequestError",
-    "ContentTooLargeError",
     "GatewayTimeoutError",
     "PaymentRequiredError",
     "ServiceUnavailableError",

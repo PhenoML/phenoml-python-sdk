@@ -1,3 +1,44 @@
+## [18.0.0] - 2026-10-08
+### Breaking Changes
+- **`phenoml.construe.BadGatewayError`, `phenoml.construe.ContentTooLargeError`, `phenoml.fhir2omop.ServiceUnavailableError`, `phenoml.lang2fhir_batch.ContentTooLargeError`, and `phenoml.voice.ContentTooLargeError`** — removed exported error classes; replace their imports and catches with `phenoml.core.api_error.ApiError` and inspect `status_code`.
+- **FHIR-to-OMOP backend output** — clinical `*_source_value` fields now contain the selected bare code instead of `system#code`; read the coding system from `mappings[].source_system`. For `MedicationRequest`, `drug_type_concept_id` changes from `32817` (EHR) to `32838` (EHR prescription). Update loaders and comparisons that depend on the previous values; these server-side changes also affect clients using older SDK versions.
+
+### Added
+- **`phenoml.fhir2omop.MappingEntry.selected`** — identifies whether a source coding was selected for the linked row's `*_source_value`; returned on every mapping entry and false for alternate codings and text-only rows.
+- **`client.fhir2omop.create(..., vocab_version=...)`** — accepts an optional OMOP vocabulary release for reproducible coded-concept resolution in sync and async clients.
+- **`phenoml.fhir2omop.CreateOmopResponse.provider_role_contexts` and `.diagnostics`** — add practitioner-role provenance and reference-resolution diagnostics with `ProviderRoleContext`, its supporting models, `Coding`, and `ReferenceDiagnostic`.
+- **`phenoml.fhir2omop.MappingEntry.omop_field`, `PersonRow`, `DrugExposureRow`, `ConditionOccurrenceRow`, and `ProcedureOccurrenceRow`** — add concept-field provenance, person provider/care-site and demographic source-concept fields, drug route/refill/supply/lot/end-date fields, and condition/procedure end timestamps.
+- **`client.implementation_guides.implementation_guides.create_version(...)` and `.get_version(...)`** — create and retrieve exact canonical implementation-guide packages using `FhirImplementationGuide` and `ImplementationGuideVersionDetail`, with a new `phenoml.implementation_guides.ConflictError` for HTTP 409.
+- **`phenoml.implementation_guides.ImplementationGuideSummary.canonical_url` and `.version_count`** — expose an implementation-guide family's canonical URL and retained version count.
+- **`client.lang2fhir.create_multi(..., primary_patient=...)` and `.document_multi(..., primary_patient=...)`** — accept optional `PrimaryPatient` / `PrimaryPatientName` context with identifier, name, birth date, and gender to identify the primary patient.
+- **`CreateRequestResource`** — adds `familymemberhistory`, `medicationadministration`, and `medicationstatement` extraction targets.
+- **`ResourceReviewResult.remediated`, `ResourceReviewRemediated`, and `ResourceReviewFinding.unaudited`** — report safe coding removals and distinguish fields without an audit verdict.
+- **`BaseHttpResponse.response`** — exposes the underlying `httpx.Response` on raw response wrappers.
+- **`phenoml.core.http_client.get_keepalive_socket_options()`** — returns platform-appropriate TCP keepalive socket options for custom HTTP transports.
+- **`client.lang2fhir.document(...)` and `.document_multi(...)`** — now throw `phenoml.lang2fhir.ForbiddenError` on HTTP 403, including dedicated-instance format restrictions; previously these responses used the generic SDK error.
+- **`client.construe.codes.crosswalk(...)`** — now throws `phenoml.construe.InternalServerError` on HTTP 500.
+
+### Changed
+- **`phenoml.fhir2omop.MappingEntryMappingStatus`** — describes response mapping statuses with named literal values while retaining an `Any` fallback for unknown future values; this is a response typing improvement.
+- **FHIR-to-OMOP conversion / `phenoml.fhir2omop.Summary`** — documentation describes expanded resource coverage, source-supported dates, clinical-event eligibility, demographic resolution, and outcome-based summary counts.
+- **`client.lang2fhir.create_multi(..., patient_reference=...)`, `.document_multi(..., patient_reference=...)`, and Lang2FHIR `detection_effort` parameters** — marked deprecated with existing call sites retained; use `primary_patient.identifier` for patient identifiers and do not combine it with `patient_reference`.
+- **`client.lang2fhir.document(...)` and `.document_multi(...)`** — TIFF support is now restricted to dedicated instances; TIFF was already supported by the previous SDK. RTF and XML/C-CDA are also dedicated-instance formats. Documentation specifies a 20 MiB decoded-file limit and a 1 MiB extracted-text limit for RTF/XML.
+- **`ResourceReview`** — documentation describes retaining resources after safe removal of unsupported codings and quarantining findings that cannot be safely repaired; read retained resources from the returned bundle.
+- **`client.construe.codes.crosswalk(...)`, `client.lang2fhir_batch.create(...)`, `client.lang2fhir_batch.upload_item(...)`, and `client.voice.voice.transcribe(...)`** — removed typed status handling now falls back to `ApiError`: crosswalk HTTP 413/501/502/503, batch create HTTP 409, and upload/transcribe HTTP 413. Batch upload still raises `phenoml.lang2fhir_batch.ConflictError` on HTTP 409; batch creation no longer documents the four-active-jobs limit.
+- **`client.profiles.profiles.delete(...)` and `client.profiles.versions.delete(...)`** — explicitly raise `phenoml.profiles.ConflictError` for profiles pinned by an implementation-guide package.
+- **`client.lang2fhir.create(...)`, `.create_multi(...)`, `.document(...)`, `.document_multi(...)`, and `client.voice.voice.transcribe(...)`** — documentation now specifies a 32 MiB request-body limit, including the full JSON envelope and base64 content for document methods and the raw audio body for transcription.
+- **`BatchError.kind`** — removes `budget_exceeded` from documented values; the field remains a string.
+- **`PhenomlClient(token=...)` and `AsyncPhenomlClient(token=...)`** — type hints and documentation now include token strings alongside callable suppliers; strings already worked at runtime.
+- **`aiohttp` extra** — loosens `httpx-aiohttp` from exactly `0.1.8` to `^0.1.8`, allowing compatible updates before `0.2.0`.
+
+### Fixed
+- **`PhenomlClient(base_url=..., instance_url=...)` and `AsyncPhenomlClient(base_url=..., instance_url=...)`** — preserve an explicitly supplied base URL when an instance hostname is also provided.
+- **`OAuthTokenProvider` and `AsyncOAuthTokenProvider`** — credential-based token refresh explicitly sends `grant_type=client_credentials`.
+- **`client.agent.chat.stream(...)`** — skips empty SSE events; the async usage example now calls the stream factory without `await` before iterating.
+
+### Compatibility notes
+- **`client.fhir2omop.create(...)`** — Python validates server responses and raises `ParsingError` if a mapping lacks `selected`; dedicated instances must include the backend change introduced on 2026-09-30 before adopting 18.0.0.
+
 ## [17.0.0] - 2026-09-09
 ### Breaking Changes
 - **`ProfileSummary`** — `id`, `source`, `resource_type`, `url`, `version`, `fhir_version`, `implementation_guide`, `created_at`, and `updated_at` are now required; remove `None` guards for these fields.

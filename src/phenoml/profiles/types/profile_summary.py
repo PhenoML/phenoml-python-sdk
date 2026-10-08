@@ -20,7 +20,7 @@ class ProfileSummary(UniversalBaseModel):
 
     source: ProfileSummarySource = pydantic.Field()
     """
-    The profile's origin. Profile management responses currently return custom (uploaded) profiles, so this is always "custom" today.
+    The profile's origin. Profile management responses return custom (uploaded) profiles, so this value is always "custom".
     """
 
     resource_type: str = pydantic.Field()

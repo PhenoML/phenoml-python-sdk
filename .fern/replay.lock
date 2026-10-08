@@ -120,19 +120,24 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-python-sdk: 5.18.1
-current_generation: 3ac2feef8a9595d7dea2a99b024322ae61959133
+  - commit_sha: c82043461e17f631b8d6abc0e4e6b752d36a3e99
+    tree_hash: 0d3246c36a44bf76fefb28d40360dbf795d62f48
+    timestamp: 2026-10-08T14:37:48.705Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-python-sdk: 5.31.1
+current_generation: c82043461e17f631b8d6abc0e4e6b752d36a3e99
 patches:
   - id: patch-6516695e
-    content_hash: sha256:5caeff601ccd2db4bda36068ff6c1ac7dba46f1c049cccc367a7db553613acad
+    content_hash: sha256:29d85120d58e5f06a344be0c1228262bb29c8c57591581d8a56b6d3eabe65d75
     original_commit: 6516695ecaba47ae4bcc8119acca86a1113adeeb
     original_message: "Release 15.0.2: restore bundled openapi.json packaging (#169)"
     original_author: Gavin Sharp <gavin@phenoml.com>
-    base_generation: 3ac2feef8a9595d7dea2a99b024322ae61959133
+    base_generation: c82043461e17f631b8d6abc0e4e6b752d36a3e99
     files:
       - pyproject.toml
     patch_content: |
       diff --git a/pyproject.toml b/pyproject.toml
-      index cea8b20..f3f1f73 100644
       --- a/pyproject.toml
       +++ b/pyproject.toml
       @@ -31,6 +31,9 @@ classifiers = [
@@ -153,7 +158,7 @@ patches:
 
         [tool.poetry]
         name = "phenoml"
-        version = "17.0.0"
+        version = "18.0.0"
         description = ""
         readme = "README.md"
         authors = []
@@ -191,7 +196,7 @@ patches:
         python = "^3.10"
         aiohttp = { version = ">=3.14.1,<4", optional = true, python = ">=3.10"}
         httpx = ">=0.21.2"
-        httpx-aiohttp = { version = "0.1.8", optional = true, python = ">=3.10"}
+        httpx-aiohttp = { version = "^0.1.8", optional = true, python = ">=3.10"}
         pydantic = ">= 1.9.2"
         pydantic-core = ">=2.18.2,<3.0.0"
         typing_extensions = ">= 4.0.0"

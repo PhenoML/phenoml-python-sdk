@@ -11,7 +11,6 @@ from ...core.pydantic_utilities import parse_obj_as
 from ...core.request_options import RequestOptions
 from ..errors.bad_gateway_error import BadGatewayError
 from ..errors.bad_request_error import BadRequestError
-from ..errors.content_too_large_error import ContentTooLargeError
 from ..errors.gateway_timeout_error import GatewayTimeoutError
 from ..errors.payment_required_error import PaymentRequiredError
 from ..errors.service_unavailable_error import ServiceUnavailableError
@@ -39,11 +38,12 @@ class RawVoiceClient:
         Send the raw audio bytes as the request body; the audio format is
         detected automatically (WAV, FLAC, MP3, OGG/WebM Opus).
 
-        Supports up to ~5 minutes of audio per request. This limit is on audio
-        duration regardless of file size or format, so a compressed recording
-        within the size limit can still be rejected for being too long. Pair the
-        transcript with a downstream text step (e.g. `POST /lang2fhir/create`)
-        to turn it into a FHIR resource.
+        The raw audio request body is limited to 32 MiB. Supports up to ~5
+        minutes of audio per request. This duration limit is independent of file
+        size or format, so a compressed recording within the body-size limit can
+        still be rejected for being too long. Pair the transcript with a
+        downstream text step (e.g. `POST /lang2fhir/create`) to turn it into a
+        FHIR resource.
 
         Parameters
         ----------
@@ -116,17 +116,6 @@ class RawVoiceClient:
                         ),
                     ),
                 )
-            if _response.status_code == 413:
-                raise ContentTooLargeError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             if _response.status_code == 502:
                 raise BadGatewayError(
                     headers=dict(_response.headers),
@@ -186,11 +175,12 @@ class AsyncRawVoiceClient:
         Send the raw audio bytes as the request body; the audio format is
         detected automatically (WAV, FLAC, MP3, OGG/WebM Opus).
 
-        Supports up to ~5 minutes of audio per request. This limit is on audio
-        duration regardless of file size or format, so a compressed recording
-        within the size limit can still be rejected for being too long. Pair the
-        transcript with a downstream text step (e.g. `POST /lang2fhir/create`)
-        to turn it into a FHIR resource.
+        The raw audio request body is limited to 32 MiB. Supports up to ~5
+        minutes of audio per request. This duration limit is independent of file
+        size or format, so a compressed recording within the body-size limit can
+        still be rejected for being too long. Pair the transcript with a
+        downstream text step (e.g. `POST /lang2fhir/create`) to turn it into a
+        FHIR resource.
 
         Parameters
         ----------
@@ -254,17 +244,6 @@ class AsyncRawVoiceClient:
                 )
             if _response.status_code == 402:
                 raise PaymentRequiredError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 413:
-                raise ContentTooLargeError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
