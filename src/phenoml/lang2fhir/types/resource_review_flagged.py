@@ -29,7 +29,7 @@ class ResourceReviewFlagged(UniversalBaseModel):
 
     findings: typing.Optional[typing.List[ResourceReviewFinding]] = pydantic.Field(default=None)
     """
-    The unsupported fields that caused the resource to be flagged.
+    The findings that caused the resource to be quarantined.
     """
 
     if IS_PYDANTIC_V2:
