@@ -1,11 +1,10 @@
 ## [18.1.0] - 2026-10-08
 ### Added
-- **`async_token` parameter on `AsyncPhenomlClient`** — accepts an async callable (`Callable[[], Awaitable[str]]`) that returns a bearer token; use this when token acquisition involves async I/O such as refreshing tokens via an async HTTP client. When provided, it is used instead of the synchronous `token` for all async requests.
-- **`AsyncPhenomlClient.__init__` overload for `async_token`** — a dedicated `@overload` signature lets type checkers surface the new parameter and enforce that `async_token` and `token` are used in separate call sites.
+- **`phenoml.AsyncPhenomlClient(async_token=...)`** — accepts an async callable returning a bearer token, with a dedicated constructor overload for type checkers, so token acquisition can perform async I/O without OAuth client credentials.
 
 ### Changed
-- **`AsyncClientWrapper.async_get_headers()`** — skips the synchronous token lookup when `async_token` is set, preventing a redundant `Authorization` header from being overwritten.
-- **`BaseClientWrapper.get_headers()`** — gains an `include_token` keyword argument (default `True`) that allows callers to defer token injection to the async path.
+- **`phenoml.core.client_wrapper.AsyncClientWrapper.async_get_headers()`** — skips the synchronous token supplier when an async supplier is configured, including the existing OAuth token provider, so each async request uses only the async authentication path.
+- **`phenoml.core.client_wrapper.BaseClientWrapper.get_headers(include_token=...)`** — adds an optional keyword argument that defaults to `True` and allows the async authentication path to defer token injection.
 
 ## [18.0.0] - 2026-10-08
 ### Breaking Changes
