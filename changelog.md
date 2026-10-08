@@ -1,3 +1,11 @@
+## [18.1.0] - 2026-10-08
+### Added
+- **`phenoml.AsyncPhenomlClient(async_token=...)`** — accepts an async callable returning a bearer token, with a dedicated constructor overload for type checkers, so token acquisition can perform async I/O without OAuth client credentials.
+
+### Changed
+- **`phenoml.core.client_wrapper.AsyncClientWrapper.async_get_headers()`** — skips the synchronous token supplier when an async supplier is configured, including the existing OAuth token provider, so each async request uses only the async authentication path.
+- **`phenoml.core.client_wrapper.BaseClientWrapper.get_headers(include_token=...)`** — adds an optional keyword argument that defaults to `True` and allows the async authentication path to defer token injection.
+
 ## [18.0.0] - 2026-10-08
 ### Breaking Changes
 - **`phenoml.construe.BadGatewayError`, `phenoml.construe.ContentTooLargeError`, `phenoml.fhir2omop.ServiceUnavailableError`, `phenoml.lang2fhir_batch.ContentTooLargeError`, and `phenoml.voice.ContentTooLargeError`** — removed exported error classes; replace their imports and catches with `phenoml.core.api_error.ApiError` and inspect `status_code`.
