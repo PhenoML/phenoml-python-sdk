@@ -1,3 +1,12 @@
+## [18.1.0] - 2026-10-08
+### Added
+- **`async_token` parameter on `AsyncPhenomlClient`** — accepts an async callable (`Callable[[], Awaitable[str]]`) that returns a bearer token; use this when token acquisition involves async I/O such as refreshing tokens via an async HTTP client. When provided, it is used instead of the synchronous `token` for all async requests.
+- **`AsyncPhenomlClient.__init__` overload for `async_token`** — a dedicated `@overload` signature lets type checkers surface the new parameter and enforce that `async_token` and `token` are used in separate call sites.
+
+### Changed
+- **`AsyncClientWrapper.async_get_headers()`** — skips the synchronous token lookup when `async_token` is set, preventing a redundant `Authorization` header from being overwritten.
+- **`BaseClientWrapper.get_headers()`** — gains an `include_token` keyword argument (default `True`) that allows callers to defer token injection to the async path.
+
 ## [18.0.0] - 2026-10-08
 ### Breaking Changes
 - **`phenoml.construe.BadGatewayError`, `phenoml.construe.ContentTooLargeError`, `phenoml.fhir2omop.ServiceUnavailableError`, `phenoml.lang2fhir_batch.ContentTooLargeError`, and `phenoml.voice.ContentTooLargeError`** — removed exported error classes; replace their imports and catches with `phenoml.core.api_error.ApiError` and inspect `status_code`.
