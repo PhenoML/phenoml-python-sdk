@@ -1,3 +1,7 @@
+## [18.2.0] - 2026-10-09
+### Added
+- **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
+
 ## [18.1.0] - 2026-10-08
 ### Added
 - **`phenoml.AsyncPhenomlClient(async_token=...)`** — accepts an async callable returning a bearer token, with a dedicated constructor overload for type checkers, so token acquisition can perform async I/O without OAuth client credentials.
