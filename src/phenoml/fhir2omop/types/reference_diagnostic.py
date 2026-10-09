@@ -8,8 +8,22 @@ from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
 
 
 class ReferenceDiagnostic(UniversalBaseModel):
+    """
+    Explains why a source value or reference could not be used. When an affected OMOP row is emitted, omop_table and omop_id identify that row within this response, regardless of diagnostic outcome. They identify the affected output row, not a missing or rejected reference target. Multiple source resources can link to the same row. Both fields are omitted when there is no affected output row, including when the source resource is dropped. These IDs are response-local and are not stable across requests.
+    """
+
     resource_type: typing.Optional[str] = None
     resource_id: typing.Optional[str] = None
+    omop_table: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Table containing the affected row in this response. Present together with omop_id when that row is emitted.
+    """
+
+    omop_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Primary key of the affected row within omop_table in this response. Present together with omop_table when that row is emitted.
+    """
+
     path: typing.Optional[str] = pydantic.Field(default=None)
     """
     FHIR element path on the source resource.

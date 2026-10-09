@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "64578292f2eb65a4341fe673c94ff3d51f871ab0"
+    "version": "49f1258330df448935b5304a1d8c405a2834d227"
   },
   "x-services": [
     {
@@ -11430,12 +11430,22 @@
       },
       "fhir2omop_ReferenceDiagnostic": {
         "type": "object",
+        "description": "Explains why a source value or reference could not be used. When an affected OMOP row is emitted, omop_table and omop_id identify that row within this response, regardless of diagnostic outcome. They identify the affected output row, not a missing or rejected reference target. Multiple source resources can link to the same row. Both fields are omitted when there is no affected output row, including when the source resource is dropped. These IDs are response-local and are not stable across requests.",
         "properties": {
           "resource_type": {
             "type": "string"
           },
           "resource_id": {
             "type": "string"
+          },
+          "omop_table": {
+            "type": "string",
+            "description": "Table containing the affected row in this response. Present together with omop_id when that row is emitted."
+          },
+          "omop_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Primary key of the affected row within omop_table in this response. Present together with omop_table when that row is emitted."
           },
           "path": {
             "type": "string",
