@@ -94,15 +94,45 @@ class Fhir2OmopClient:
         gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
         and CMS Place of Service codings in `Location.type` are resolved to
         `care_site.place_of_service_concept_id`.
+        Within one request, Practitioners with the same single distinct non-empty
+        NPI under `http://hl7.org/fhir/sid/us-npi` merge into one provider row only
+        when all supplied mapped identity attributes in the entire NPI group agree.
+        This includes Practitioners contained in valid role references. System and
+        value matches are exact; other identifier systems and names do not trigger
+        a merge. Missing attributes can enrich a compatible merged row.
+        Compatibility compares the name rendered from each Practitioner's first
+        `name` entry, its gender, its first non-empty DEA identifier, and its parsed
+        birth year. Differences in birth month/day within one year do not conflict.
+        Rendered names are compared exactly: `Jane Smith` and `Dr. Jane Smith`
+        conflict even when they share an NPI.
+        If any of these attributes conflict, every resource in that NPI group stays
+        separate, including resources missing the conflicting attribute. Source
+        attributes and unambiguous structural reference links are preserved; no
+        conflicting value is selected. Each affected row has `CONFLICTING`
+        diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
+        `omop_table: provider` and `omop_id`. All source gender mappings link to
+        their retained or merged provider row.
+        Repeated copies of one NPI on a resource are allowed. A resource with
+        multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
+        source-resource identity in `provider_source_value`, and reports a
+        `CONFLICTING` diagnostic at `identifier` linked by
+        `omop_table: provider` and `omop_id`.
+        Row IDs are per response. The API does not merge across requests. For a
+        Practitioner with one NPI, `provider_source_value` is that NPI, even when
+        its group conflicts. Consumers can use it to deduplicate compatible
+        providers across requests, but must preserve rows flagged by identity
+        conflict diagnostics and check compatibility across responses. Without
+        one unambiguous NPI, source-resource identity is preserved without a
+        person-level deduplication guarantee.
         A `PractitionerRole` that identifies one supplied `Practitioner` aliases
         that canonical provider: by a top-level structural reference, a
         parent-contained `#id` reference, or an exact `identifier.system` and
         `identifier.value` match against a top-level Practitioner. No remote
         identifier lookup is performed. When `Reference.type` is present it must
-        be `Practitioner`; duplicate contained IDs and identifier matches are
-        ambiguous. An explicit reference that is unresolved, ambiguous, or
-        unsupported retains a role-fallback provider row and is returned in
-        `diagnostics`. `provider_role_contexts` preserves role-specific
+        be `Practitioner`; duplicate contained IDs and identifier matches to
+        different canonical providers are ambiguous. An explicit reference that
+        is unresolved, ambiguous, or unsupported retains a role-fallback provider
+        row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
         specialty and care-site context that a canonical OMOP provider row cannot
         represent together.
 
@@ -230,7 +260,8 @@ class Fhir2OmopClient:
         `provider_role_contexts` (source role details linked to provider rows),
         `dropped` (resources that could not be shaped into a row),
         `diagnostics` (explicit references that could not safely create a link,
-        and conflicting or unsupported Patient demographic extensions),
+        conflicting Practitioner identity attributes, and conflicting or
+        unsupported Patient demographic extensions),
         `vocab_version` (the OMOP vocabulary release codes were resolved
         against), and a small `summary` of the resolution outcomes.
 
@@ -540,15 +571,45 @@ class AsyncFhir2OmopClient:
         gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
         and CMS Place of Service codings in `Location.type` are resolved to
         `care_site.place_of_service_concept_id`.
+        Within one request, Practitioners with the same single distinct non-empty
+        NPI under `http://hl7.org/fhir/sid/us-npi` merge into one provider row only
+        when all supplied mapped identity attributes in the entire NPI group agree.
+        This includes Practitioners contained in valid role references. System and
+        value matches are exact; other identifier systems and names do not trigger
+        a merge. Missing attributes can enrich a compatible merged row.
+        Compatibility compares the name rendered from each Practitioner's first
+        `name` entry, its gender, its first non-empty DEA identifier, and its parsed
+        birth year. Differences in birth month/day within one year do not conflict.
+        Rendered names are compared exactly: `Jane Smith` and `Dr. Jane Smith`
+        conflict even when they share an NPI.
+        If any of these attributes conflict, every resource in that NPI group stays
+        separate, including resources missing the conflicting attribute. Source
+        attributes and unambiguous structural reference links are preserved; no
+        conflicting value is selected. Each affected row has `CONFLICTING`
+        diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
+        `omop_table: provider` and `omop_id`. All source gender mappings link to
+        their retained or merged provider row.
+        Repeated copies of one NPI on a resource are allowed. A resource with
+        multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
+        source-resource identity in `provider_source_value`, and reports a
+        `CONFLICTING` diagnostic at `identifier` linked by
+        `omop_table: provider` and `omop_id`.
+        Row IDs are per response. The API does not merge across requests. For a
+        Practitioner with one NPI, `provider_source_value` is that NPI, even when
+        its group conflicts. Consumers can use it to deduplicate compatible
+        providers across requests, but must preserve rows flagged by identity
+        conflict diagnostics and check compatibility across responses. Without
+        one unambiguous NPI, source-resource identity is preserved without a
+        person-level deduplication guarantee.
         A `PractitionerRole` that identifies one supplied `Practitioner` aliases
         that canonical provider: by a top-level structural reference, a
         parent-contained `#id` reference, or an exact `identifier.system` and
         `identifier.value` match against a top-level Practitioner. No remote
         identifier lookup is performed. When `Reference.type` is present it must
-        be `Practitioner`; duplicate contained IDs and identifier matches are
-        ambiguous. An explicit reference that is unresolved, ambiguous, or
-        unsupported retains a role-fallback provider row and is returned in
-        `diagnostics`. `provider_role_contexts` preserves role-specific
+        be `Practitioner`; duplicate contained IDs and identifier matches to
+        different canonical providers are ambiguous. An explicit reference that
+        is unresolved, ambiguous, or unsupported retains a role-fallback provider
+        row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
         specialty and care-site context that a canonical OMOP provider row cannot
         represent together.
 
@@ -676,7 +737,8 @@ class AsyncFhir2OmopClient:
         `provider_role_contexts` (source role details linked to provider rows),
         `dropped` (resources that could not be shaped into a row),
         `diagnostics` (explicit references that could not safely create a link,
-        and conflicting or unsupported Patient demographic extensions),
+        conflicting Practitioner identity attributes, and conflicting or
+        unsupported Patient demographic extensions),
         `vocab_version` (the OMOP vocabulary release codes were resolved
         against), and a small `summary` of the resolution outcomes.
 
