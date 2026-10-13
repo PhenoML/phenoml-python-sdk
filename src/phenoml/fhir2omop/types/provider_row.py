@@ -9,7 +9,11 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class ProviderRow(UniversalBaseModel):
     provider_id: typing.Optional[int] = None
     provider_name: typing.Optional[str] = None
-    npi: typing.Optional[str] = None
+    npi: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Single distinct non-empty source NPI. Omitted when the Practitioner has multiple distinct NPIs.
+    """
+
     dea: typing.Optional[str] = None
     specialty_concept_id: typing.Optional[int] = None
     care_site_id: typing.Optional[int] = None
@@ -25,7 +29,22 @@ class ProviderRow(UniversalBaseModel):
 
     provider_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The source practitioner identity. A Practitioner contained by a PractitionerRole is scoped as `PractitionerRole/<role-source-value>#<contained-id>` so identical local contained IDs do not collide; an id-less parent uses an explicitly marked response-local role ordinal such as `@role-index:1`.
+    The single distinct source NPI, when present. Compatible providers
+    can use this value as a cross-request deduplication key; row IDs are
+    per response, and the API does not merge across requests. Conflicting
+    NPI groups retain separate rows sharing this value. Preserve rows
+    flagged by identity diagnostics using `omop_table: provider` and
+    `omop_id`, and check identity compatibility across responses before
+    deduplicating.
+    Without one unambiguous NPI, this is the source practitioner identity.
+    Multiple distinct NPIs leave `npi` unset and use the resource ID,
+    full URL, or an explicitly marked response-local provider ordinal
+    such as `@provider-index:1` when neither is supplied.
+    A Practitioner contained by a PractitionerRole without one unambiguous
+    NPI is scoped as `PractitionerRole/<role-source-value>#<contained-id>`
+    so identical local contained IDs do not collide; an id-less parent
+    uses an explicitly marked response-local role ordinal such as
+    `@role-index:1`.
     """
 
     specialty_source_value: typing.Optional[str] = None

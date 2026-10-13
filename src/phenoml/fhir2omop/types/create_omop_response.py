@@ -50,10 +50,20 @@ class CreateOmopResponse(UniversalBaseModel):
     Missing optional references are normal and do not produce a diagnostic.
     References resolve only against resources supplied in this request.
     Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported
-    references. Patient demographic extensions that conflict, or a birth
-    sex without `valueCode`, are also reported here; their `path` is
+    conditions as defined in `ReferenceDiagnostic.outcome`. Patient
+    demographic extensions that conflict, or a birth sex without
+    `valueCode`, are also reported here; their `path` is
     `extension:birthsex` or `extension:ethnicity` and they have no
-    `reference`.
+    `reference`. Practitioner identity conflicts that prevent merging also
+    have no `reference`: their paths are `name`, `gender`, `birthDate`, or
+    `identifier`, their outcome is `CONFLICTING`, and `omop_table: provider`
+    together with `omop_id` identifies the affected row. For a conflicting
+    NPI group, every member is flagged, including members missing the conflicting attribute.
+    The reason identifies the differing mapped attribute and explains why
+    the entire group remains separate, rather than asserting that each
+    member individually supplied a conflicting value.
+    Multiple distinct NPIs on one Practitioner are also diagnosed at
+    `identifier` with `omop_table: provider` and the retained row's `omop_id`.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
