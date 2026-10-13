@@ -34,8 +34,28 @@ class ReferenceDiagnostic(UniversalBaseModel):
     The supplied Reference.reference value, when present.
     """
 
-    outcome: typing.Optional[ReferenceDiagnosticOutcome] = None
-    reason: typing.Optional[str] = None
+    outcome: typing.Optional[ReferenceDiagnosticOutcome] = pydantic.Field(default=None)
+    """
+    UNRESOLVED: a supported reference cannot resolve to a resource or
+    emitted target supplied in this request.
+    AMBIGUOUS: a reference or identifier matches multiple possible
+    targets. Identifier-only `PractitionerRole.practitioner` references
+    are unambiguous when all matches map to one canonical provider.
+    Literal references matching multiple source resources remain
+    ambiguous even if those Practitioners merge into one provider.
+    CONFLICTING: supplied values or relationships cannot be combined
+    under the mapping policy, such as differing mapped provider identity
+    attributes, multiple distinct NPIs on one Practitioner, conflicting
+    Patient demographic extensions, or an Encounter belonging to a
+    different patient.
+    UNSUPPORTED: a supplied reference form, resource type, or value
+    shape is outside the supported mapping policy.
+    """
+
+    reason: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Explanation of the condition and, when applicable, its effect on mapping.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
