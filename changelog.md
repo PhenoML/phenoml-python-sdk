@@ -1,3 +1,11 @@
+## [18.3.0] - 2026-10-14
+### Changed
+- **`client.fhir2omop.create(...)` clinical table routing** — clinical resources (`Condition`, `Procedure`, `MedicationRequest`, `MedicationStatement`, `MedicationAdministration`, `Immunization`, `AllergyIntolerance`, `Observation`) now route to a vocabulary-driven, domain-selected OMOP table based on the mapped standard concept rather than a fixed resource-type mapping; use `mappings.omop_table` and `mappings.omop_id` to locate each result row.
+- **`unit_concept_id` / `unit_source_value` / `unit_source_concept_id` in Measurement rows** — `unit_concept_id` now resolves coded UCUM units to standard OMOP Unit concepts and returns `null` for absent units (previously `0`); `unit_source_value` now contains `Quantity.code` instead of human-readable text; a new nullable `unit_source_concept_id` field identifies the OMOP source concept for the supplied unit coding.
+- **`visit_concept_id` in `visit_occurrence` rows** — `Encounter.class` and `Encounter.type` codings now resolve to standard OMOP Visit concepts via HL7 v3-ActCode and vocabulary-driven mappings; conflicting classifications produce `CONFLICTING` diagnostics with path `class/type` or `type`.
+- **Practitioner NPI deduplication** — Practitioners sharing a single distinct NPI within a request are merged into one provider row when all mapped identity attributes agree; conflicts produce `CONFLICTING` diagnostics linked by `omop_table: provider` and `omop_id`.
+- **`vocab_version` default and `diagnostics` coverage** — the default OMOP vocabulary release is now documented as `v20260829`; `diagnostics` now also covers conflicting Practitioner identity attributes and Encounter classification conflicts.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
