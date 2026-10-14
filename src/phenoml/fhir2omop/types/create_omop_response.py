@@ -18,7 +18,19 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     mappings: typing.Optional[typing.List[MappingEntry]] = pydantic.Field(default=None)
     """
-    One entry per supported source coding from a resource that shaped a row (or one entry for a text-only primary resource with no coding), describing how it resolved and linking back to the row it produced. A coded route or Observation valueCodeableConcept is a separate entry linked to its medication, vaccine, or observation row. A Patient demographic code links to its person row, or to its `observation` race row when the person has more than one race.
+    One entry per supported source coding from a resource that shaped a
+    row, plus entries for text-only primary resources and supplied
+    Quantity units without coding, describing each resolution outcome
+    and linking it to its row.
+    A coded route or Observation valueCodeableConcept is a separate
+    entry linked to the output row. Observation values returned outside
+    `measurement` / `observation` are preserved here without concept
+    resolution or a corresponding row column.
+    For Observations returned as measurement or observation rows, each
+    supplied Quantity unit has a separate entry linked to that row;
+    absent units have no entry.
+    A Patient demographic code links to its person row, or to its
+    `observation` race row when the person has more than one race.
     """
 
     provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
@@ -50,16 +62,31 @@ class CreateOmopResponse(UniversalBaseModel):
     Missing optional references are normal and do not produce a diagnostic.
     References resolve only against resources supplied in this request.
     Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported
-    references. Patient demographic extensions that conflict, or a birth
-    sex without `valueCode`, are also reported here; their `path` is
+    conditions as defined in `ReferenceDiagnostic.outcome`. Patient
+    demographic extensions that conflict, or a birth sex without
+    `valueCode`, are also reported here; their `path` is
     `extension:birthsex` or `extension:ethnicity` and they have no
-    `reference`.
+    `reference`. Practitioner identity conflicts that prevent merging also
+    have no `reference`: their paths are `name`, `gender`, `birthDate`, or
+    `identifier`, their outcome is `CONFLICTING`, and `omop_table: provider`
+    together with `omop_id` identifies the affected row. For a conflicting
+    NPI group, every member is flagged, including members missing the conflicting attribute.
+    The reason identifies the differing mapped attribute and explains why
+    the entire group remains separate, rather than asserting that each
+    member individually supplied a conflicting value.
+    Multiple distinct NPIs on one Practitioner are also diagnosed at
+    `identifier` with `omop_table: provider` and the retained row's `omop_id`.
+    Conflicting Encounter classifications are also reported with outcome
+    `CONFLICTING` and no `reference`: path `class/type` means a mapped
+    type disagrees with the selected class, which still determines the
+    Visit; path `type` means separate type classifications disagree and
+    no type can supply a Visit when class is missing or unmapped.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
     """
     The OMOP vocabulary release used for coded concept resolution
-    (for example, "v20260227"), for reproducibility. Omitted when no
+    (for example, "v20260829"), for reproducibility. Omitted when no
     vocabulary resolution was performed.
     """
 
