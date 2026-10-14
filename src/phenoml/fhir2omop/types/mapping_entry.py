@@ -5,11 +5,12 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .mapping_entry_mapping_status import MappingEntryMappingStatus
+from .mapping_resolution import MappingResolution
 
 
 class MappingEntry(UniversalBaseModel):
     """
-    How one source coding (or a text-only primary resource's free text) resolved to an OMOP standard concept. `omop_table`, `omop_field`, and `omop_id` link it to the row and concept field it produced. A coded medication route is a separate entry linked to the same drug_exposure row as its medication or vaccine coding. `selected` identifies the coding rendered in the associated row's `*_source_value`; it is false for alternate codings and text-only rows.
+    How one source coding (or a text-only primary resource's free text) resolved to an OMOP standard concept. `omop_table`, `omop_field`, and `omop_id` link it to the row and concept field it produced. Coded result values and supplied Quantity units have separate entries linked to their clinical row. Unit entries preserve the original Quantity.system/code and Quantity.unit in source_system/source_code/source_name, including OID spellings. A coded medication route is a separate entry linked to the same drug_exposure row as its medication or vaccine coding. `selected` identifies the coding rendered in the associated row's `*_source_value`; it is false for alternate codings and text-only rows.
     """
 
     resource_type: typing.Optional[str] = None
@@ -46,7 +47,8 @@ class MappingEntry(UniversalBaseModel):
     MAPPED (source coding was mapped to a standard concept), UNCHECKED (a
     standard code was suggested for a text-only resource but not verified
     against the OMOP vocabulary, so `concept_id` stays `0`), or UNMAPPED
-    (no standard concept found).
+    (no target concept selected, including missing mappings,
+    target-domain mismatches, and ambiguity).
     """
 
     selected: bool = pydantic.Field()
@@ -54,6 +56,7 @@ class MappingEntry(UniversalBaseModel):
     Whether this source coding was selected for the linked row's `*_source_value` field. Always present; false for alternate codings and text-only rows. For a Patient demographic, it marks the code that determined the PERSON field or race `observation` row, even when that code has no concept; it is false for race and ethnicity null flavors, conflicting values, a Patient `gender` overridden by birth sex, and race categories that did not determine the field.
     """
 
+    resolution: typing.Optional[MappingResolution] = None
     note: typing.Optional[str] = pydantic.Field(default=None)
     """
     Additional context for the entry. A coded route is noted as

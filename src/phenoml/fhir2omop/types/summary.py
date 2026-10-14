@@ -14,6 +14,8 @@ class Summary(UniversalBaseModel):
     once even when it carried several codings — unlike `mappings`, which has
     one entry per coding. For example, a medication code and its selected
     coded route on the same `drug_exposure` row are separate outcomes;
+    each supplied Quantity unit also counts once, including text-only units;
+    absent units do not count;
     independently checked report-only alternate route codings do not alter
     `summary`. A Patient demographic counts once per PERSON field, or per
     race `observation` row, that received a non-null value; conflicting
