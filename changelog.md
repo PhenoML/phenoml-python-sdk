@@ -1,3 +1,10 @@
+## [18.3.0] - 2026-10-14
+### Changed
+- **`client.fhir2omop.create(...)` — Quantity unit resolution** — coded UCUM units now resolve to standard OMOP `unit_concept_id` values; absent units return `null` instead of `0`, and `unit_source_value` now contains `Quantity.code` rather than human-readable display text (which moves to `mappings[].source_name`). Quantity unit `mappings` entries preserve the original `Quantity.system` including OID spelling rather than normalizing to a canonical URL.
+- **`client.fhir2omop.create(...)` — Measurement `unit_source_concept_id`** — Measurement rows now include a new nullable `unit_source_concept_id` field identifying the OMOP source concept for `Quantity.system`/`code` when available, otherwise `0`; Observation rows have no such column.
+- **`client.fhir2omop.create(...)` — NPI-based Practitioner merging** — Practitioners sharing a single distinct NPI are merged into one provider row when all mapped identity attributes (name, gender, DEA identifier, birth year) agree; conflicts produce `CONFLICTING` diagnostics linked by `omop_table: provider` and `omop_id`, and resources with multiple distinct NPIs stay separate with `npi` unset.
+- **`client.fhir2omop.create(...)` — `diagnostics` scope** — the `diagnostics` field now also covers conflicting Practitioner identity attributes in addition to unresolved references and Patient demographic extension conflicts.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
