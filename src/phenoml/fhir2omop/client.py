@@ -94,15 +94,45 @@ class Fhir2OmopClient:
         gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
         and CMS Place of Service codings in `Location.type` are resolved to
         `care_site.place_of_service_concept_id`.
+        Within one request, Practitioners with the same single distinct non-empty
+        NPI under `http://hl7.org/fhir/sid/us-npi` merge into one provider row only
+        when all supplied mapped identity attributes in the entire NPI group agree.
+        This includes Practitioners contained in valid role references. System and
+        value matches are exact; other identifier systems and names do not trigger
+        a merge. Missing attributes can enrich a compatible merged row.
+        Compatibility compares the name rendered from each Practitioner's first
+        `name` entry, its gender, its first non-empty DEA identifier, and its parsed
+        birth year. Differences in birth month/day within one year do not conflict.
+        Rendered names are compared exactly: `Jane Smith` and `Dr. Jane Smith`
+        conflict even when they share an NPI.
+        If any of these attributes conflict, every resource in that NPI group stays
+        separate, including resources missing the conflicting attribute. Source
+        attributes and unambiguous structural reference links are preserved; no
+        conflicting value is selected. Each affected row has `CONFLICTING`
+        diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
+        `omop_table: provider` and `omop_id`. All source gender mappings link to
+        their retained or merged provider row.
+        Repeated copies of one NPI on a resource are allowed. A resource with
+        multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
+        source-resource identity in `provider_source_value`, and reports a
+        `CONFLICTING` diagnostic at `identifier` linked by
+        `omop_table: provider` and `omop_id`.
+        Row IDs are per response. The API does not merge across requests. For a
+        Practitioner with one NPI, `provider_source_value` is that NPI, even when
+        its group conflicts. Consumers can use it to deduplicate compatible
+        providers across requests, but must preserve rows flagged by identity
+        conflict diagnostics and check compatibility across responses. Without
+        one unambiguous NPI, source-resource identity is preserved without a
+        person-level deduplication guarantee.
         A `PractitionerRole` that identifies one supplied `Practitioner` aliases
         that canonical provider: by a top-level structural reference, a
         parent-contained `#id` reference, or an exact `identifier.system` and
         `identifier.value` match against a top-level Practitioner. No remote
         identifier lookup is performed. When `Reference.type` is present it must
-        be `Practitioner`; duplicate contained IDs and identifier matches are
-        ambiguous. An explicit reference that is unresolved, ambiguous, or
-        unsupported retains a role-fallback provider row and is returned in
-        `diagnostics`. `provider_role_contexts` preserves role-specific
+        be `Practitioner`; duplicate contained IDs and identifier matches to
+        different canonical providers are ambiguous. An explicit reference that
+        is unresolved, ambiguous, or unsupported retains a role-fallback provider
+        row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
         specialty and care-site context that a canonical OMOP provider row cannot
         represent together.
 
@@ -212,12 +242,52 @@ class Fhir2OmopClient:
         against the selected row's `value_as_concept_id` and use the selected
         bare code in `value_source_value`, leaving an `observation`'s
         `value_as_string` empty; unmapped or target-invalid coded values remain
-        `0`.
+        `0`. A coded value is target-invalid only when it reaches no active
+        standard concept: the terminology service accepts any OMOP domain for
+        `value_as_concept_id` per CDM 5.4. For example, a blood-culture Measurement
+        can record *Staphylococcus aureus* as its coded result, even though the
+        organism concept belongs to OMOP's Observation domain.
         Other unsupported `value[x]` forms and Observation components do not
         populate separate converted values. A
         numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
-        measurement's `operator_concept_id`; units remain source text and have
-        `unit_concept_id` of `0`.
+        measurement's `operator_concept_id`.
+
+        Quantity units resolve independently against the selected table's
+        `unit_concept_id`. Only coded UCUM (`http://unitsofmeasure.org` or its
+        OID `2.16.840.1.113883.6.8`, bare or `urn:oid:`) is supported. Codes are
+        case-sensitive: no spelling aliases, text-only guesses, or numeric
+        conversion are applied. Coded UCUM units map to valid standard OMOP
+        Unit concepts using the release selected by `vocab_version` (default
+        `v20260227` when omitted or empty). Mappings are direct or follow an
+        active OMOP `Maps to` relationship; UCUM units do not use a UMLS bridge.
+        Unknown codes,
+        vocabulary gaps, text-only units, missing coding, and unsupported
+        systems keep the row and use `0`; absent units use JSON `null` (the
+        field is present). Explicit dimensionless code `1` is a supplied unit
+        and resolves or remains `0`; it is never treated as absent.
+        `unit_source_value` contains Quantity.code when supplied, otherwise
+        Quantity.unit. A separate unit `mappings` entry preserves the original
+        Quantity.system/code in `source_system`/`source_code` and the exact
+        human-readable Quantity.unit in `source_name`, with its own outcome.
+        Quantity.unit provides display text and does not affect unit matching.
+        Measurement also returns nullable `unit_source_concept_id`, identifying
+        the OMOP source concept for Quantity.system/code when available,
+        otherwise `0` for a supplied unit.
+        Observation has no such column. Resolving a unit does not change
+        numeric values, comparators, or reference ranges.
+        Supported coded UCUM units include `resolution` in their mappings,
+        whether the unit resolves or remains unmapped:
+        its outcome and reason code distinguish vocabulary gaps, target-domain
+        mismatches, and ambiguity. Unresolved or ambiguous units retain the row
+        with concept ID `0`. Resolved mappings retain the selected concept's
+        direct or crosswalk provenance. Text-only units, units with missing
+        coding, and unsupported unit systems omit `resolution`; their `note`
+        explains the unmapped outcome.
+
+        Compatibility: absent `unit_concept_id` values previously returned `0`
+        and now return `null`. Coded units use their code in `unit_source_value`
+        rather than their human-readable text; the text remains in `mappings`.
+        The Measurement `unit_source_concept_id` field is new.
 
         A standard OMOP `concept_id` is selected for each eligible primary clinical coding
         after considering all of the resource's supplied codings. An unambiguous
@@ -230,14 +300,15 @@ class Fhir2OmopClient:
         `provider_role_contexts` (source role details linked to provider rows),
         `dropped` (resources that could not be shaped into a row),
         `diagnostics` (explicit references that could not safely create a link,
-        and conflicting or unsupported Patient demographic extensions),
+        conflicting Practitioner identity attributes, and conflicting or
+        unsupported Patient demographic extensions),
         `vocab_version` (the OMOP vocabulary release codes were resolved
         against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Visit and unit concept fields currently remain `0`;
+        (`UNCHECKED`). Visit concept fields currently remain `0`;
         Person demographics and Provider recorded gender follow the policies
         above. Coded Observation values may populate `value_as_concept_id`.
         Concepts set by a fixed convention rather than terminology resolution
@@ -250,9 +321,11 @@ class Fhir2OmopClient:
         Known OID-form coding systems are accepted as either FHIR OID URNs (for
         example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
         are normalized to their canonical system URLs before terminology
-        resolution. `mappings[].source_system` reports that canonical URL, so the
-        OID and URL forms produce the same mapping. An unknown OID is not
-        rewritten and may be `UNMAPPED`.
+        resolution. Coding mappings report that canonical URL in
+        `source_system`; Quantity unit mappings preserve the original
+        Quantity.system, including OID spelling. Known OID and URL forms
+        resolve identically. An unknown OID is not rewritten and may be
+        `UNMAPPED`.
         Other `*_source_value` fields preserve row-specific raw source values,
         such as resource identifiers, names, units, or status codes.
         `MedicationRequest` uses `32838` (EHR prescription) for
@@ -371,8 +444,8 @@ class Fhir2OmopClient:
 
         vocab_version : typing.Optional[str]
             OMOP vocabulary release to use for coded concept resolution. If
-            omitted or empty, the API uses its default release. Specify a
-            release explicitly when reproducibility matters. The response's
+            omitted or empty, the API uses its default release (`v20260829`).
+            Specify a release explicitly when reproducibility matters. The response's
             `vocab_version`, when present, identifies the release used.
 
         request_options : typing.Optional[RequestOptions]
@@ -540,15 +613,45 @@ class AsyncFhir2OmopClient:
         gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
         and CMS Place of Service codings in `Location.type` are resolved to
         `care_site.place_of_service_concept_id`.
+        Within one request, Practitioners with the same single distinct non-empty
+        NPI under `http://hl7.org/fhir/sid/us-npi` merge into one provider row only
+        when all supplied mapped identity attributes in the entire NPI group agree.
+        This includes Practitioners contained in valid role references. System and
+        value matches are exact; other identifier systems and names do not trigger
+        a merge. Missing attributes can enrich a compatible merged row.
+        Compatibility compares the name rendered from each Practitioner's first
+        `name` entry, its gender, its first non-empty DEA identifier, and its parsed
+        birth year. Differences in birth month/day within one year do not conflict.
+        Rendered names are compared exactly: `Jane Smith` and `Dr. Jane Smith`
+        conflict even when they share an NPI.
+        If any of these attributes conflict, every resource in that NPI group stays
+        separate, including resources missing the conflicting attribute. Source
+        attributes and unambiguous structural reference links are preserved; no
+        conflicting value is selected. Each affected row has `CONFLICTING`
+        diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
+        `omop_table: provider` and `omop_id`. All source gender mappings link to
+        their retained or merged provider row.
+        Repeated copies of one NPI on a resource are allowed. A resource with
+        multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
+        source-resource identity in `provider_source_value`, and reports a
+        `CONFLICTING` diagnostic at `identifier` linked by
+        `omop_table: provider` and `omop_id`.
+        Row IDs are per response. The API does not merge across requests. For a
+        Practitioner with one NPI, `provider_source_value` is that NPI, even when
+        its group conflicts. Consumers can use it to deduplicate compatible
+        providers across requests, but must preserve rows flagged by identity
+        conflict diagnostics and check compatibility across responses. Without
+        one unambiguous NPI, source-resource identity is preserved without a
+        person-level deduplication guarantee.
         A `PractitionerRole` that identifies one supplied `Practitioner` aliases
         that canonical provider: by a top-level structural reference, a
         parent-contained `#id` reference, or an exact `identifier.system` and
         `identifier.value` match against a top-level Practitioner. No remote
         identifier lookup is performed. When `Reference.type` is present it must
-        be `Practitioner`; duplicate contained IDs and identifier matches are
-        ambiguous. An explicit reference that is unresolved, ambiguous, or
-        unsupported retains a role-fallback provider row and is returned in
-        `diagnostics`. `provider_role_contexts` preserves role-specific
+        be `Practitioner`; duplicate contained IDs and identifier matches to
+        different canonical providers are ambiguous. An explicit reference that
+        is unresolved, ambiguous, or unsupported retains a role-fallback provider
+        row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
         specialty and care-site context that a canonical OMOP provider row cannot
         represent together.
 
@@ -658,12 +761,52 @@ class AsyncFhir2OmopClient:
         against the selected row's `value_as_concept_id` and use the selected
         bare code in `value_source_value`, leaving an `observation`'s
         `value_as_string` empty; unmapped or target-invalid coded values remain
-        `0`.
+        `0`. A coded value is target-invalid only when it reaches no active
+        standard concept: the terminology service accepts any OMOP domain for
+        `value_as_concept_id` per CDM 5.4. For example, a blood-culture Measurement
+        can record *Staphylococcus aureus* as its coded result, even though the
+        organism concept belongs to OMOP's Observation domain.
         Other unsupported `value[x]` forms and Observation components do not
         populate separate converted values. A
         numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
-        measurement's `operator_concept_id`; units remain source text and have
-        `unit_concept_id` of `0`.
+        measurement's `operator_concept_id`.
+
+        Quantity units resolve independently against the selected table's
+        `unit_concept_id`. Only coded UCUM (`http://unitsofmeasure.org` or its
+        OID `2.16.840.1.113883.6.8`, bare or `urn:oid:`) is supported. Codes are
+        case-sensitive: no spelling aliases, text-only guesses, or numeric
+        conversion are applied. Coded UCUM units map to valid standard OMOP
+        Unit concepts using the release selected by `vocab_version` (default
+        `v20260227` when omitted or empty). Mappings are direct or follow an
+        active OMOP `Maps to` relationship; UCUM units do not use a UMLS bridge.
+        Unknown codes,
+        vocabulary gaps, text-only units, missing coding, and unsupported
+        systems keep the row and use `0`; absent units use JSON `null` (the
+        field is present). Explicit dimensionless code `1` is a supplied unit
+        and resolves or remains `0`; it is never treated as absent.
+        `unit_source_value` contains Quantity.code when supplied, otherwise
+        Quantity.unit. A separate unit `mappings` entry preserves the original
+        Quantity.system/code in `source_system`/`source_code` and the exact
+        human-readable Quantity.unit in `source_name`, with its own outcome.
+        Quantity.unit provides display text and does not affect unit matching.
+        Measurement also returns nullable `unit_source_concept_id`, identifying
+        the OMOP source concept for Quantity.system/code when available,
+        otherwise `0` for a supplied unit.
+        Observation has no such column. Resolving a unit does not change
+        numeric values, comparators, or reference ranges.
+        Supported coded UCUM units include `resolution` in their mappings,
+        whether the unit resolves or remains unmapped:
+        its outcome and reason code distinguish vocabulary gaps, target-domain
+        mismatches, and ambiguity. Unresolved or ambiguous units retain the row
+        with concept ID `0`. Resolved mappings retain the selected concept's
+        direct or crosswalk provenance. Text-only units, units with missing
+        coding, and unsupported unit systems omit `resolution`; their `note`
+        explains the unmapped outcome.
+
+        Compatibility: absent `unit_concept_id` values previously returned `0`
+        and now return `null`. Coded units use their code in `unit_source_value`
+        rather than their human-readable text; the text remains in `mappings`.
+        The Measurement `unit_source_concept_id` field is new.
 
         A standard OMOP `concept_id` is selected for each eligible primary clinical coding
         after considering all of the resource's supplied codings. An unambiguous
@@ -676,14 +819,15 @@ class AsyncFhir2OmopClient:
         `provider_role_contexts` (source role details linked to provider rows),
         `dropped` (resources that could not be shaped into a row),
         `diagnostics` (explicit references that could not safely create a link,
-        and conflicting or unsupported Patient demographic extensions),
+        conflicting Practitioner identity attributes, and conflicting or
+        unsupported Patient demographic extensions),
         `vocab_version` (the OMOP vocabulary release codes were resolved
         against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
         concept" semantics): it covers both a coding with no standard match
         (`UNMAPPED`) and an unverified suggestion for a text-only resource
-        (`UNCHECKED`). Visit and unit concept fields currently remain `0`;
+        (`UNCHECKED`). Visit concept fields currently remain `0`;
         Person demographics and Provider recorded gender follow the policies
         above. Coded Observation values may populate `value_as_concept_id`.
         Concepts set by a fixed convention rather than terminology resolution
@@ -696,9 +840,11 @@ class AsyncFhir2OmopClient:
         Known OID-form coding systems are accepted as either FHIR OID URNs (for
         example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
         are normalized to their canonical system URLs before terminology
-        resolution. `mappings[].source_system` reports that canonical URL, so the
-        OID and URL forms produce the same mapping. An unknown OID is not
-        rewritten and may be `UNMAPPED`.
+        resolution. Coding mappings report that canonical URL in
+        `source_system`; Quantity unit mappings preserve the original
+        Quantity.system, including OID spelling. Known OID and URL forms
+        resolve identically. An unknown OID is not rewritten and may be
+        `UNMAPPED`.
         Other `*_source_value` fields preserve row-specific raw source values,
         such as resource identifiers, names, units, or status codes.
         `MedicationRequest` uses `32838` (EHR prescription) for
@@ -817,8 +963,8 @@ class AsyncFhir2OmopClient:
 
         vocab_version : typing.Optional[str]
             OMOP vocabulary release to use for coded concept resolution. If
-            omitted or empty, the API uses its default release. Specify a
-            release explicitly when reproducibility matters. The response's
+            omitted or empty, the API uses its default release (`v20260829`).
+            Specify a release explicitly when reproducibility matters. The response's
             `vocab_version`, when present, identifies the release used.
 
         request_options : typing.Optional[RequestOptions]

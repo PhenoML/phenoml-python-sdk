@@ -1,3 +1,14 @@
+## [18.3.0] - 2026-10-14
+### Added
+- **`phenoml.fhir2omop.MappingResolution`** — new model exposing field-level vocabulary resolution outcome with `status`, `reason_code`, `via`, `paths`, and `truncated` fields.
+- **`phenoml.fhir2omop.MappingPath`** — new model representing a single mapping path to a selected OMOP concept, carrying `mapping_status`, `source_concept_id`, `source_vocabulary`, `source_code`, and `cui` for provenance tracing.
+- **`phenoml.fhir2omop.MappingResolutionStatus`, `MappingResolutionReasonCode`, `MappingResolutionVia`, `MappingPathMappingStatus`** — new type aliases with named literal values (e.g., `RESOLVED`, `UNRESOLVED`, `MAPPED`, `DIRECT`, `UMLS_BRIDGE`) and `Any` fallbacks for forward compatibility.
+
+### Changed
+- **`client.fhir2omop.create(...)` — unit resolution** — `unit_concept_id` now resolves coded UCUM units to standard OMOP Unit concepts, absent units return `null` instead of `0`, `unit_source_value` now contains `Quantity.code`, and a new `unit_source_concept_id` field is returned on Measurement rows.
+- **`client.fhir2omop.create(...)` — Practitioner NPI merging** — Practitioners sharing a single distinct NPI are merged into one provider row when identity attributes agree; conflicts produce `CONFLICTING` diagnostics on `CreateOmopResponse.diagnostics` linked by `omop_table: provider`.
+- **`client.fhir2omop.create(..., vocab_version=...)` default** — the default vocabulary release is now documented as `v20260829`; specify a release explicitly for reproducible concept resolution.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
