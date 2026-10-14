@@ -1,3 +1,11 @@
+## [18.3.0] - 2026-10-14
+### Changed
+- **`client.fhir2omop.create(...)` and `client.fhir2omop.create_async(...)`** — clinical resources (`Condition`, `Procedure`, `MedicationRequest`, `MedicationStatement`, `MedicationAdministration`, `Immunization`, `AllergyIntolerance`, `Observation`) now land in the OMOP table matching their mapped concept's domain (Vulcan IG vocabulary-driven routing) rather than a fixed destination; use `mappings.omop_table` and `mappings.omop_id` to locate each output row.
+- **`client.fhir2omop.create(...)` — `unit_concept_id` and `unit_source_value`** — absent Observation/Measurement units now return JSON `null` instead of `0` for `unit_concept_id`, and `unit_source_value` now contains `Quantity.code` rather than the human-readable display text; the new `unit_source_concept_id` field identifies the OMOP source concept for the supplied unit coding.
+- **`client.fhir2omop.create(...)` — Practitioner NPI deduplication** — Practitioners sharing a single distinct NPI are merged into one provider row when all identity attributes agree; conflicts produce `CONFLICTING` diagnostics linked by `omop_table: provider` and `omop_id`.
+- **`client.fhir2omop.create(..., vocab_version=...)` default** — the documented default vocabulary release is now `v20260829`; specify `vocab_version` explicitly for reproducible results.
+- **`client.fhir2omop.create(...)` — route and medication details** — immunization routes are now checked against the OMOP Route domain alongside medication routes; medication dosage/supply details and `verbatim_end_date` are populated only for `drug_exposure` output rows.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
