@@ -12,7 +12,7 @@ class ObservationRow(UniversalBaseModel):
     observation_concept_id: typing.Optional[int] = None
     observation_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    For an Observation, date from effectiveDateTime, effectivePeriod.start, or effectiveInstant. For an AllergyIntolerance, date from recordedDate, otherwise onsetDateTime or onsetPeriod.start.
+    Start date selected by the source resource's timing rules. For an Observation, effectiveDateTime, effectivePeriod.start, or effectiveInstant. For an AllergyIntolerance, recordedDate, otherwise onsetDateTime or onsetPeriod.start; see the endpoint's timing sources for other resources.
     """
 
     observation_datetime: typing.Optional[str] = None
@@ -20,12 +20,20 @@ class ObservationRow(UniversalBaseModel):
     value_as_number: typing.Optional[float] = None
     value_as_string: typing.Optional[str] = None
     value_as_concept_id: typing.Optional[int] = None
-    unit_concept_id: typing.Optional[int] = None
+    unit_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Valid standard Unit concept for coded UCUM; 0 for supplied but unmapped units, null for absent units. Always present in JSON.
+    """
+
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
     observation_source_value: typing.Optional[str] = None
     observation_source_concept_id: typing.Optional[int] = None
-    unit_source_value: typing.Optional[str] = None
+    unit_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Original Quantity.code if supplied, otherwise Quantity.unit; human-readable unit text is preserved in the unit mapping's source_name.
+    """
+
     value_source_value: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

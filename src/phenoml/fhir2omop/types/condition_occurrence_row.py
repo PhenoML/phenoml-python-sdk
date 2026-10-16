@@ -12,13 +12,13 @@ class ConditionOccurrenceRow(UniversalBaseModel):
     condition_concept_id: typing.Optional[int] = None
     condition_start_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from Condition.onsetDateTime or onsetPeriod.start, otherwise Condition.recordedDate.
+    Start date selected by the source resource's timing rules. For a Condition, onsetDateTime or onsetPeriod.start, otherwise recordedDate; see the endpoint's timing sources for other resources.
     """
 
     condition_start_datetime: typing.Optional[str] = None
     condition_end_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from Condition.abatementDateTime or abatementPeriod.end.
+    End date selected by the source resource's timing rules, when available. For a Condition, abatementDateTime or abatementPeriod.end; see the endpoint's timing sources for other resources.
     """
 
     condition_end_datetime: typing.Optional[str] = None

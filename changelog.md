@@ -1,3 +1,15 @@
+## [18.3.0] - 2026-10-16
+### Added
+- **`client.fhir2omop.create(...)` Specimen support** — `Specimen` resources now map to the OMOP `specimen` table, retaining partial rows with linked diagnostics when collection dates or material are absent.
+- **`phenoml.fhir2omop.SpecimenRow` and supporting models** — new CDM 5.4 output row with material concept, collection date, quantity, unit, anatomic site, and source identity; accompanied by `SpecimenSourceContext`, `SpecimenCollectionTiming`, `SpecimenCollectionPeriod`, `SpecimenIdentifier`, and `SpecimenSourceContextStatus`.
+- **`phenoml.fhir2omop.MappingResolution` and related types** — field-level vocabulary resolution provenance (`MappingResolutionStatus`, `MappingResolutionReasonCode`, `MappingResolutionVia`) describing whether a concept resolved, why it did not, and the resolution path (direct or UMLS bridge).
+- **Vocabulary-driven domain routing for all clinical resources** — Condition, Procedure, Medication, Immunization, Observation, and AllergyIntolerance now route to the OMOP table matching their mapped concept's domain; use `mappings.omop_table` and `mappings.omop_id` to locate each result.
+- **`phenoml.fhir2omop.VisitOccurrenceRow.visit_source_concept_id`** — new optional field populated from `Encounter.class` or `Encounter.type` coding, with UCUM unit concept resolution for Observation rows and NPI-based Practitioner deduplication within a request also added.
+
+### Changed
+- **`client.fhir2omop.create(..., vocab_version=...)` default** — the default vocabulary release is now `v20260829`; specify a release explicitly when reproducibility matters.
+- **`observation_period` date span** — now includes source end dates from clinical and death records even when the output table has no end column.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
