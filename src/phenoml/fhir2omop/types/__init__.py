@@ -16,6 +16,12 @@ if typing.TYPE_CHECKING:
     from .location_row import LocationRow
     from .mapping_entry import MappingEntry
     from .mapping_entry_mapping_status import MappingEntryMappingStatus
+    from .mapping_path import MappingPath
+    from .mapping_path_mapping_status import MappingPathMappingStatus
+    from .mapping_resolution import MappingResolution
+    from .mapping_resolution_reason_code import MappingResolutionReasonCode
+    from .mapping_resolution_status import MappingResolutionStatus
+    from .mapping_resolution_via import MappingResolutionVia
     from .measurement_row import MeasurementRow
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
@@ -29,6 +35,12 @@ if typing.TYPE_CHECKING:
     from .provider_row import ProviderRow
     from .reference_diagnostic import ReferenceDiagnostic
     from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
+    from .specimen_collection_period import SpecimenCollectionPeriod
+    from .specimen_collection_timing import SpecimenCollectionTiming
+    from .specimen_identifier import SpecimenIdentifier
+    from .specimen_row import SpecimenRow
+    from .specimen_source_context import SpecimenSourceContext
+    from .specimen_source_context_status import SpecimenSourceContextStatus
     from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
@@ -42,6 +54,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "LocationRow": ".location_row",
     "MappingEntry": ".mapping_entry",
     "MappingEntryMappingStatus": ".mapping_entry_mapping_status",
+    "MappingPath": ".mapping_path",
+    "MappingPathMappingStatus": ".mapping_path_mapping_status",
+    "MappingResolution": ".mapping_resolution",
+    "MappingResolutionReasonCode": ".mapping_resolution_reason_code",
+    "MappingResolutionStatus": ".mapping_resolution_status",
+    "MappingResolutionVia": ".mapping_resolution_via",
     "MeasurementRow": ".measurement_row",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
@@ -55,6 +73,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ProviderRow": ".provider_row",
     "ReferenceDiagnostic": ".reference_diagnostic",
     "ReferenceDiagnosticOutcome": ".reference_diagnostic_outcome",
+    "SpecimenCollectionPeriod": ".specimen_collection_period",
+    "SpecimenCollectionTiming": ".specimen_collection_timing",
+    "SpecimenIdentifier": ".specimen_identifier",
+    "SpecimenRow": ".specimen_row",
+    "SpecimenSourceContext": ".specimen_source_context",
+    "SpecimenSourceContextStatus": ".specimen_source_context_status",
     "Summary": ".summary",
     "VisitOccurrenceRow": ".visit_occurrence_row",
 }
@@ -92,6 +116,12 @@ __all__ = [
     "LocationRow",
     "MappingEntry",
     "MappingEntryMappingStatus",
+    "MappingPath",
+    "MappingPathMappingStatus",
+    "MappingResolution",
+    "MappingResolutionReasonCode",
+    "MappingResolutionStatus",
+    "MappingResolutionVia",
     "MeasurementRow",
     "ObservationPeriodRow",
     "ObservationRow",
@@ -105,6 +135,12 @@ __all__ = [
     "ProviderRow",
     "ReferenceDiagnostic",
     "ReferenceDiagnosticOutcome",
+    "SpecimenCollectionPeriod",
+    "SpecimenCollectionTiming",
+    "SpecimenIdentifier",
+    "SpecimenRow",
+    "SpecimenSourceContext",
+    "SpecimenSourceContextStatus",
     "Summary",
     "VisitOccurrenceRow",
 ]
