@@ -15,6 +15,7 @@ from .observation_row import ObservationRow
 from .person_row import PersonRow
 from .procedure_occurrence_row import ProcedureOccurrenceRow
 from .provider_row import ProviderRow
+from .specimen_row import SpecimenRow
 from .visit_occurrence_row import VisitOccurrenceRow
 
 
@@ -38,6 +39,7 @@ class OmopTables(UniversalBaseModel):
     drug_exposure: typing.Optional[typing.List[DrugExposureRow]] = None
     procedure_occurrence: typing.Optional[typing.List[ProcedureOccurrenceRow]] = None
     measurement: typing.Optional[typing.List[MeasurementRow]] = None
+    specimen: typing.Optional[typing.List[SpecimenRow]] = None
     observation: typing.Optional[typing.List[ObservationRow]] = None
 
     if IS_PYDANTIC_V2:

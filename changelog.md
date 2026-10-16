@@ -1,3 +1,11 @@
+## [18.3.0] - 2026-10-16
+### Added
+- **`phenoml.fhir2omop.SpecimenRow`** — new OMOP Specimen CDM row model returned in `OmopTables.specimen`, carrying specimen concept, type, date, quantity, unit, anatomic site, and source value fields.
+- **`phenoml.fhir2omop.SpecimenSourceContext`**, **`SpecimenCollectionTiming`**, **`SpecimenCollectionPeriod`**, and **`SpecimenIdentifier`** — source-provenance models accompanying each `SpecimenRow`, preserving original FHIR identifiers, accession identifiers, and verbatim collection timing for audit and downstream date completion.
+- **`phenoml.fhir2omop.OmopTables.specimen`** — optional list of `SpecimenRow` entries now included in FHIR-to-OMOP conversion responses alongside existing CDM tables.
+- **`phenoml.fhir2omop.MappingResolution`**, **`MappingResolutionStatus`**, **`MappingResolutionReasonCode`**, and **`MappingResolutionVia`** — field-level vocabulary resolution outcome and provenance models describing whether a concept was resolved, why it was not, and the resolution path (direct or UMLS bridge).
+- **`phenoml.fhir2omop.VisitOccurrenceRow.visit_source_concept_id`** — optional OMOP source concept ID for the selected `Encounter.class` or `Encounter.type` coding; `0` when the source coding has no OMOP source concept.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
