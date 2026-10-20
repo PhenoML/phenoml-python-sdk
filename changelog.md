@@ -1,3 +1,17 @@
+## [18.3.0] - 2026-10-20
+### Added
+- **`phenoml.fhir2omop.SpecimenRow`** and supporting types (`SpecimenIdentifier`, `SpecimenCollectionTiming`, `SpecimenCollectionPeriod`, `SpecimenSourceContext`, `SpecimenSourceContextStatus`) — represent OMOP CDM 5.4 specimen table output; `OmopTables.specimen` is now populated with extracted specimen rows.
+- **`phenoml.fhir2omop.MappingResolution`**, **`MappingPath`**, and related enumerations (`MappingResolutionStatus`, `MappingResolutionReasonCode`, `MappingResolutionVia`, `MappingPathMappingStatus`) — expose field-level vocabulary resolution provenance including outcome status, machine-readable reason codes, and UMLS bridge paths to the selected OMOP concept.
+- **`phenoml.fhir2omop.QuantityTransformation`** and supporting types — provide a per-row audit trail of how a supplied FHIR quantity was converted to `drug_exposure.quantity`, including the applied policy, evidence used, and stable omission reason codes.
+- **`phenoml.fhir2omop.RowForReview`** and **`RowForReviewReasonsItem`** — identify shaped OMOP rows flagged for clinical review due to unconfirmed conditions, unknown encounter statuses, or unresolved primary concepts.
+- **`phenoml.fhir2omop.VisitOccurrenceRow.visit_source_concept_id`** — new optional field exposing the OMOP source concept for the selected `Encounter.class` or `Encounter.type` coding; `0` when no OMOP source concept exists.
+
+### Changed
+- **`HttpClient` / `AsyncHttpClient` retry behavior** — `httpx.RemoteProtocolError` mid-response disconnects no longer retry automatically; pass `request_options={"retry_remote_protocol_errors": True}` to restore the previous behavior for idempotent requests.
+- **HTTP header merging** — duplicate header names differing only in case are now deduplicated before sending; the last-supplied value wins, matching standard HTTP case-insensitivity rules.
+- **`encode_path_param()` / `quote_path_param()`** — now raise `ValueError` when a parameter value is `.` or `..`, preventing silent URL rewriting via dot-segment resolution.
+- **Pydantic model deserialization** — extra-field keys that collide case-insensitively with a declared field are dropped before coercion, preventing duplicate-key misreads by case-insensitive decoders.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
