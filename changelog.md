@@ -1,3 +1,19 @@
+## [18.3.0] - 2026-10-20
+### Added
+- **`phenoml.fhir2omop.OmopTables.specimen`** — new optional list of `SpecimenRow` objects mapping FHIR `Specimen` resources to the OMOP `specimen` table with material concept, collection timing, quantity, anatomic site, and source identity fields.
+- **`phenoml.fhir2omop.QuantityTransformation`** and supporting types (`QuantityEvidence`, `QuantityStrength`, `QuantityUnit`, `QuantityTransformationOutcome`, `QuantityTransformationPolicy`, `QuantityTransformationReason`, and more) — per-row audit of how a FHIR quantity was mapped to `drug_exposure.quantity`, including outcome, applied policy, and vocabulary evidence.
+- **`phenoml.fhir2omop.RowForReview`** and **`RowForReviewReasonsItem`** — flags OMOP rows warranting downstream review due to unconfirmed condition statuses, unknown encounter statuses, or unresolved primary concepts.
+- **`phenoml.fhir2omop.VisitOccurrenceRow.visit_source_concept_id`** — new optional field carrying the OMOP source concept for the selected `Encounter.class` or `Encounter.type` coding.
+- **`phenoml.lang2fhir.CreateRequestResource`** — adds `phenoml-hpo-condition` and `phenoml-hpo-phenotypic-observation` as extraction targets for HPO phenotype extraction.
+
+### Changed
+- **`HttpClient` and `AsyncHttpClient` retry behavior for `RemoteProtocolError`** — ambiguous mid-response disconnects no longer trigger automatic retries; pass `request_options={"retry_remote_protocol_errors": True}` to restore the previous behavior.
+- **Header merging** — headers are now deduplicated case-insensitively across base, endpoint, and `additional_headers`, so a per-request `plaid-secret` correctly overrides a base `PLAID-SECRET` instead of sending both.
+
+### Fixed
+- **`encode_path_param()` / `quote_path_param()`** — now raise `ValueError` when the value is `.` or `..`, preventing HTTP clients from silently resolving dot-segments and altering the effective request URL.
+- **Pydantic model deserialization** — extra keys matching a declared field case-insensitively are dropped before coercion, preventing stale extra values from being read instead of the declared field.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.
