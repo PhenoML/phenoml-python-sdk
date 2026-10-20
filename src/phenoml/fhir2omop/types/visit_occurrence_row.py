@@ -26,6 +26,10 @@ class VisitOccurrenceRow(UniversalBaseModel):
     provider_id: typing.Optional[int] = None
     care_site_id: typing.Optional[int] = None
     visit_source_value: typing.Optional[str] = None
+    visit_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP source concept for the selected Encounter.class or Encounter.type coding when available; `0` when the source coding has no OMOP source concept, including the HL7 encounter class codes listed above.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
