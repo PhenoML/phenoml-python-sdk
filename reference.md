@@ -1,5 +1,7 @@
 # Reference
+
 ## Agent
+
 <details><summary><code>client.agent.<a href="src/phenoml/agent/client.py">create</a>(...) -> AgentResponse</code></summary>
 <dl>
 <dd>
@@ -13,6 +15,7 @@
 <dd>
 
 Creates a new PhenoAgent with specified configuration
+
 </dd>
 </dl>
 </dd>
@@ -50,6 +53,7 @@ client.agent.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -63,8 +67,8 @@ client.agent.create(
 <dl>
 <dd>
 
-**request:** `AgentCreateRequest` 
-    
+**request:** `AgentCreateRequest`
+
 </dd>
 </dl>
 
@@ -72,12 +76,11 @@ client.agent.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -96,6 +99,7 @@ client.agent.create(
 <dd>
 
 Retrieves a list of PhenoAgents belonging to the authenticated user
+
 </dd>
 </dl>
 </dd>
@@ -124,6 +128,7 @@ client.agent.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -138,7 +143,7 @@ client.agent.list(
 <dd>
 
 **tags:** `typing.Optional[str]` — Filter by tags
-    
+
 </dd>
 </dl>
 
@@ -146,12 +151,11 @@ client.agent.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -170,6 +174,7 @@ client.agent.list(
 <dd>
 
 Retrieves a specific agent by its ID
+
 </dd>
 </dl>
 </dd>
@@ -198,6 +203,7 @@ client.agent.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -212,7 +218,7 @@ client.agent.get(
 <dd>
 
 **id:** `str` — Agent ID
-    
+
 </dd>
 </dl>
 
@@ -220,12 +226,11 @@ client.agent.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -244,6 +249,7 @@ client.agent.get(
 <dd>
 
 Updates an existing agent's configuration
+
 </dd>
 </dl>
 </dd>
@@ -283,6 +289,7 @@ client.agent.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -297,15 +304,15 @@ client.agent.update(
 <dd>
 
 **id:** `str` — Agent ID
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `AgentCreateRequest` 
-    
+**request:** `AgentCreateRequest`
+
 </dd>
 </dl>
 
@@ -313,12 +320,11 @@ client.agent.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -337,6 +343,7 @@ client.agent.update(
 <dd>
 
 Deletes an existing agent
+
 </dd>
 </dl>
 </dd>
@@ -365,6 +372,7 @@ client.agent.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -379,7 +387,7 @@ client.agent.delete(
 <dd>
 
 **id:** `str` — Agent ID
-    
+
 </dd>
 </dl>
 
@@ -387,12 +395,11 @@ client.agent.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -411,6 +418,7 @@ client.agent.delete(
 <dd>
 
 Patches an existing agent's configuration
+
 </dd>
 </dl>
 </dd>
@@ -452,6 +460,7 @@ client.agent.patch(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -466,15 +475,15 @@ client.agent.patch(
 <dd>
 
 **id:** `str` — Agent ID
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `JsonPatch` 
-    
+**request:** `JsonPatch`
+
 </dd>
 </dl>
 
@@ -482,18 +491,18 @@ client.agent.patch(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Chat
+
 <details><summary><code>client.agent.chat.<a href="src/phenoml/agent/chat/client.py">send</a>(...) -> AgentChatResponse</code></summary>
 <dl>
 <dd>
@@ -507,6 +516,7 @@ client.agent.patch(
 <dd>
 
 Send a message to an agent and receive a JSON response.
+
 </dd>
 </dl>
 </dd>
@@ -539,6 +549,7 @@ client.agent.chat.send(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -553,7 +564,7 @@ client.agent.chat.send(
 <dd>
 
 **message:** `str` — The message to send to the agent
-    
+
 </dd>
 </dl>
 
@@ -561,29 +572,29 @@ client.agent.chat.send(
 <dd>
 
 **agent_id:** `str` — The ID of the agent to chat with
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -591,7 +602,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **context:** `typing.Optional[str]` — Optional context for the conversation
-    
+
 </dd>
 </dl>
 
@@ -599,7 +610,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
-    
+
 </dd>
 </dl>
 
@@ -607,7 +618,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-    
+
 </dd>
 </dl>
 
@@ -615,12 +626,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -641,6 +651,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 Send a message to an agent and receive the response as a Server-Sent Events
 (SSE) stream. Events include message_start, content_delta, tool_use,
 tool_result, message_end, and error.
+
 </dd>
 </dl>
 </dd>
@@ -673,6 +684,7 @@ client.agent.chat.stream(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -687,7 +699,7 @@ client.agent.chat.stream(
 <dd>
 
 **message:** `str` — The message to send to the agent
-    
+
 </dd>
 </dl>
 
@@ -695,29 +707,29 @@ client.agent.chat.stream(
 <dd>
 
 **agent_id:** `str` — The ID of the agent to chat with
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -725,7 +737,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **context:** `typing.Optional[str]` — Optional context for the conversation
-    
+
 </dd>
 </dl>
 
@@ -733,7 +745,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **session_id:** `typing.Optional[str]` — Optional session ID for conversation continuity. Only one request may be active for a session at a time; overlapping turns for the same session return 409 Conflict.
-    
+
 </dd>
 </dl>
 
@@ -741,7 +753,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **enhanced_reasoning:** `typing.Optional[bool]` — Enable enhanced reasoning capabilities. Increases latency but improves response quality and reliability.
-    
+
 </dd>
 </dl>
 
@@ -749,12 +761,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -773,6 +784,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 Retrieves a list of chat messages for a given chat session
+
 </dd>
 </dl>
 </dd>
@@ -804,6 +816,7 @@ client.agent.chat.list_messages(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -818,7 +831,7 @@ client.agent.chat.list_messages(
 <dd>
 
 **chat_session_id:** `str` — Chat session ID
-    
+
 </dd>
 </dl>
 
@@ -826,24 +839,25 @@ client.agent.chat.list_messages(
 <dd>
 
 **num_messages:** `typing.Optional[int]` — Number of messages to return
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**role:** `typing.Optional[ListMessagesRequestRole]` 
+**role:** `typing.Optional[ListMessagesRequestRole]`
 
 Filter by one or more message roles. Multiple roles can be specified as a comma-separated string.
 If not specified, messages with all roles are returned.
 
 **Available roles:**
+
 - `user` - Messages from the user
 - `assistant` - Text responses from the AI assistant
 - `model` - Function/tool call requests from the model
 - `function` - Function/tool call results
-    
+
 </dd>
 </dl>
 
@@ -851,7 +865,7 @@ If not specified, messages with all roles are returned.
 <dd>
 
 **order:** `typing.Optional[ListMessagesRequestOrder]` — Order of messages
-    
+
 </dd>
 </dl>
 
@@ -859,18 +873,18 @@ If not specified, messages with all roles are returned.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Agent Prompts
+
 <details><summary><code>client.agent.prompts.<a href="src/phenoml/agent/prompts/client.py">create</a>(...) -> AgentPromptsResponse</code></summary>
 <dl>
 <dd>
@@ -884,6 +898,7 @@ If not specified, messages with all roles are returned.
 <dd>
 
 Creates a new agent prompt
+
 </dd>
 </dl>
 </dd>
@@ -919,6 +934,7 @@ client.agent.prompts.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -933,7 +949,7 @@ client.agent.prompts.create(
 <dd>
 
 **name:** `str` — Prompt name
-    
+
 </dd>
 </dl>
 
@@ -941,7 +957,7 @@ client.agent.prompts.create(
 <dd>
 
 **content:** `str` — Prompt content
-    
+
 </dd>
 </dl>
 
@@ -949,7 +965,7 @@ client.agent.prompts.create(
 <dd>
 
 **description:** `typing.Optional[str]` — Prompt description
-    
+
 </dd>
 </dl>
 
@@ -957,7 +973,7 @@ client.agent.prompts.create(
 <dd>
 
 **is_default:** `typing.Optional[bool]` — Whether this is a default prompt
-    
+
 </dd>
 </dl>
 
@@ -965,7 +981,7 @@ client.agent.prompts.create(
 <dd>
 
 **tags:** `typing.Optional[typing.List[str]]` — Tags for categorizing the prompt
-    
+
 </dd>
 </dl>
 
@@ -973,12 +989,11 @@ client.agent.prompts.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -997,6 +1012,7 @@ client.agent.prompts.create(
 <dd>
 
 Retrieves a list of agent prompts belonging to the authenticated user
+
 </dd>
 </dl>
 </dd>
@@ -1023,6 +1039,7 @@ client = PhenomlClient(
 client.agent.prompts.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1037,12 +1054,11 @@ client.agent.prompts.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1061,6 +1077,7 @@ client.agent.prompts.list()
 <dd>
 
 Retrieves a specific prompt by its ID
+
 </dd>
 </dl>
 </dd>
@@ -1089,6 +1106,7 @@ client.agent.prompts.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1103,7 +1121,7 @@ client.agent.prompts.get(
 <dd>
 
 **id:** `str` — Prompt ID
-    
+
 </dd>
 </dl>
 
@@ -1111,12 +1129,11 @@ client.agent.prompts.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1135,6 +1152,7 @@ client.agent.prompts.get(
 <dd>
 
 Updates an existing prompt
+
 </dd>
 </dl>
 </dd>
@@ -1172,6 +1190,7 @@ client.agent.prompts.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1186,7 +1205,7 @@ client.agent.prompts.update(
 <dd>
 
 **id:** `str` — Prompt ID
-    
+
 </dd>
 </dl>
 
@@ -1194,7 +1213,7 @@ client.agent.prompts.update(
 <dd>
 
 **name:** `typing.Optional[str]` — Prompt name
-    
+
 </dd>
 </dl>
 
@@ -1202,7 +1221,7 @@ client.agent.prompts.update(
 <dd>
 
 **description:** `typing.Optional[str]` — Prompt description
-    
+
 </dd>
 </dl>
 
@@ -1210,7 +1229,7 @@ client.agent.prompts.update(
 <dd>
 
 **content:** `typing.Optional[str]` — Prompt content
-    
+
 </dd>
 </dl>
 
@@ -1218,7 +1237,7 @@ client.agent.prompts.update(
 <dd>
 
 **is_default:** `typing.Optional[bool]` — Whether this is a default prompt
-    
+
 </dd>
 </dl>
 
@@ -1226,7 +1245,7 @@ client.agent.prompts.update(
 <dd>
 
 **tags:** `typing.Optional[typing.List[str]]` — Tags for categorizing the prompt
-    
+
 </dd>
 </dl>
 
@@ -1234,12 +1253,11 @@ client.agent.prompts.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1258,6 +1276,7 @@ client.agent.prompts.update(
 <dd>
 
 Deletes a prompt
+
 </dd>
 </dl>
 </dd>
@@ -1286,6 +1305,7 @@ client.agent.prompts.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1300,7 +1320,7 @@ client.agent.prompts.delete(
 <dd>
 
 **id:** `str` — Prompt ID
-    
+
 </dd>
 </dl>
 
@@ -1308,12 +1328,11 @@ client.agent.prompts.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1332,6 +1351,7 @@ client.agent.prompts.delete(
 <dd>
 
 Patches an existing prompt
+
 </dd>
 </dl>
 </dd>
@@ -1368,6 +1388,7 @@ client.agent.prompts.patch(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1382,15 +1403,15 @@ client.agent.prompts.patch(
 <dd>
 
 **id:** `str` — Agent Prompt ID
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `JsonPatch` 
-    
+**request:** `JsonPatch`
+
 </dd>
 </dl>
 
@@ -1398,18 +1419,18 @@ client.agent.prompts.patch(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Authtoken
+
 <details><summary><code>client.authtoken.<a href="src/phenoml/authtoken/client.py">get_token</a>(...) -> TokenResponse</code></summary>
 <dl>
 <dd>
@@ -1426,6 +1447,7 @@ OAuth 2.0 client credentials token endpoint (RFC 6749 §4.4).
 Accepts client_id and client_secret in the request body (JSON or
 form-encoded) or via Basic Auth header (RFC 6749 §2.3.1), and
 returns an access token with token expiration information.
+
 </dd>
 </dl>
 </dd>
@@ -1455,6 +1477,7 @@ client.authtoken.get_token(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1469,7 +1492,7 @@ client.authtoken.get_token(
 <dd>
 
 **grant_type:** `typing.Optional[str]` — Must be "client_credentials" if provided
-    
+
 </dd>
 </dl>
 
@@ -1477,7 +1500,7 @@ client.authtoken.get_token(
 <dd>
 
 **client_id:** `typing.Optional[str]` — The client ID (credential username)
-    
+
 </dd>
 </dl>
 
@@ -1485,7 +1508,7 @@ client.authtoken.get_token(
 <dd>
 
 **client_secret:** `typing.Optional[str]` — The client secret (credential password)
-    
+
 </dd>
 </dl>
 
@@ -1493,18 +1516,18 @@ client.authtoken.get_token(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Cohort
+
 <details><summary><code>client.cohort.<a href="src/phenoml/cohort/client.py">analyze</a>(...) -> CohortResponse</code></summary>
 <dl>
 <dd>
@@ -1518,6 +1541,7 @@ client.authtoken.get_token(
 <dd>
 
 Converts natural language text into structured FHIR search queries for patient cohort analysis
+
 </dd>
 </dl>
 </dd>
@@ -1546,6 +1570,7 @@ client.cohort.analyze(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1560,7 +1585,7 @@ client.cohort.analyze(
 <dd>
 
 **text:** `str` — Natural language text describing patient cohort criteria
-    
+
 </dd>
 </dl>
 
@@ -1568,18 +1593,18 @@ client.cohort.analyze(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Code Systems
+
 <details><summary><code>client.construe.code_systems.<a href="src/phenoml/construe/code_systems/client.py">upload</a>(...) -> UploadResponse</code></summary>
 <dl>
 <dd>
@@ -1596,6 +1621,7 @@ Upload a custom medical code system with codes and descriptions for use in code 
 Returns 202 immediately; embedding generation runs asynchronously. Poll
 GET /construe/codes/systems/{codesystem}?version={version} to check when status
 transitions from "processing" to "ready" or "failed".
+
 </dd>
 </dl>
 </dd>
@@ -1637,6 +1663,7 @@ client.construe.code_systems.upload(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1650,12 +1677,12 @@ client.construe.code_systems.upload(
 <dl>
 <dd>
 
-**name:** `str` 
+**name:** `str`
 
 Name of the code system. Names are case-insensitive and stored uppercase.
 Builtin system names (e.g. ICD-10-CM, SNOMED_CT_US_LITE, LOINC, CPT, etc.) are
 reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidden.
-    
+
 </dd>
 </dl>
 
@@ -1663,7 +1690,7 @@ reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidd
 <dd>
 
 **version:** `str` — Version of the code system
-    
+
 </dd>
 </dl>
 
@@ -1671,7 +1698,7 @@ reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidd
 <dd>
 
 **format:** `UploadRequestFormat` — Upload format
-    
+
 </dd>
 </dl>
 
@@ -1679,19 +1706,19 @@ reserved and cannot be used for custom uploads; attempts return HTTP 403 Forbidd
 <dd>
 
 **revision:** `typing.Optional[float]` — Optional revision number
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**file:** `typing.Optional[str]` 
+**file:** `typing.Optional[str]`
 
 The file contents as a base64-encoded string.
 For CSV format, this is the CSV file contents.
 For JSON format, this is a base64-encoded JSON array; prefer using 'codes' instead.
-    
+
 </dd>
 </dl>
 
@@ -1699,7 +1726,7 @@ For JSON format, this is a base64-encoded JSON array; prefer using 'codes' inste
 <dd>
 
 **code_col:** `typing.Optional[str]` — Column name containing codes (required for CSV format)
-    
+
 </dd>
 </dl>
 
@@ -1707,7 +1734,7 @@ For JSON format, this is a base64-encoded JSON array; prefer using 'codes' inste
 <dd>
 
 **desc_col:** `typing.Optional[str]` — Column name containing descriptions (required for CSV format)
-    
+
 </dd>
 </dl>
 
@@ -1715,31 +1742,31 @@ For JSON format, this is a base64-encoded JSON array; prefer using 'codes' inste
 <dd>
 
 **defn_col:** `typing.Optional[str]` — Optional column name containing long definitions (for CSV format)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**codes:** `typing.Optional[typing.List[CodeResponse]]` 
+**codes:** `typing.Optional[typing.List[CodeResponse]]`
 
 The codes to upload as a JSON array (JSON format only).
 This is the preferred way to upload JSON codes, as it avoids unnecessary base64 encoding.
 If both 'codes' and 'file' are provided, 'codes' takes precedence.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**replace:** `typing.Optional[bool]` 
+**replace:** `typing.Optional[bool]`
 
 If true, replaces an existing code system with the same name and version.
 Builtin systems cannot be replaced; attempts to do so return HTTP 403 Forbidden.
 When false (default), uploading a duplicate returns 409 Conflict.
-    
+
 </dd>
 </dl>
 
@@ -1747,12 +1774,11 @@ When false (default), uploading a duplicate returns 409 Conflict.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1771,6 +1797,7 @@ When false (default), uploading a duplicate returns 409 Conflict.
 <dd>
 
 Returns the catalog of available code systems, including both built-in standard terminologies and custom uploaded systems.
+
 </dd>
 </dl>
 </dd>
@@ -1797,6 +1824,7 @@ client = PhenomlClient(
 client.construe.code_systems.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1811,12 +1839,11 @@ client.construe.code_systems.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1835,6 +1862,7 @@ client.construe.code_systems.list()
 <dd>
 
 Returns full metadata for a single code system, including timestamps and builtin status.
+
 </dd>
 </dl>
 </dd>
@@ -1864,6 +1892,7 @@ client.construe.code_systems.find(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1878,7 +1907,7 @@ client.construe.code_systems.find(
 <dd>
 
 **codesystem:** `str` — Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
-    
+
 </dd>
 </dl>
 
@@ -1886,7 +1915,7 @@ client.construe.code_systems.find(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the code system, such as `umls-2026aa`.
-    
+
 </dd>
 </dl>
 
@@ -1894,12 +1923,11 @@ client.construe.code_systems.find(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -1919,6 +1947,7 @@ client.construe.code_systems.find(
 
 Deletes a custom (non-builtin) code system and all its codes. Builtin systems cannot be deleted.
 Only available on dedicated instances. Large systems may take up to a minute to delete.
+
 </dd>
 </dl>
 </dd>
@@ -1948,6 +1977,7 @@ client.construe.code_systems.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1962,7 +1992,7 @@ client.construe.code_systems.delete(
 <dd>
 
 **codesystem:** `str` — Code system name
-    
+
 </dd>
 </dl>
 
@@ -1970,7 +2000,7 @@ client.construe.code_systems.delete(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the custom code system.
-    
+
 </dd>
 </dl>
 
@@ -1978,12 +2008,11 @@ client.construe.code_systems.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2004,6 +2033,7 @@ client.construe.code_systems.delete(
 Exports a custom (non-builtin) code system as a JSON file compatible with the upload format.
 The exported file can be re-uploaded directly via POST /construe/upload with format "json".
 Only available on dedicated instances. Builtin systems cannot be exported.
+
 </dd>
 </dl>
 </dd>
@@ -2033,6 +2063,7 @@ client.construe.code_systems.export(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2047,7 +2078,7 @@ client.construe.code_systems.export(
 <dd>
 
 **codesystem:** `str` — Code system name
-    
+
 </dd>
 </dl>
 
@@ -2055,7 +2086,7 @@ client.construe.code_systems.export(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the custom code system.
-    
+
 </dd>
 </dl>
 
@@ -2063,18 +2094,18 @@ client.construe.code_systems.export(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Construe
+
 <details><summary><code>client.construe.<a href="src/phenoml/construe/client.py">submit_feedback</a>(...) -> FeedbackResponse</code></summary>
 <dl>
 <dd>
@@ -2089,6 +2120,7 @@ client.construe.code_systems.export(
 
 Submits user feedback on results from the Construe extraction endpoint.
 Feedback includes the full extraction result received and the result the user expected.
+
 </dd>
 </dl>
 </dd>
@@ -2145,6 +2177,7 @@ client.construe.submit_feedback(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2159,23 +2192,23 @@ client.construe.submit_feedback(
 <dd>
 
 **text:** `str` — The natural language text that was used for code extraction
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**received_result:** `ExtractCodesResult` 
-    
+**received_result:** `ExtractCodesResult`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**expected_result:** `ExtractCodesResult` 
-    
+**expected_result:** `ExtractCodesResult`
+
 </dd>
 </dl>
 
@@ -2183,7 +2216,7 @@ client.construe.submit_feedback(
 <dd>
 
 **detail:** `typing.Optional[str]` — Optional details explaining the feedback
-    
+
 </dd>
 </dl>
 
@@ -2191,18 +2224,18 @@ client.construe.submit_feedback(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Codes
+
 <details><summary><code>client.construe.codes.<a href="src/phenoml/construe/codes/client.py">extract</a>(...) -> ExtractCodesResult</code></summary>
 <dl>
 <dd>
@@ -2221,6 +2254,7 @@ Pass `system.version` to select a specific code system version, for example
 `umls-2026aa` for UMLS 2026AA-backed systems.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2254,6 +2288,7 @@ client.construe.codes.extract(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2268,23 +2303,23 @@ client.construe.codes.extract(
 <dd>
 
 **text:** `str` — Natural language text to extract codes from
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**system:** `typing.Optional[ExtractRequestSystem]` 
-    
+**system:** `typing.Optional[ExtractRequestSystem]`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**config:** `typing.Optional[ExtractRequestConfig]` 
-    
+**config:** `typing.Optional[ExtractRequestConfig]`
+
 </dd>
 </dl>
 
@@ -2292,12 +2327,11 @@ client.construe.codes.extract(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2323,6 +2357,7 @@ Extracts medical codes from natural language clinical text using phenocr.
 
 Supported code systems: HPO, ICD-10-CM, RXNORM, and SNOMED_CT_US. The
 code system name and version are both required.
+
 </dd>
 </dl>
 </dd>
@@ -2356,6 +2391,7 @@ client.construe.codes.phenocr(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2370,15 +2406,15 @@ client.construe.codes.phenocr(
 <dd>
 
 **text:** `str` — Natural language text to extract codes from
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**system:** `PhenocrExtractRequestSystem` 
-    
+**system:** `PhenocrExtractRequestSystem`
+
 </dd>
 </dl>
 
@@ -2386,12 +2422,11 @@ client.construe.codes.phenocr(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2415,6 +2450,7 @@ code or a target has no matches; inspect `reason_code` on the item and
 target entries for miss details.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2447,6 +2483,7 @@ client.construe.codes.crosswalk(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2461,7 +2498,7 @@ client.construe.codes.crosswalk(
 <dd>
 
 **system:** `str` — Source FHIR code-system URI.
-    
+
 </dd>
 </dl>
 
@@ -2469,7 +2506,7 @@ client.construe.codes.crosswalk(
 <dd>
 
 **code:** `str` — Source code to map.
-    
+
 </dd>
 </dl>
 
@@ -2477,7 +2514,7 @@ client.construe.codes.crosswalk(
 <dd>
 
 **targets:** `typing.List[str]` — Target FHIR code-system URIs.
-    
+
 </dd>
 </dl>
 
@@ -2485,12 +2522,11 @@ client.construe.codes.crosswalk(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2511,6 +2547,7 @@ client.construe.codes.crosswalk(
 Returns a paginated list of all codes in the specified code system.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2542,6 +2579,7 @@ client.construe.codes.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2556,7 +2594,7 @@ client.construe.codes.list(
 <dd>
 
 **codesystem:** `str` — Code system name (e.g., "ICD-10-CM", "SNOMED_CT_US_LITE")
-    
+
 </dd>
 </dl>
 
@@ -2564,7 +2602,7 @@ client.construe.codes.list(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the code system, such as `umls-2026aa`.
-    
+
 </dd>
 </dl>
 
@@ -2572,7 +2610,7 @@ client.construe.codes.list(
 <dd>
 
 **cursor:** `typing.Optional[str]` — Pagination cursor from previous response
-    
+
 </dd>
 </dl>
 
@@ -2580,7 +2618,7 @@ client.construe.codes.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — Maximum number of codes to return (default 20)
-    
+
 </dd>
 </dl>
 
@@ -2588,12 +2626,11 @@ client.construe.codes.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2614,6 +2651,7 @@ client.construe.codes.list(
 Looks up a specific code and returns its details.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2644,6 +2682,7 @@ client.construe.codes.lookup(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2658,18 +2697,18 @@ client.construe.codes.lookup(
 <dd>
 
 **codesystem:** `str` — Code system name
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**code_id:** `str` 
+**code_id:** `str`
 
 The code identifier. ICD-10-CM codes are stored without their
 cosmetic dot (use "E1165", not "E11.65").
-    
+
 </dd>
 </dl>
 
@@ -2677,7 +2716,7 @@ cosmetic dot (use "E1165", not "E11.65").
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the code system, such as `umls-2026aa`.
-    
+
 </dd>
 </dl>
 
@@ -2685,12 +2724,11 @@ cosmetic dot (use "E1165", not "E11.65").
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2717,6 +2755,7 @@ related codes, even when different terminology is used. The search understands m
 not just keywords.
 
 **Examples**:
+
 - Query "trouble breathing at night" finds codes like "Sleep apnea", "Orthopnea",
   "Nocturnal dyspnea" — semantically related but no exact keyword matches
 - Query "heart problems" finds "Myocardial infarction", "Cardiac arrest", "Arrhythmia"
@@ -2727,6 +2766,7 @@ conceptually similar results that keyword search would miss.
 See also: `/search/text` for faster keyword-based lookup with typo tolerance.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2758,6 +2798,7 @@ client.construe.codes.search_semantic(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2772,7 +2813,7 @@ client.construe.codes.search_semantic(
 <dd>
 
 **codesystem:** `str` — Code system name
-    
+
 </dd>
 </dl>
 
@@ -2780,7 +2821,7 @@ client.construe.codes.search_semantic(
 <dd>
 
 **text:** `str` — Natural language text to find semantically similar codes for
-    
+
 </dd>
 </dl>
 
@@ -2788,7 +2829,7 @@ client.construe.codes.search_semantic(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the code system, such as `umls-2026aa`.
-    
+
 </dd>
 </dl>
 
@@ -2796,7 +2837,7 @@ client.construe.codes.search_semantic(
 <dd>
 
 **limit:** `typing.Optional[int]` — Maximum number of results (default 10, max 50)
-    
+
 </dd>
 </dl>
 
@@ -2804,12 +2845,11 @@ client.construe.codes.search_semantic(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -2837,11 +2877,13 @@ and will return empty results. Use `/search/semantic` to search custom code syst
 the code ID or specific keywords. Fast response times suitable for typeahead interfaces.
 
 **Features**:
+
 - Substring matching on code IDs (e.g., "11.65" finds "E11.65")
 - Typo tolerance on descriptions (not on code IDs)
 - Fast response times (~10-50ms)
 
 **Examples**:
+
 - Query "E11" finds all codes starting with E11 (diabetes codes)
 - Query "diabtes" (typo) still finds "diabetes" codes
 
@@ -2851,6 +2893,7 @@ Won't find conceptually related codes with different terminology.
 See also: `/search/semantic` for finding conceptually similar codes.
 
 Usage of CPT is subject to AMA requirements: see PhenoML Terms of Service.
+
 </dd>
 </dl>
 </dd>
@@ -2882,6 +2925,7 @@ client.construe.codes.search_text(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2896,7 +2940,7 @@ client.construe.codes.search_text(
 <dd>
 
 **codesystem:** `str` — Code system name
-    
+
 </dd>
 </dl>
 
@@ -2904,7 +2948,7 @@ client.construe.codes.search_text(
 <dd>
 
 **q:** `str` — Search query (searches code IDs and descriptions)
-    
+
 </dd>
 </dl>
 
@@ -2912,7 +2956,7 @@ client.construe.codes.search_text(
 <dd>
 
 **version:** `typing.Optional[str]` — Specific version of the code system, such as `umls-2026aa`.
-    
+
 </dd>
 </dl>
 
@@ -2920,7 +2964,7 @@ client.construe.codes.search_text(
 <dd>
 
 **limit:** `typing.Optional[int]` — Maximum number of results (default 20, max 100)
-    
+
 </dd>
 </dl>
 
@@ -2928,18 +2972,18 @@ client.construe.codes.search_text(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Fhir
+
 <details><summary><code>client.fhir.<a href="src/phenoml/fhir/client.py">search</a>(...) -> typing.Any</code></summary>
 <dl>
 <dd>
@@ -2955,18 +2999,21 @@ client.construe.codes.search_text(
 Retrieves FHIR resources from the specified provider. Supports both individual resource retrieval (e.g. `Patient/123` via the path) and search operations.
 
 FHIR search parameters are passed through to the upstream server verbatim as native query-string parameters; this proxy does not model, validate, or transform them. Append standard FHIR search parameters directly to the request URL. Supported parameters include:
+
 - Resource-specific search parameters (e.g. `name` for Patient, `status` for Observation)
 - Common search parameters (`_id`, `_lastUpdated`, `_tag`, `_profile`, `_security`, `_text`, `_content`, `_filter`)
 - Result parameters (`_count`, `_offset`, `_sort`, `_include`, `_revinclude`, `_summary`, `_elements`)
 - Search prefixes for dates, numbers, and quantities (`eq`, `ne`, `gt`, `ge`, `lt`, `le`, `sa`, `eb`, `ap`)
 
 Examples:
+
 - `Patient?name=John%20Doe&_count=10&_sort=family`
 - `Observation?patient=Patient/123&date=ge2023-01-01&category=vital-signs&_sort=-date`
 
 When using a generated SDK, supply these via the client's request-level query-parameter option (the SDK escape hatch) rather than a typed argument.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -2998,6 +3045,7 @@ client.fhir.search(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3011,48 +3059,50 @@ client.fhir.search(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**fhir_path:** `str` 
+**fhir_path:** `str`
 
 The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
 Examples:
+
 - "Patient" (for resource type operations)
 - "Patient/123" (for specific resource operations)
-- "Patient/123/_history" (for history operations)
-    
+- "Patient/123/\_history" (for history operations)
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3060,12 +3110,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -3086,6 +3135,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 Creates a new FHIR resource on the specified provider. The request body should contain a valid FHIR resource in JSON format.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -3118,6 +3168,7 @@ client.fhir.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3131,56 +3182,58 @@ client.fhir.create(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**fhir_path:** `str` 
+**fhir_path:** `str`
 
 The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
 Examples:
+
 - "Patient" (for resource type operations)
 - "Patient/123" (for specific resource operations)
-- "Patient/123/_history" (for history operations)
-    
+- "Patient/123/\_history" (for history operations)
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Any` 
-    
+**request:** `typing.Any`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3188,12 +3241,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -3214,6 +3266,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 Creates or updates a FHIR resource on the specified provider. If the resource exists, it will be updated; otherwise, it will be created.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -3246,6 +3299,7 @@ client.fhir.upsert(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3259,56 +3313,58 @@ client.fhir.upsert(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**fhir_path:** `str` 
+**fhir_path:** `str`
 
 The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
 Examples:
+
 - "Patient" (for resource type operations)
 - "Patient/123" (for specific resource operations)
-- "Patient/123/_history" (for history operations)
-    
+- "Patient/123/\_history" (for history operations)
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Any` 
-    
+**request:** `typing.Any`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3316,12 +3372,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -3342,6 +3397,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 Deletes a FHIR resource from the specified provider.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -3373,6 +3429,7 @@ client.fhir.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3386,48 +3443,50 @@ client.fhir.delete(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**fhir_path:** `str` 
+**fhir_path:** `str`
 
 The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
 Examples:
+
 - "Patient" (for resource type operations)
 - "Patient/123" (for specific resource operations)
-- "Patient/123/_history" (for history operations)
-    
+- "Patient/123/\_history" (for history operations)
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3435,12 +3494,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -3461,6 +3519,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 Partially updates a FHIR resource on the specified provider.
 
 Two body formats are supported, selected by request content type:
+
 - `application/json-patch+json` — an array of JSON Patch operations as defined in RFC 6902. Each operation specifies:
   - `op`: The operation type (add, remove, replace, move, copy, test)
   - `path`: JSON Pointer to the target location in the resource
@@ -3470,6 +3529,7 @@ Two body formats are supported, selected by request content type:
 **Note:** This proxy currently forwards the request body to the upstream FHIR server with `Content-Type: application/fhir+json` regardless of the declared request content type. JSON Patch (RFC 6902) therefore only succeeds against upstream servers that accept patch arrays under `application/fhir+json`; servers that strictly enforce patch media types may reject or misinterpret it. Support for either format ultimately depends on the upstream FHIR server.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -3509,6 +3569,7 @@ client.fhir.patch(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3522,26 +3583,28 @@ client.fhir.patch(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**fhir_path:** `str` 
+**fhir_path:** `str`
 
 The FHIR resource path to operate on. This follows FHIR RESTful API conventions.
 Examples:
+
 - "Patient" (for resource type operations)
 - "Patient/123" (for specific resource operations)
-- "Patient/123/_history" (for history operations)
-    
+- "Patient/123/\_history" (for history operations)
+
 </dd>
 </dl>
 
@@ -3549,29 +3612,29 @@ Examples:
 <dd>
 
 **request:** `typing.List[PatchRequestBodyItem]` — Array of JSON Patch operations following RFC 6902
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3579,12 +3642,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -3607,6 +3669,7 @@ Executes a FHIR Bundle transaction or batch operation on the specified provider.
 The request body should contain a valid FHIR Bundle resource with transaction or batch type.
 
 The request is proxied to the configured FHIR server with appropriate authentication headers.
+
 </dd>
 </dl>
 </dd>
@@ -3638,6 +3701,7 @@ client.fhir.execute_bundle(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3651,42 +3715,43 @@ client.fhir.execute_bundle(
 <dl>
 <dd>
 
-**fhir_provider_id:** `str` 
+**fhir_provider_id:** `str`
 
 The ID of the FHIR provider to use. Can be either:
+
 - A UUID representing the provider ID
 - A provider name (legacy support - will just use the most recently updated provider with this name)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Any` 
-    
+**request:** `typing.Any`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -3694,18 +3759,18 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Fhir2Omop
+
 <details><summary><code>client.fhir2omop.<a href="src/phenoml/fhir2omop/client.py">create</a>(...) -> CreateOmopResponse</code></summary>
 <dl>
 <dd>
@@ -3745,27 +3810,79 @@ least day precision. Apply your own policy to such rows before loading
 them into a strictly conformant CDM instance.
 
 Current resource coverage:
+
 - `Patient` -> `person`; `deceased[x]` can also produce `death`, the
   first address can produce `location`, and more than one supplied race
   produces `observation` race rows (see Patient demographics below)
 - `observation_period` -> one request-local derived row per person,
-  spanning the populated dates of that person's visit, clinical, and
-  death rows; this is not enrollment or capture-completeness evidence
+  spanning dates from that person's visit, clinical, and death records,
+  including source end dates even when the output table has no end column;
+  this is not enrollment or capture-completeness evidence
 - `Location` -> `location` and `care_site`
 - `Organization` -> `care_site`; its first address can produce `location`
 - `HealthcareService` -> `care_site`
 - `Practitioner` and `PractitionerRole` -> `provider`
 - `Encounter` -> `visit_occurrence`
-- `Condition` -> `condition_occurrence`
-- `Procedure` -> `procedure_occurrence`
+- `Specimen` -> `specimen`, with an explicit Patient subject; missing
+  collection date or material retains a partial row with diagnostics
+- `Condition` -> domain-selected clinical table; default `condition_occurrence`
+- `Procedure` -> domain-selected clinical table; default `procedure_occurrence`
 - `MedicationRequest`, `MedicationStatement`, and
-  `MedicationAdministration` -> `drug_exposure`
-- `Immunization` -> `drug_exposure`
-- `Observation` -> `measurement` or `observation`. For coded
-  Observations, the resolved OMOP concept domain selects the table; value
-  form only breaks ties. For text-only Observations, numeric values route
+  `MedicationAdministration` -> domain-selected clinical table; default `drug_exposure`
+- `Immunization` -> domain-selected clinical table; default `drug_exposure`
+- `Observation` -> domain-selected clinical table. Numeric values prefer
+  `measurement` and other values prefer `observation` when the code is
+  valid for both tables.
+  For text-only Observations, numeric values route
   to `measurement` and nonnumeric values to `observation`.
-- `AllergyIntolerance` -> `observation`
+- `AllergyIntolerance` -> domain-selected clinical table excluding
+  `drug_exposure`; default `observation`
+
+Clinical placement follows the informative Vulcan IG's vocabulary-driven
+domain assignment. Supported destinations are `condition_occurrence`,
+`procedure_occurrence`, `drug_exposure`, `measurement`, and `observation`.
+Coded clinical records are returned in the table corresponding to the
+domain of their mapped OMOP standard concept. The source resource
+determines eligibility, field values, and the default table when no
+supported mapping is available.
+Allergy substance codes must not create drug exposures.
+
+For example, a Condition coded with ICD10CM `Z79.4` can produce a mapped
+`observation` row. `Z86.73` and ICD-O-3 `8140/3` also map to concepts in
+the Observation domain. Use `mappings.omop_table` and `mappings.omop_id`
+to locate each result; the FHIR resource type alone does not determine
+the output table.
+
+Clinical rows include available person/visit/provider links, concept and
+source concept IDs, source value, source type provenance, and start
+timing. Dates follow the source resource's timing rules below, regardless
+of the output table. For example, a Condition follows its
+`onset[x]` / `recordedDate` timing rule even when returned as an
+`observation`. End dates are populated only in tables with end columns;
+they also contribute to the request-local observation period when the
+output table has no end column.
+
+Source-specific fields are populated only for the corresponding source
+and destination: Condition status in `condition_occurrence`, medication
+dosage/supply and Immunization lot details in `drug_exposure`, and
+Observation values/units/ranges in `measurement` or `observation` where
+those columns exist. Mapping notes explain the output table and which
+fields are populated. Coded medication/immunization routes on rows outside
+`drug_exposure`, and Observation values on rows outside `measurement` /
+`observation`, are retained in `mappings` linked to the output row, with
+`omop_field` omitted and `selected: false`. Coded routes are checked
+against the OMOP Route domain; those Observation values are preserved
+without concept resolution.
+
+Device and Note destinations are unsupported. If no standard concept
+valid for a supported destination is found, the resource produces a row
+in its default table with concept and source concept IDs of `0` and
+`UNMAPPED` status. A `DOMAIN_MISMATCH` outcome is identified in the mapping
+note. For example, a Procedure coded with HCPCS `C5271` produces a partial
+`procedure_occurrence` row because its mapped domain is Device. Text-only
+inputs use their default tables. A resource produces one clinical row
+even when its code has multiple vocabulary mapping targets. Vocabulary
+`Maps to value` mappings are not applied.
 
 `Medication` is reference data for medication resources; it does not
 create its own row because OMOP CDM has no Medication table. Administrative
@@ -3778,19 +3895,50 @@ concepts in `provider.gender_concept_id`; `other`, `unknown`, and absent
 gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
 and CMS Place of Service codings in `Location.type` are resolved to
 `care_site.place_of_service_concept_id`.
+Within one request, Practitioners with the same single distinct non-empty
+NPI under `http://hl7.org/fhir/sid/us-npi` merge into one provider row only
+when all supplied mapped identity attributes in the entire NPI group agree.
+This includes Practitioners contained in valid role references. System and
+value matches are exact; other identifier systems and names do not trigger
+a merge. Missing attributes can enrich a compatible merged row.
+Compatibility compares the name rendered from each Practitioner's first
+`name` entry, its gender, its first non-empty DEA identifier, and its parsed
+birth year. Differences in birth month/day within one year do not conflict.
+Rendered names are compared exactly: `Jane Smith` and `Dr. Jane Smith`
+conflict even when they share an NPI.
+If any of these attributes conflict, every resource in that NPI group stays
+separate, including resources missing the conflicting attribute. Source
+attributes and unambiguous structural reference links are preserved; no
+conflicting value is selected. Each affected row has `CONFLICTING`
+diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
+`omop_table: provider` and `omop_id`. All source gender mappings link to
+their retained or merged provider row.
+Repeated copies of one NPI on a resource are allowed. A resource with
+multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
+source-resource identity in `provider_source_value`, and reports a
+`CONFLICTING` diagnostic at `identifier` linked by
+`omop_table: provider` and `omop_id`.
+Row IDs are per response. The API does not merge across requests. For a
+Practitioner with one NPI, `provider_source_value` is that NPI, even when
+its group conflicts. Consumers can use it to deduplicate compatible
+providers across requests, but must preserve rows flagged by identity
+conflict diagnostics and check compatibility across responses. Without
+one unambiguous NPI, source-resource identity is preserved without a
+person-level deduplication guarantee.
 A `PractitionerRole` that identifies one supplied `Practitioner` aliases
 that canonical provider: by a top-level structural reference, a
 parent-contained `#id` reference, or an exact `identifier.system` and
 `identifier.value` match against a top-level Practitioner. No remote
 identifier lookup is performed. When `Reference.type` is present it must
-be `Practitioner`; duplicate contained IDs and identifier matches are
-ambiguous. An explicit reference that is unresolved, ambiguous, or
-unsupported retains a role-fallback provider row and is returned in
-`diagnostics`. `provider_role_contexts` preserves role-specific
+be `Practitioner`; duplicate contained IDs and identifier matches to
+different canonical providers are ambiguous. An explicit reference that
+is unresolved, ambiguous, or unsupported retains a role-fallback provider
+row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
 specialty and care-site context that a canonical OMOP provider row cannot
 represent together.
 
 Patient demographics:
+
 - Sex at birth, race, and ethnicity are read from these US Core
   extensions, with their US Core 6.1.0 structures and value sets, on
   any Patient (US Core profile conformance is not required). Sex at
@@ -3849,8 +3997,59 @@ Patient demographics:
   `0`; and Vulcan's suggested `observation` rows for multiple
   ethnicities are not produced.
 
+`Specimen` produces a `specimen` row only with an explicitly resolvable
+top-level Patient subject. Missing collection dates or material retain
+useful partial rows with linked diagnostics; those rows may require
+downstream completion before loading into a strict CDM instance.
+References support `Patient/id` and exact Bundle
+fullUrl matches (including URNs and absolute URLs); contained, logical,
+display-only, missing, non-Patient, and unresolved subjects never use the
+sole Patient fallback. Reference.type, when supplied, must identify Patient.
+Unsafe patient attribution and ineligible status drop only that Specimen
+with `dropped` and `diagnostics`; a missing Patient in the entire request
+remains a 400. Missing material is concept ID 0 with a `type` diagnostic
+and no terminology mapping/summary count. Supplied unmapped material is
+also 0, with its separate vocabulary mapping outcome and retained source code.
+Material (`type`) resolves against the Specimen domain, coded UCUM
+collection quantity units against Unit, and `collection.bodySite` against
+Spec Anatomic Site. Supplied unmapped optional concepts are 0; absent
+unit and site IDs are explicit null. Text-only body sites preserve their
+source text with site concept ID 0 and an `UNMAPPED` mapping; they do not
+produce a text-based concept suggestion. Text-only material can produce
+an `UNCHECKED` suggestion with material concept ID 0.
+Numeric quantity is copied without
+unit conversion; invalid or comparator-bearing quantities are omitted
+with diagnostics without dropping the row. Missing optional data is allowed.
+Collection time uses `collection.collectedDateTime` or
+`collection.collectedPeriod.start`; end-only, partial, invalid, and absent
+dates leave specimen_date/specimen_datetime omitted with linked diagnostics.
+Both collected forms together are conflicting: retain the row without
+selecting a date. Period end and receivedTime never substitute for collection
+start. `specimen_source_contexts.collection_timing` preserves raw dateTime,
+Period boundaries, receivedTime, and the selected source path when a date
+is populated, including partial precision and original timezone offsets.
+`specimen_collection_date_missing`, `specimen_collection_date_partial`, and
+`specimen_collection_date_unusable` distinguish absent, partial, and invalid
+source dates; `specimen_collection_multiple_forms` reports conflicting choices.
+`specimen_type_concept_id: 32817` is EHR provenance, independent of material
+and availability. Status absent/available/unavailable/unsatisfactory is
+supported; entered-in-error and unrecognized statuses drop the specimen.
+`specimen_source_contexts.status` preserves the supplied availability
+status for emitted rows; it is omitted when no status was supplied.
+Disease status is not inferred. Source identity precedence is resource id,
+then first identifier with a nonempty value in source array order, then
+accessionIdentifier.value, then Bundle fullUrl. No identity is fabricated;
+`specimen_source_contexts` preserves all valued identifier system/value
+pairs, accession identity, resource id/fullUrl, and the selected source path.
+Parent/derived specimens emit independently when each has its own Patient;
+missing date/material remains partial rather than being inherited. Parent
+and Measurement-to-Specimen links are not represented. Consuming CDM
+loaders own required-date completion, durable IDs, and dataset completeness.
+Source baseline is FHIR R4 4.0.1, with supported common fields reviewed against
+US Core Specimen 7.0.0; full profile conformance is not validated here.
+
 `DiagnosticReport`, `ServiceRequest`, `CarePlan`, `DocumentReference`,
-`Composition`, `Specimen`, `DeviceUseStatement`, `Coverage`, `Claim`, and
+`Composition`, `DeviceUseStatement`, `Coverage`, `Claim`, and
 other unsupported resource types are accepted in a Bundle but ignored: they
 create no row and no `dropped` entry. `dropped` is reserved for supported
 row-producing resources that cannot safely produce a positive OMOP row:
@@ -3862,9 +4061,9 @@ reference that is unresolved, ambiguous, or unsupported drops the clinical
 resource in every request scope.
 
 Eligibility distinguishes clinical validity, performed/taken evidence, and
-administrative workflow state. Checks run before terminology resolution;
-entered-in-error and explicitly non-performed events never produce a positive
-clinical-event row, and an unrecognized required status fails closed. Condition
+administrative workflow state. Entered-in-error and explicitly
+non-performed events never produce a positive clinical-event row, and
+an unrecognized required status fails closed. Condition
 requires absent or confirmed canonical-HL7 `verificationStatus`; clinical course is not a
 diagnosis-role mapping. Procedures accept completed or stopped events.
 Medication requests are prescription evidence only: `doNotPerform`, drafts,
@@ -3885,28 +4084,77 @@ accepts arrived, triaged, in-progress, onleave, or finished status, but drops
 planned, cancelled, entered-in-error, unknown, and missing statuses. An eligible
 encounter without `Period.end` remains a partial visit; no end date is invented.
 
-Coded Observation routing is selected from the resolved OMOP concept
-domain. Numeric and nonnumeric `value[x]` forms establish the preferred
-target only when the code is valid for both tables. A text-only
-Observation has no resolver target, so numeric values route to
-`measurement` and nonnumeric values to `observation`. Numeric values
-populate `value_as_number` in the selected row; other non-coded values
+The mapped OMOP concept's domain determines the clinical output table.
+For Observations, numeric and nonnumeric `value[x]` forms determine the
+preferred table only when the code is valid for both `measurement` and
+`observation`. Text-only Observations produce `measurement` rows for
+numeric values and `observation` rows for other values. In these two
+tables, numeric values populate `value_as_number`; other non-coded values
 populate `value_as_string` for an `observation` or `value_source_value`
 for a `measurement`. Coded `valueCodeableConcept` values are resolved
-against the selected row's `value_as_concept_id` and use the selected
+against `value_as_concept_id` in these tables and use the selected
 bare code in `value_source_value`, leaving an `observation`'s
 `value_as_string` empty; unmapped or target-invalid coded values remain
-`0`.
+`0`. Active standard concepts from any OMOP domain are valid for
+`value_as_concept_id` per CDM 5.4. For example, a blood-culture Measurement
+can record _Staphylococcus aureus_ as its coded result, even though the
+organism concept belongs to OMOP's Observation domain.
+For other clinical output tables, Observation values are retained only
+in `mappings`, without concept resolution or an `omop_field`, and with
+`selected: false`.
 Other unsupported `value[x]` forms and Observation components do not
 populate separate converted values. A
 numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
-measurement's `operator_concept_id`; units remain source text and have
-`unit_concept_id` of `0`.
+measurement's `operator_concept_id`.
+
+For Observations returned as `measurement` or `observation` rows,
+Quantity units resolve independently against the table's
+`unit_concept_id`. Other clinical output tables have no unit columns;
+their units are not resolved or included as separate mapping outcomes.
+Only coded UCUM (`http://unitsofmeasure.org` or its
+OID `2.16.840.1.113883.6.8`, bare or `urn:oid:`) is supported. Codes are
+case-sensitive: no spelling aliases, text-only guesses, or numeric
+conversion are applied. Coded UCUM units map to valid standard OMOP
+Unit concepts using the release selected by `vocab_version` (default
+`v20260227` when omitted or empty). Mappings are direct or follow an
+active OMOP `Maps to` relationship; UCUM units do not use a UMLS bridge.
+Unknown codes,
+vocabulary gaps, text-only units, missing coding, and unsupported
+systems keep the row and use `0`; absent units use JSON `null` (the
+field is present). Explicit dimensionless code `1` is a supplied unit
+and resolves or remains `0`; it is never treated as absent.
+`unit_source_value` contains Quantity.code when supplied, otherwise
+Quantity.unit. A separate unit `mappings` entry preserves the original
+Quantity.system/code in `source_system`/`source_code` and the exact
+human-readable Quantity.unit in `source_name`, with its own outcome.
+Quantity.unit provides display text and does not affect unit matching.
+Measurement also returns nullable `unit_source_concept_id`, identifying
+the OMOP source concept for Quantity.system/code when available,
+otherwise `0` for a supplied unit.
+Observation has no such column. Resolving a unit does not change
+numeric values, comparators, or reference ranges.
+Supported coded UCUM units include `resolution` in their mappings,
+whether the unit resolves or remains unmapped:
+its outcome and reason code distinguish vocabulary gaps, target-domain
+mismatches, and ambiguity. Unresolved or ambiguous units retain the row
+with concept ID `0`. Resolved mappings retain the selected concept's
+direct or crosswalk provenance. Text-only units, units with missing
+coding, and unsupported unit systems omit `resolution`; their `note`
+explains the unmapped outcome.
+
+Compatibility: absent `unit_concept_id` values previously returned `0`
+and now return `null`. Coded units use their code in `unit_source_value`
+rather than their human-readable text; the text remains in `mappings`.
+The Measurement `unit_source_concept_id` field is new.
 
 A standard OMOP `concept_id` is selected for each eligible primary clinical coding
 after considering all of the resource's supplied codings. An unambiguous
-coded medication route is resolved independently to
-`drug_exposure.route_concept_id`. Alongside the OMOP rows grouped by
+coded medication or immunization route is checked independently against
+the OMOP Route domain. For `drug_exposure` rows, `route_concept_id`
+contains the resolved concept ID, or `0` if unmapped; for other output
+tables the route is reported only in
+`mappings`, without `omop_field` and with `selected: false`.
+Alongside the OMOP rows grouped by
 table (`tables`), the response carries `mappings` (an entry for every
 supported source coding from a resource that shaped a row, linked back to
 that row; some, such
@@ -3914,29 +4162,31 @@ as demographic null flavors, are reported without being resolved),
 `provider_role_contexts` (source role details linked to provider rows),
 `dropped` (resources that could not be shaped into a row),
 `diagnostics` (explicit references that could not safely create a link,
-and conflicting or unsupported Patient demographic extensions),
+conflicting Practitioner identity attributes, conflicting or unsupported
+Patient demographic extensions, and conflicting Encounter classifications),
 `vocab_version` (the OMOP vocabulary release codes were resolved
 against), and a small `summary` of the resolution outcomes.
 
 A `concept_id` of `0` is reported, not omitted (OMOP "no matching
 concept" semantics): it covers both a coding with no standard match
 (`UNMAPPED`) and an unverified suggestion for a text-only resource
-(`UNCHECKED`). Visit and unit concept fields currently remain `0`;
-Person demographics and Provider recorded gender follow the policies
-above. Coded Observation values may populate `value_as_concept_id`.
-Concepts set by a fixed convention rather than terminology resolution
-are measurement `operator_concept_id`, set from a value comparator (`<`,
-`<=`, `>`, `>=`), and the multiple-race concepts described above. Clinical
-`*_source_value` fields contain the selected FHIR code (or source text
-for text-only resources).
+(`UNCHECKED`). Supported `Encounter.class` or `Encounter.type` values
+may populate `visit_concept_id`. Person demographics and Provider
+recorded gender follow the policies above.
+Coded Observation values may populate `value_as_concept_id`.
+Measurement `operator_concept_id` represents a value comparator (`<`,
+`<=`, `>`, `>=`); multiple-race concepts follow the conventions described
+above. Clinical `*_source_value` fields contain the selected FHIR code
+(or source text for text-only resources).
 The corresponding selected `mappings` entry preserves the coding system
 and full source-coding provenance.
 Known OID-form coding systems are accepted as either FHIR OID URNs (for
 example, `urn:oid:2.16.840.1.113883.6.1` for LOINC) or bare OIDs, and
-are normalized to their canonical system URLs before terminology
-resolution. `mappings[].source_system` reports that canonical URL, so the
-OID and URL forms produce the same mapping. An unknown OID is not
-rewritten and may be `UNMAPPED`.
+produce the same mappings as their canonical system URLs. Coding
+mappings report that canonical URL in `source_system`; Quantity unit
+mappings preserve the original Quantity.system, including OID spelling.
+An unknown OID remains unchanged in `source_system` and may be
+`UNMAPPED`.
 Other `*_source_value` fields preserve row-specific raw source values,
 such as resource identifiers, names, units, or status codes.
 `MedicationRequest` uses `32838` (EHR prescription) for
@@ -3946,14 +4196,15 @@ medication-history, or other more-specific type concepts from FHIR
 status fields.
 
 Dates and datetimes:
+
 - A `*_date` is the calendar date (`YYYY-MM-DD`) of a source value with
   at least day precision. A `*_datetime` is set only when that value
   has a time of day, as local time without a UTC offset
   (`YYYY-MM-DDTHH:MM:SS`, with fractional seconds to microseconds when
   supplied): `2024-01-15T23:30:00-05:00` becomes `2024-01-15T23:30:00`.
   A datetime without a timezone is read as local time.
-- A partial date (`2024` or `2024-03`) leaves both columns unset. It
-  still counts as that source's value, so later sources in the list
+- A partial date (`2024` or `2024-03`) leaves both columns unset.
+  It still counts as that source's value, so later sources in the list
   below are not used.
 - Free-text timing (such as `onsetString`), `Age` and `Range` forms, and
   values that are not dates are ignored, so a later source in the list
@@ -3963,11 +4214,17 @@ Dates and datetimes:
   completed, and a row is not dated from another resource such as its
   Encounter.
 - Valid date values never cause a request to be rejected, and the response
-  does not report which date elements were unusable. An on-hold
+  reports unusable date elements for Specimen while retaining the partial
+  row for downstream load completion. Other rows do not report which
+  date elements were unusable. An on-hold
   MedicationAdministration is an eligibility exception: it needs a supplied
   effective start as evidence that administration began.
 
-Timing sources, in priority order where several are listed:
+Timing sources, in priority order where several are listed. These rules
+apply regardless of the clinical output table; end dates are populated
+only where the table has an end column, and `verbatim_end_date` is set
+only for medication resources returned as `drug_exposure` rows:
+
 - `Patient`: `birthDate` sets `year_of_birth`, `month_of_birth`, and
   `day_of_birth` from the parts it supplies; `birth_datetime` is not
   set. `deceasedDateTime` sets the `death` dates.
@@ -3978,6 +4235,8 @@ Timing sources, in priority order where several are listed:
   end from `abatementDateTime` or `abatementPeriod.end`.
 - `Procedure`: start from `performedDateTime` or
   `performedPeriod.start`; end from `performedPeriod.end` only.
+- `Specimen`: `collection.collectedDateTime` or `collection.collectedPeriod.start`;
+  missing day precision retains an undated specimen with diagnostics.
 - `Observation`: `effectiveDateTime`, `effectivePeriod.start`, or
   `effectiveInstant`.
 - `AllergyIntolerance`: `recordedDate`, then `onsetDateTime` or
@@ -3999,7 +4258,8 @@ Timing sources, in priority order where several are listed:
   AllergyIntolerance falls back to its onset when `recordedDate` is
   missing.
 
-Medication details:
+Medication details for resources returned as `drug_exposure` rows:
+
 - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
   `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
 - All non-empty dosage text is preserved in `sig`.
@@ -4007,6 +4267,126 @@ Medication details:
   the OMOP Route domain. Conflicting routes are left unset; route
   codings shared by every dosage instruction identify the same route.
 - `Immunization.lotNumber` is preserved in `lot_number`.
+
+Encounter details:
+
+- Encounter classifications must supply both `Coding.system` and
+  `Coding.code` to map to a standard OMOP Visit concept. For HL7
+  encounter class codes with system
+  `http://terminology.hl7.org/CodeSystem/v3-ActCode` or
+  `http://hl7.org/fhir/v3/ActCode`, the supported mappings are:
+
+  - `IMP` (inpatient encounter) -> 9201 (Inpatient Visit)
+  - `AMB` (ambulatory encounter) -> 9202 (Outpatient Visit)
+  - `EMER` (emergency encounter) -> 9203 (Emergency Room Visit)
+  - `VR` (virtual encounter) -> 722455 (Telehealth)
+  - `HH` (home health encounter) -> 581476 (Home Visit)
+
+  `OBSENC` (observation encounter) has no direct class mapping. Other
+  class or type codes can be used when they have a valid standard OMOP
+  Visit mapping in the selected vocabulary release. Unsupported
+  classifications retain `visit_concept_id` of `0` unless a supported
+  type supplies the Visit as described below; they never default to
+  outpatient.
+
+- A mapped `Encounter.class` determines `visit_concept_id`. A mapped
+  type that disagrees with it produces a `CONFLICTING` diagnostic with
+  path `class/type`, while the class mapping remains selected.
+  If class is missing or unmapped, type supplies the Visit only when
+  all mapped type classifications agree on the same standard Visit
+  concept. Codings within one type CodeableConcept are alternative
+  encodings of that classification. When separate type classifications
+  map to different Visit concepts, no type is selected,
+  `visit_concept_id` remains `0`, and a `CONFLICTING` diagnostic has
+  path `type`.
+- `visit_source_value` contains the selected class or type code;
+  `mappings` preserves its coding system and identifies which
+  classification was selected. `visit_source_concept_id` identifies
+  the selected original source coding's OMOP concept when available,
+  and is `0` otherwise, including for the HL7 encounter class codes
+  listed above. Each eligible Encounter produces one Visit;
+  `classHistory`, `partOf`, and admission/discharge concepts are not
+  mapped.
+
+- Direct `MedicationRequest.dispenseRequest.quantity`,
+  `MedicationAdministration.dosage.dose`, and `Immunization.doseQuantity`
+  can set `quantity` under the formulation policies below. Quantities
+  must be positive finite numbers with a supported `system`/`code` pair
+  and no supplied `comparator`. Ingredient amounts and injection volumes
+  use `http://unitsofmeasure.org` (or its bare OID or
+  `urn:oid:2.16.840.1.113883.6.8`) with codes matching vocabulary units exactly.
+  The original source system is preserved in the quantity audit.
+  Fixed-form counts also accept the explicit codings below. No unit
+  conversion or interpretation of free-text units is performed.
+
+Drug quantity policies follow [CDM v5.4 DRUG_EXPOSURE conventions](https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure).
+The selected drug must be a `Clinical Drug` or `Branded Drug`, with one
+active dose form and valid vocabulary evidence for the chosen policy.
+Strength-based conversions also require one ingredient strength. Supported RxNorm dose forms:
+
+- `fixed_dose_form_count`: Oral Tablet (`317541`), Oral Capsule
+  (`316965`), Extended Release Oral Tablet (`316945`), Extended
+  Release Oral Capsule (`316943`), Delayed Release Oral Tablet (`10312`),
+  or Delayed Release Oral Capsule (`316995`). A source ingredient amount is divided
+  by the single positive per-unit ingredient amount, in exactly the same unit.
+  Concentration-based strengths cannot derive counts from ingredient amounts. The
+  result is a count of the selected dose form, limited to whole units or
+  multiples of one-half or one-third. For example, 1,000 mg for a drug
+  with 500 mg per tablet produces `quantity: 2` tablets (`DERIVED`).
+  Explicit counts are copied (`DIRECT`) when their coding matches the
+  selected tablet or capsule form, including the corresponding extended-
+  and delayed-release forms: `TAB` / `CAP` under
+  `http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm`, or
+  `{tbl}` / `{Capsule}` under `http://unitsofmeasure.org`. These exact
+  case-sensitive count codings identify the supplied form; they are not
+  dimensionally converted as UCUM units. Direct counts do not require
+  ingredient strength: combination products and missing/invalid strengths
+  do not change the supplied count. Ingredient-strength gaps, including
+  missing ingredient or strength-unit references, do not prevent copying
+  an explicit count. Drug or dose-form evidence gaps, unclassified or
+  ambiguous forms, and gaps whose relevance cannot be established still
+  prevent conversion. The whole/half/third rules still apply.
+  For example, 20 `TAB` for amoxicillin/clavulanate is 20 tablets, and 30 `TAB` for
+  a supported tablet produces `quantity: 30`; `CAP` for that tablet is
+  omitted with `unit_mismatch`. Generic counts (`1`, `{Each}`), other
+  annotations, packs, and free-text counts are not interpreted.
+  See the [FHIR R4 count example](https://hl7.org/fhir/R4/medicationrequest0301.html).
+- `clinical_injection_ingredient_amount`: Injectable Solution (`316949`),
+  Injectable Suspension (`316950`), or Injection (`1649574`). A source
+  amount already in the ingredient unit is copied directly. Otherwise,
+  a source amount matching the concentration's denominator unit is
+  multiplied by numerator value / the effective denominator reported in
+  the audit evidence. Volume conversion requires a positive finite numerator,
+  distinct validated UCUM units, a null raw denominator value, and
+  `evidence.strength.denominator_basis` with `kind: PER_UNIT` and
+  `value: 1`. A null denominator alone is not interpreted as 1. Missing, unknown,
+  non-applicable, quantified, or conflicting denominator evidence does
+  not support volume conversion. For example, 80 mL with 2 mg/mL
+  strength and a `PER_UNIT` basis produces `quantity: 160` mg. A supplied
+  160 mg amount for the same drug produces `quantity: 160` directly. This output is already
+  the ingredient amount: do not apply the drug-dose guide's
+  `dose = quantity × numerator` formula to these injection rows, which
+  would multiply by the concentration a second time. Use
+  `quantity_transformations.result_unit` to identify the output unit.
+
+Quantified products, packs, prefilled syringes, other liquids and dose
+forms, strength-based conversions of combination products, conflicting or incomplete required evidence, and
+unsupported source quantities leave `quantity` unset. Other supported
+fields and the clinical row are still returned. For example, a quantity
+supplied only as `value: 2, unit: tablet` is omitted with
+`unsupported_unit`, because a free-text unit cannot establish this policy.
+Rate-only administrations and MedicationStatement dosages do not establish
+a supported total quantity and are not used for quantity conversion.
+
+`quantity_transformations` audits each supplied quantity at one of the
+three direct paths above on a row-producing resource, including an
+explicit null or malformed quantity. Each entry preserves the source,
+identifies the destination row, and reports `DIRECT`, `DERIVED`, or
+`OMITTED`. Successful entries identify their policy, evidence, result,
+and result unit; omitted entries give a stable reason. Dose-form and unit
+concept IDs refer to the response's `vocab_version`. Missing quantities
+produce no entry. Unsupported rates and statement dosages produce no
+entry, and resources in `dropped` have no quantity entry or destination row.
 
 Medication codes are resolved whether they appear inline
 (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -4040,6 +4420,7 @@ not uniformly carry a FHIR resource ID. Input resources without those
 source identifiers cannot be correlated across responses from the
 returned rows alone. Consumers combining responses need to establish
 their own stable keys and remap every primary and foreign key together.
+
 </dd>
 </dl>
 </dd>
@@ -4072,6 +4453,7 @@ client.fhir2omop.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4085,30 +4467,30 @@ client.fhir2omop.create(
 <dl>
 <dd>
 
-**fhir_resources:** `typing.Dict[str, typing.Any]` 
+**fhir_resources:** `typing.Dict[str, typing.Any]`
 
 FHIR resources (single resource or Bundle). Must contain at least one
 Patient resource. Supported row-producing resources are Patient,
 Location, Organization, HealthcareService, Practitioner,
-PractitionerRole, Encounter, Condition, Procedure, MedicationRequest,
-MedicationStatement, MedicationAdministration, Immunization,
-Observation, and AllergyIntolerance. Standalone Medication resources
+PractitionerRole, Encounter, Specimen, Condition, Procedure,
+MedicationRequest, MedicationStatement, MedicationAdministration,
+Immunization, Observation, and AllergyIntolerance. Standalone Medication resources
 are consumed by medication references rather than mapped to their own
 table. Unsupported resource types are accepted in a Bundle but ignored.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**vocab_version:** `typing.Optional[str]` 
+**vocab_version:** `typing.Optional[str]`
 
 OMOP vocabulary release to use for coded concept resolution. If
-omitted or empty, the API uses its default release. Specify a
-release explicitly when reproducibility matters. The response's
+omitted or empty, the API uses its default release (`v20260829`).
+Specify a release explicitly when reproducibility matters. The response's
 `vocab_version`, when present, identifies the release used.
-    
+
 </dd>
 </dl>
 
@@ -4116,18 +4498,18 @@ release explicitly when reproducibility matters. The response's
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## FhirProvider
+
 <details><summary><code>client.fhir_provider.<a href="src/phenoml/fhir_provider/client.py">create</a>(...) -> FhirProviderResponse</code></summary>
 <dl>
 <dd>
@@ -4143,6 +4525,7 @@ release explicitly when reproducibility matters. The response's
 Creates a new FHIR provider configuration with authentication credentials.
 
 Note: The "sandbox" provider type cannot be created via this API - it is managed internally.
+
 </dd>
 </dl>
 </dd>
@@ -4179,6 +4562,7 @@ client.fhir_provider.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4193,15 +4577,15 @@ client.fhir_provider.create(
 <dd>
 
 **name:** `str` — Display name for the FHIR provider
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**provider:** `Provider` 
-    
+**provider:** `Provider`
+
 </dd>
 </dl>
 
@@ -4209,15 +4593,15 @@ client.fhir_provider.create(
 <dd>
 
 **base_url:** `str` — Base URL of the FHIR server
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**auth:** `FhirProviderCreateRequestAuth` 
-    
+**auth:** `FhirProviderCreateRequestAuth`
+
 </dd>
 </dl>
 
@@ -4225,7 +4609,7 @@ client.fhir_provider.create(
 <dd>
 
 **description:** `typing.Optional[str]` — Optional description of the FHIR provider
-    
+
 </dd>
 </dl>
 
@@ -4233,12 +4617,11 @@ client.fhir_provider.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4260,6 +4643,7 @@ Retrieves a list of all active FHIR providers for the authenticated user.
 
 On shared instances, only sandbox providers are returned.
 Sandbox providers return FhirProviderSandboxInfo.
+
 </dd>
 </dl>
 </dd>
@@ -4286,6 +4670,7 @@ client = PhenomlClient(
 client.fhir_provider.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4300,12 +4685,11 @@ client.fhir_provider.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4327,6 +4711,7 @@ Retrieves a specific FHIR provider configuration by its ID.
 
 Sandbox providers return FhirProviderSandboxInfo.
 On shared instances, only sandbox providers can be accessed.
+
 </dd>
 </dl>
 </dd>
@@ -4355,6 +4740,7 @@ client.fhir_provider.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4369,7 +4755,7 @@ client.fhir_provider.get(
 <dd>
 
 **fhir_provider_id:** `str` — ID of the FHIR provider to retrieve
-    
+
 </dd>
 </dl>
 
@@ -4377,12 +4763,11 @@ client.fhir_provider.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4403,6 +4788,7 @@ client.fhir_provider.get(
 Deletes a FHIR provider.
 
 Note: Sandbox providers cannot be deleted.
+
 </dd>
 </dl>
 </dd>
@@ -4431,6 +4817,7 @@ client.fhir_provider.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4445,7 +4832,7 @@ client.fhir_provider.delete(
 <dd>
 
 **fhir_provider_id:** `str` — ID of the FHIR provider to delete
-    
+
 </dd>
 </dl>
 
@@ -4453,18 +4840,18 @@ client.fhir_provider.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Auth Config
+
 <details><summary><code>client.fhir_provider.auth_config.<a href="src/phenoml/fhir_provider/auth_config/client.py">add</a>(...) -> FhirProviderResponse</code></summary>
 <dl>
 <dd>
@@ -4481,6 +4868,7 @@ Adds a new authentication configuration to an existing FHIR provider.
 This enables key rotation and multiple auth configurations per provider.
 
 Note: Sandbox providers cannot be modified.
+
 </dd>
 </dl>
 </dd>
@@ -4514,6 +4902,7 @@ client.fhir_provider.auth_config.add(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4528,15 +4917,15 @@ client.fhir_provider.auth_config.add(
 <dd>
 
 **fhir_provider_id:** `str` — ID of the FHIR provider to add auth config to
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `FhirProviderAddAuthConfigRequest` 
-    
+**request:** `FhirProviderAddAuthConfigRequest`
+
 </dd>
 </dl>
 
@@ -4544,12 +4933,11 @@ client.fhir_provider.auth_config.add(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4574,6 +4962,7 @@ If the specified auth config is already active, the request succeeds without
 making any changes and returns a message indicating the config is already active.
 
 Note: Sandbox providers cannot be modified.
+
 </dd>
 </dl>
 </dd>
@@ -4603,6 +4992,7 @@ client.fhir_provider.auth_config.set_active(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4617,7 +5007,7 @@ client.fhir_provider.auth_config.set_active(
 <dd>
 
 **fhir_provider_id:** `str` — ID of the FHIR provider
-    
+
 </dd>
 </dl>
 
@@ -4625,7 +5015,7 @@ client.fhir_provider.auth_config.set_active(
 <dd>
 
 **auth_config_id:** `str` — ID of the auth configuration to set as active
-    
+
 </dd>
 </dl>
 
@@ -4633,12 +5023,11 @@ client.fhir_provider.auth_config.set_active(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4660,6 +5049,7 @@ Removes an authentication configuration from a FHIR provider.
 Cannot remove the currently active auth configuration.
 
 Note: Sandbox providers cannot be modified.
+
 </dd>
 </dl>
 </dd>
@@ -4689,6 +5079,7 @@ client.fhir_provider.auth_config.remove(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4703,7 +5094,7 @@ client.fhir_provider.auth_config.remove(
 <dd>
 
 **fhir_provider_id:** `str` — ID of the FHIR provider
-    
+
 </dd>
 </dl>
 
@@ -4711,7 +5102,7 @@ client.fhir_provider.auth_config.remove(
 <dd>
 
 **auth_config_id:** `str` — ID of the auth configuration to remove
-    
+
 </dd>
 </dl>
 
@@ -4719,18 +5110,18 @@ client.fhir_provider.auth_config.remove(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Implementation Guides
+
 <details><summary><code>client.implementation_guides.implementation_guides.<a href="src/phenoml/implementation_guides/implementation_guides/client.py">list</a>() -> ImplementationGuideListResponse</code></summary>
 <dl>
 <dd>
@@ -4746,6 +5137,7 @@ client.fhir_provider.auth_config.remove(
 Returns every implementation guide on this instance — both guides that
 have stored metadata (a profile_context) and guides referenced by at
 least one custom profile — with the number of profiles in each.
+
 </dd>
 </dl>
 </dd>
@@ -4772,6 +5164,7 @@ client = PhenomlClient(
 client.implementation_guides.implementation_guides.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4786,12 +5179,11 @@ client.implementation_guides.implementation_guides.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4811,6 +5203,7 @@ client.implementation_guides.implementation_guides.list()
 
 Returns a single implementation guide, including its profile_context and
 the ids of the profiles that belong to it.
+
 </dd>
 </dl>
 </dd>
@@ -4839,6 +5232,7 @@ client.implementation_guides.implementation_guides.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4853,7 +5247,7 @@ client.implementation_guides.implementation_guides.get(
 <dd>
 
 **name:** `str` — The implementation guide name.
-    
+
 </dd>
 </dl>
 
@@ -4861,12 +5255,11 @@ client.implementation_guides.implementation_guides.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4888,6 +5281,7 @@ Sets (or clears, with an empty value) the natural-language profile_context
 for an implementation guide. The context is injected into the LLM during
 resource detection to help select the right profiles from this guide.
 It applies to every profile in the guide.
+
 </dd>
 </dl>
 </dd>
@@ -4916,6 +5310,7 @@ client.implementation_guides.implementation_guides.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4930,7 +5325,7 @@ client.implementation_guides.implementation_guides.update(
 <dd>
 
 **name:** `str` — The implementation guide name.
-    
+
 </dd>
 </dl>
 
@@ -4938,7 +5333,7 @@ client.implementation_guides.implementation_guides.update(
 <dd>
 
 **profile_context:** `typing.Optional[str]` — Natural-language context that helps the LLM select the right profiles from this implementation guide during resource detection. An empty value clears the context. Max 2000 characters.
-    
+
 </dd>
 </dl>
 
@@ -4946,12 +5341,11 @@ client.implementation_guides.implementation_guides.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -4971,6 +5365,7 @@ client.implementation_guides.implementation_guides.update(
 
 Deletes the guide's metadata and all its canonical package versions.
 Custom profiles and their implementation-guide assignments are preserved.
+
 </dd>
 </dl>
 </dd>
@@ -4999,6 +5394,7 @@ client.implementation_guides.implementation_guides.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5013,7 +5409,7 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **name:** `str` — The implementation guide name.
-    
+
 </dd>
 </dl>
 
@@ -5021,12 +5417,11 @@ client.implementation_guides.implementation_guides.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5047,6 +5442,7 @@ client.implementation_guides.implementation_guides.delete(
 Publishes an exact package beneath this guide family. Each guide family
 supports one exact package version. Publishing another version returns
 `409 Conflict`.
+
 </dd>
 </dl>
 </dd>
@@ -5084,6 +5480,7 @@ client.implementation_guides.implementation_guides.create_version(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5097,16 +5494,16 @@ client.implementation_guides.implementation_guides.create_version(
 <dl>
 <dd>
 
-**name:** `str` 
-    
+**name:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**implementation_guide:** `FhirImplementationGuide` 
-    
+**implementation_guide:** `FhirImplementationGuide`
+
 </dd>
 </dl>
 
@@ -5114,7 +5511,7 @@ client.implementation_guides.implementation_guides.create_version(
 <dd>
 
 **profile_refs:** `typing.List[str]` — Exact canonical `url|version` references to builtin or custom profiles. A package can contain at most 250 references.
-    
+
 </dd>
 </dl>
 
@@ -5122,7 +5519,7 @@ client.implementation_guides.implementation_guides.create_version(
 <dd>
 
 **profile_context:** `typing.Optional[str]` — Natural-language profile-selection context for this package.
-    
+
 </dd>
 </dl>
 
@@ -5130,12 +5527,11 @@ client.implementation_guides.implementation_guides.create_version(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5169,6 +5565,7 @@ client.implementation_guides.implementation_guides.get_version(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5182,8 +5579,8 @@ client.implementation_guides.implementation_guides.get_version(
 <dl>
 <dd>
 
-**name:** `str` 
-    
+**name:** `str`
+
 </dd>
 </dl>
 
@@ -5191,7 +5588,7 @@ client.implementation_guides.implementation_guides.get_version(
 <dd>
 
 **version:** `str` — The authored ImplementationGuide.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
-    
+
 </dd>
 </dl>
 
@@ -5199,18 +5596,18 @@ client.implementation_guides.implementation_guides.get_version(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Lang2Fhir
+
 <details><summary><code>client.lang2fhir.<a href="src/phenoml/lang2fhir/client.py">create</a>(...) -> FhirResource</code></summary>
 <dl>
 <dd>
@@ -5228,6 +5625,7 @@ Converts natural language text into a structured FHIR resource.
 The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit.
 
 **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+
 </dd>
 </dl>
 </dd>
@@ -5258,6 +5656,7 @@ client.lang2fhir.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5272,7 +5671,7 @@ client.lang2fhir.create(
 <dd>
 
 **version:** `str` — FHIR version to use
-    
+
 </dd>
 </dl>
 
@@ -5280,7 +5679,7 @@ client.lang2fhir.create(
 <dd>
 
 **resource:** `CreateRequestResource` — Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
-    
+
 </dd>
 </dl>
 
@@ -5288,7 +5687,7 @@ client.lang2fhir.create(
 <dd>
 
 **text:** `str` — Natural language text to convert
-    
+
 </dd>
 </dl>
 
@@ -5296,12 +5695,11 @@ client.lang2fhir.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5326,6 +5724,7 @@ Resources are linked with proper references (e.g., Conditions reference the Pati
 The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit.
 
 **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+
 </dd>
 </dl>
 </dd>
@@ -5355,6 +5754,7 @@ client.lang2fhir.create_multi(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5369,7 +5769,7 @@ client.lang2fhir.create_multi(
 <dd>
 
 **text:** `str` — Natural language text containing multiple clinical concepts to extract
-    
+
 </dd>
 </dl>
 
@@ -5377,7 +5777,7 @@ client.lang2fhir.create_multi(
 <dd>
 
 **version:** `typing.Optional[str]` — FHIR version to use
-    
+
 </dd>
 </dl>
 
@@ -5385,15 +5785,15 @@ client.lang2fhir.create_multi(
 <dd>
 
 **provider:** `typing.Optional[str]` — Optional FHIR provider name for provider-specific profiles
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**primary_patient:** `typing.Optional[PrimaryPatient]` 
-    
+**primary_patient:** `typing.Optional[PrimaryPatient]`
+
 </dd>
 </dl>
 
@@ -5401,7 +5801,7 @@ client.lang2fhir.create_multi(
 <dd>
 
 **patient_reference:** `typing.Optional[PatientReference]` — Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
-    
+
 </dd>
 </dl>
 
@@ -5409,7 +5809,7 @@ client.lang2fhir.create_multi(
 <dd>
 
 **implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
-    
+
 </dd>
 </dl>
 
@@ -5417,7 +5817,7 @@ client.lang2fhir.create_multi(
 <dd>
 
 **detection_effort:** `typing.Optional[CreateMultiRequestDetectionEffort]` — Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
-    
+
 </dd>
 </dl>
 
@@ -5425,15 +5825,15 @@ client.lang2fhir.create_multi(
 <dd>
 
 **validation_method:** `typing.Optional[CreateMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**resource_review:** `typing.Optional[ResourceReview]` 
-    
+**resource_review:** `typing.Optional[ResourceReview]`
+
 </dd>
 </dl>
 
@@ -5441,12 +5841,11 @@ client.lang2fhir.create_multi(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5472,6 +5871,7 @@ Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immuniza
 Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
 PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
 Schedule, ServiceRequest, Slot, and Specimen.
+
 </dd>
 </dl>
 </dd>
@@ -5500,6 +5900,7 @@ client.lang2fhir.search(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5513,18 +5914,19 @@ client.lang2fhir.search(
 <dl>
 <dd>
 
-**text:** `str` 
+**text:** `str`
 
 Natural language text to convert into FHIR search parameters.
 The system will automatically identify the appropriate resource type and generate valid search parameters.
 
 Examples:
+
 - "Appointments between March 2-9, 2025" → Appointment search with date range
 - "Patients with diabetes" → Condition search with code parameter
 - "Active medication requests for metformin" → MedicationRequest search
 - "Lab results for creatinine" → DiagnosticReport search
 - "Dr. Smith's schedule" → Practitioner or Schedule search
-    
+
 </dd>
 </dl>
 
@@ -5532,12 +5934,11 @@ Examples:
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5568,6 +5969,7 @@ from the StructureDefinition is used as the profile's unique identifier and look
 To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
 
 Uploads will be rejected if:
+
 - A built-in US Core or R4 base profile already exists with the same id
 - A custom profile with the same id has already been uploaded
 - A custom profile with the same url has already been uploaded
@@ -5601,6 +6003,7 @@ client.lang2fhir.upload_profile(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5614,8 +6017,8 @@ client.lang2fhir.upload_profile(
 <dl>
 <dd>
 
-**request:** `ProfileUploadRequest` 
-    
+**request:** `ProfileUploadRequest`
+
 </dd>
 </dl>
 
@@ -5623,12 +6026,11 @@ client.lang2fhir.upload_profile(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5651,6 +6053,7 @@ Extracts text from a PDF, image, RTF, or XML/C-CDA document and converts it into
 The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit, including base64-encoded document `content`.
 
 **Patient identifier handling.** When generating a `patient` (or `patient-canvas`) resource, US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the resource remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+
 </dd>
 </dl>
 </dd>
@@ -5681,6 +6084,7 @@ client.lang2fhir.document(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5695,7 +6099,7 @@ client.lang2fhir.document(
 <dd>
 
 **version:** `str` — FHIR version to use
-    
+
 </dd>
 </dl>
 
@@ -5703,14 +6107,14 @@ client.lang2fhir.document(
 <dd>
 
 **resource:** `str` — Type of FHIR resource to create. Accepts any FHIR resource type or US Core profile name.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**content:** `str` 
+**content:** `str`
 
 Base64 encoded file content.
 Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
@@ -5718,15 +6122,15 @@ TIFF, RTF, and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
 The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
 Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**config:** `typing.Optional[DocumentConfig]` 
-    
+**config:** `typing.Optional[DocumentConfig]`
+
 </dd>
 </dl>
 
@@ -5734,12 +6138,11 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -5767,6 +6170,7 @@ The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The appl
 **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
 
 **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
+
 </dd>
 </dl>
 </dd>
@@ -5812,6 +6216,7 @@ client.lang2fhir.document_multi(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5826,14 +6231,14 @@ client.lang2fhir.document_multi(
 <dd>
 
 **version:** `str` — FHIR version to use
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**content:** `str` 
+**content:** `str`
 
 Base64 encoded file content.
 Supported file types: PDF (application/pdf), PNG (image/png), JPEG (image/jpeg), TIFF (image/tiff), RTF (application/rtf), XML/C-CDA (text/xml).
@@ -5841,7 +6246,7 @@ TIFF, RTF, and XML/C-CDA uploads are available on dedicated instances only.
 File type is auto-detected from content magic bytes.
 The decoded file must not exceed 20 MiB. RTF and XML/C-CDA documents whose extracted text exceeds 1 MiB are rejected.
 Generic XML must include an XML declaration; C-CDA documents rooted at `ClinicalDocument` may omit it.
-    
+
 </dd>
 </dl>
 
@@ -5849,15 +6254,15 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **provider:** `typing.Optional[str]` — Optional FHIR provider name for provider-specific profiles
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**primary_patient:** `typing.Optional[PrimaryPatient]` 
-    
+**primary_patient:** `typing.Optional[PrimaryPatient]`
+
 </dd>
 </dl>
 
@@ -5865,7 +6270,7 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **patient_reference:** `typing.Optional[PatientReference]` — Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
-    
+
 </dd>
 </dl>
 
@@ -5873,7 +6278,7 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **implementation_guide:** `typing.Optional[str]` — Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
-    
+
 </dd>
 </dl>
 
@@ -5881,7 +6286,7 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **detection_effort:** `typing.Optional[DocumentMultiRequestDetectionEffort]` — Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
-    
+
 </dd>
 </dl>
 
@@ -5889,15 +6294,15 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **validation_method:** `typing.Optional[DocumentMultiRequestValidationMethod]` — FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**config:** `typing.Optional[DocumentConfig]` 
-    
+**config:** `typing.Optional[DocumentConfig]`
+
 </dd>
 </dl>
 
@@ -5905,18 +6310,18 @@ Generic XML must include an XML declaration; C-CDA documents rooted at `Clinical
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Lang2FhirBatch
+
 <details><summary><code>client.lang2fhir_batch.<a href="src/phenoml/lang2fhir_batch/client.py">list</a>(...) -> JobListResponse</code></summary>
 <dl>
 <dd>
@@ -5933,6 +6338,7 @@ Returns a page of the instance's batch jobs, newest first, without
 per-job counts. Jobs are shared across the instance's credentials, so
 this lists every batch job on the instance, not just the calling
 credential's.
+
 </dd>
 </dl>
 </dd>
@@ -5962,6 +6368,7 @@ client.lang2fhir_batch.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -5976,7 +6383,7 @@ client.lang2fhir_batch.list(
 <dd>
 
 **cursor:** `typing.Optional[str]` — Opaque pagination cursor from a previous page's next_cursor.
-    
+
 </dd>
 </dl>
 
@@ -5984,7 +6391,7 @@ client.lang2fhir_batch.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — Page size. Defaults to 20; values above 100 are clamped to 100.
-    
+
 </dd>
 </dl>
 
@@ -5992,12 +6399,11 @@ client.lang2fhir_batch.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6020,6 +6426,7 @@ Opens an empty job; upload items, then finalize it to start processing.
 `request_id` makes creation idempotent: a retry returns the original
 job. A token is released when its job is canceled or fails before
 finalization; otherwise it continues to resolve to that job.
+
 </dd>
 </dl>
 </dd>
@@ -6048,6 +6455,7 @@ client.lang2fhir_batch.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6061,12 +6469,12 @@ client.lang2fhir_batch.create(
 <dl>
 <dd>
 
-**request_id:** `typing.Optional[str]` 
+**request_id:** `typing.Optional[str]`
 
 Optional client idempotency token (at most 256 UTF-8 bytes). A
 retried create with the same token returns the original job instead
 of opening a second one.
-    
+
 </dd>
 </dl>
 
@@ -6074,12 +6482,11 @@ of opening a second one.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6113,6 +6520,7 @@ overwrites the item and returns false.
 
 Uploads return `409` after finalization or at the item limit, and `413`
 when the item is too large.
+
 </dd>
 </dl>
 </dd>
@@ -6142,6 +6550,7 @@ client.lang2fhir_batch.upload_item(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6155,15 +6564,15 @@ client.lang2fhir_batch.upload_item(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**document:** `typing.Optional[typing.Dict[str, typing.Any]]` 
+**document:** `typing.Optional[typing.Dict[str, typing.Any]]`
 
 The JSON body of `POST /lang2fhir/document/multi`, **without**
 its base64 `content` field — the uploaded `file` supplies the
@@ -6174,14 +6583,14 @@ body: it has no single-`resource` field, and the item's result
 is a `DocumentMultiResponse` (a Bundle of resources). Mutually
 exclusive with `create`; requires `file`. Do not combine
 `primary_patient` with `patient_reference`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**create:** `typing.Optional[typing.Dict[str, typing.Any]]` 
+**create:** `typing.Optional[typing.Dict[str, typing.Any]]`
 
 The JSON body of `POST /lang2fhir/create/multi`. Accepts that
 endpoint's fields (`text`, `version`, `provider`,
@@ -6192,14 +6601,14 @@ the item's result is a `CreateMultiResponse` (a Bundle of
 resources). Mutually exclusive with `document`; must **not** be
 accompanied by a `file`. Do not combine `primary_patient` with
 `patient_reference`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**file:** `typing.Optional[core.File]` 
+**file:** `typing.Optional[core.File]`
 
 The document's file content (PDF, PNG, JPEG, TIFF, RTF, or
 XML/C-CDA). The document pipeline accepts files up to 20 MiB;
@@ -6209,33 +6618,33 @@ extracted text exceeds 1 MiB also fail during processing.
 Generic XML must include an XML declaration; C-CDA documents
 rooted at `ClinicalDocument` may omit it.
 Required with `document`; forbidden with `create`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request_id:** `typing.Optional[str]` 
+**request_id:** `typing.Optional[str]`
 
 Optional idempotency token (at most 256 UTF-8 bytes).
 Re-uploading under the same token overwrites the same item
 instead of adding a new one. The token is scoped to this job;
 the same token in another job is independent and creates a
 separate item.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**id:** `typing.Optional[str]` 
+**id:** `typing.Optional[str]`
 
 Optional caller-supplied correlation label (at most 512 UTF-8
 bytes), echoed back on status and result listings so you can
 match the server's item_id to your own record.
-    
+
 </dd>
 </dl>
 
@@ -6243,12 +6652,11 @@ match the server's item_id to your own record.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6272,6 +6680,7 @@ Finalize is idempotent: a retried finalize succeeds again.
 If a previous upload did not complete, finalize returns a `409`; re-send
 the missing upload (with the same `request_id`), then finalize.
 Finalizing a job with no items is a `400`.
+
 </dd>
 </dl>
 </dd>
@@ -6300,6 +6709,7 @@ client.lang2fhir_batch.finalize(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6313,8 +6723,8 @@ client.lang2fhir_batch.finalize(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
@@ -6322,12 +6732,11 @@ client.lang2fhir_batch.finalize(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6357,6 +6766,7 @@ unfinished items that never resolve.
 Cancel is idempotent: canceling an already-`canceled` job returns `200`
 with the job. Canceling a job that has already `completed` or `failed` is
 a `409`.
+
 </dd>
 </dl>
 </dd>
@@ -6385,6 +6795,7 @@ client.lang2fhir_batch.cancel(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6398,8 +6809,8 @@ client.lang2fhir_batch.cancel(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
@@ -6407,12 +6818,11 @@ client.lang2fhir_batch.cancel(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6437,6 +6847,7 @@ Items are listed in a stable order that is not upload order and is the
 same across pages. Match each entry to your own records by its `id`
 (your correlation label) or `item_id` (from the upload response),
 never by position.
+
 </dd>
 </dl>
 </dd>
@@ -6467,6 +6878,7 @@ client.lang2fhir_batch.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6480,8 +6892,8 @@ client.lang2fhir_batch.get(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
@@ -6489,7 +6901,7 @@ client.lang2fhir_batch.get(
 <dd>
 
 **cursor:** `typing.Optional[str]` — Opaque pagination cursor from a previous page's next_cursor.
-    
+
 </dd>
 </dl>
 
@@ -6497,7 +6909,7 @@ client.lang2fhir_batch.get(
 <dd>
 
 **limit:** `typing.Optional[int]` — Page size for the item-status page. Defaults to 20; values above 100 are clamped to 100.
-    
+
 </dd>
 </dl>
 
@@ -6505,12 +6917,11 @@ client.lang2fhir_batch.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6538,6 +6949,7 @@ Entries are listed in a stable order that is not upload order and is
 the same across pages. Match each entry to your own records by its `id`
 (your correlation label) or `item_id` (from the upload response),
 never by position.
+
 </dd>
 </dl>
 </dd>
@@ -6568,6 +6980,7 @@ client.lang2fhir_batch.get_results(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6581,8 +6994,8 @@ client.lang2fhir_batch.get_results(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
@@ -6590,7 +7003,7 @@ client.lang2fhir_batch.get_results(
 <dd>
 
 **cursor:** `typing.Optional[str]` — Opaque pagination cursor from a previous page's next_cursor.
-    
+
 </dd>
 </dl>
 
@@ -6598,7 +7011,7 @@ client.lang2fhir_batch.get_results(
 <dd>
 
 **limit:** `typing.Optional[int]` — Page size. Defaults to 20; values above 100 are clamped to 100.
-    
+
 </dd>
 </dl>
 
@@ -6606,12 +7019,11 @@ client.lang2fhir_batch.get_results(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6637,6 +7049,7 @@ returned — a `DocumentMultiResponse` for a document item or a
 Only a succeeded item has a result: an item that has not succeeded
 (pending, processing, or failed) is a `409`, and a result that has
 expired is a `404`.
+
 </dd>
 </dl>
 </dd>
@@ -6666,6 +7079,7 @@ client.lang2fhir_batch.get_result(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6679,16 +7093,16 @@ client.lang2fhir_batch.get_result(
 <dl>
 <dd>
 
-**job_id:** `str` 
-    
+**job_id:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**item_id:** `str` 
-    
+**item_id:** `str`
+
 </dd>
 </dl>
 
@@ -6696,18 +7110,18 @@ client.lang2fhir_batch.get_result(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Profiles
+
 <details><summary><code>client.profiles.profiles.<a href="src/phenoml/profiles/profiles/client.py">list</a>(...) -> ProfileListResponse</code></summary>
 <dl>
 <dd>
@@ -6733,6 +7147,7 @@ resolve a retained version when present; otherwise they can fall back to
 the profile's current StructureDefinition, whose content can change
 through the profile update endpoint. A non-matching filter returns an
 empty list, not a 404.
+
 </dd>
 </dl>
 </dd>
@@ -6761,6 +7176,7 @@ client.profiles.profiles.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6775,7 +7191,7 @@ client.profiles.profiles.list(
 <dd>
 
 **url:** `typing.Optional[str]` — Filter by canonical URL. Accepts the FHIR pinned form `url|version`; without a version pin, returns the profile's current StructureDefinition metadata.
-    
+
 </dd>
 </dl>
 
@@ -6783,12 +7199,11 @@ client.profiles.profiles.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6811,6 +7226,7 @@ object. Metadata such as version, resource type, and url is read from the
 StructureDefinition; the lowercase StructureDefinition id becomes the
 profile's lookup key. When id is omitted, a random UUID is assigned.
 Optionally group the profile under a named implementation guide.
+
 </dd>
 </dl>
 </dd>
@@ -6853,6 +7269,7 @@ client.profiles.profiles.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6866,8 +7283,8 @@ client.profiles.profiles.create(
 <dl>
 <dd>
 
-**request:** `ProfileUploadRequest` 
-    
+**request:** `ProfileUploadRequest`
+
 </dd>
 </dl>
 
@@ -6875,12 +7292,11 @@ client.profiles.profiles.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6900,6 +7316,7 @@ client.profiles.profiles.create(
 
 Returns a single custom profile by id, including its full StructureDefinition
 JSON.
+
 </dd>
 </dl>
 </dd>
@@ -6928,6 +7345,7 @@ client.profiles.profiles.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -6942,7 +7360,7 @@ client.profiles.profiles.get(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
@@ -6950,12 +7368,11 @@ client.profiles.profiles.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -6983,6 +7400,7 @@ re-submitting the profile's current version with an unchanged
 StructureDefinition; otherwise it returns a conflict. While the profile
 has retained versions, its
 canonical URL cannot be changed.
+
 </dd>
 </dl>
 </dd>
@@ -7026,6 +7444,7 @@ client.profiles.profiles.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7040,15 +7459,15 @@ client.profiles.profiles.update(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ProfileUploadRequest` 
-    
+**request:** `ProfileUploadRequest`
+
 </dd>
 </dl>
 
@@ -7056,12 +7475,11 @@ client.profiles.profiles.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7082,6 +7500,7 @@ client.profiles.profiles.update(
 Permanently deletes a custom profile by id. This also deletes all retained
 versions for that profile so the canonical URL can be reused by a later
 upload.
+
 </dd>
 </dl>
 </dd>
@@ -7110,6 +7529,7 @@ client.profiles.profiles.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7124,7 +7544,7 @@ client.profiles.profiles.delete(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
@@ -7132,18 +7552,18 @@ client.profiles.profiles.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Profiles Versions
+
 <details><summary><code>client.profiles.versions.<a href="src/phenoml/profiles/versions/client.py">list</a>(...) -> ProfileVersionListResponse</code></summary>
 <dl>
 <dd>
@@ -7157,6 +7577,7 @@ client.profiles.profiles.delete(
 <dd>
 
 Returns retained versions for a custom profile.
+
 </dd>
 </dl>
 </dd>
@@ -7185,6 +7606,7 @@ client.profiles.versions.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7199,7 +7621,7 @@ client.profiles.versions.list(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
@@ -7207,12 +7629,11 @@ client.profiles.versions.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7242,6 +7663,7 @@ Version strings may contain letters, numbers, and the punctuation
 characters `.`, `_`, `~`, `+`, and `-`; they cannot be exactly `.` or
 `..`. Each profile can retain up to 250 versions; delete old
 versions before adding more.
+
 </dd>
 </dl>
 </dd>
@@ -7273,6 +7695,7 @@ client.profiles.versions.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7287,15 +7710,15 @@ client.profiles.versions.create(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ProfileVersionCreateRequest` 
-    
+**request:** `ProfileVersionCreateRequest`
+
 </dd>
 </dl>
 
@@ -7303,12 +7726,11 @@ client.profiles.versions.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7329,6 +7751,7 @@ client.profiles.versions.create(
 Returns metadata and the full StructureDefinition for one retained
 version. The returned StructureDefinition's id is the profile id. The
 path version is the authored `StructureDefinition.version` value.
+
 </dd>
 </dl>
 </dd>
@@ -7358,6 +7781,7 @@ client.profiles.versions.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7372,7 +7796,7 @@ client.profiles.versions.get(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
@@ -7380,7 +7804,7 @@ client.profiles.versions.get(
 <dd>
 
 **version:** `str` — The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
-    
+
 </dd>
 </dl>
 
@@ -7388,12 +7812,11 @@ client.profiles.versions.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7413,6 +7836,7 @@ client.profiles.versions.get(
 
 Deletes one retained version from a custom profile. The path
 version is the authored `StructureDefinition.version` value.
+
 </dd>
 </dl>
 </dd>
@@ -7442,6 +7866,7 @@ client.profiles.versions.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7456,7 +7881,7 @@ client.profiles.versions.delete(
 <dd>
 
 **id:** `str` — The lowercase StructureDefinition id of the custom profile.
-    
+
 </dd>
 </dl>
 
@@ -7464,7 +7889,7 @@ client.profiles.versions.delete(
 <dd>
 
 **version:** `str` — The authored StructureDefinition.version. It may contain letters, numbers, and the punctuation characters `.`, `_`, `~`, `+`, and `-`; it cannot be exactly `.` or `..`.
-    
+
 </dd>
 </dl>
 
@@ -7472,18 +7897,18 @@ client.profiles.versions.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Templates
+
 <details><summary><code>client.summary.templates.<a href="src/phenoml/summary/templates/client.py">list</a>() -> ListResponse</code></summary>
 <dl>
 <dd>
@@ -7497,6 +7922,7 @@ client.profiles.versions.delete(
 <dd>
 
 Retrieves all summary templates for the authenticated user
+
 </dd>
 </dl>
 </dd>
@@ -7523,6 +7949,7 @@ client = PhenomlClient(
 client.summary.templates.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7537,12 +7964,11 @@ client.summary.templates.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7561,6 +7987,7 @@ client.summary.templates.list()
 <dd>
 
 Creates a summary template from an example using LLM function calling
+
 </dd>
 </dl>
 </dd>
@@ -7596,6 +8023,7 @@ client.summary.templates.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7610,7 +8038,7 @@ client.summary.templates.create(
 <dd>
 
 **name:** `str` — Name of the template
-    
+
 </dd>
 </dl>
 
@@ -7618,7 +8046,7 @@ client.summary.templates.create(
 <dd>
 
 **example_summary:** `str` — Example summary note to generate template from
-    
+
 </dd>
 </dl>
 
@@ -7626,7 +8054,7 @@ client.summary.templates.create(
 <dd>
 
 **target_resources:** `typing.List[str]` — List of target FHIR resources
-    
+
 </dd>
 </dl>
 
@@ -7634,7 +8062,7 @@ client.summary.templates.create(
 <dd>
 
 **mode:** `str` — Template mode (stored with the template)
-    
+
 </dd>
 </dl>
 
@@ -7642,7 +8070,7 @@ client.summary.templates.create(
 <dd>
 
 **description:** `typing.Optional[str]` — Description of the template
-    
+
 </dd>
 </dl>
 
@@ -7650,7 +8078,7 @@ client.summary.templates.create(
 <dd>
 
 **example_fhir_data:** `typing.Optional[typing.Dict[str, typing.Any]]` — Optional example FHIR data that corresponds to the example summary
-    
+
 </dd>
 </dl>
 
@@ -7658,12 +8086,11 @@ client.summary.templates.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7682,6 +8109,7 @@ client.summary.templates.create(
 <dd>
 
 Retrieves a specific summary template
+
 </dd>
 </dl>
 </dd>
@@ -7710,6 +8138,7 @@ client.summary.templates.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7724,7 +8153,7 @@ client.summary.templates.get(
 <dd>
 
 **id:** `str` — Template ID
-    
+
 </dd>
 </dl>
 
@@ -7732,12 +8161,11 @@ client.summary.templates.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7756,6 +8184,7 @@ client.summary.templates.get(
 <dd>
 
 Updates an existing summary template
+
 </dd>
 </dl>
 </dd>
@@ -7792,6 +8221,7 @@ client.summary.templates.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7806,15 +8236,15 @@ client.summary.templates.update(
 <dd>
 
 **id:** `str` — Template ID
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**name:** `str` 
-    
+**name:** `str`
+
 </dd>
 </dl>
 
@@ -7822,15 +8252,15 @@ client.summary.templates.update(
 <dd>
 
 **template:** `str` — Updated template with placeholders
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**target_resources:** `typing.List[str]` 
-    
+**target_resources:** `typing.List[str]`
+
 </dd>
 </dl>
 
@@ -7838,15 +8268,15 @@ client.summary.templates.update(
 <dd>
 
 **mode:** `str` — Template mode
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**description:** `typing.Optional[str]` 
-    
+**description:** `typing.Optional[str]`
+
 </dd>
 </dl>
 
@@ -7854,12 +8284,11 @@ client.summary.templates.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -7878,6 +8307,7 @@ client.summary.templates.update(
 <dd>
 
 Deletes a summary template
+
 </dd>
 </dl>
 </dd>
@@ -7906,6 +8336,7 @@ client.summary.templates.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -7920,7 +8351,7 @@ client.summary.templates.delete(
 <dd>
 
 **id:** `str` — Template ID
-    
+
 </dd>
 </dl>
 
@@ -7928,18 +8359,18 @@ client.summary.templates.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Summary
+
 <details><summary><code>client.summary.<a href="src/phenoml/summary/client.py">create</a>(...) -> CreateSummaryResponse</code></summary>
 <dl>
 <dd>
@@ -7953,6 +8384,7 @@ client.summary.templates.delete(
 <dd>
 
 Creates a summary from FHIR resources using one of three modes:
+
 - **narrative**: Uses a template to substitute FHIR data into placeholders (requires template_id)
 - **flatten**: Flattens FHIR resources into a searchable format for RAG/search (no template needed)
 - **ips**: Generates an International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG. Requires a Bundle with exactly one Patient resource (returns 400 error if no Patient or multiple Patients are present). Automatically filters resources to those referencing the patient and generates sections for allergies, medications, problems, immunizations, procedures, and vital signs.
@@ -7990,6 +8422,7 @@ client.summary.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8003,27 +8436,28 @@ client.summary.create(
 <dl>
 <dd>
 
-**fhir_resources:** `typing.Dict[str, typing.Any]` 
+**fhir_resources:** `typing.Dict[str, typing.Any]`
 
 FHIR resources (single resource or Bundle).
 For IPS mode, must be a Bundle containing exactly one Patient resource with at least one
 identifier (id, fullUrl, or identifier field). Returns an error if no Patient is found,
 if multiple Patients are present, or if the Patient has no identifiers. Resources are
 automatically filtered to only include those referencing the patient.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**mode:** `typing.Optional[CreateSummaryRequestMode]` 
+**mode:** `typing.Optional[CreateSummaryRequestMode]`
 
 Summary generation mode:
+
 - narrative: Substitute FHIR data into a template (requires template_id)
 - flatten: Flatten FHIR resources for RAG/search (no template needed)
 - ips: Generate International Patient Summary (IPS) narrative per ISO 27269/HL7 FHIR IPS IG
-    
+
 </dd>
 </dl>
 
@@ -8031,7 +8465,7 @@ Summary generation mode:
 <dd>
 
 **template_id:** `typing.Optional[str]` — ID of the template to use (required for narrative mode)
-    
+
 </dd>
 </dl>
 
@@ -8039,18 +8473,18 @@ Summary generation mode:
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Tools
+
 <details><summary><code>client.tools.<a href="src/phenoml/tools/client.py">create_fhir_resource</a>(...) -> Lang2FhirAndCreateResponse</code></summary>
 <dl>
 <dd>
@@ -8064,6 +8498,7 @@ Summary generation mode:
 <dd>
 
 Converts natural language to FHIR resource and optionally stores it in a FHIR server
+
 </dd>
 </dl>
 </dd>
@@ -8096,6 +8531,7 @@ client.tools.create_fhir_resource(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8110,7 +8546,7 @@ client.tools.create_fhir_resource(
 <dd>
 
 **resource:** `Lang2FhirAndCreateRequestResource` — Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported US Core profile.
-    
+
 </dd>
 </dl>
 
@@ -8118,29 +8554,29 @@ client.tools.create_fhir_resource(
 <dd>
 
 **text:** `str` — Natural language text to convert to FHIR resource
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -8148,7 +8584,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
-    
+
 </dd>
 </dl>
 
@@ -8156,12 +8592,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8184,6 +8619,7 @@ Automatically detects Patient, Condition, MedicationRequest, Observation, and ot
 Resources are linked with proper references and submitted as a transaction bundle.
 For FHIR servers that don't auto-resolve urn:uuid references, this endpoint will automatically
 resolve them via PUT requests after the initial bundle creation.
+
 </dd>
 </dl>
 </dd>
@@ -8216,6 +8652,7 @@ client.tools.create_fhir_resources_multi(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8230,7 +8667,7 @@ client.tools.create_fhir_resources_multi(
 <dd>
 
 **text:** `str` — Natural language text containing multiple clinical concepts to extract
-    
+
 </dd>
 </dl>
 
@@ -8238,29 +8675,29 @@ client.tools.create_fhir_resources_multi(
 <dd>
 
 **provider:** `str` — FHIR provider ID or name
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -8268,7 +8705,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **version:** `typing.Optional[str]` — FHIR version to use
-    
+
 </dd>
 </dl>
 
@@ -8276,12 +8713,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8300,6 +8736,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 Converts natural language to FHIR search parameters and executes search in FHIR server
+
 </dd>
 </dl>
 </dd>
@@ -8332,6 +8769,7 @@ client.tools.search_fhir_resources(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8346,29 +8784,29 @@ client.tools.search_fhir_resources(
 <dd>
 
 **text:** `str` — Natural language text to convert to FHIR search parameters
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -8376,7 +8814,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **patient_id:** `typing.Optional[str]` — Patient ID to filter results
-    
+
 </dd>
 </dl>
 
@@ -8384,7 +8822,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **count:** `typing.Optional[int]` — Maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -8392,7 +8830,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **provider:** `typing.Optional[str]` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
-    
+
 </dd>
 </dl>
 
@@ -8400,12 +8838,11 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8424,6 +8861,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 Uses LLM to extract search concepts from natural language and builds patient cohorts with inclusion/exclusion criteria
+
 </dd>
 </dl>
 </dd>
@@ -8455,6 +8893,7 @@ client.tools.analyze_cohort(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8469,7 +8908,7 @@ client.tools.analyze_cohort(
 <dd>
 
 **text:** `str` — Natural language text describing the patient cohort criteria
-    
+
 </dd>
 </dl>
 
@@ -8477,29 +8916,29 @@ client.tools.analyze_cohort(
 <dd>
 
 **provider:** `str` — FHIR provider ID - must be a valid UUID from existing FHIR providers. also supports provider by name (e.g. medplum)
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_on_behalf_of:** `typing.Optional[str]` 
+**phenoml_on_behalf_of:** `typing.Optional[str]`
 
 Optional header for on-behalf-of authentication. Used when making requests on behalf of another user or entity.
 Must be in the format: Patient/{uuid} or Practitioner/{uuid}
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**phenoml_fhir_provider:** `typing.Optional[str]` 
+**phenoml_fhir_provider:** `typing.Optional[str]`
 
 Optional header for FHIR provider authentication. Contains credentials in the format {fhir_provider_id}:{oauth2_token}.
 Multiple FHIR provider integrations can be provided as comma-separated values.
-    
+
 </dd>
 </dl>
 
@@ -8507,18 +8946,18 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## MCP Servers
+
 <details><summary><code>client.tools.mcp_servers.<a href="src/phenoml/tools/mcp_servers/client.py">create</a>(...) -> McpServerResponse</code></summary>
 <dl>
 <dd>
@@ -8532,6 +8971,7 @@ Multiple FHIR provider integrations can be provided as comma-separated values.
 <dd>
 
 Creates a new MCP server
+
 </dd>
 </dl>
 </dd>
@@ -8561,6 +9001,7 @@ client.tools.mcp_servers.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8575,7 +9016,7 @@ client.tools.mcp_servers.create(
 <dd>
 
 **name:** `str` — Name of the MCP server
-    
+
 </dd>
 </dl>
 
@@ -8583,7 +9024,7 @@ client.tools.mcp_servers.create(
 <dd>
 
 **mcp_server_url:** `str` — URL of the MCP server
-    
+
 </dd>
 </dl>
 
@@ -8591,12 +9032,11 @@ client.tools.mcp_servers.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8615,6 +9055,7 @@ client.tools.mcp_servers.create(
 <dd>
 
 Lists all MCP servers for a specific user
+
 </dd>
 </dl>
 </dd>
@@ -8641,6 +9082,7 @@ client = PhenomlClient(
 client.tools.mcp_servers.list()
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8655,12 +9097,11 @@ client.tools.mcp_servers.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8679,6 +9120,7 @@ client.tools.mcp_servers.list()
 <dd>
 
 Gets a MCP server by ID
+
 </dd>
 </dl>
 </dd>
@@ -8707,6 +9149,7 @@ client.tools.mcp_servers.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8721,7 +9164,7 @@ client.tools.mcp_servers.get(
 <dd>
 
 **mcp_server_id:** `str` — ID of the MCP server to retrieve
-    
+
 </dd>
 </dl>
 
@@ -8729,12 +9172,11 @@ client.tools.mcp_servers.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8753,6 +9195,7 @@ client.tools.mcp_servers.get(
 <dd>
 
 Deletes a MCP server by ID
+
 </dd>
 </dl>
 </dd>
@@ -8781,6 +9224,7 @@ client.tools.mcp_servers.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8795,7 +9239,7 @@ client.tools.mcp_servers.delete(
 <dd>
 
 **mcp_server_id:** `str` — ID of the MCP server to delete
-    
+
 </dd>
 </dl>
 
@@ -8803,18 +9247,18 @@ client.tools.mcp_servers.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Tools McpTools
+
 <details><summary><code>client.tools.mcp_tools.<a href="src/phenoml/tools/mcp_tools/client.py">list</a>(...) -> McpServerToolResponse</code></summary>
 <dl>
 <dd>
@@ -8828,6 +9272,7 @@ client.tools.mcp_servers.delete(
 <dd>
 
 Lists all MCP server tools for a specific MCP server
+
 </dd>
 </dl>
 </dd>
@@ -8856,6 +9301,7 @@ client.tools.mcp_tools.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8870,7 +9316,7 @@ client.tools.mcp_tools.list(
 <dd>
 
 **mcp_server_id:** `str` — ID of the MCP server to list tools for
-    
+
 </dd>
 </dl>
 
@@ -8878,12 +9324,11 @@ client.tools.mcp_tools.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8902,6 +9347,7 @@ client.tools.mcp_tools.list(
 <dd>
 
 Gets a MCP server tool by ID
+
 </dd>
 </dl>
 </dd>
@@ -8930,6 +9376,7 @@ client.tools.mcp_tools.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -8944,7 +9391,7 @@ client.tools.mcp_tools.get(
 <dd>
 
 **mcp_server_tool_id:** `str` — ID of the MCP server tool to retrieve
-    
+
 </dd>
 </dl>
 
@@ -8952,12 +9399,11 @@ client.tools.mcp_tools.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -8976,6 +9422,7 @@ client.tools.mcp_tools.get(
 <dd>
 
 Deletes a MCP server tool by ID
+
 </dd>
 </dl>
 </dd>
@@ -9004,6 +9451,7 @@ client.tools.mcp_tools.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9018,7 +9466,7 @@ client.tools.mcp_tools.delete(
 <dd>
 
 **mcp_server_tool_id:** `str` — ID of the MCP server tool to delete
-    
+
 </dd>
 </dl>
 
@@ -9026,18 +9474,18 @@ client.tools.mcp_tools.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Voice
+
 <details><summary><code>client.voice.voice.<a href="src/phenoml/voice/voice/client.py">transcribe</a>(...) -> TranscribeResponse</code></summary>
 <dl>
 <dd>
@@ -9060,6 +9508,7 @@ size or format, so a compressed recording within the body-size limit can
 still be rejected for being too long. Pair the transcript with a
 downstream text step (e.g. `POST /lang2fhir/create`) to turn it into a
 FHIR resource.
+
 </dd>
 </dl>
 </dd>
@@ -9076,6 +9525,7 @@ FHIR resource.
 ```python
 client.voice.voice.transcribe(...)
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9090,7 +9540,7 @@ client.voice.voice.transcribe(...)
 <dd>
 
 **request:** `typing.Union[bytes, typing.Iterator[bytes], typing.AsyncIterator[bytes]]` — Raw audio bytes (WAV, FLAC, MP3, or OGG/WebM Opus), up to 32 MiB.
-    
+
 </dd>
 </dl>
 
@@ -9098,7 +9548,7 @@ client.voice.voice.transcribe(...)
 <dd>
 
 **language:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — BCP-47 language tag, repeatable for up to 4 candidate languages. Defaults to `en-US`.
-    
+
 </dd>
 </dl>
 
@@ -9106,18 +9556,18 @@ client.voice.voice.transcribe(...)
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Workflows
+
 <details><summary><code>client.workflows.<a href="src/phenoml/workflows/client.py">list</a>(...) -> ListWorkflowsResponse</code></summary>
 <dl>
 <dd>
@@ -9131,6 +9581,7 @@ client.voice.voice.transcribe(...)
 <dd>
 
 Retrieves all workflow definitions for the authenticated user
+
 </dd>
 </dl>
 </dd>
@@ -9159,6 +9610,7 @@ client.workflows.list(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9173,7 +9625,7 @@ client.workflows.list(
 <dd>
 
 **verbose:** `typing.Optional[bool]` — If true, includes full workflow implementation details in workflow_details field
-    
+
 </dd>
 </dl>
 
@@ -9181,12 +9633,11 @@ client.workflows.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -9205,6 +9656,7 @@ client.workflows.list(
 <dd>
 
 Creates a new workflow definition with graph generation from workflow instructions
+
 </dd>
 </dl>
 </dd>
@@ -9242,6 +9694,7 @@ client.workflows.create(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9256,7 +9709,7 @@ client.workflows.create(
 <dd>
 
 **name:** `str` — Human-readable name for the workflow
-    
+
 </dd>
 </dl>
 
@@ -9264,7 +9717,7 @@ client.workflows.create(
 <dd>
 
 **workflow_instructions:** `str` — Natural language instructions that define the workflow logic
-    
+
 </dd>
 </dl>
 
@@ -9272,7 +9725,7 @@ client.workflows.create(
 <dd>
 
 **sample_data:** `typing.Dict[str, typing.Any]` — Sample data to use for workflow graph generation
-    
+
 </dd>
 </dl>
 
@@ -9280,7 +9733,7 @@ client.workflows.create(
 <dd>
 
 **fhir_provider_id:** `CreateWorkflowRequestFhirProviderId` — FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
-    
+
 </dd>
 </dl>
 
@@ -9288,7 +9741,7 @@ client.workflows.create(
 <dd>
 
 **verbose:** `typing.Optional[bool]` — If true, includes full workflow implementation details in workflow_details field
-    
+
 </dd>
 </dl>
 
@@ -9296,7 +9749,7 @@ client.workflows.create(
 <dd>
 
 **dynamic_generation:** `typing.Optional[bool]` — Enable dynamic lang2fhir calls instead of pre-populated templates
-    
+
 </dd>
 </dl>
 
@@ -9304,12 +9757,11 @@ client.workflows.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -9328,6 +9780,7 @@ client.workflows.create(
 <dd>
 
 Retrieves a workflow definition by its ID
+
 </dd>
 </dl>
 </dd>
@@ -9357,6 +9810,7 @@ client.workflows.get(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9371,7 +9825,7 @@ client.workflows.get(
 <dd>
 
 **id:** `str` — ID of the workflow to retrieve
-    
+
 </dd>
 </dl>
 
@@ -9379,7 +9833,7 @@ client.workflows.get(
 <dd>
 
 **verbose:** `typing.Optional[bool]` — If true, includes full workflow implementation details in workflow_details field
-    
+
 </dd>
 </dl>
 
@@ -9387,12 +9841,11 @@ client.workflows.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -9411,6 +9864,7 @@ client.workflows.get(
 <dd>
 
 Updates an existing workflow definition
+
 </dd>
 </dl>
 </dd>
@@ -9449,6 +9903,7 @@ client.workflows.update(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9463,7 +9918,7 @@ client.workflows.update(
 <dd>
 
 **id:** `str` — ID of the workflow to update
-    
+
 </dd>
 </dl>
 
@@ -9471,7 +9926,7 @@ client.workflows.update(
 <dd>
 
 **name:** `str` — Human-readable name for the workflow
-    
+
 </dd>
 </dl>
 
@@ -9479,7 +9934,7 @@ client.workflows.update(
 <dd>
 
 **workflow_instructions:** `str` — Natural language instructions that define the workflow logic
-    
+
 </dd>
 </dl>
 
@@ -9487,7 +9942,7 @@ client.workflows.update(
 <dd>
 
 **sample_data:** `typing.Dict[str, typing.Any]` — Sample data to use for workflow graph generation
-    
+
 </dd>
 </dl>
 
@@ -9495,7 +9950,7 @@ client.workflows.update(
 <dd>
 
 **fhir_provider_id:** `UpdateWorkflowRequestFhirProviderId` — FHIR provider ID(s) - must be valid UUID(s) from existing FHIR providers
-    
+
 </dd>
 </dl>
 
@@ -9503,7 +9958,7 @@ client.workflows.update(
 <dd>
 
 **verbose:** `typing.Optional[bool]` — If true, includes full workflow implementation details in workflow_details field
-    
+
 </dd>
 </dl>
 
@@ -9511,7 +9966,7 @@ client.workflows.update(
 <dd>
 
 **dynamic_generation:** `typing.Optional[bool]` — Enable dynamic lang2fhir calls instead of pre-populated templates
-    
+
 </dd>
 </dl>
 
@@ -9519,12 +9974,11 @@ client.workflows.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -9543,6 +9997,7 @@ client.workflows.update(
 <dd>
 
 Deletes a workflow definition by its ID
+
 </dd>
 </dl>
 </dd>
@@ -9571,6 +10026,7 @@ client.workflows.delete(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9585,7 +10041,7 @@ client.workflows.delete(
 <dd>
 
 **id:** `str` — ID of the workflow to delete
-    
+
 </dd>
 </dl>
 
@@ -9593,12 +10049,11 @@ client.workflows.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
@@ -9617,6 +10072,7 @@ client.workflows.delete(
 <dd>
 
 Executes a workflow with provided input data and returns results
+
 </dd>
 </dl>
 </dd>
@@ -9651,6 +10107,7 @@ client.workflows.execute(
 )
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -9665,7 +10122,7 @@ client.workflows.execute(
 <dd>
 
 **id:** `str` — ID of the workflow to execute
-    
+
 </dd>
 </dl>
 
@@ -9673,7 +10130,7 @@ client.workflows.execute(
 <dd>
 
 **input_data:** `typing.Dict[str, typing.Any]` — Input data for workflow execution
-    
+
 </dd>
 </dl>
 
@@ -9681,7 +10138,7 @@ client.workflows.execute(
 <dd>
 
 **preview:** `typing.Optional[bool]` — If true, create operations return mock resources instead of persisting to the FHIR server
-    
+
 </dd>
 </dl>
 
@@ -9689,14 +10146,12 @@ client.workflows.execute(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
 
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
-

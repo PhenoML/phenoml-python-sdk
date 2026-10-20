@@ -1,6 +1,6 @@
 # Phenoml Python Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fphenoml%2Fphenoml-python-sdk)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Phenoml%2FPython)
 [![pypi](https://img.shields.io/pypi/v/phenoml)](https://pypi.python.org/pypi/phenoml)
 
 The Phenoml Python library provides convenient access to the Phenoml APIs from Python.
@@ -30,7 +30,7 @@ pip install phenoml
 
 ## Reference
 
-A full reference for this library is available [here](https://github.com/phenoml/phenoml-python-sdk/blob/HEAD/./reference.md).
+A full reference for this library is available [here](./reference.md).
 
 ## Usage
 
@@ -187,12 +187,14 @@ retry limit (default: 2).
 Which status codes are retried depends on the `retryStatusCodes` generator configuration:
 
 **`legacy`** (current default): retries on
+
 - [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
 - [409](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409) (Conflict)
 - [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
 - [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
 
 **`recommended`**: retries on
+
 - [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
 - [409](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409) (Conflict)
 - [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)

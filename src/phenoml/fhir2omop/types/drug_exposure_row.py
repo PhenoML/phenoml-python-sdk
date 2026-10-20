@@ -12,13 +12,13 @@ class DrugExposureRow(UniversalBaseModel):
     drug_concept_id: typing.Optional[int] = None
     drug_exposure_start_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from the resource's timing source, such as effective[x], occurrenceDateTime, or MedicationRequest.authoredOn.
+    Start date selected by the source resource's timing rules, such as effective[x], occurrenceDateTime, or MedicationRequest.authoredOn; see the endpoint's timing sources for all supported resources.
     """
 
     drug_exposure_start_datetime: typing.Optional[str] = None
     drug_exposure_end_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from an explicit FHIR Period end, or the same day as the start for a single-event administration or immunization. Unset when the source supplies neither.
+    End date selected by the source resource's timing rules, when available. For medication resources, an explicit effectivePeriod.end or the start date of a single-event administration or immunization; see the endpoint's timing sources for other resources.
     """
 
     drug_exposure_end_datetime: typing.Optional[str] = None
@@ -36,7 +36,12 @@ class DrugExposureRow(UniversalBaseModel):
 
     days_supply: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Direct positive whole-day MedicationRequest.dispenseRequest.expectedSupplyDuration; no dose or quantity conversion is applied.
+    Direct positive whole-day MedicationRequest.dispenseRequest.expectedSupplyDuration; never derived from drug quantity, dosage, refills, or timing.
+    """
+
+    quantity: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Formulation-specific quantity from a direct MedicationRequest dispense quantity, MedicationAdministration dose, or Immunization dose quantity. Under fixed_dose_form_count this is a matched coded tablet/capsule count copied directly, or an ingredient amount divided by per-unit strength. Under clinical_injection_ingredient_amount this is the ingredient amount, copied directly or derived using explicit concentration evidence. See the endpoint's supported dose forms and prerequisites; quantity_transformations identifies the policy, source, calculation evidence, and output unit, or explains why a supplied quantity was omitted.
     """
 
     sig: typing.Optional[str] = pydantic.Field(default=None)
