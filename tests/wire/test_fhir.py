@@ -16,6 +16,19 @@ def test_fhir_search() -> None:
     verify_request_count(test_id, "GET", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
 
 
+def test_fhir_search_single_resource_response() -> None:
+    """Test search endpoint (Single resource response example) with WireMock"""
+    test_id = "fhir.search.1"
+    client = get_client(test_id)
+    client.fhir.search(
+        fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+        fhir_path="Patient",
+        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+    )
+    verify_request_count(test_id, "GET", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
+
+
 def test_fhir_create() -> None:
     """Test create endpoint with WireMock"""
     test_id = "fhir.create.0"
@@ -72,6 +85,80 @@ def test_fhir_patch() -> None:
                 path="/name/0/family",
                 value="NewFamilyName",
             )
+        ],
+    )
+    verify_request_count(test_id, "PATCH", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
+
+
+def test_fhir_patch_add_phone_number_to_patient() -> None:
+    """Test patch endpoint (Add phone number to patient example) with WireMock"""
+    test_id = "fhir.patch.1"
+    client = get_client(test_id)
+    client.fhir.patch(
+        fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+        fhir_path="Patient",
+        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+        request=[
+            PatchRequestBodyItem(
+                op="add",
+                path="/telecom/-",
+                value={"system": "phone", "value": "+1-555-123-4567", "use": "home"},
+            )
+        ],
+    )
+    verify_request_count(test_id, "PATCH", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
+
+
+def test_fhir_patch_multiple_patch_operations() -> None:
+    """Test patch endpoint (Multiple patch operations example) with WireMock"""
+    test_id = "fhir.patch.2"
+    client = get_client(test_id)
+    client.fhir.patch(
+        fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+        fhir_path="Patient",
+        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+        request=[
+            PatchRequestBodyItem(
+                op="replace",
+                path="/name/0/family",
+                value="Smith",
+            ),
+            PatchRequestBodyItem(
+                op="add",
+                path="/telecom/-",
+                value={"system": "email", "value": "john.smith@example.com"},
+            ),
+            PatchRequestBodyItem(
+                op="remove",
+                path="/address/0",
+            ),
+        ],
+    )
+    verify_request_count(test_id, "PATCH", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)
+
+
+def test_fhir_patch_test_current_value_before_replacing() -> None:
+    """Test patch endpoint (Test current value before replacing example) with WireMock"""
+    test_id = "fhir.patch.3"
+    client = get_client(test_id)
+    client.fhir.patch(
+        fhir_provider_id="550e8400-e29b-41d4-a716-446655440000",
+        fhir_path="Patient",
+        phenoml_on_behalf_of="Patient/550e8400-e29b-41d4-a716-446655440000",
+        phenoml_fhir_provider="550e8400-e29b-41d4-a716-446655440000:eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c...",
+        request=[
+            PatchRequestBodyItem(
+                op="test",
+                path="/gender",
+                value="male",
+            ),
+            PatchRequestBodyItem(
+                op="replace",
+                path="/gender",
+                value="female",
+            ),
         ],
     )
     verify_request_count(test_id, "PATCH", "/fhir-provider/550e8400-e29b-41d4-a716-446655440000/fhir/Patient", None, 1)

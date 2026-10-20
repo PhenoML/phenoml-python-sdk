@@ -8,7 +8,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class ProviderRolePractitionerIdentifier(UniversalBaseModel):
     """
-    The logical identifier supplied on a PractitionerRole's practitioner reference.
+    The logical identifier supplied on a PractitionerRole's practitioner reference. Preserves unknown NPI markers even though they are ignored for identity matching.
     """
 
     system: typing.Optional[str] = None
