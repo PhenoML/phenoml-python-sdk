@@ -18,6 +18,8 @@ CreateRequestResource = typing.Union[
         "observation-clinical-result",
         "observation-lab",
         "patient",
+        "phenoml-hpo-condition",
+        "phenoml-hpo-phenotypic-observation",
         "procedure",
         "questionnaire",
         "questionnaireresponse",
