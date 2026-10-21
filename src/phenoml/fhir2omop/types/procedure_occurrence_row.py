@@ -12,13 +12,13 @@ class ProcedureOccurrenceRow(UniversalBaseModel):
     procedure_concept_id: typing.Optional[int] = None
     procedure_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from Procedure.performedDateTime or performedPeriod.start.
+    Start date selected by the source resource's timing rules. For a Procedure, performedDateTime or performedPeriod.start; see the endpoint's timing sources for other resources.
     """
 
     procedure_datetime: typing.Optional[str] = None
     procedure_end_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from Procedure.performedPeriod.end.
+    End date selected by the source resource's timing rules, when available. For a Procedure, performedPeriod.end; see the endpoint's timing sources for other resources.
     """
 
     procedure_end_datetime: typing.Optional[str] = None

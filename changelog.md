@@ -1,3 +1,22 @@
+## [18.3.0] - 2026-10-21
+### Added
+- **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
+- **`CreateOmopResponse.rows_for_review`** — new response field listing uncertain or unresolved clinical rows with original statuses, reasons, and source identity for consumer review.
+- **`CreateOmopResponse.quantity_transformations`** — new audit field reporting `DIRECT`, `DERIVED`, or `OMITTED` quantity outcomes for each medication/immunization row.
+- **New `phenoml.fhir2omop` types** — `SpecimenRow`, `QuantityTransformation`, `MappingPath`, `RowForReview`, and related supporting types are now exported for specimen provenance, quantity normalization, and concept-mapping review workflows.
+- **`RequestOptions(retry_remote_protocol_errors=...)`** — new opt-in boolean field that retries server disconnects; disabled by default and bounded by `max_retries`.
+
+### Changed
+- **`HttpClient` / `AsyncHttpClient` `RemoteProtocolError` retry behavior** — mid-response disconnects no longer retry automatically; pass `request_options={"retry_remote_protocol_errors": True}` to restore previous behavior for safe, idempotent requests.
+- **`client.fhir2omop.create(...)` domain routing** — all clinical resources now route to the OMOP table matching the mapped concept's domain rather than a fixed table, with a default table fallback when no supported mapping is found.
+- **`client.fhir2omop.create(...)` Observation unit resolution** — UCUM units now resolve to OMOP Unit concepts; absent `unit_concept_id` returns `null` instead of `0`; `unit_source_value` now contains `Quantity.code`; a new `unit_source_concept_id` field appears on Measurement rows.
+- **`ProfileUploadRequest.implementation_guide`** — `phenoml_hpo` is now a reserved implementation-guide name; IDs prefixed with `phenoml-hpo-` are rejected, and built-in HPO profiles are now requestable by ID.
+- **`request_options` header merging** — `additional_headers` now merges case-insensitively with base and endpoint headers, preventing duplicate headers differing only by case.
+
+### Fixed
+- **`encode_path_param()` / `quote_path_param()`** — now raise `ValueError` when a path segment resolves to `.` or `..`, preventing silent URL rewriting by HTTP clients.
+- **Pydantic model deserialization** — extra-field keys that collide case-insensitively with a declared field are dropped before coercion, preventing stale extra values from shadowing declared fields.
+
 ## [18.2.0] - 2026-10-09
 ### Added
 - **`phenoml.fhir2omop.ReferenceDiagnostic.omop_table` and `.omop_id`** — new optional fields that identify the affected OMOP output row (table name and primary key) within a FHIR-to-OMOP conversion response, making it easier to correlate diagnostics to specific output rows.

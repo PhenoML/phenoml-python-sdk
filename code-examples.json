@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "18.2.0",
-    "specCommit": "49f1258330df448935b5304a1d8c405a2834d227",
+    "sdkVersion": "18.3.0",
+    "specCommit": "354de55c817a801b5a43654f28396a05d739275a",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -2003,7 +2003,7 @@
               "selected": true
             }
           ],
-          "vocab_version": "v20260227",
+          "vocab_version": "v20260829",
           "summary": {
             "codes_already_standard": 2,
             "codes_normalized": 1,
@@ -3055,6 +3055,8 @@
                 "observation-clinical-result",
                 "observation-lab",
                 "patient",
+                "phenoml-hpo-condition",
+                "phenoml-hpo-phenotypic-observation",
                 "procedure",
                 "questionnaire",
                 "questionnaireresponse",

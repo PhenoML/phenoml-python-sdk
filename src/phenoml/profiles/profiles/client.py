@@ -95,7 +95,7 @@ class ProfilesClient:
             A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -204,7 +204,7 @@ class ProfilesClient:
             A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -376,7 +376,7 @@ class AsyncProfilesClient:
             A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -501,7 +501,7 @@ class AsyncProfilesClient:
             A FHIR StructureDefinition as a JSON object. Must include url, type, and a snapshot with elements. Metadata such as version, resource type, and url is read from the StructureDefinition itself. The lowercase id becomes the profile's lookup key; when omitted, a random UUID is assigned.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. On create, defaults to "custom" if omitted; on update, omitting it preserves the profile's current guide. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
