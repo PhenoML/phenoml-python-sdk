@@ -12,7 +12,7 @@ class MeasurementRow(UniversalBaseModel):
     measurement_concept_id: typing.Optional[int] = None
     measurement_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Date from Observation.effectiveDateTime, effectivePeriod.start, or effectiveInstant.
+    Start date selected by the source resource's timing rules. For an Observation, effectiveDateTime, effectivePeriod.start, or effectiveInstant; see the endpoint's timing sources for other resources.
     """
 
     measurement_datetime: typing.Optional[str] = None
@@ -24,14 +24,27 @@ class MeasurementRow(UniversalBaseModel):
     """
 
     value_as_concept_id: typing.Optional[int] = None
-    unit_concept_id: typing.Optional[int] = None
+    unit_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Valid standard Unit concept for coded UCUM; 0 for supplied but unmapped units, null for absent units. Always present in JSON.
+    """
+
     range_low: typing.Optional[float] = None
     range_high: typing.Optional[float] = None
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
     measurement_source_value: typing.Optional[str] = None
     measurement_source_concept_id: typing.Optional[int] = None
-    unit_source_value: typing.Optional[str] = None
+    unit_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    OMOP source concept ID corresponding to Quantity.system/code; 0 for supplied units without a matching source concept, null for absent units. Always present in JSON.
+    """
+
+    unit_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Original Quantity.code if supplied, otherwise Quantity.unit; human-readable unit text is preserved in the unit mapping's source_name.
+    """
+
     value_source_value: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

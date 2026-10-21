@@ -14,7 +14,7 @@ class ProfileUploadRequest(UniversalBaseModel):
 
     implementation_guide: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+    Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
     """
 
     profile_context: typing.Optional[str] = pydantic.Field(default=None)

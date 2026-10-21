@@ -3,5 +3,6 @@
 import typing
 
 ExtractRequestConfigValidationMethod = typing.Union[
-    typing.Literal["none", "simple", "medication_search", "chunk_code_jaccard_similarity"], typing.Any
+    typing.Literal["none", "simple", "semantic_mapping", "medication_search", "chunk_code_jaccard_similarity"],
+    typing.Any,
 ]

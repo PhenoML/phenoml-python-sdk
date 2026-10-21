@@ -63,7 +63,7 @@ class RawLang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles (`phenoml-hpo-condition`, `phenoml-hpo-phenotypic-observation`) code findings with the Human Phenotype Ontology and must be requested by id. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -442,7 +442,7 @@ class RawLang2FhirClient:
         To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
 
         Uploads will be rejected if:
-        - A built-in US Core or R4 base profile already exists with the same id
+        - A built-in profile (US Core, PhenoML HPO, or R4 base) already exists with the same id, or the id starts with a reserved prefix (`us-core-`, `phenoml-hpo-`)
         - A custom profile with the same id has already been uploaded
         - A custom profile with the same url has already been uploaded
 
@@ -452,7 +452,7 @@ class RawLang2FhirClient:
             Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         profile_context : typing.Optional[str]
             Natural language context that helps the LLM select the right profiles from this implementation guide during resource detection. For example, "When the text mentions phenotypic features or abnormalities, prefer the hpo-observation profile over Condition." This is stored as IG-level metadata and injected into the LLM prompt. Max 2000 characters. Providing this field on any upload will update the context for the entire IG (last write wins).
@@ -930,7 +930,7 @@ class AsyncRawLang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources; you can also use any custom profile you've uploaded (if you're a develop or launch customer).
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles (`phenoml-hpo-condition`, `phenoml-hpo-phenotypic-observation`) code findings with the Human Phenotype Ontology and must be requested by id. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -1309,7 +1309,7 @@ class AsyncRawLang2FhirClient:
         To use the uploaded profile with `/lang2fhir/create`, pass this id as the `resource` parameter.
 
         Uploads will be rejected if:
-        - A built-in US Core or R4 base profile already exists with the same id
+        - A built-in profile (US Core, PhenoML HPO, or R4 base) already exists with the same id, or the id starts with a reserved prefix (`us-core-`, `phenoml-hpo-`)
         - A custom profile with the same id has already been uploaded
         - A custom profile with the same url has already been uploaded
 
@@ -1319,7 +1319,7 @@ class AsyncRawLang2FhirClient:
             Base64 encoded JSON string of a FHIR StructureDefinition. The profile must include id, url, type, and a snapshot with elements. All metadata (version, resource type, identifier) is derived from the StructureDefinition itself. The lowercase id from the StructureDefinition becomes the profile's lookup key.
 
         implementation_guide : typing.Optional[str]
-            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
+            Implementation Guide name to group this profile under. Defaults to "custom" if omitted. Cannot be "us_core" or "phenoml_hpo" (reserved). Use this to organize custom profiles into named IGs that can be referenced when calling create/multi or document/multi endpoints.
 
         profile_context : typing.Optional[str]
             Natural language context that helps the LLM select the right profiles from this implementation guide during resource detection. For example, "When the text mentions phenotypic features or abnormalities, prefer the hpo-observation profile over Condition." This is stored as IG-level metadata and injected into the LLM prompt. Max 2000 characters. Providing this field on any upload will update the context for the entire IG (last write wins).
