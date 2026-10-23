@@ -5795,6 +5795,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**small_note:** `typing.Optional[bool]` — Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6541,7 +6549,7 @@ exclusive with `create`; requires `file`. Do not combine
 The JSON body of `POST /lang2fhir/create/multi`. Accepts that
 endpoint's fields (`text`, `version`, `provider`,
 `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),
-`validation_method`, `resource_review`). This is the
+`validation_method`, `resource_review`, `small_note`). This is the
 **multi**-resource body: it has no single-`resource` field, and
 the item's result is a `CreateMultiResponse` (a Bundle of
 resources). Mutually exclusive with `document`; must **not** be
