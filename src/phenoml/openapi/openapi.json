@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "354de55c817a801b5a43654f28396a05d739275a"
+    "version": "b6ec5ee4442d5d61e58ef4f8ab682490284af007"
   },
   "x-services": [
     {
@@ -4776,7 +4776,7 @@
                   },
                   "create": {
                     "type": "object",
-                    "description": "The JSON body of `POST /lang2fhir/create/multi`. Accepts that\nendpoint's fields (`text`, `version`, `provider`,\n`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),\n`validation_method`, `resource_review`). This is the\n**multi**-resource body: it has no single-`resource` field, and\nthe item's result is a `CreateMultiResponse` (a Bundle of\nresources). Mutually exclusive with `document`; must **not** be\naccompanied by a `file`. Do not combine `primary_patient` with\n`patient_reference`.\n"
+                    "description": "The JSON body of `POST /lang2fhir/create/multi`. Accepts that\nendpoint's fields (`text`, `version`, `provider`,\n`primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),\n`validation_method`, `resource_review`, `small_note`). This is the\n**multi**-resource body: it has no single-`resource` field, and\nthe item's result is a `CreateMultiResponse` (a Bundle of\nresources). Mutually exclusive with `document`; must **not** be\naccompanied by a `file`. Do not combine `primary_patient` with\n`patient_reference`.\n"
                   },
                   "file": {
                     "type": "string",
@@ -4816,7 +4816,7 @@
             }
           },
           "400": {
-            "description": "Invalid upload \u2014 e.g. both or neither of document/create set, a\nnon-object document/create, a document item missing its file, a\ncreate item carrying a file, or an over-length request_id/id.\n"
+            "description": "Invalid upload \u2014 e.g. both or neither of document/create set, a\nnon-object document/create, a document item missing its file, a\ncreate item carrying a file, a `small_note` create item whose\n`text` exceeds 15,360 bytes, or an over-length request_id/id.\n"
           },
           "401": {
             "description": "Unauthorized"
@@ -13670,6 +13670,11 @@
           },
           "resource_review": {
             "$ref": "#/components/schemas/lang2fhir_ResourceReview"
+          },
+          "small_note": {
+            "type": "boolean",
+            "default": false,
+            "description": "Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.\n"
           }
         }
       },
