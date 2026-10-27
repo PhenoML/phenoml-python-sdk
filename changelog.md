@@ -1,3 +1,17 @@
+## [18.4.0] - 2026-10-27
+### Added
+- **`client.fhir2omop.create(...)` MedicationDispense support** — `MedicationDispense` is now a supported row-producing resource mapping to a domain-selected clinical table (default `drug_exposure`) with `drug_type_concept_id` 32825 (EHR dispensing record); stopped records require a valid `whenHandedOver` and all other non-completed statuses are dropped.
+- **`MedicationDispenseSourceContext`** — new exported type capturing the original dispensing context for each OMOP row emitted from a `MedicationDispense` resource, including `resource_id`, `full_url`, `omop_table`, `omop_id`, and a `source` dict of original FHIR fields.
+- **`MedicationDispenseSourceContextOmopTable`** — new type alias enumerating valid OMOP destination tables for `MedicationDispense` rows (`drug_exposure`, `condition_occurrence`, `procedure_occurrence`, `measurement`, `observation`).
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — new optional field returning dispensing status, timing, instructions, and references linked to each emitted dispensing row.
+- **`client.lang2fhir.create_multi(small_note=...)`** — new optional boolean parameter on both sync and async clients that bills at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes UTF-8 encoded or the request is rejected with a 400 error.
+
+### Changed
+- **`QuantityTransformationResourceType` and `QuantityTransformationSourcePath`** — `"MedicationDispense"` and its `"quantity"` path are now recognized literal values, extending the quantity audit scope to dispense records.
+- **`DrugExposureRow.days_supply`** — now also populated from a coded UCUM-day `MedicationDispense.daysSupply`; `drug_type_concept_id` documentation now distinguishes per-resource concept IDs (32825 for dispenses, 32838 for requests, 32817 for others).
+- **`ReferenceDiagnostic.path`** — may now contain slash-separated related paths for joint rules such as `whenHandedOver/daysSupply`.
+- **`CreateOmopResponse` date diagnostics** — unusable date elements are now reported for both `Specimen` and `MedicationDispense`, retaining partial rows for downstream load completion.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
