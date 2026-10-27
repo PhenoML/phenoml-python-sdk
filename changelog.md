@@ -1,3 +1,7 @@
+## [18.4.0] - 2026-10-27
+### Added
+- **`client.lang2fhir.create_multi(small_note=...)`** — new optional boolean parameter that bills the request at the lower small-note rate; when `True`, the input `text` must be at most 15,360 bytes (15 KiB) UTF-8 encoded or the server rejects it with a 400 error.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
