@@ -6,6 +6,7 @@ import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .dropped_resource import DroppedResource
 from .mapping_entry import MappingEntry
+from .medication_dispense_source_context import MedicationDispenseSourceContext
 from .omop_tables import OmopTables
 from .provider_role_context import ProviderRoleContext
 from .quantity_transformation import QuantityTransformation
@@ -21,7 +22,7 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     quantity_transformations: typing.Optional[typing.List[QuantityTransformation]] = pydantic.Field(default=None)
     """
-    Audits supplied direct drug quantities on emitted rows, including derivations and omissions. Omitted when no applicable quantity was supplied. Entries use the response's vocabulary release and do not affect terminology mapping counts in summary. The examples use illustrative concept IDs; actual IDs and evidence belong to vocab_version.
+    Audits supplied direct quantities on emitted drug_exposure rows, including derivations and omissions. Resources returned in other clinical tables have no quantity entry. Omitted when no applicable quantity was supplied on a drug_exposure row. Entries use the response's vocabulary release and do not affect terminology mapping counts in summary. The examples use illustrative concept IDs; actual IDs and evidence belong to vocab_version.
     """
 
     rows_for_review: typing.Optional[typing.List[RowForReview]] = pydantic.Field(default=None)
@@ -77,6 +78,13 @@ class CreateOmopResponse(UniversalBaseModel):
     Source identities, availability status, and collection timing for emitted specimens, linked by request-local specimen_id. Preserves valued identifier system/value pairs, accession identity, resource id/fullUrl, the chosen source-ID path, and supplied collection/received timing with original precision and offsets.
     """
 
+    medication_dispense_source_contexts: typing.Optional[typing.List[MedicationDispenseSourceContext]] = pydantic.Field(
+        default=None
+    )
+    """
+    Supplied dispensing status, timing, instructions, and references linked to each emitted dispensing row, including rows placed in another clinical table. Omitted when there are no emitted dispenses. This response metadata is independent of rows_for_review and does not establish administration or adherence.
+    """
+
     provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
     """
     Additive FHIR provenance for every supplied PractitionerRole. Each
@@ -107,6 +115,9 @@ class CreateOmopResponse(UniversalBaseModel):
     subject/patient references that caused a clinical row to be dropped.
     Specimen missing/unusable collection dates, material, subject, status,
     and invalid optional quantity are also explained here.
+    MedicationDispense missing/unusable handover, absent exposure end,
+    unsupported supplied daysSupply, conflicting routes, and unsafe
+    medication or authorizing-prescription references are also reported.
     Missing optional references are normal and do not produce a diagnostic.
     References resolve only against resources supplied in this request.
     Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported

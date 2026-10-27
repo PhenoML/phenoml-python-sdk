@@ -40,12 +40,12 @@ class Fhir2OmopClient:
         the optional `rows_for_review` index for consumer review and filtering.
 
         Set `vocab_version` to select the OMOP vocabulary release used for coded
-        concept resolution. If omitted or empty, the API uses its default
-        release. The response's `vocab_version`, when present, identifies the
-        release used. Specify a release explicitly when reproducibility matters.
+        and inferred concept resolution. If omitted or empty, the API uses its
+        default release. The response's `vocab_version`, when present, identifies
+        the release used. Specify a release explicitly when reproducibility matters.
 
-        Text-only primary clinical concepts and unresolved coded clinical concepts
-        use the same semantic search and whole-term equivalence validation.
+        Supported concept fields use semantic mapping for text-only inputs and
+        unresolved source codings, with whole-term equivalence validation.
         CodeableConcept text takes precedence over coding display. A single
         equivalent suggestion must be validated before a real OMOP concept ID is
         returned. The suggested vocabulary/code must
@@ -53,18 +53,20 @@ class Fhir2OmopClient:
         crosswalk targets are not accepted for inferred suggestions.
         Deterministic mappings take precedence; ambiguous or domain-mismatched
         deterministic results are not reinterpreted. Units, routes, visits,
-        demographics, and Specimen concepts do not use this clinical semantic path.
-        Supported text-only clinical concepts return MAPPED results with real
-        concept IDs on success, or UNMAPPED with concept ID 0 when no standard
-        concept is selected. No source coding is invented.
+        demographics, and collection sites use their field-specific resolution
+        policies. Semantic mapping returns MAPPED with a real concept ID on
+        success, or UNMAPPED with concept ID 0 when no standard concept is
+        selected. A bare code is not treated as a description. No source coding
+        is invented.
 
         Every inferred mapping has
         `mappings.resolution.semantic_mapping.status: MAPPED`, with the OMOP
         vocabulary release. Filter linked rows using the mapping's table/row ID
         to exclude inferred results.
         Original source coding and clinical-status eligibility are preserved.
-        Successful inference does not remove uncertain-status rows from the
-        `rows_for_review` index; unresolved primary concepts also remain indexed.
+        For clinical rows covered by `rows_for_review`, successful inference
+        does not remove uncertain-status rows from the index; unresolved primary
+        concepts also remain indexed.
         All shaped rows appear once in `tables`.
 
         Standards basis: [FHIR R4 (v4.0.1)](https://hl7.org/fhir/R4/) defines
@@ -104,8 +106,8 @@ class Fhir2OmopClient:
           collection date or material retains a partial row with diagnostics
         - `Condition` -> domain-selected clinical table; default `condition_occurrence`
         - `Procedure` -> domain-selected clinical table; default `procedure_occurrence`
-        - `MedicationRequest`, `MedicationStatement`, and
-          `MedicationAdministration` -> domain-selected clinical table; default `drug_exposure`
+        - `MedicationRequest`, `MedicationStatement`, `MedicationAdministration`, and
+          `MedicationDispense` -> domain-selected clinical table; default `drug_exposure`
         - `Immunization` -> domain-selected clinical table; default `drug_exposure`
         - `Observation` -> domain-selected clinical table. Numeric values prefer
           `measurement` and other values prefer `observation` when the code is
@@ -122,7 +124,7 @@ class Fhir2OmopClient:
         domain of their mapped OMOP standard concept. The source resource
         determines eligibility, field values, and the default table when no
         supported mapping is available.
-        Allergy substance codes must not create drug exposures.
+        `AllergyIntolerance` records do not produce `drug_exposure` rows.
 
         For example, a Condition coded with ICD10CM `Z79.4` can produce a mapped
         `observation` row. `Z86.73` and ICD-O-3 `8140/3` also map to concepts in
@@ -157,9 +159,11 @@ class Fhir2OmopClient:
         `UNMAPPED` status. A `DOMAIN_MISMATCH` outcome is identified in the mapping
         note. For example, a Procedure coded with HCPCS `C5271` produces a partial
         `procedure_occurrence` row because its mapped domain is Device. Text-only
-        inputs use their default tables. A resource produces one clinical row
-        even when its code has multiple vocabulary mapping targets. Vocabulary
-        `Maps to value` mappings are not applied.
+        clinical inputs can also produce rows in another supported table when
+        semantic mapping selects a standard concept valid for that destination;
+        without a validated match, they use their default tables. A resource
+        produces one clinical row even when its code has multiple vocabulary
+        mapping targets. Vocabulary `Maps to value` mappings are not applied.
 
         `Medication` is reference data for medication resources; it does not
         create its own row because OMOP CDM has no Medication table. Administrative
@@ -307,8 +311,9 @@ class Fhir2OmopClient:
         Spec Anatomic Site. Supplied unmapped optional concepts are 0; absent
         unit and site IDs are explicit null. Text-only body sites preserve their
         source text with site concept ID 0 and an `UNMAPPED` mapping; they do not
-        produce a text-based concept suggestion. Text-only material can produce
-        an `UNCHECKED` suggestion with material concept ID 0.
+        produce a text-based concept suggestion. Material descriptions follow
+        the semantic-mapping policy above. Original source codes and text-only
+        descriptions are preserved.
         Numeric quantity is copied without
         unit conversion; invalid or comparator-bearing quantities are omitted
         with diagnostics without dropping the row. Missing optional data is allowed.
@@ -367,7 +372,14 @@ class Fhir2OmopClient:
         administration also needs an `effectiveDateTime` or `effectivePeriod.start`
         that supplies start evidence; a valid partial date remains an undated row.
         An on-hold administration is started evidence that is temporarily paused and
-        expected to continue. Immunizations require completed
+        expected to continue. MedicationDispense accepts completed records,
+        including completed partial fills. Stopped records require a valid
+        `whenHandedOver`, including partial dates, as evidence of actual handover.
+        Preparation, in-progress (ready for pickup), on-hold, cancelled, declined,
+        entered-in-error, unknown, missing, and unrecognized statuses are dropped.
+        A completed dispense with missing or unusable handover timing remains a
+        partial row; preparation time never substitutes for handover.
+        Immunizations require completed
         status. Observations require final,
         amended, or corrected status; registered,
         preliminary, cancelled, entered-in-error, unknown, and missing statuses are
@@ -465,9 +477,8 @@ class Fhir2OmopClient:
         against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
-        concept" semantics): it covers a coded or text-only clinical concept
-        without a validated standard match (`UNMAPPED`), and an unverified
-        text-only Specimen material suggestion (`UNCHECKED`).
+        concept" semantics): it covers a supplied concept without a validated
+        standard match (`UNMAPPED`).
         Supported `Encounter.class` or `Encounter.type` values
         may populate `visit_concept_id`. Person demographics and Provider
         recorded gender follow the policies above.
@@ -487,7 +498,8 @@ class Fhir2OmopClient:
         `UNMAPPED`.
         Other `*_source_value` fields preserve row-specific raw source values,
         such as resource identifiers, names, units, or status codes.
-        `MedicationRequest` uses `32838` (EHR prescription) for
+        `MedicationRequest` uses `32838` (EHR prescription) and
+        `MedicationDispense` uses `32825` (EHR dispensing record) for
         `drug_type_concept_id`; other current resources use `32817` (EHR). This
         is a coarse provenance policy: it does not infer patient-reported,
         medication-history, or other more-specific type concepts from FHIR
@@ -511,11 +523,12 @@ class Fhir2OmopClient:
           completed, and a row is not dated from another resource such as its
           Encounter.
         - Valid date values never cause a request to be rejected, and the response
-          reports unusable date elements for Specimen while retaining the partial
-          row for downstream load completion. Other rows do not report which
+          reports unusable date elements for Specimen and MedicationDispense while
+          retaining partial rows for downstream load completion. Other rows do not report which
           date elements were unusable. An on-hold
           MedicationAdministration is an eligibility exception: it needs a supplied
           effective start as evidence that administration began.
+          A stopped MedicationDispense similarly requires supplied handover evidence.
 
         Timing sources, in priority order where several are listed. These rules
         apply regardless of the clinical output table; end dates are populated
@@ -549,6 +562,14 @@ class Fhir2OmopClient:
         - `MedicationRequest`: `authoredOn`, the order date, sets the start; it
           is not evidence of administration. No end is set, and the validity
           period is not used as an exposure duration.
+        - `MedicationDispense`: `whenHandedOver` sets the start. Missing, partial,
+          or invalid handover leaves the start unset with a diagnostic. Comparable
+          handover/preparation values proving handover before preparation also
+          leave the start unset with a `CONFLICTING` diagnostic. `whenPrepared`,
+          authorizing orders, and related administrations never supply timing.
+          No exposure end or `verbatim_end_date` is inferred, including from
+          `daysSupply`. Raw handover/preparation values retain precision and offsets
+          in `medication_dispense_source_contexts.source`.
         - Differences from the Vulcan maps: `birth_datetime` is not set from
           `birthDate`, Condition also reads `onsetPeriod.start`, and
           AllergyIntolerance falls back to its onset when `recordedDate` is
@@ -557,11 +578,48 @@ class Fhir2OmopClient:
         Medication details for resources returned as `drug_exposure` rows:
         - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
           `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
+        - For `MedicationDispense`, `daysSupply` sets `days_supply` only for a
+          positive whole number of coded UCUM `d` days without a supplied comparator.
+          The canonical UCUM URL, bare OID, and OID URN are accepted. Other units,
+          fractions, text-only units, and malformed values leave it absent with a
+          diagnostic; absent daysSupply is allowed. Refills are not inherited.
         - All non-empty dosage text is preserved in `sig`.
         - Coded dosage routes and `Immunization.route` are target-validated in
           the OMOP Route domain. Conflicting routes are left unset; route
           codings shared by every dosage instruction identify the same route.
         - `Immunization.lotNumber` is preserved in `lot_number`.
+
+        MedicationDispense requires an explicit subject resolving to a Patient
+        supplied in the request; Groups and missing subjects are unsupported.
+        Source fields are based on FHIR R4 4.0.1 and reviewed against
+        [US Core MedicationDispense 7.0.0](https://hl7.org/fhir/us/core/STU7/StructureDefinition-us-core-medicationdispense.html).
+        Full profile conformance is not validated. Although US Core requires
+        handover on completed records, this API retains such incomplete records
+        with missing-handover diagnostics as partial conversion output.
+        Supply either a usable `medicationCodeableConcept` (coded or text-only),
+        or a `medicationReference` resolving to a Medication with usable code/text.
+        Both choice forms together are conflicting and drop the dispense.
+        Exact relative, Bundle fullUrl, and unambiguous contained Medication
+        references are supported. Unresolved references are not rescued by display
+        text; missing or ambiguous medication identity drops the dispense with a
+        diagnostic. A usable but unmapped drug retains concept ID 0 and its
+        mapping outcome in a row indexed for review.
+        `context` links only to a supplied Encounter for the same patient.
+        The first resolvable Practitioner/PractitionerRole in `performer.actor`
+        supplies `provider_id`; other actor types do not supply a provider.
+        Failed explicit links have diagnostics. Authorizing prescriptions are
+        checked for request-local MedicationRequest identity and patient agreement;
+        failures do not discard the dispense. They never supply medication,
+        instructions, refills, timing, or prescription provenance to a dispense.
+        Dispense instructions alone supply `sig` and route; conflicting routes
+        remain unset with a diagnostic and original instructions in source context.
+        Orders, dispenses, and administrations emit independently, with separate
+        source identity and no deduplication merely because they concern the same drug.
+        Every emitted dispensing drug row has a `whenHandedOver/daysSupply`
+        diagnostic beginning `medication_dispense_end_date_absent` because the
+        CDM-required exposure end remains absent. Missing/partial/unusable handover
+        diagnostics begin `medication_dispense_handover_missing`,
+        `medication_dispense_handover_partial`, or `medication_dispense_handover_unusable`.
 
         Encounter details:
         - Encounter classifications must supply both `Coding.system` and
@@ -600,7 +658,7 @@ class Fhir2OmopClient:
           `classHistory`, `partOf`, and admission/discharge concepts are not
           mapped.
 
-        - Direct `MedicationRequest.dispenseRequest.quantity`,
+        - Direct `MedicationRequest.dispenseRequest.quantity`, `MedicationDispense.quantity`,
           `MedicationAdministration.dosage.dose`, and `Immunization.doseQuantity`
           can set `quantity` under the formulation policies below. Quantities
           must be positive finite numbers with a supported `system`/`code` pair
@@ -670,14 +728,15 @@ class Fhir2OmopClient:
         a supported total quantity and are not used for quantity conversion.
 
         `quantity_transformations` audits each supplied quantity at one of the
-        three direct paths above on a row-producing resource, including an
-        explicit null or malformed quantity. Each entry preserves the source,
-        identifies the destination row, and reports `DIRECT`, `DERIVED`, or
+        three direct paths above on a resource returned as a `drug_exposure` row,
+        including an explicit null or malformed quantity. Each entry preserves
+        the source, identifies the destination row, and reports `DIRECT`, `DERIVED`, or
         `OMITTED`. Successful entries identify their policy, evidence, result,
         and result unit; omitted entries give a stable reason. Dose-form and unit
         concept IDs refer to the response's `vocab_version`. Missing quantities
-        produce no entry. Unsupported rates and statement dosages produce no
-        entry, and resources in `dropped` have no quantity entry or destination row.
+        produce no entry. Resources returned in other clinical tables have no
+        quantity entry. Unsupported rates and statement dosages produce no entry,
+        and resources in `dropped` have no quantity entry or destination row.
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -719,7 +778,7 @@ class Fhir2OmopClient:
             Patient resource. Supported row-producing resources are Patient,
             Location, Organization, HealthcareService, Practitioner,
             PractitionerRole, Encounter, Specimen, Condition, Procedure,
-            MedicationRequest, MedicationStatement, MedicationAdministration,
+            MedicationRequest, MedicationStatement, MedicationAdministration, MedicationDispense,
             Immunization, Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
             table. Unsupported resource types are accepted in a Bundle but ignored.
@@ -841,12 +900,12 @@ class AsyncFhir2OmopClient:
         the optional `rows_for_review` index for consumer review and filtering.
 
         Set `vocab_version` to select the OMOP vocabulary release used for coded
-        concept resolution. If omitted or empty, the API uses its default
-        release. The response's `vocab_version`, when present, identifies the
-        release used. Specify a release explicitly when reproducibility matters.
+        and inferred concept resolution. If omitted or empty, the API uses its
+        default release. The response's `vocab_version`, when present, identifies
+        the release used. Specify a release explicitly when reproducibility matters.
 
-        Text-only primary clinical concepts and unresolved coded clinical concepts
-        use the same semantic search and whole-term equivalence validation.
+        Supported concept fields use semantic mapping for text-only inputs and
+        unresolved source codings, with whole-term equivalence validation.
         CodeableConcept text takes precedence over coding display. A single
         equivalent suggestion must be validated before a real OMOP concept ID is
         returned. The suggested vocabulary/code must
@@ -854,18 +913,20 @@ class AsyncFhir2OmopClient:
         crosswalk targets are not accepted for inferred suggestions.
         Deterministic mappings take precedence; ambiguous or domain-mismatched
         deterministic results are not reinterpreted. Units, routes, visits,
-        demographics, and Specimen concepts do not use this clinical semantic path.
-        Supported text-only clinical concepts return MAPPED results with real
-        concept IDs on success, or UNMAPPED with concept ID 0 when no standard
-        concept is selected. No source coding is invented.
+        demographics, and collection sites use their field-specific resolution
+        policies. Semantic mapping returns MAPPED with a real concept ID on
+        success, or UNMAPPED with concept ID 0 when no standard concept is
+        selected. A bare code is not treated as a description. No source coding
+        is invented.
 
         Every inferred mapping has
         `mappings.resolution.semantic_mapping.status: MAPPED`, with the OMOP
         vocabulary release. Filter linked rows using the mapping's table/row ID
         to exclude inferred results.
         Original source coding and clinical-status eligibility are preserved.
-        Successful inference does not remove uncertain-status rows from the
-        `rows_for_review` index; unresolved primary concepts also remain indexed.
+        For clinical rows covered by `rows_for_review`, successful inference
+        does not remove uncertain-status rows from the index; unresolved primary
+        concepts also remain indexed.
         All shaped rows appear once in `tables`.
 
         Standards basis: [FHIR R4 (v4.0.1)](https://hl7.org/fhir/R4/) defines
@@ -905,8 +966,8 @@ class AsyncFhir2OmopClient:
           collection date or material retains a partial row with diagnostics
         - `Condition` -> domain-selected clinical table; default `condition_occurrence`
         - `Procedure` -> domain-selected clinical table; default `procedure_occurrence`
-        - `MedicationRequest`, `MedicationStatement`, and
-          `MedicationAdministration` -> domain-selected clinical table; default `drug_exposure`
+        - `MedicationRequest`, `MedicationStatement`, `MedicationAdministration`, and
+          `MedicationDispense` -> domain-selected clinical table; default `drug_exposure`
         - `Immunization` -> domain-selected clinical table; default `drug_exposure`
         - `Observation` -> domain-selected clinical table. Numeric values prefer
           `measurement` and other values prefer `observation` when the code is
@@ -923,7 +984,7 @@ class AsyncFhir2OmopClient:
         domain of their mapped OMOP standard concept. The source resource
         determines eligibility, field values, and the default table when no
         supported mapping is available.
-        Allergy substance codes must not create drug exposures.
+        `AllergyIntolerance` records do not produce `drug_exposure` rows.
 
         For example, a Condition coded with ICD10CM `Z79.4` can produce a mapped
         `observation` row. `Z86.73` and ICD-O-3 `8140/3` also map to concepts in
@@ -958,9 +1019,11 @@ class AsyncFhir2OmopClient:
         `UNMAPPED` status. A `DOMAIN_MISMATCH` outcome is identified in the mapping
         note. For example, a Procedure coded with HCPCS `C5271` produces a partial
         `procedure_occurrence` row because its mapped domain is Device. Text-only
-        inputs use their default tables. A resource produces one clinical row
-        even when its code has multiple vocabulary mapping targets. Vocabulary
-        `Maps to value` mappings are not applied.
+        clinical inputs can also produce rows in another supported table when
+        semantic mapping selects a standard concept valid for that destination;
+        without a validated match, they use their default tables. A resource
+        produces one clinical row even when its code has multiple vocabulary
+        mapping targets. Vocabulary `Maps to value` mappings are not applied.
 
         `Medication` is reference data for medication resources; it does not
         create its own row because OMOP CDM has no Medication table. Administrative
@@ -1108,8 +1171,9 @@ class AsyncFhir2OmopClient:
         Spec Anatomic Site. Supplied unmapped optional concepts are 0; absent
         unit and site IDs are explicit null. Text-only body sites preserve their
         source text with site concept ID 0 and an `UNMAPPED` mapping; they do not
-        produce a text-based concept suggestion. Text-only material can produce
-        an `UNCHECKED` suggestion with material concept ID 0.
+        produce a text-based concept suggestion. Material descriptions follow
+        the semantic-mapping policy above. Original source codes and text-only
+        descriptions are preserved.
         Numeric quantity is copied without
         unit conversion; invalid or comparator-bearing quantities are omitted
         with diagnostics without dropping the row. Missing optional data is allowed.
@@ -1168,7 +1232,14 @@ class AsyncFhir2OmopClient:
         administration also needs an `effectiveDateTime` or `effectivePeriod.start`
         that supplies start evidence; a valid partial date remains an undated row.
         An on-hold administration is started evidence that is temporarily paused and
-        expected to continue. Immunizations require completed
+        expected to continue. MedicationDispense accepts completed records,
+        including completed partial fills. Stopped records require a valid
+        `whenHandedOver`, including partial dates, as evidence of actual handover.
+        Preparation, in-progress (ready for pickup), on-hold, cancelled, declined,
+        entered-in-error, unknown, missing, and unrecognized statuses are dropped.
+        A completed dispense with missing or unusable handover timing remains a
+        partial row; preparation time never substitutes for handover.
+        Immunizations require completed
         status. Observations require final,
         amended, or corrected status; registered,
         preliminary, cancelled, entered-in-error, unknown, and missing statuses are
@@ -1266,9 +1337,8 @@ class AsyncFhir2OmopClient:
         against), and a small `summary` of the resolution outcomes.
 
         A `concept_id` of `0` is reported, not omitted (OMOP "no matching
-        concept" semantics): it covers a coded or text-only clinical concept
-        without a validated standard match (`UNMAPPED`), and an unverified
-        text-only Specimen material suggestion (`UNCHECKED`).
+        concept" semantics): it covers a supplied concept without a validated
+        standard match (`UNMAPPED`).
         Supported `Encounter.class` or `Encounter.type` values
         may populate `visit_concept_id`. Person demographics and Provider
         recorded gender follow the policies above.
@@ -1288,7 +1358,8 @@ class AsyncFhir2OmopClient:
         `UNMAPPED`.
         Other `*_source_value` fields preserve row-specific raw source values,
         such as resource identifiers, names, units, or status codes.
-        `MedicationRequest` uses `32838` (EHR prescription) for
+        `MedicationRequest` uses `32838` (EHR prescription) and
+        `MedicationDispense` uses `32825` (EHR dispensing record) for
         `drug_type_concept_id`; other current resources use `32817` (EHR). This
         is a coarse provenance policy: it does not infer patient-reported,
         medication-history, or other more-specific type concepts from FHIR
@@ -1312,11 +1383,12 @@ class AsyncFhir2OmopClient:
           completed, and a row is not dated from another resource such as its
           Encounter.
         - Valid date values never cause a request to be rejected, and the response
-          reports unusable date elements for Specimen while retaining the partial
-          row for downstream load completion. Other rows do not report which
+          reports unusable date elements for Specimen and MedicationDispense while
+          retaining partial rows for downstream load completion. Other rows do not report which
           date elements were unusable. An on-hold
           MedicationAdministration is an eligibility exception: it needs a supplied
           effective start as evidence that administration began.
+          A stopped MedicationDispense similarly requires supplied handover evidence.
 
         Timing sources, in priority order where several are listed. These rules
         apply regardless of the clinical output table; end dates are populated
@@ -1350,6 +1422,14 @@ class AsyncFhir2OmopClient:
         - `MedicationRequest`: `authoredOn`, the order date, sets the start; it
           is not evidence of administration. No end is set, and the validity
           period is not used as an exposure duration.
+        - `MedicationDispense`: `whenHandedOver` sets the start. Missing, partial,
+          or invalid handover leaves the start unset with a diagnostic. Comparable
+          handover/preparation values proving handover before preparation also
+          leave the start unset with a `CONFLICTING` diagnostic. `whenPrepared`,
+          authorizing orders, and related administrations never supply timing.
+          No exposure end or `verbatim_end_date` is inferred, including from
+          `daysSupply`. Raw handover/preparation values retain precision and offsets
+          in `medication_dispense_source_contexts.source`.
         - Differences from the Vulcan maps: `birth_datetime` is not set from
           `birthDate`, Condition also reads `onsetPeriod.start`, and
           AllergyIntolerance falls back to its onset when `recordedDate` is
@@ -1358,11 +1438,48 @@ class AsyncFhir2OmopClient:
         Medication details for resources returned as `drug_exposure` rows:
         - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
           `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
+        - For `MedicationDispense`, `daysSupply` sets `days_supply` only for a
+          positive whole number of coded UCUM `d` days without a supplied comparator.
+          The canonical UCUM URL, bare OID, and OID URN are accepted. Other units,
+          fractions, text-only units, and malformed values leave it absent with a
+          diagnostic; absent daysSupply is allowed. Refills are not inherited.
         - All non-empty dosage text is preserved in `sig`.
         - Coded dosage routes and `Immunization.route` are target-validated in
           the OMOP Route domain. Conflicting routes are left unset; route
           codings shared by every dosage instruction identify the same route.
         - `Immunization.lotNumber` is preserved in `lot_number`.
+
+        MedicationDispense requires an explicit subject resolving to a Patient
+        supplied in the request; Groups and missing subjects are unsupported.
+        Source fields are based on FHIR R4 4.0.1 and reviewed against
+        [US Core MedicationDispense 7.0.0](https://hl7.org/fhir/us/core/STU7/StructureDefinition-us-core-medicationdispense.html).
+        Full profile conformance is not validated. Although US Core requires
+        handover on completed records, this API retains such incomplete records
+        with missing-handover diagnostics as partial conversion output.
+        Supply either a usable `medicationCodeableConcept` (coded or text-only),
+        or a `medicationReference` resolving to a Medication with usable code/text.
+        Both choice forms together are conflicting and drop the dispense.
+        Exact relative, Bundle fullUrl, and unambiguous contained Medication
+        references are supported. Unresolved references are not rescued by display
+        text; missing or ambiguous medication identity drops the dispense with a
+        diagnostic. A usable but unmapped drug retains concept ID 0 and its
+        mapping outcome in a row indexed for review.
+        `context` links only to a supplied Encounter for the same patient.
+        The first resolvable Practitioner/PractitionerRole in `performer.actor`
+        supplies `provider_id`; other actor types do not supply a provider.
+        Failed explicit links have diagnostics. Authorizing prescriptions are
+        checked for request-local MedicationRequest identity and patient agreement;
+        failures do not discard the dispense. They never supply medication,
+        instructions, refills, timing, or prescription provenance to a dispense.
+        Dispense instructions alone supply `sig` and route; conflicting routes
+        remain unset with a diagnostic and original instructions in source context.
+        Orders, dispenses, and administrations emit independently, with separate
+        source identity and no deduplication merely because they concern the same drug.
+        Every emitted dispensing drug row has a `whenHandedOver/daysSupply`
+        diagnostic beginning `medication_dispense_end_date_absent` because the
+        CDM-required exposure end remains absent. Missing/partial/unusable handover
+        diagnostics begin `medication_dispense_handover_missing`,
+        `medication_dispense_handover_partial`, or `medication_dispense_handover_unusable`.
 
         Encounter details:
         - Encounter classifications must supply both `Coding.system` and
@@ -1401,7 +1518,7 @@ class AsyncFhir2OmopClient:
           `classHistory`, `partOf`, and admission/discharge concepts are not
           mapped.
 
-        - Direct `MedicationRequest.dispenseRequest.quantity`,
+        - Direct `MedicationRequest.dispenseRequest.quantity`, `MedicationDispense.quantity`,
           `MedicationAdministration.dosage.dose`, and `Immunization.doseQuantity`
           can set `quantity` under the formulation policies below. Quantities
           must be positive finite numbers with a supported `system`/`code` pair
@@ -1471,14 +1588,15 @@ class AsyncFhir2OmopClient:
         a supported total quantity and are not used for quantity conversion.
 
         `quantity_transformations` audits each supplied quantity at one of the
-        three direct paths above on a row-producing resource, including an
-        explicit null or malformed quantity. Each entry preserves the source,
-        identifies the destination row, and reports `DIRECT`, `DERIVED`, or
+        three direct paths above on a resource returned as a `drug_exposure` row,
+        including an explicit null or malformed quantity. Each entry preserves
+        the source, identifies the destination row, and reports `DIRECT`, `DERIVED`, or
         `OMITTED`. Successful entries identify their policy, evidence, result,
         and result unit; omitted entries give a stable reason. Dose-form and unit
         concept IDs refer to the response's `vocab_version`. Missing quantities
-        produce no entry. Unsupported rates and statement dosages produce no
-        entry, and resources in `dropped` have no quantity entry or destination row.
+        produce no entry. Resources returned in other clinical tables have no
+        quantity entry. Unsupported rates and statement dosages produce no entry,
+        and resources in `dropped` have no quantity entry or destination row.
 
         Medication codes are resolved whether they appear inline
         (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -1520,7 +1638,7 @@ class AsyncFhir2OmopClient:
             Patient resource. Supported row-producing resources are Patient,
             Location, Organization, HealthcareService, Practitioner,
             PractitionerRole, Encounter, Specimen, Condition, Procedure,
-            MedicationRequest, MedicationStatement, MedicationAdministration,
+            MedicationRequest, MedicationStatement, MedicationAdministration, MedicationDispense,
             Immunization, Observation, and AllergyIntolerance. Standalone Medication resources
             are consumed by medication references rather than mapped to their own
             table. Unsupported resource types are accepted in a Bundle but ignored.
