@@ -3806,7 +3806,7 @@ Resolved clinical records are returned in the table corresponding to the
 domain of their mapped OMOP standard concept. The source resource
 determines eligibility, field values, and the default table when no
 supported mapping is available.
-Allergy substance codes must not create drug exposures.
+`AllergyIntolerance` records do not produce `drug_exposure` rows.
 
 For example, a Condition coded with ICD10CM `Z79.4` can produce a mapped
 `observation` row. `Z86.73` and ICD-O-3 `8140/3` also map to concepts in
@@ -3841,9 +3841,11 @@ in its default table with concept and source concept IDs of `0` and
 `UNMAPPED` status. A `DOMAIN_MISMATCH` outcome is identified in the mapping
 note. For example, a Procedure coded with HCPCS `C5271` produces a partial
 `procedure_occurrence` row because its mapped domain is Device. Text-only
-inputs use their default tables. A resource produces one clinical row
-even when its code has multiple vocabulary mapping targets. Vocabulary
-`Maps to value` mappings are not applied.
+clinical inputs can also produce rows in another supported table when
+semantic mapping selects a standard concept valid for that destination;
+without a validated match, they use their default tables. A resource
+produces one clinical row even when its code has multiple vocabulary
+mapping targets. Vocabulary `Maps to value` mappings are not applied.
 
 `Medication` is reference data for medication resources; it does not
 create its own row because OMOP CDM has no Medication table. Administrative
@@ -4354,14 +4356,15 @@ Rate-only administrations and MedicationStatement dosages do not establish
 a supported total quantity and are not used for quantity conversion.
 
 `quantity_transformations` audits each supplied quantity at one of the
-three direct paths above on a row-producing resource, including an
-explicit null or malformed quantity. Each entry preserves the source,
-identifies the destination row, and reports `DIRECT`, `DERIVED`, or
+three direct paths above on a resource returned as a `drug_exposure` row,
+including an explicit null or malformed quantity. Each entry preserves
+the source, identifies the destination row, and reports `DIRECT`, `DERIVED`, or
 `OMITTED`. Successful entries identify their policy, evidence, result,
 and result unit; omitted entries give a stable reason. Dose-form and unit
 concept IDs refer to the response's `vocab_version`. Missing quantities
-produce no entry. Unsupported rates and statement dosages produce no
-entry, and resources in `dropped` have no quantity entry or destination row.
+produce no entry. Resources returned in other clinical tables have no
+quantity entry. Unsupported rates and statement dosages produce no entry,
+and resources in `dropped` have no quantity entry or destination row.
 
 Medication codes are resolved whether they appear inline
 (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -5795,6 +5798,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**small_note:** `typing.Optional[bool]` — Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6541,7 +6552,7 @@ exclusive with `create`; requires `file`. Do not combine
 The JSON body of `POST /lang2fhir/create/multi`. Accepts that
 endpoint's fields (`text`, `version`, `provider`,
 `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),
-`validation_method`, `resource_review`). This is the
+`validation_method`, `resource_review`, `small_note`). This is the
 **multi**-resource body: it has no single-`resource` field, and
 the item's result is a `CreateMultiResponse` (a Bundle of
 resources). Mutually exclusive with `document`; must **not** be
