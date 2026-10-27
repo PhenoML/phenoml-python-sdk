@@ -23,6 +23,8 @@ if typing.TYPE_CHECKING:
     from .mapping_resolution_status import MappingResolutionStatus
     from .mapping_resolution_via import MappingResolutionVia
     from .measurement_row import MeasurementRow
+    from .medication_dispense_source_context import MedicationDispenseSourceContext
+    from .medication_dispense_source_context_omop_table import MedicationDispenseSourceContextOmopTable
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
@@ -77,6 +79,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MappingResolutionStatus": ".mapping_resolution_status",
     "MappingResolutionVia": ".mapping_resolution_via",
     "MeasurementRow": ".measurement_row",
+    "MedicationDispenseSourceContext": ".medication_dispense_source_context",
+    "MedicationDispenseSourceContextOmopTable": ".medication_dispense_source_context_omop_table",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
@@ -155,6 +159,8 @@ __all__ = [
     "MappingResolutionStatus",
     "MappingResolutionVia",
     "MeasurementRow",
+    "MedicationDispenseSourceContext",
+    "MedicationDispenseSourceContextOmopTable",
     "ObservationPeriodRow",
     "ObservationRow",
     "OmopTables",

@@ -3788,8 +3788,8 @@ Current resource coverage:
   collection date or material retains a partial row with diagnostics
 - `Condition` -> domain-selected clinical table; default `condition_occurrence`
 - `Procedure` -> domain-selected clinical table; default `procedure_occurrence`
-- `MedicationRequest`, `MedicationStatement`, and
-  `MedicationAdministration` -> domain-selected clinical table; default `drug_exposure`
+- `MedicationRequest`, `MedicationStatement`, `MedicationAdministration`, and
+  `MedicationDispense` -> domain-selected clinical table; default `drug_exposure`
 - `Immunization` -> domain-selected clinical table; default `drug_exposure`
 - `Observation` -> domain-selected clinical table. Numeric values prefer
   `measurement` and other values prefer `observation` when the code is
@@ -3806,7 +3806,7 @@ Resolved clinical records are returned in the table corresponding to the
 domain of their mapped OMOP standard concept. The source resource
 determines eligibility, field values, and the default table when no
 supported mapping is available.
-Allergy substance codes must not create drug exposures.
+`AllergyIntolerance` records do not produce `drug_exposure` rows.
 
 For example, a Condition coded with ICD10CM `Z79.4` can produce a mapped
 `observation` row. `Z86.73` and ICD-O-3 `8140/3` also map to concepts in
@@ -3841,9 +3841,11 @@ in its default table with concept and source concept IDs of `0` and
 `UNMAPPED` status. A `DOMAIN_MISMATCH` outcome is identified in the mapping
 note. For example, a Procedure coded with HCPCS `C5271` produces a partial
 `procedure_occurrence` row because its mapped domain is Device. Text-only
-inputs use their default tables. A resource produces one clinical row
-even when its code has multiple vocabulary mapping targets. Vocabulary
-`Maps to value` mappings are not applied.
+clinical inputs can also produce rows in another supported table when
+semantic mapping selects a standard concept valid for that destination;
+without a validated match, they use their default tables. A resource
+produces one clinical row even when its code has multiple vocabulary
+mapping targets. Vocabulary `Maps to value` mappings are not applied.
 
 `Medication` is reference data for medication resources; it does not
 create its own row because OMOP CDM has no Medication table. Administrative
@@ -4051,7 +4053,14 @@ accept completed, in-progress, on-hold, or stopped events. An on-hold
 administration also needs an `effectiveDateTime` or `effectivePeriod.start`
 that supplies start evidence; a valid partial date remains an undated row.
 An on-hold administration is started evidence that is temporarily paused and
-expected to continue. Immunizations require completed
+expected to continue. MedicationDispense accepts completed records,
+including completed partial fills. Stopped records require a valid
+`whenHandedOver`, including partial dates, as evidence of actual handover.
+Preparation, in-progress (ready for pickup), on-hold, cancelled, declined,
+entered-in-error, unknown, missing, and unrecognized statuses are dropped.
+A completed dispense with missing or unusable handover timing remains a
+partial row; preparation time never substitutes for handover.
+Immunizations require completed
 status. Observations require final,
 amended, or corrected status; registered,
 preliminary, cancelled, entered-in-error, unknown, and missing statuses are
@@ -4171,7 +4180,8 @@ An unknown OID remains unchanged in `source_system` and may be
 `UNMAPPED`.
 Other `*_source_value` fields preserve row-specific raw source values,
 such as resource identifiers, names, units, or status codes.
-`MedicationRequest` uses `32838` (EHR prescription) for
+`MedicationRequest` uses `32838` (EHR prescription) and
+`MedicationDispense` uses `32825` (EHR dispensing record) for
 `drug_type_concept_id`; other current resources use `32817` (EHR). This
 is a coarse provenance policy: it does not infer patient-reported,
 medication-history, or other more-specific type concepts from FHIR
@@ -4195,11 +4205,12 @@ Dates and datetimes:
   completed, and a row is not dated from another resource such as its
   Encounter.
 - Valid date values never cause a request to be rejected, and the response
-  reports unusable date elements for Specimen while retaining the partial
-  row for downstream load completion. Other rows do not report which
+  reports unusable date elements for Specimen and MedicationDispense while
+  retaining partial rows for downstream load completion. Other rows do not report which
   date elements were unusable. An on-hold
   MedicationAdministration is an eligibility exception: it needs a supplied
   effective start as evidence that administration began.
+  A stopped MedicationDispense similarly requires supplied handover evidence.
 
 Timing sources, in priority order where several are listed. These rules
 apply regardless of the clinical output table; end dates are populated
@@ -4233,6 +4244,14 @@ only for medication resources returned as `drug_exposure` rows:
 - `MedicationRequest`: `authoredOn`, the order date, sets the start; it
   is not evidence of administration. No end is set, and the validity
   period is not used as an exposure duration.
+- `MedicationDispense`: `whenHandedOver` sets the start. Missing, partial,
+  or invalid handover leaves the start unset with a diagnostic. Comparable
+  handover/preparation values proving handover before preparation also
+  leave the start unset with a `CONFLICTING` diagnostic. `whenPrepared`,
+  authorizing orders, and related administrations never supply timing.
+  No exposure end or `verbatim_end_date` is inferred, including from
+  `daysSupply`. Raw handover/preparation values retain precision and offsets
+  in `medication_dispense_source_contexts.source`.
 - Differences from the Vulcan maps: `birth_datetime` is not set from
   `birthDate`, Condition also reads `onsetPeriod.start`, and
   AllergyIntolerance falls back to its onset when `recordedDate` is
@@ -4241,11 +4260,48 @@ only for medication resources returned as `drug_exposure` rows:
 Medication details for resources returned as `drug_exposure` rows:
 - For `MedicationRequest`, `dispenseRequest.numberOfRepeatsAllowed` sets
   `refills` and a whole-day `expectedSupplyDuration` sets `days_supply`.
+- For `MedicationDispense`, `daysSupply` sets `days_supply` only for a
+  positive whole number of coded UCUM `d` days without a supplied comparator.
+  The canonical UCUM URL, bare OID, and OID URN are accepted. Other units,
+  fractions, text-only units, and malformed values leave it absent with a
+  diagnostic; absent daysSupply is allowed. Refills are not inherited.
 - All non-empty dosage text is preserved in `sig`.
 - Coded dosage routes and `Immunization.route` are target-validated in
   the OMOP Route domain. Conflicting routes are left unset; route
   codings shared by every dosage instruction identify the same route.
 - `Immunization.lotNumber` is preserved in `lot_number`.
+
+MedicationDispense requires an explicit subject resolving to a Patient
+supplied in the request; Groups and missing subjects are unsupported.
+Source fields are based on FHIR R4 4.0.1 and reviewed against
+[US Core MedicationDispense 7.0.0](https://hl7.org/fhir/us/core/STU7/StructureDefinition-us-core-medicationdispense.html).
+Full profile conformance is not validated. Although US Core requires
+handover on completed records, this API retains such incomplete records
+with missing-handover diagnostics as partial conversion output.
+Supply either a usable `medicationCodeableConcept` (coded or text-only),
+or a `medicationReference` resolving to a Medication with usable code/text.
+Both choice forms together are conflicting and drop the dispense.
+Exact relative, Bundle fullUrl, and unambiguous contained Medication
+references are supported. Unresolved references are not rescued by display
+text; missing or ambiguous medication identity drops the dispense with a
+diagnostic. A usable but unmapped drug retains concept ID 0 and its
+mapping outcome in a row indexed for review.
+`context` links only to a supplied Encounter for the same patient.
+The first resolvable Practitioner/PractitionerRole in `performer.actor`
+supplies `provider_id`; other actor types do not supply a provider.
+Failed explicit links have diagnostics. Authorizing prescriptions are
+checked for request-local MedicationRequest identity and patient agreement;
+failures do not discard the dispense. They never supply medication,
+instructions, refills, timing, or prescription provenance to a dispense.
+Dispense instructions alone supply `sig` and route; conflicting routes
+remain unset with a diagnostic and original instructions in source context.
+Orders, dispenses, and administrations emit independently, with separate
+source identity and no deduplication merely because they concern the same drug.
+Every emitted dispensing drug row has a `whenHandedOver/daysSupply`
+diagnostic beginning `medication_dispense_end_date_absent` because the
+CDM-required exposure end remains absent. Missing/partial/unusable handover
+diagnostics begin `medication_dispense_handover_missing`,
+`medication_dispense_handover_partial`, or `medication_dispense_handover_unusable`.
 
 Encounter details:
 - Encounter classifications must supply both `Coding.system` and
@@ -4284,7 +4340,7 @@ Encounter details:
   `classHistory`, `partOf`, and admission/discharge concepts are not
   mapped.
 
-- Direct `MedicationRequest.dispenseRequest.quantity`,
+- Direct `MedicationRequest.dispenseRequest.quantity`, `MedicationDispense.quantity`,
   `MedicationAdministration.dosage.dose`, and `Immunization.doseQuantity`
   can set `quantity` under the formulation policies below. Quantities
   must be positive finite numbers with a supported `system`/`code` pair
@@ -4354,14 +4410,15 @@ Rate-only administrations and MedicationStatement dosages do not establish
 a supported total quantity and are not used for quantity conversion.
 
 `quantity_transformations` audits each supplied quantity at one of the
-three direct paths above on a row-producing resource, including an
-explicit null or malformed quantity. Each entry preserves the source,
-identifies the destination row, and reports `DIRECT`, `DERIVED`, or
+three direct paths above on a resource returned as a `drug_exposure` row,
+including an explicit null or malformed quantity. Each entry preserves
+the source, identifies the destination row, and reports `DIRECT`, `DERIVED`, or
 `OMITTED`. Successful entries identify their policy, evidence, result,
 and result unit; omitted entries give a stable reason. Dose-form and unit
 concept IDs refer to the response's `vocab_version`. Missing quantities
-produce no entry. Unsupported rates and statement dosages produce no
-entry, and resources in `dropped` have no quantity entry or destination row.
+produce no entry. Resources returned in other clinical tables have no
+quantity entry. Unsupported rates and statement dosages produce no entry,
+and resources in `dropped` have no quantity entry or destination row.
 
 Medication codes are resolved whether they appear inline
 (`medicationCodeableConcept`) or via a `medicationReference` to a contained,
@@ -4446,7 +4503,7 @@ FHIR resources (single resource or Bundle). Must contain at least one
 Patient resource. Supported row-producing resources are Patient,
 Location, Organization, HealthcareService, Practitioner,
 PractitionerRole, Encounter, Specimen, Condition, Procedure,
-MedicationRequest, MedicationStatement, MedicationAdministration,
+MedicationRequest, MedicationStatement, MedicationAdministration, MedicationDispense,
 Immunization, Observation, and AllergyIntolerance. Standalone Medication resources
 are consumed by medication references rather than mapped to their own
 table. Unsupported resource types are accepted in a Bundle but ignored.
@@ -5795,6 +5852,14 @@ client.lang2fhir.create_multi(
 <dl>
 <dd>
 
+**small_note:** `typing.Optional[bool]` — Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -6541,7 +6606,7 @@ exclusive with `create`; requires `file`. Do not combine
 The JSON body of `POST /lang2fhir/create/multi`. Accepts that
 endpoint's fields (`text`, `version`, `provider`,
 `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),
-`validation_method`, `resource_review`). This is the
+`validation_method`, `resource_review`, `small_note`). This is the
 **multi**-resource body: it has no single-`resource` field, and
 the item's result is a `CreateMultiResponse` (a Bundle of
 resources). Mutually exclusive with `document`; must **not** be

@@ -3,5 +3,5 @@
 import typing
 
 QuantityTransformationResourceType = typing.Union[
-    typing.Literal["MedicationRequest", "MedicationAdministration", "Immunization"], typing.Any
+    typing.Literal["MedicationRequest", "MedicationDispense", "MedicationAdministration", "Immunization"], typing.Any
 ]

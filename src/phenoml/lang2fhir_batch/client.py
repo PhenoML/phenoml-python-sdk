@@ -164,7 +164,7 @@ class Lang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
             `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),
-            `validation_method`, `resource_review`). This is the
+            `validation_method`, `resource_review`, `small_note`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be
@@ -610,7 +610,7 @@ class AsyncLang2FhirBatchClient:
             The JSON body of `POST /lang2fhir/create/multi`. Accepts that
             endpoint's fields (`text`, `version`, `provider`,
             `primary_patient`, `patient_reference` (deprecated), `implementation_guide`, `detection_effort` (deprecated),
-            `validation_method`, `resource_review`). This is the
+            `validation_method`, `resource_review`, `small_note`). This is the
             **multi**-resource body: it has no single-`resource` field, and
             the item's result is a `CreateMultiResponse` (a Bundle of
             resources). Mutually exclusive with `document`; must **not** be

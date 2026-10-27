@@ -104,6 +104,7 @@ class Lang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -142,6 +143,9 @@ class Lang2FhirClient:
 
         resource_review : typing.Optional[ResourceReview]
 
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -173,6 +177,7 @@ class Lang2FhirClient:
             detection_effort=detection_effort,
             validation_method=validation_method,
             resource_review=resource_review,
+            small_note=small_note,
             request_options=request_options,
         )
         return _response.data
@@ -550,6 +555,7 @@ class AsyncLang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -587,6 +593,9 @@ class AsyncLang2FhirClient:
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
         resource_review : typing.Optional[ResourceReview]
+
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -627,6 +636,7 @@ class AsyncLang2FhirClient:
             detection_effort=detection_effort,
             validation_method=validation_method,
             resource_review=resource_review,
+            small_note=small_note,
             request_options=request_options,
         )
         return _response.data

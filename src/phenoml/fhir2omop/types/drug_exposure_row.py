@@ -12,7 +12,7 @@ class DrugExposureRow(UniversalBaseModel):
     drug_concept_id: typing.Optional[int] = None
     drug_exposure_start_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Start date selected by the source resource's timing rules, such as effective[x], occurrenceDateTime, or MedicationRequest.authoredOn; see the endpoint's timing sources for all supported resources.
+    Start date selected by the source resource's timing rules, such as effective[x], occurrenceDateTime, MedicationRequest.authoredOn, or MedicationDispense.whenHandedOver; see the endpoint's timing sources for all supported resources.
     """
 
     drug_exposure_start_datetime: typing.Optional[str] = None
@@ -27,7 +27,11 @@ class DrugExposureRow(UniversalBaseModel):
     Date from an explicit FHIR Period.end only; inferred same-day ends are not verbatim source values.
     """
 
-    drug_type_concept_id: typing.Optional[int] = None
+    drug_type_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    MedicationDispense uses 32825 (EHR dispensing record); MedicationRequest uses 32838 (EHR prescription). Other current resources use 32817 (EHR). These identify record provenance, not proof of medication consumption.
+    """
+
     stop_reason: typing.Optional[str] = None
     refills: typing.Optional[int] = pydantic.Field(default=None)
     """
@@ -36,12 +40,12 @@ class DrugExposureRow(UniversalBaseModel):
 
     days_supply: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Direct positive whole-day MedicationRequest.dispenseRequest.expectedSupplyDuration; never derived from drug quantity, dosage, refills, or timing.
+    Direct positive whole-day MedicationRequest.dispenseRequest.expectedSupplyDuration or coded UCUM-day MedicationDispense.daysSupply; never derived from drug quantity, dosage, refills, or timing. Does not derive an exposure end date.
     """
 
     quantity: typing.Optional[float] = pydantic.Field(default=None)
     """
-    Formulation-specific quantity from a direct MedicationRequest dispense quantity, MedicationAdministration dose, or Immunization dose quantity. Under fixed_dose_form_count this is a matched coded tablet/capsule count copied directly, or an ingredient amount divided by per-unit strength. Under clinical_injection_ingredient_amount this is the ingredient amount, copied directly or derived using explicit concentration evidence. See the endpoint's supported dose forms and prerequisites; quantity_transformations identifies the policy, source, calculation evidence, and output unit, or explains why a supplied quantity was omitted.
+    Formulation-specific quantity from a direct MedicationRequest dispense quantity, MedicationDispense quantity, MedicationAdministration dose, or Immunization dose quantity. Under fixed_dose_form_count this is a matched coded tablet/capsule count copied directly, or an ingredient amount divided by per-unit strength. Under clinical_injection_ingredient_amount this is the ingredient amount, copied directly or derived using explicit concentration evidence. See the endpoint's supported dose forms and prerequisites; quantity_transformations identifies the policy, source, calculation evidence, and output unit, or explains why a supplied quantity was omitted.
     """
 
     sig: typing.Optional[str] = pydantic.Field(default=None)
