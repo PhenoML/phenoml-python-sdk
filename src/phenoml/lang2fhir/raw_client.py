@@ -176,6 +176,7 @@ class RawLang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateMultiResponse]:
         """
@@ -214,6 +215,9 @@ class RawLang2FhirClient:
 
         resource_review : typing.Optional[ResourceReview]
 
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -241,6 +245,7 @@ class RawLang2FhirClient:
                 "resource_review": convert_and_respect_annotation_metadata(
                     object_=resource_review, annotation=ResourceReview, direction="write"
                 ),
+                "small_note": small_note,
             },
             headers={
                 "content-type": "application/json",
@@ -1043,6 +1048,7 @@ class AsyncRawLang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateMultiResponse]:
         """
@@ -1081,6 +1087,9 @@ class AsyncRawLang2FhirClient:
 
         resource_review : typing.Optional[ResourceReview]
 
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -1108,6 +1117,7 @@ class AsyncRawLang2FhirClient:
                 "resource_review": convert_and_respect_annotation_metadata(
                     object_=resource_review, annotation=ResourceReview, direction="write"
                 ),
+                "small_note": small_note,
             },
             headers={
                 "content-type": "application/json",

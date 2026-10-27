@@ -16,11 +16,10 @@ class MappingResolution(UniversalBaseModel):
     Optional field-level mapping outcome and provenance. When a field has
     several source-coding entries, they share this outcome; paths describe
     the selected concept rather than separate mappings of every alternate
-    coding. Present for text-only clinical inference attempts. Omitted for
-    unchecked Specimen material suggestions, text-only specimen sites,
-    text-only units, units
-    with missing coding, unsupported unit systems, and Observation values
-    retained without resolution because the output table has no value column.
+    coding. Present for semantic mapping attempts. Omitted for fields
+    retained without concept resolution, including text-only collection
+    sites, text-only units, units with missing coding, unsupported unit
+    systems, and result values whose output table has no value column.
     Free-text diagnostics and unselected candidates are not returned.
     """
 

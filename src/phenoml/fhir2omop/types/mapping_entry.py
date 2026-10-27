@@ -44,9 +44,9 @@ class MappingEntry(UniversalBaseModel):
     mapping_status: typing.Optional[MappingEntryMappingStatus] = pydantic.Field(default=None)
     """
     ALREADY_STANDARD (source coding is already a standard OMOP concept),
-    MAPPED (source coding or clinical source text was mapped to a standard concept), UNCHECKED (a
-    standard code was suggested for text-only Specimen material but not verified
-    against the OMOP vocabulary, so `concept_id` stays `0`), or UNMAPPED
+    MAPPED (source coding or descriptive source text was mapped to a standard
+    concept), UNCHECKED (a suggested code has not been validated against
+    the OMOP vocabulary, so `concept_id` is `0`), or UNMAPPED
     (no target concept selected, including missing mappings,
     target-domain mismatches and ambiguity, or source information
     retained without concept resolution as explained in `note`).

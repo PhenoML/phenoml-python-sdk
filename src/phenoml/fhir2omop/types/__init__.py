@@ -11,6 +11,11 @@ if typing.TYPE_CHECKING:
     from .condition_occurrence_row import ConditionOccurrenceRow
     from .create_omop_response import CreateOmopResponse
     from .death_row import DeathRow
+    from .device_exposure_context import DeviceExposureContext
+    from .device_exposure_context_quantity_basis import DeviceExposureContextQuantityBasis
+    from .device_exposure_evidence import DeviceExposureEvidence
+    from .device_exposure_link import DeviceExposureLink
+    from .device_exposure_row import DeviceExposureRow
     from .dropped_resource import DroppedResource
     from .drug_exposure_row import DrugExposureRow
     from .location_row import LocationRow
@@ -23,6 +28,8 @@ if typing.TYPE_CHECKING:
     from .mapping_resolution_status import MappingResolutionStatus
     from .mapping_resolution_via import MappingResolutionVia
     from .measurement_row import MeasurementRow
+    from .medication_dispense_source_context import MedicationDispenseSourceContext
+    from .medication_dispense_source_context_omop_table import MedicationDispenseSourceContextOmopTable
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
@@ -65,6 +72,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConditionOccurrenceRow": ".condition_occurrence_row",
     "CreateOmopResponse": ".create_omop_response",
     "DeathRow": ".death_row",
+    "DeviceExposureContext": ".device_exposure_context",
+    "DeviceExposureContextQuantityBasis": ".device_exposure_context_quantity_basis",
+    "DeviceExposureEvidence": ".device_exposure_evidence",
+    "DeviceExposureLink": ".device_exposure_link",
+    "DeviceExposureRow": ".device_exposure_row",
     "DroppedResource": ".dropped_resource",
     "DrugExposureRow": ".drug_exposure_row",
     "LocationRow": ".location_row",
@@ -77,6 +89,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MappingResolutionStatus": ".mapping_resolution_status",
     "MappingResolutionVia": ".mapping_resolution_via",
     "MeasurementRow": ".measurement_row",
+    "MedicationDispenseSourceContext": ".medication_dispense_source_context",
+    "MedicationDispenseSourceContextOmopTable": ".medication_dispense_source_context_omop_table",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
@@ -143,6 +157,11 @@ __all__ = [
     "ConditionOccurrenceRow",
     "CreateOmopResponse",
     "DeathRow",
+    "DeviceExposureContext",
+    "DeviceExposureContextQuantityBasis",
+    "DeviceExposureEvidence",
+    "DeviceExposureLink",
+    "DeviceExposureRow",
     "DroppedResource",
     "DrugExposureRow",
     "LocationRow",
@@ -155,6 +174,8 @@ __all__ = [
     "MappingResolutionStatus",
     "MappingResolutionVia",
     "MeasurementRow",
+    "MedicationDispenseSourceContext",
+    "MedicationDispenseSourceContextOmopTable",
     "ObservationPeriodRow",
     "ObservationRow",
     "OmopTables",
