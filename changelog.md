@@ -1,3 +1,17 @@
+## [18.4.0] - 2026-10-27
+### Added
+- **`DeviceUseStatement` → `device_exposure` mapping** — `DeviceUseStatement` is now a supported row-producing resource, mapping to the `device_exposure` OMOP table with per-event rows, UDI carrier identity, and full `device_exposure_contexts` provenance.
+- **`MedicationDispense` → `drug_exposure` mapping** — `MedicationDispense` is now a supported row-producing resource using `drug_type_concept_id` 32825 (EHR dispensing record), accepting completed and stopped-with-handover records with timing, days supply, route, and performer extraction.
+- **`device_exposure` as a clinical domain-routing destination** — vocabulary-routed clinical resources can now resolve to `device_exposure` alongside the existing OMOP clinical domains; `AllergyIntolerance` is explicitly excluded from both `drug_exposure` and `device_exposure`.
+- **`DeviceExposureRow`, `DeviceExposureContext`, and related supporting types** — new OMOP output types representing mapped `device_exposure` rows and their shared evidence, quantity explanation, and row links; `MedicationDispenseSourceContext` and `MedicationDispenseSourceContextOmopTable` similarly preserve dispensing context alongside emitted rows.
+- **`small_note` parameter on `client.lang2fhir.create_multi(...)`** — new optional boolean that bills the request at the lower small-note rate; `text` must be at most 15,360 bytes (15 KiB) UTF-8 encoded when `True`.
+
+### Changed
+- **`OmopTables.device_exposure` and `CreateOmopResponse.device_exposure_contexts`** — new optional response fields surface `DeviceExposureRow` entries and per-record `DeviceExposureContext` groupings produced from `DeviceUseStatement` resources.
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — new optional response field returns one `MedicationDispenseSourceContext` per emitted dispensing row; omitted when no dispenses are produced.
+- **`QuantityTransformationResourceType` and `QuantityTransformationSourcePath`** — `"MedicationDispense"` and `"quantity"` added as supported literal values to cover `MedicationDispense.quantity` transformation.
+- **`client.fhir2omop.create(...)` Specimen material concept resolution** — material descriptions now follow the shared semantic-mapping policy; `concept_id` 0 uniformly signals `UNMAPPED` instead of an unverified suggestion.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
