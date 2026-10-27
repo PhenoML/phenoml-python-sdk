@@ -1,3 +1,18 @@
+## [18.4.0] - 2026-10-27
+### Added
+- **`MedicationDispense` support in `client.fhir2omop.create(...)`** — `MedicationDispense` is now a supported OMOP-mapped resource, producing `drug_exposure` rows with `drug_type_concept_id` `32825`; completed, completed-partial-fill, and stopped (with valid `whenHandedOver`) records are accepted, all other statuses are dropped.
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — new optional field returning the original dispensing context (status, timing, instructions, and references) linked to each emitted dispensing row.
+- **`MedicationDispenseSourceContext` and `MedicationDispenseSourceContextOmopTable`** — new types capturing per-row dispensing context and enumerating valid OMOP destination tables for `MedicationDispense` rows.
+- **`QuantityTransformationResourceType` and `QuantityTransformationSourcePath`** — `"MedicationDispense"` and `"quantity"` are now recognised literal values, enabling quantity-transformation auditing for dispense records.
+- **`client.lang2fhir.create_multi(small_note=...)`** — new optional boolean parameter that bills the request at the lower small-note rate; `text` must be at most 15,360 bytes when `True`.
+
+### Changed
+- **`client.fhir2omop.create(...)` Specimen material mapping** — material descriptions now follow the general semantic-mapping policy (`MAPPED` with a real concept ID or `UNMAPPED` with `0`), replacing the previous `UNCHECKED` suggestion path.
+- **`client.fhir2omop.create(...)` `vocab_version` default** — updated reference vocabulary release to `v20260829`; specify `vocab_version` explicitly when reproducibility matters.
+- **`DrugExposureRow`** — docstrings for `drug_exposure_start_date`, `days_supply`, `quantity`, and `drug_type_concept_id` updated to document `MedicationDispense` sources and distinguish concept IDs `32825`, `32838`, and `32817`.
+- **`OmopTables` and `CreateOmopResponse.quantity_transformations`** — docstrings clarified to document always-present nullable concept fields, `null` vs `0` semantics, and that only `drug_exposure` rows produce quantity entries.
+- **`Lang2FhirBatchClient` and `AsyncLang2FhirBatchClient`** — `small_note` is now documented as an accepted field for `POST /lang2fhir/create/multi`.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
