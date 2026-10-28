@@ -10,10 +10,10 @@ from .semantic_mapping_result_status import SemanticMappingResultStatus
 
 class SemanticMappingResult(UniversalBaseModel):
     """
-    Result of semantic mapping for an unresolved coded field or text-only
-    primary clinical concept. Present when semantic mapping was attempted;
-    omitted otherwise. The containing MappingEntry identifies the source and
-    output field. Use its `omop_table` to select a table in `tables` and its
+    Result of semantic mapping for a supported concept field. Present when
+    semantic mapping was attempted; omitted otherwise. The containing
+    MappingEntry identifies the source and output field. Use its `omop_table`
+    to select a table in `tables` and its
     `omop_id` to find the row by that table's primary key; `omop_field` identifies
     the concept column. For example, `omop_table: condition_occurrence` and
     `omop_id: 7` refer to the row with `condition_occurrence_id: 7` in

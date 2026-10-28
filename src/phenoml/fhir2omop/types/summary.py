@@ -8,16 +8,22 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class Summary(UniversalBaseModel):
     """
-    The request's data-quality headline: how row-producing coded concepts,
-    supplied Quantity units on measurement, observation, or specimen rows,
-    supplied specimen sites,
+    The request's data-quality headline: how resolution outcomes split, and
+    the share that was not already in a target standard vocabulary. Counts
+    include primary clinical concepts, whether coded or text-only; coded
+    Observation result values on `measurement` or `observation` rows;
+    reported allergy substance values;
+    supplied Quantity units on measurement, observation, or specimen rows;
+    supplied specimen material and sites; Encounter classification outcomes;
+    Address.country, CMS Place of Service, and recorded Practitioner gender;
     coded medication/immunization routes (including those reported only in
-    `mappings` when the output table is not `drug_exposure`), and Patient
-    demographic fields split, and the share
-    that was not already in a target standard vocabulary. Each is counted
-    once even when it carried several codings — unlike `mappings`, which has
+    `mappings` when the output table is not `drug_exposure`); and Patient
+    demographic fields. Each outcome is counted once even when its source
+    carried several codings — unlike `mappings`, which has
     one entry per coding. For example, a medication code and its selected
     coded route on the same `drug_exposure` row are separate outcomes;
+    a coded Observation result on a measurement or observation row counts
+    separately from its primary concept, even when the result is unresolved;
     each supplied Quantity unit on a measurement, observation, or specimen row also
     counts once, including text-only units;
     each supplied specimen site counts once, including text-only sites;

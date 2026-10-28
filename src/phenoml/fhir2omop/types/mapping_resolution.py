@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .allergy_mapping_resolution import AllergyMappingResolution
 from .mapping_path import MappingPath
 from .mapping_resolution_reason_code import MappingResolutionReasonCode
 from .mapping_resolution_status import MappingResolutionStatus
@@ -16,12 +17,14 @@ class MappingResolution(UniversalBaseModel):
     Optional field-level mapping outcome and provenance. When a field has
     several source-coding entries, they share this outcome; paths describe
     the selected concept rather than separate mappings of every alternate
-    coding. Present for text-only clinical inference attempts. Omitted for
-    unchecked Specimen material suggestions, text-only specimen sites,
-    text-only units, units
-    with missing coding, unsupported unit systems, and Observation values
-    retained without resolution because the output table has no value column.
+    coding. Present for semantic mapping attempts. Omitted for fields
+    retained without concept resolution, including text-only collection
+    sites, text-only units, units with missing coding, unsupported unit
+    systems, and result values whose output table has no value column.
     Free-text diagnostics and unselected candidates are not returned.
+    Allergy source evidence can report complete standard target IDs to
+    explain source interpretation and ambiguity; these are not independently
+    selected substance values.
     """
 
     semantic_mapping: typing.Optional[SemanticMappingResult] = None
@@ -41,13 +44,17 @@ class MappingResolution(UniversalBaseModel):
     - `DOMAIN_MISMATCH`: candidate standard concepts do not match the domain required by the linked OMOP field.
     - `UNSUPPORTED_SYSTEM`: the source code system is unsupported.
     - `UNSUPPORTED_CODE`: the source code is unsupported for the linked OMOP field.
+    - `CONFLICTING_ALLERGY_EVIDENCE`: allergy source meanings or context conflict.
+    - `UNSUPPORTED_ALLERGY_SOURCE`: no supported allergy source meaning was established.
+    - `UNSUPPORTED_ALLERGY_CONTEXT`: the source context has no supported finding policy.
+    - `UNSUPPORTED_SOURCE_MEANING`: a known source concept has no supported allergy interpretation.
     
     Unknown reason codes are omitted; `status` still records the outcome.
     """
 
     via: typing.Optional[MappingResolutionVia] = pydantic.Field(default=None)
     """
-    How the selected concept was reached. DIRECT may use an OMOP Maps to relationship; UMLS_BRIDGE identifies resolution through a shared UMLS concept. Omitted when unavailable or no concept was selected.
+    How the selected concept was reached. DIRECT may use an OMOP Maps to relationship; UMLS_BRIDGE identifies resolution through a shared UMLS concept; CONTEXTUAL identifies an explicit transformation of a substance-coded allergy/intolerance statement using its FHIR context. Omitted when unavailable or no concept was selected.
     """
 
     paths: typing.Optional[typing.List[MappingPath]] = pydantic.Field(default=None)
@@ -59,6 +66,8 @@ class MappingResolution(UniversalBaseModel):
     """
     Present and true when candidate matches were truncated during resolution. Absence means no truncation was reported.
     """
+
+    allergy: typing.Optional[AllergyMappingResolution] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
