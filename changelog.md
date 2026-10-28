@@ -1,3 +1,12 @@
+## [18.4.0] - 2026-10-28
+### Added
+- **`OmopTables.device_exposure`** — new `DeviceExposureRow` list field surfaces OMOP `device_exposure` rows produced from FHIR `DeviceUseStatement` resources.
+- **`CreateOmopResponse.device_exposure_contexts`** — per-record provenance grouping timing, device evidence, and quantity explanation for emitted device exposure rows.
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — preserves dispensing status, timing, instructions, and references linked to each emitted `MedicationDispense` row.
+- **`MappingResolution.allergy`** — new `AllergyMappingResolution` type capturing allergy/intolerance substance mapping evidence, with new `CONTEXTUAL` value on `MappingResolutionVia` and four new allergy-specific `MappingResolutionReasonCode` values.
+- **`QuantityTransformation.unit_conversion`** — new `QuantityUnitConversion` type reporting intermediate UCUM unit conversion detail for `DERIVED` quantity outcomes; `MedicationDispense` added as a supported `QuantityTransformationResourceType`.
+- **`small_note` parameter on `client.lang2fhir.create_multi()`** — optional boolean that bills the request at the lower small-note rate; `text` must be at most 15,360 bytes when `True`; available on both sync and async clients.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
