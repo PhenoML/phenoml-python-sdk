@@ -1,3 +1,10 @@
+## [18.4.0] - 2026-10-28
+### Added
+- **`client.lang2fhir.create_multi(small_note=...)`** — new optional boolean parameter that bills the request at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes (15 KiB) UTF-8 encoded or the request is rejected with a 400 error.
+- **`SpecialtyResolution`** — new Pydantic model exposing per-specialty fallback decisions (`text_fallback_reason`) and an ordered list of per-coding outcomes (`coding_results`) for FHIR-to-OMOP specialty mapping audit.
+- **`SpecialtyCodingResult`** — new type reporting the independent resolution outcome of each coding in a specialty entry, including system support status, resolution status, and an optional machine-readable reason code.
+- **New specialty audit types** — `SpecialtyCodingResultStatus`, `SpecialtyCodingResultReasonCode`, `SpecialtyCodingResultSystemSupport`, and `SpecialtyResolutionTextFallbackReason` are now exported for typed access to specialty coding diagnostics.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
