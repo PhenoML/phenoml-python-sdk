@@ -1,3 +1,13 @@
+## [18.4.0] - 2026-10-28
+### Added
+- **`OmopTables.device_exposure`** — new optional list of `DeviceExposureRow` objects produced from FHIR DeviceUseStatement resources, enabling OMOP `device_exposure` table output.
+- **`CreateOmopResponse.device_exposure_contexts`** — per-source-record audit context grouping device exposure row links, timing, device evidence, and quantity explanation.
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — new audit context preserving dispensing status, timing, instructions, and references linked to each emitted MedicationDispense row.
+- **`MappingResolution.allergy`** — new optional `AllergyMappingResolution` field reporting allergy/intolerance substance source evidence and contextual interpretation, with four new `reason_code` values and a new `CONTEXTUAL` provenance literal.
+- **`QuantityTransformation.unit_conversion`** — new optional `QuantityUnitConversion` field reporting intermediate UCUM unit conversion details; `QuantityTransformationResourceType` and `QuantityTransformationSourcePath` each gain new values for MedicationDispense support.
+- **`small_note` parameter on `Lang2FhirClient.create_multi()` and `AsyncLang2FhirClient.create_multi()`** — optional boolean that bills the request at the lower small-note rate; input text must be at most 15,360 bytes (15 KiB) UTF-8 encoded when `True`.
+- **New supporting types** — `AllergyMappingResolution`, `AllergyCodingEvidence`, `DeviceExposureRow`, `DeviceExposureContext`, `DeviceExposureLink`, `DeviceExposureEvidence`, `DeviceExposureContextQuantityBasis`, `MedicationDispenseSourceContext`, `MedicationDispenseSourceContextOmopTable`, and `QuantityUnitConversion` are now exported from `phenoml.fhir2omop`.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
