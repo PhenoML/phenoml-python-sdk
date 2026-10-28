@@ -11,6 +11,7 @@ from .quantity_transformation_reason import QuantityTransformationReason
 from .quantity_transformation_resource_type import QuantityTransformationResourceType
 from .quantity_transformation_source_path import QuantityTransformationSourcePath
 from .quantity_unit import QuantityUnit
+from .quantity_unit_conversion import QuantityUnitConversion
 
 
 class QuantityTransformation(UniversalBaseModel):
@@ -43,7 +44,7 @@ class QuantityTransformation(UniversalBaseModel):
 
     outcome: QuantityTransformationOutcome = pydantic.Field()
     """
-    DIRECT copies a matched fixed-form count or supplied ingredient amount; DERIVED calculates a dose-form count or ingredient amount under the named policy; OMITTED leaves quantity unset while retaining the row.
+    DIRECT copies a matched fixed-form count or an ingredient amount in the same unit; DERIVED converts units or calculates a dose-form count or ingredient amount under the named policy; OMITTED leaves quantity unset while retaining the row.
     """
 
     policy: typing.Optional[QuantityTransformationPolicy] = pydantic.Field(default=None)
@@ -65,12 +66,13 @@ class QuantityTransformation(UniversalBaseModel):
     - unsupported_drug_class: the drug is outside Clinical Drug or Branded Drug, including quantified products and packs.
     - unsupported_dose_form: the dose form has no supported classification for these policies.
     - unsupported_strength: strength does not establish the selected policy, including missing, non-positive, non-finite, or conflicting values or an absent/unsupported denominator basis for volume conversion.
-    - unit_mismatch: no exact validated UCUM strength unit matches the source coding, or an explicit count disagrees with the selected tablet/capsule form.
+    - unit_mismatch: the source neither matches a validated vocabulary-backed strength unit nor converts within the documented supported unit groups, or an explicit count disagrees with the selected tablet/capsule form.
     - unsupported_fraction: a fixed-form count is not whole units or multiples of one-half or one-third.
     - invalid_result: arithmetic does not produce a positive finite result.
     """
 
     evidence: typing.Optional[QuantityEvidence] = None
+    unit_conversion: typing.Optional[QuantityUnitConversion] = None
     result: typing.Optional[float] = pydantic.Field(default=None)
     """
     Same numeric value as the linked row's quantity.

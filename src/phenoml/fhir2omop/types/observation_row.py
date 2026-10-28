@@ -28,7 +28,11 @@ class ObservationRow(UniversalBaseModel):
     visit_occurrence_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
     observation_source_value: typing.Optional[str] = None
-    observation_source_concept_id: typing.Optional[int] = None
+    observation_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    For coded AllergyIntolerance rows, the known OMOP identity of the original coding rendered in observation_source_value, even when the finding is unresolved. 0 when no original source identity is known; the configured contextual finding is not a source concept.
+    """
+
     unit_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
     Original Quantity.code if supplied, otherwise Quantity.unit; human-readable unit text is preserved in the unit mapping's source_name.
