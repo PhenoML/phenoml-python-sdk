@@ -2,4 +2,9 @@
 
 import typing
 
-MappingResolutionVia = typing.Union[typing.Literal["DIRECT", "UMLS_BRIDGE"], typing.Any]
+MappingResolutionVia = typing.Union[
+    typing.Literal[
+        "DIRECT", "UMLS_BRIDGE", "CONTEXTUAL", "CONCEPT_NAME", "CONCEPT_SYNONYM", "UMLS_STRING", "NUCC_LABEL"
+    ],
+    typing.Any,
+]

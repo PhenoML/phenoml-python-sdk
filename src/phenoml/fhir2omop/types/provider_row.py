@@ -15,7 +15,11 @@ class ProviderRow(UniversalBaseModel):
     """
 
     dea: typing.Optional[str] = None
-    specialty_concept_id: typing.Optional[int] = None
+    specialty_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Standard Provider concept shared by every distinct supplied role specialty; otherwise `0`. Inputs resolve independently, without frequency or hierarchy selection.
+    """
+
     care_site_id: typing.Optional[int] = None
     year_of_birth: typing.Optional[int] = pydantic.Field(default=None)
     """
@@ -52,8 +56,16 @@ class ProviderRow(UniversalBaseModel):
     `@role-index:1`.
     """
 
-    specialty_source_value: typing.Optional[str] = None
-    specialty_source_concept_id: typing.Optional[int] = None
+    specialty_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Supplied specialty text (or coding display/code) when source values across roles agree, including unresolved text. Conflicting source values remain in provider_role_contexts and mappings.
+    """
+
+    specialty_source_concept_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Shared input OMOP source concept when all specialties agree on both target and source concept. Text, UMLS routes, conflicting inputs, or differing source concepts leave `0`.
+    """
+
     gender_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
     The recorded FHIR administrative-gender value for this Provider.

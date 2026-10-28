@@ -4,8 +4,10 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .device_exposure_context import DeviceExposureContext
 from .dropped_resource import DroppedResource
 from .mapping_entry import MappingEntry
+from .medication_dispense_source_context import MedicationDispenseSourceContext
 from .omop_tables import OmopTables
 from .provider_role_context import ProviderRoleContext
 from .quantity_transformation import QuantityTransformation
@@ -21,7 +23,7 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     quantity_transformations: typing.Optional[typing.List[QuantityTransformation]] = pydantic.Field(default=None)
     """
-    Audits supplied direct drug quantities on emitted rows, including derivations and omissions. Omitted when no applicable quantity was supplied. Entries use the response's vocabulary release and do not affect terminology mapping counts in summary. The examples use illustrative concept IDs; actual IDs and evidence belong to vocab_version.
+    Audits supplied direct quantities on emitted drug_exposure rows, including derivations and omissions. Resources returned in other clinical tables have no quantity entry. Omitted when no applicable quantity was supplied on a drug_exposure row. Entries use the response's vocabulary release and do not affect terminology mapping counts in summary. The examples use illustrative concept IDs; actual IDs and evidence belong to vocab_version.
     """
 
     rows_for_review: typing.Optional[typing.List[RowForReview]] = pydantic.Field(default=None)
@@ -31,7 +33,10 @@ class CreateOmopResponse(UniversalBaseModel):
     tables; row payloads are neither moved nor duplicated. Omitted when empty.
     Condition unconfirmed/provisional/differential or unreadable supplied
     verificationStatus and Encounter unknown/missing/unreadable status are
-    indexed. Absent Condition verificationStatus keeps its existing policy.
+    indexed. Explicit unknown status on MedicationStatement, Observation,
+    and Procedure is also indexed; missing or unreadable status on these
+    three types remains dropped. Absent Condition verificationStatus keeps
+    its existing policy.
     Refuted/entered-in-error Conditions and planned/cancelled/entered-in-error
     Encounters remain dropped; all patient-reference checks still apply.
     Other eligible clinical rows with primary concept 0 are indexed,
@@ -72,9 +77,21 @@ class CreateOmopResponse(UniversalBaseModel):
     `observation` race row when the person has more than one race.
     """
 
+    device_exposure_contexts: typing.Optional[typing.List[DeviceExposureContext]] = pydantic.Field(default=None)
+    """
+    One entry per source record that produced device exposures. Each entry groups the derived row links and returns their shared timing, device evidence, and quantity explanation once. Original source values may contain clinical data.
+    """
+
     specimen_source_contexts: typing.Optional[typing.List[SpecimenSourceContext]] = pydantic.Field(default=None)
     """
     Source identities, availability status, and collection timing for emitted specimens, linked by request-local specimen_id. Preserves valued identifier system/value pairs, accession identity, resource id/fullUrl, the chosen source-ID path, and supplied collection/received timing with original precision and offsets.
+    """
+
+    medication_dispense_source_contexts: typing.Optional[typing.List[MedicationDispenseSourceContext]] = pydantic.Field(
+        default=None
+    )
+    """
+    Supplied dispensing status, timing, instructions, and references linked to each emitted dispensing row, including rows placed in another clinical table. Omitted when there are no emitted dispenses. This response metadata is independent of rows_for_review and does not establish administration or adherence.
     """
 
     provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
@@ -95,6 +112,8 @@ class CreateOmopResponse(UniversalBaseModel):
     lacks only a date or another CDM-required field is usually returned
     as a partial row. Specimen requires an explicit resolvable Patient
     subject but retains missing dates/material with linked diagnostics.
+    DeviceUseStatement also requires an explicit resolvable Patient subject;
+    missing Device details or timing retain partial exposure rows.
     Unsupported resource types are ignored and do not appear here.
     Eligibility exclusions use stable, resource-specific `reason` codes;
     other shaping failures retain an explanatory reason string.
@@ -106,7 +125,13 @@ class CreateOmopResponse(UniversalBaseModel):
     an OMOP link or canonicalize a `PractitionerRole` provider identity, or explicit
     subject/patient references that caused a clinical row to be dropped.
     Specimen missing/unusable collection dates, material, subject, status,
-    and invalid optional quantity are also explained here.
+    and invalid optional quantity are also explained here. Device-use status,
+    attribution, missing detail, timing omissions/conflicts, UDI ambiguity,
+    and unsupported device counts are also reported with row links when
+    a row is retained. A shared issue can link to multiple event rows.
+    MedicationDispense missing/unusable handover, absent exposure end,
+    unsupported supplied daysSupply, conflicting routes, and unsafe
+    medication or authorizing-prescription references are also reported.
     Missing optional references are normal and do not produce a diagnostic.
     References resolve only against resources supplied in this request.
     Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported

@@ -6,11 +6,24 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
+    from .allergy_coding_evidence import AllergyCodingEvidence
+    from .allergy_coding_evidence_meaning import AllergyCodingEvidenceMeaning
+    from .allergy_mapping_resolution import AllergyMappingResolution
+    from .allergy_mapping_resolution_categories_item import AllergyMappingResolutionCategoriesItem
+    from .allergy_mapping_resolution_date_source import AllergyMappingResolutionDateSource
+    from .allergy_mapping_resolution_method import AllergyMappingResolutionMethod
+    from .allergy_mapping_resolution_status import AllergyMappingResolutionStatus
+    from .allergy_mapping_resolution_type import AllergyMappingResolutionType
     from .care_site_row import CareSiteRow
     from .coding import Coding
     from .condition_occurrence_row import ConditionOccurrenceRow
     from .create_omop_response import CreateOmopResponse
     from .death_row import DeathRow
+    from .device_exposure_context import DeviceExposureContext
+    from .device_exposure_context_quantity_basis import DeviceExposureContextQuantityBasis
+    from .device_exposure_evidence import DeviceExposureEvidence
+    from .device_exposure_link import DeviceExposureLink
+    from .device_exposure_row import DeviceExposureRow
     from .dropped_resource import DroppedResource
     from .drug_exposure_row import DrugExposureRow
     from .location_row import LocationRow
@@ -23,6 +36,8 @@ if typing.TYPE_CHECKING:
     from .mapping_resolution_status import MappingResolutionStatus
     from .mapping_resolution_via import MappingResolutionVia
     from .measurement_row import MeasurementRow
+    from .medication_dispense_source_context import MedicationDispenseSourceContext
+    from .medication_dispense_source_context_omop_table import MedicationDispenseSourceContextOmopTable
     from .observation_period_row import ObservationPeriodRow
     from .observation_row import ObservationRow
     from .omop_tables import OmopTables
@@ -44,6 +59,7 @@ if typing.TYPE_CHECKING:
     from .quantity_transformation_resource_type import QuantityTransformationResourceType
     from .quantity_transformation_source_path import QuantityTransformationSourcePath
     from .quantity_unit import QuantityUnit
+    from .quantity_unit_conversion import QuantityUnitConversion
     from .reference_diagnostic import ReferenceDiagnostic
     from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
     from .row_for_review import RowForReview
@@ -51,6 +67,12 @@ if typing.TYPE_CHECKING:
     from .semantic_mapping_result import SemanticMappingResult
     from .semantic_mapping_result_reason_code import SemanticMappingResultReasonCode
     from .semantic_mapping_result_status import SemanticMappingResultStatus
+    from .specialty_coding_result import SpecialtyCodingResult
+    from .specialty_coding_result_reason_code import SpecialtyCodingResultReasonCode
+    from .specialty_coding_result_status import SpecialtyCodingResultStatus
+    from .specialty_coding_result_system_support import SpecialtyCodingResultSystemSupport
+    from .specialty_resolution import SpecialtyResolution
+    from .specialty_resolution_text_fallback_reason import SpecialtyResolutionTextFallbackReason
     from .specimen_collection_period import SpecimenCollectionPeriod
     from .specimen_collection_timing import SpecimenCollectionTiming
     from .specimen_identifier import SpecimenIdentifier
@@ -60,11 +82,24 @@ if typing.TYPE_CHECKING:
     from .summary import Summary
     from .visit_occurrence_row import VisitOccurrenceRow
 _dynamic_imports: typing.Dict[str, str] = {
+    "AllergyCodingEvidence": ".allergy_coding_evidence",
+    "AllergyCodingEvidenceMeaning": ".allergy_coding_evidence_meaning",
+    "AllergyMappingResolution": ".allergy_mapping_resolution",
+    "AllergyMappingResolutionCategoriesItem": ".allergy_mapping_resolution_categories_item",
+    "AllergyMappingResolutionDateSource": ".allergy_mapping_resolution_date_source",
+    "AllergyMappingResolutionMethod": ".allergy_mapping_resolution_method",
+    "AllergyMappingResolutionStatus": ".allergy_mapping_resolution_status",
+    "AllergyMappingResolutionType": ".allergy_mapping_resolution_type",
     "CareSiteRow": ".care_site_row",
     "Coding": ".coding",
     "ConditionOccurrenceRow": ".condition_occurrence_row",
     "CreateOmopResponse": ".create_omop_response",
     "DeathRow": ".death_row",
+    "DeviceExposureContext": ".device_exposure_context",
+    "DeviceExposureContextQuantityBasis": ".device_exposure_context_quantity_basis",
+    "DeviceExposureEvidence": ".device_exposure_evidence",
+    "DeviceExposureLink": ".device_exposure_link",
+    "DeviceExposureRow": ".device_exposure_row",
     "DroppedResource": ".dropped_resource",
     "DrugExposureRow": ".drug_exposure_row",
     "LocationRow": ".location_row",
@@ -77,6 +112,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "MappingResolutionStatus": ".mapping_resolution_status",
     "MappingResolutionVia": ".mapping_resolution_via",
     "MeasurementRow": ".measurement_row",
+    "MedicationDispenseSourceContext": ".medication_dispense_source_context",
+    "MedicationDispenseSourceContextOmopTable": ".medication_dispense_source_context_omop_table",
     "ObservationPeriodRow": ".observation_period_row",
     "ObservationRow": ".observation_row",
     "OmopTables": ".omop_tables",
@@ -98,6 +135,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "QuantityTransformationResourceType": ".quantity_transformation_resource_type",
     "QuantityTransformationSourcePath": ".quantity_transformation_source_path",
     "QuantityUnit": ".quantity_unit",
+    "QuantityUnitConversion": ".quantity_unit_conversion",
     "ReferenceDiagnostic": ".reference_diagnostic",
     "ReferenceDiagnosticOutcome": ".reference_diagnostic_outcome",
     "RowForReview": ".row_for_review",
@@ -105,6 +143,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SemanticMappingResult": ".semantic_mapping_result",
     "SemanticMappingResultReasonCode": ".semantic_mapping_result_reason_code",
     "SemanticMappingResultStatus": ".semantic_mapping_result_status",
+    "SpecialtyCodingResult": ".specialty_coding_result",
+    "SpecialtyCodingResultReasonCode": ".specialty_coding_result_reason_code",
+    "SpecialtyCodingResultStatus": ".specialty_coding_result_status",
+    "SpecialtyCodingResultSystemSupport": ".specialty_coding_result_system_support",
+    "SpecialtyResolution": ".specialty_resolution",
+    "SpecialtyResolutionTextFallbackReason": ".specialty_resolution_text_fallback_reason",
     "SpecimenCollectionPeriod": ".specimen_collection_period",
     "SpecimenCollectionTiming": ".specimen_collection_timing",
     "SpecimenIdentifier": ".specimen_identifier",
@@ -138,11 +182,24 @@ def __dir__():
 
 
 __all__ = [
+    "AllergyCodingEvidence",
+    "AllergyCodingEvidenceMeaning",
+    "AllergyMappingResolution",
+    "AllergyMappingResolutionCategoriesItem",
+    "AllergyMappingResolutionDateSource",
+    "AllergyMappingResolutionMethod",
+    "AllergyMappingResolutionStatus",
+    "AllergyMappingResolutionType",
     "CareSiteRow",
     "Coding",
     "ConditionOccurrenceRow",
     "CreateOmopResponse",
     "DeathRow",
+    "DeviceExposureContext",
+    "DeviceExposureContextQuantityBasis",
+    "DeviceExposureEvidence",
+    "DeviceExposureLink",
+    "DeviceExposureRow",
     "DroppedResource",
     "DrugExposureRow",
     "LocationRow",
@@ -155,6 +212,8 @@ __all__ = [
     "MappingResolutionStatus",
     "MappingResolutionVia",
     "MeasurementRow",
+    "MedicationDispenseSourceContext",
+    "MedicationDispenseSourceContextOmopTable",
     "ObservationPeriodRow",
     "ObservationRow",
     "OmopTables",
@@ -176,6 +235,7 @@ __all__ = [
     "QuantityTransformationResourceType",
     "QuantityTransformationSourcePath",
     "QuantityUnit",
+    "QuantityUnitConversion",
     "ReferenceDiagnostic",
     "ReferenceDiagnosticOutcome",
     "RowForReview",
@@ -183,6 +243,12 @@ __all__ = [
     "SemanticMappingResult",
     "SemanticMappingResultReasonCode",
     "SemanticMappingResultStatus",
+    "SpecialtyCodingResult",
+    "SpecialtyCodingResultReasonCode",
+    "SpecialtyCodingResultStatus",
+    "SpecialtyCodingResultSystemSupport",
+    "SpecialtyResolution",
+    "SpecialtyResolutionTextFallbackReason",
     "SpecimenCollectionPeriod",
     "SpecimenCollectionTiming",
     "SpecimenIdentifier",

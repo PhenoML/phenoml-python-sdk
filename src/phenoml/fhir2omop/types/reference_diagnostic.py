@@ -26,7 +26,7 @@ class ReferenceDiagnostic(UniversalBaseModel):
 
     path: typing.Optional[str] = pydantic.Field(default=None)
     """
-    FHIR element path on the source resource.
+    FHIR element path on the source resource, or slash-separated related paths for a joint rule such as whenHandedOver/daysSupply.
     """
 
     reference: typing.Optional[str] = pydantic.Field(default=None)
