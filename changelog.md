@@ -1,3 +1,18 @@
+## [18.4.0] - 2026-10-28
+### Added
+- **`client.fhir2omop.create(...)` DeviceUseStatement support** — `DeviceUseStatement` now maps to `device_exposure` rows with `timingTiming` granularity, UDI carrier `unique_device_id` resolution, and a `device_exposure_contexts` audit structure.
+- **`client.fhir2omop.create(...)` MedicationDispense support** — `MedicationDispense` now maps to `drug_exposure` (type concept 32825) with `whenHandedOver` as start date, `daysSupply` as `days_supply`, and `medication_dispense_*` diagnostics for partial rows.
+- **`OmopTables.device_exposure` and `CreateOmopResponse.device_exposure_contexts`** — new fields exposing `DeviceExposureRow` lists and `DeviceExposureContext` audit entries produced from `DeviceUseStatement` resources.
+- **`CreateOmopResponse.medication_dispense_source_contexts`** — new optional list of `MedicationDispenseSourceContext` entries linking dispensing status, timing, and instructions to each emitted `drug_exposure` row.
+- **`lang2fhir.create_multi(small_note=...)`** — new optional boolean on `Lang2FhirClient.create_multi()` and `AsyncLang2FhirClient.create_multi()` that bills at the lower small-note rate for texts up to 15 KiB.
+- **New allergy, device, and dispense types** — `AllergyMappingResolution`, `DeviceExposureRow`, `DeviceExposureContext`, `MedicationDispenseSourceContext`, and related supporting types are now exported from `phenoml.fhir2omop`.
+- **New `MappingResolutionReasonCode` and `MappingResolutionVia` values** — four new allergy-specific reason codes (`CONFLICTING_ALLERGY_EVIDENCE`, `UNSUPPORTED_ALLERGY_SOURCE`, `UNSUPPORTED_ALLERGY_CONTEXT`, `UNSUPPORTED_SOURCE_MEANING`) and a new `CONTEXTUAL` via value added.
+
+### Changed
+- **`client.fhir2omop.create(...)` AllergyIntolerance contextual finding policy** — valid substance codes now produce a contextual Observation in `value_as_concept_id` (`resolution.via: CONTEXTUAL`); invalid `type` or `category` now drops the resource with an explicit diagnostic instead of silently continuing.
+- **`client.fhir2omop.create(...)` clinical placement destinations** — `device_exposure` is now a supported domain-routing destination; `AllergyIntolerance` is explicitly excluded from `drug_exposure` and `device_exposure`.
+- **`client.fhir2omop.create(...)` Specimen material mapping** — material descriptions now follow the semantic-mapping policy (MAPPED/UNMAPPED) instead of producing an `UNCHECKED` suggestion with concept ID 0.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
