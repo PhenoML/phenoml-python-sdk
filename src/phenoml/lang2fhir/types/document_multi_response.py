@@ -11,7 +11,7 @@ from .page_classification import PageClassification
 class DocumentMultiResponse(CreateMultiResponse):
     page_classifications: typing.Optional[typing.List[PageClassification]] = pydantic.Field(default=None)
     """
-    Per-page classifier decisions. Populated when page_filter or split_classifications was supplied in the request. Contains one entry per input page, including both kept and dropped pages.
+    Per-page classifier decisions, one entry per input page, kept and dropped. Returned on every request: from page_filter or split_classifications when set, otherwise from the default test-requisition-form filter (see the endpoint description).
     """
 
     if IS_PYDANTIC_V2:

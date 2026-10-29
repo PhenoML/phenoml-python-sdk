@@ -7,6 +7,7 @@ import typing_extensions
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ...core.serialization import FieldMetadata
 from .resource_review_finding import ResourceReviewFinding
+from .resource_review_remediated_action import ResourceReviewRemediatedAction
 
 
 class ResourceReviewRemediated(UniversalBaseModel):
@@ -22,9 +23,9 @@ class ResourceReviewRemediated(UniversalBaseModel):
     resource_type: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="resourceType"), pydantic.Field(alias="resourceType")
     ] = None
-    action: typing.Optional[typing.Literal["removed_codings"]] = pydantic.Field(default=None)
+    action: typing.Optional[ResourceReviewRemediatedAction] = pydantic.Field(default=None)
     """
-    The safe change applied to the resource in the returned bundle.
+    What review did to the resource in the returned bundle: removed_codings removed unsupported codings while each affected concept kept one; removed_fields removed unsupported fields its profile does not require; flagged_required kept unsupported fields its profile requires, so the findings report values that remain in the bundle.
     """
 
     findings: typing.Optional[typing.List[ResourceReviewFinding]] = pydantic.Field(default=None)

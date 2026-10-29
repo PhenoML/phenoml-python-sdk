@@ -20,6 +20,8 @@ CreateRequestResource = typing.Union[
         "patient",
         "phenoml-hpo-condition",
         "phenoml-hpo-phenotypic-observation",
+        "phenoml-hpo-head-circumference-tape-measure",
+        "phenoml-hpo-head-circumference-percentile",
         "procedure",
         "questionnaire",
         "questionnaireresponse",

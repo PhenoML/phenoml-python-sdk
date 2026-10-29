@@ -10,7 +10,7 @@ from .resource_review_remediated import ResourceReviewRemediated
 
 class ResourceReviewResult(UniversalBaseModel):
     """
-    Present when resource_review was requested and at least one resource was quarantined or safely remediated. The returned bundle is authoritative and contains the post-review representation of every retained resource.
+    Present when resource_review was requested and at least one resource was quarantined, safely remediated, or kept with an unsupported required field. The returned bundle is authoritative and contains the post-review representation of every retained resource.
     """
 
     flagged: typing.Optional[typing.List[ResourceReviewFlagged]] = pydantic.Field(default=None)
@@ -20,7 +20,7 @@ class ResourceReviewResult(UniversalBaseModel):
 
     remediated: typing.Optional[typing.List[ResourceReviewRemediated]] = pydantic.Field(default=None)
     """
-    Resources retained in the bundle after unsupported codings were safely removed.
+    Resources retained in the bundle after review: unsupported codings or fields were safely removed, or unsupported required fields were kept and are reported here (see action).
     """
 
     if IS_PYDANTIC_V2:

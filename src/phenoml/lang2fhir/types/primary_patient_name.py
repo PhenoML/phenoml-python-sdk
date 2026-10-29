@@ -18,7 +18,7 @@ class PrimaryPatientName(UniversalBaseModel):
 
     given: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    Given names. Matching succeeds when a generated name has a supplied given name.
+    Given names.
     """
 
     if IS_PYDANTIC_V2:

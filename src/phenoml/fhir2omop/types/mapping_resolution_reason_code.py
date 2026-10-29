@@ -11,6 +11,10 @@ MappingResolutionReasonCode = typing.Union[
         "DOMAIN_MISMATCH",
         "UNSUPPORTED_SYSTEM",
         "UNSUPPORTED_CODE",
+        "CONFLICTING_ALLERGY_EVIDENCE",
+        "UNSUPPORTED_ALLERGY_SOURCE",
+        "UNSUPPORTED_ALLERGY_CONTEXT",
+        "UNSUPPORTED_SOURCE_MEANING",
     ],
     typing.Any,
 ]
