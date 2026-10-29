@@ -1,3 +1,15 @@
+## [18.4.0] - 2026-10-29
+### Added
+- **`small_note`** — new optional boolean parameter on `client.lang2fhir` create/multi and document/multi endpoints that bills at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes or the request is rejected with a 400 error.
+- **`ResourceReviewRemediatedAction`** — new `lang2fhir` enum replacing the previous `Literal["removed_codings"]` type on `ResourceReviewRemediated.action`, adding `removed_fields` and `flagged_required` values alongside the existing `removed_codings`.
+- **`SpecialtyResolution` and `SpecialtyCodingResult`** — new `fhir2omop` models exposing per-coding and entry-level specialty resolution audit data, with supporting type aliases `SpecialtyCodingResultStatus`, `SpecialtyCodingResultSystemSupport`, `SpecialtyCodingResultReasonCode`, and `SpecialtyResolutionTextFallbackReason`.
+- **New HPO head-circumference profiles** — `phenoml-hpo-head-circumference-tape-measure` and `phenoml-hpo-head-circumference-percentile` are now accepted as requestable resource types in `lang2fhir` create requests.
+
+### Changed
+- **`client.lang2fhir` Patient handling** — every bundle now contains exactly one Patient; when multiple patients are named, the one identified by `primary_patient` (or the most-referenced one) is used and its identifier is merged in unless name, birth date, or gender contradicts it.
+- **`implementation_guide` parameter** — `us_core` and `phenoml_hpo` now explicitly select built-in guides; any other value is treated as a custom IG name, and an unrecognized name returns 404.
+- **`DocumentMultiResponse.page_classifications`** — now populated on every document/multi request rather than only when `page_filter` or `split_classifications` was supplied; pages classified as test requisition forms are dropped by default and reported here.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
