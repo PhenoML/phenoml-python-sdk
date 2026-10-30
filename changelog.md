@@ -1,3 +1,15 @@
+## [18.4.0] - 2026-10-30
+### Added
+- **`small_note` parameter** — new optional boolean on `client.lang2fhir.create_multi(...)` and `client.lang2fhir.document.create_multi(...)` that bills the request at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes or the request is rejected with a 400 error.
+- **`ResourceReviewRemediatedAction`** — new enum type on `ResourceReviewRemediated.action` reporting the machine-readable action taken during resource review remediation (`removed_codings`, `removed_fields`, or `flagged_required`).
+- **`SpecialtyResolution` and `SpecialtyCodingResult`** — new fhir2omop audit types exposing per-coding specialty concept resolution outcomes, including status, system support, and reason codes via associated enums.
+- **New built-in HPO profiles** — `phenoml-hpo-head-circumference-tape-measure` and `phenoml-hpo-head-circumference-percentile` are now available as built-in profiles and accepted `CreateRequestResource` values.
+
+### Changed
+- **`implementation_guide` parameter** — `us_core` and `phenoml_hpo` now select built-in guides; any other value is treated as a custom IG name, and an unrecognized name returns 404.
+- **`DocumentMultiResponse.page_classifications`** — now populated on every document/multi request; a default test-requisition-form filter is applied and matching pages are dropped before extraction when neither `split_classifications` nor `page_filter` is set.
+- **`client.lang2fhir` patient handling docstrings** — updated to describe the full patient-resolution logic, including how `primary_patient` is merged and how the response `message` reports the outcome.
+
 ## [18.3.0] - 2026-10-21
 ### Added
 - **`client.fhir2omop.create(...)` Specimen support** — `Specimen` is now a supported OMOP-mapped resource, producing `specimen` table rows with partial-row retention when collection dates or material are absent.
