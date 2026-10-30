@@ -1,3 +1,6 @@
+## [18.5.0] - 2026-10-30
+New capabilities added (DeviceUseStatement→device_exposure, MedicationDispense→drug_exposure, contextual AllergyIntolerance finding policy, PractitionerRole specialty resolution, unknown-status rows_for_review expansion, unit conversion in quantity_transformations) with no removed or renamed public API symbols.
+
 ## [18.4.0] - 2026-10-30
 ### Added
 - **`small_note` parameter** — new optional boolean on `client.lang2fhir.create_multi(...)` and `client.lang2fhir.document.create_multi(...)` that bills the request at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes or the request is rejected with a 400 error.
