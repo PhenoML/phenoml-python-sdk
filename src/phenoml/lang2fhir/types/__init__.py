@@ -40,6 +40,7 @@ if typing.TYPE_CHECKING:
     from .resource_review_finding_field_kind import ResourceReviewFindingFieldKind
     from .resource_review_flagged import ResourceReviewFlagged
     from .resource_review_remediated import ResourceReviewRemediated
+    from .resource_review_remediated_action import ResourceReviewRemediatedAction
     from .resource_review_result import ResourceReviewResult
     from .resource_review_target import ResourceReviewTarget
     from .resource_review_target_fields_item import ResourceReviewTargetFieldsItem
@@ -79,6 +80,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ResourceReviewFindingFieldKind": ".resource_review_finding_field_kind",
     "ResourceReviewFlagged": ".resource_review_flagged",
     "ResourceReviewRemediated": ".resource_review_remediated",
+    "ResourceReviewRemediatedAction": ".resource_review_remediated_action",
     "ResourceReviewResult": ".resource_review_result",
     "ResourceReviewTarget": ".resource_review_target",
     "ResourceReviewTargetFieldsItem": ".resource_review_target_fields_item",
@@ -142,6 +144,7 @@ __all__ = [
     "ResourceReviewFindingFieldKind",
     "ResourceReviewFlagged",
     "ResourceReviewRemediated",
+    "ResourceReviewRemediatedAction",
     "ResourceReviewResult",
     "ResourceReviewTarget",
     "ResourceReviewTargetFieldsItem",

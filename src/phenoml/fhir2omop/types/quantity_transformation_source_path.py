@@ -3,5 +3,5 @@
 import typing
 
 QuantityTransformationSourcePath = typing.Union[
-    typing.Literal["dispenseRequest.quantity", "dosage.dose", "doseQuantity"], typing.Any
+    typing.Literal["dispenseRequest.quantity", "quantity", "dosage.dose", "doseQuantity"], typing.Any
 ]

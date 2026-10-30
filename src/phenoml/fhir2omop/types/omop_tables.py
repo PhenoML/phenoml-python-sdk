@@ -7,6 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .care_site_row import CareSiteRow
 from .condition_occurrence_row import ConditionOccurrenceRow
 from .death_row import DeathRow
+from .device_exposure_row import DeviceExposureRow
 from .drug_exposure_row import DrugExposureRow
 from .location_row import LocationRow
 from .measurement_row import MeasurementRow
@@ -24,8 +25,15 @@ class OmopTables(UniversalBaseModel):
     OMOP CDM v5.4 rows grouped by destination table. IDs are sequential and
     scoped to one response; they are not stable keys across requests.
     Fields with no value are unset (omitted from the row), except concept
-    IDs reported as `0`. Each `*_datetime` comes from the same source as its
-    `*_date` and is set only when that source has a time of day.
+    IDs reported as `0` and the following nullable concept fields, which are
+    always present: `unit_concept_id` on Measurement, Observation, and
+    Specimen rows, `unit_source_concept_id` on Measurement rows, and
+    `anatomic_site_concept_id` on Specimen rows. These nullable fields are
+    `null` when the source value is absent and `0` when supplied but unmapped.
+    Device exposure `unit_concept_id` and `unit_source_concept_id` are always
+    present as `null`.
+    Each `*_datetime` comes from the same source as its `*_date` and is set
+    only when that source has a time of day.
     """
 
     location: typing.Optional[typing.List[LocationRow]] = None
@@ -39,6 +47,7 @@ class OmopTables(UniversalBaseModel):
     drug_exposure: typing.Optional[typing.List[DrugExposureRow]] = None
     procedure_occurrence: typing.Optional[typing.List[ProcedureOccurrenceRow]] = None
     measurement: typing.Optional[typing.List[MeasurementRow]] = None
+    device_exposure: typing.Optional[typing.List[DeviceExposureRow]] = None
     specimen: typing.Optional[typing.List[SpecimenRow]] = None
     observation: typing.Optional[typing.List[ObservationRow]] = None
 

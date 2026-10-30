@@ -31,6 +31,11 @@ class MappingEntry(UniversalBaseModel):
     source_system: typing.Optional[str] = None
     source_code: typing.Optional[str] = None
     source_name: typing.Optional[str] = None
+    source_coding_index: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Zero-based index of this coding in its originating specialty entry's coding array. When specialty audit is available, it also identifies the corresponding resolution.specialty_resolution.coding_results outcome. Present only for coded specialty mappings, including empty Coding objects; these mappings retain the supplied coding order.
+    """
+
     target_vocabulary: typing.Optional[str] = None
     target_code: typing.Optional[str] = pydantic.Field(default=None)
     """
@@ -44,12 +49,16 @@ class MappingEntry(UniversalBaseModel):
     mapping_status: typing.Optional[MappingEntryMappingStatus] = pydantic.Field(default=None)
     """
     ALREADY_STANDARD (source coding is already a standard OMOP concept),
-    MAPPED (source coding or clinical source text was mapped to a standard concept), UNCHECKED (a
-    standard code was suggested for text-only Specimen material but not verified
-    against the OMOP vocabulary, so `concept_id` stays `0`), or UNMAPPED
+    MAPPED (source coding or descriptive source text was mapped to a standard
+    concept), UNCHECKED (a suggested code has not been validated against
+    the OMOP vocabulary, so `concept_id` is `0`), or UNMAPPED
     (no target concept selected, including missing mappings,
     target-domain mismatches and ambiguity, or source information
-    retained without concept resolution as explained in `note`).
+    retained without concept resolution as explained in `note`). For
+    specialties, this describes the entry-level result selected from
+    supported codings or explicit text. A local coding can remain
+    unsupported even when the entry resolves; its independent outcome
+    remains in resolution.specialty_resolution.coding_results.
     """
 
     selected: bool = pydantic.Field()

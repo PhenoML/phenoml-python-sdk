@@ -13,7 +13,7 @@ from .primary_patient_name import PrimaryPatientName
 
 class PrimaryPatient(UniversalBaseModel):
     """
-    Partial context for the patient the document is primarily about. This is not a complete FHIR Patient resource. Lang2FHIR uses the available context to identify a generated primary Patient reliably. An identifier supplied here is added to that Patient; when no Patient is generated, it is used in logical references on generated clinical resources.
+    Partial context for the patient the source is primarily about. This is not a complete FHIR Patient resource. When the source does not name its patient, the bundle's Patient is built from exactly these fields. When it does, the identifier supplied here is added to that Patient unless its name, birth date, or gender contradicts these fields, so the bundle can be matched back to the caller's own record.
     """
 
     identifier: typing.Optional[PatientReference] = None
@@ -29,7 +29,7 @@ class PrimaryPatient(UniversalBaseModel):
 
     gender: typing.Optional[PrimaryPatientGender] = pydantic.Field(default=None)
     """
-    Administrative gender. This corroborates another match but does not identify a patient alone.
+    Administrative gender.
     """
 
     if IS_PYDANTIC_V2:
