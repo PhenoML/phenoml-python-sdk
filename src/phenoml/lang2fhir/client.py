@@ -60,7 +60,7 @@ class Lang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles (`phenoml-hpo-condition`, `phenoml-hpo-phenotypic-observation`) code findings with the Human Phenotype Ontology and must be requested by id. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles must be requested by id: `phenoml-hpo-condition` and `phenoml-hpo-phenotypic-observation` code findings with the Human Phenotype Ontology, and `phenoml-hpo-head-circumference-tape-measure` and `phenoml-hpo-head-circumference-percentile` record a head circumference measured as a length or stated as an age-adjusted percentile. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -104,6 +104,7 @@ class Lang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -113,7 +114,9 @@ class Lang2FhirClient:
 
         The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit.
 
-        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+        **Patient handling.** Every bundle contains exactly one Patient, and every clinical resource references it. When the text names its patient, the Patient is built from the text. When it names several patients, the Patient is the one `primary_patient` names, otherwise the one most of the text is about; the others are not represented as Patients. Otherwise it is built from `primary_patient` when supplied, or is an unidentified Patient carrying only a synthetic identifier. When the text names its patient, the `primary_patient` identifier is added to that Patient unless its name, birth date, or gender contradicts the text's; the response `message` says whether it was added or did not match.
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the text is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
 
         Parameters
         ----------
@@ -127,20 +130,24 @@ class Lang2FhirClient:
             Optional FHIR provider name for provider-specific profiles
 
         primary_patient : typing.Optional[PrimaryPatient]
+            Context for the patient the text is primarily about. When the text does not name its patient, the bundle's Patient is built from these fields. When it does, the identifier is added to that Patient unless its name, birth date, or gender contradicts these fields.
 
         patient_reference : typing.Optional[PatientReference]
             Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
+            Implementation Guide to generate resources under. `us_core` (the default) and `phenoml_hpo` select a built-in guide. Any other value is a custom Implementation Guide name: its profiles are included alongside the US Core profiles, which are always the base layer. A custom name that matches no uploaded Implementation Guide returns 404.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
-            Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
+            Deprecated and ignored: both values produce the same result. This field will be removed in a future release.
 
         validation_method : typing.Optional[CreateMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
         resource_review : typing.Optional[ResourceReview]
+
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -173,6 +180,7 @@ class Lang2FhirClient:
             detection_effort=detection_effort,
             validation_method=validation_method,
             resource_review=resource_review,
+            small_note=small_note,
             request_options=request_options,
         )
         return _response.data
@@ -374,7 +382,11 @@ class Lang2FhirClient:
 
         The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit, including base64-encoded document `content`.
 
-        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+        **Patient handling.** Every bundle contains exactly one Patient, and every clinical resource references it. When the document names its patient, the Patient is built from the document. When it names several patients, the Patient is the one `primary_patient` names, otherwise the one most of the document is about; the others are not represented as Patients. Otherwise it is built from `primary_patient` when supplied, or is an unidentified Patient carrying only a synthetic identifier. When the document names its patient, the `primary_patient` identifier is added to that Patient unless its name, birth date, or gender contradicts the document's; the response `message` says whether it was added or did not match.
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the document is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
+
+        **Page classification.** When `config` sets neither `split_classifications` nor `page_filter`, pages classified as test requisition forms (lab or diagnostic order forms) are dropped before extraction and reported in `page_classifications`. Supplying either setting replaces this default.
 
         **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
 
@@ -395,15 +407,16 @@ class Lang2FhirClient:
             Optional FHIR provider name for provider-specific profiles
 
         primary_patient : typing.Optional[PrimaryPatient]
+            Context for the patient the document is primarily about. When the document does not name its patient, the bundle's Patient is built from these fields. When it does, the identifier is added to that Patient unless its name, birth date, or gender contradicts these fields.
 
         patient_reference : typing.Optional[PatientReference]
             Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
+            Implementation Guide to generate resources under. `us_core` (the default) and `phenoml_hpo` select a built-in guide. Any other value is a custom Implementation Guide name: its profiles are included alongside the US Core profiles, which are always the base layer. A custom name that matches no uploaded Implementation Guide returns 404.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
-            Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
+            Deprecated and ignored: both values produce the same result. This field will be removed in a future release.
 
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
@@ -498,7 +511,7 @@ class AsyncLang2FhirClient:
             FHIR version to use
 
         resource : CreateRequestResource
-            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles (`phenoml-hpo-condition`, `phenoml-hpo-phenotypic-observation`) code findings with the Human Phenotype Ontology and must be requested by id. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
+            Type of FHIR resource to create. Use 'auto' for automatic resource type detection, or specify a supported profile. The default profile set includes US Core profiles and selected base R4 resources. The built-in PhenoML HPO profiles must be requested by id: `phenoml-hpo-condition` and `phenoml-hpo-phenotypic-observation` code findings with the Human Phenotype Ontology, and `phenoml-hpo-head-circumference-tape-measure` and `phenoml-hpo-head-circumference-percentile` record a head circumference measured as a length or stated as an age-adjusted percentile. You can also use any custom profile you've uploaded (if you're a develop or launch customer).
 
         text : str
             Natural language text to convert
@@ -550,6 +563,7 @@ class AsyncLang2FhirClient:
         detection_effort: typing.Optional[CreateMultiRequestDetectionEffort] = OMIT,
         validation_method: typing.Optional[CreateMultiRequestValidationMethod] = OMIT,
         resource_review: typing.Optional[ResourceReview] = OMIT,
+        small_note: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateMultiResponse:
         """
@@ -559,7 +573,9 @@ class AsyncLang2FhirClient:
 
         The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit.
 
-        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+        **Patient handling.** Every bundle contains exactly one Patient, and every clinical resource references it. When the text names its patient, the Patient is built from the text. When it names several patients, the Patient is the one `primary_patient` names, otherwise the one most of the text is about; the others are not represented as Patients. Otherwise it is built from `primary_patient` when supplied, or is an unidentified Patient carrying only a synthetic identifier. When the text names its patient, the `primary_patient` identifier is added to that Patient unless its name, birth date, or gender contradicts the text's; the response `message` says whether it was added or did not match.
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the text is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
 
         Parameters
         ----------
@@ -573,20 +589,24 @@ class AsyncLang2FhirClient:
             Optional FHIR provider name for provider-specific profiles
 
         primary_patient : typing.Optional[PrimaryPatient]
+            Context for the patient the text is primarily about. When the text does not name its patient, the bundle's Patient is built from these fields. When it does, the identifier is added to that Patient unless its name, birth date, or gender contradicts these fields.
 
         patient_reference : typing.Optional[PatientReference]
             Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
+            Implementation Guide to generate resources under. `us_core` (the default) and `phenoml_hpo` select a built-in guide. Any other value is a custom Implementation Guide name: its profiles are included alongside the US Core profiles, which are always the base layer. A custom name that matches no uploaded Implementation Guide returns 404.
 
         detection_effort : typing.Optional[CreateMultiRequestDetectionEffort]
-            Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
+            Deprecated and ignored: both values produce the same result. This field will be removed in a future release.
 
         validation_method : typing.Optional[CreateMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.
 
         resource_review : typing.Optional[ResourceReview]
+
+        small_note : typing.Optional[bool]
+            Bills the request at the lower small-note rate. When true, `text` must be at most 15,360 bytes (15 KiB) when UTF-8 encoded; longer text is rejected with a 400 error. Extraction behavior is the same as a standard request.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -627,6 +647,7 @@ class AsyncLang2FhirClient:
             detection_effort=detection_effort,
             validation_method=validation_method,
             resource_review=resource_review,
+            small_note=small_note,
             request_options=request_options,
         )
         return _response.data
@@ -852,7 +873,11 @@ class AsyncLang2FhirClient:
 
         The complete JSON request body is limited to 32 MiB (33,554,432 bytes). The application enforces this whole-envelope limit, including base64-encoded document `content`.
 
-        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). When the source text contains an identifier, it is extracted with an appropriate URI system. When the source text does not contain a detectable identifier, a synthetic one is generated with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value` so the bundle remains FHIR-valid and US Core conformant. Callers who need a tenant-specific namespace should rewrite the synthetic system after extraction.
+        **Patient handling.** Every bundle contains exactly one Patient, and every clinical resource references it. When the document names its patient, the Patient is built from the document. When it names several patients, the Patient is the one `primary_patient` names, otherwise the one most of the document is about; the others are not represented as Patients. Otherwise it is built from `primary_patient` when supplied, or is an unidentified Patient carrying only a synthetic identifier. When the document names its patient, the `primary_patient` identifier is added to that Patient unless its name, birth date, or gender contradicts the document's; the response `message` says whether it was added or did not match.
+
+        **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the document is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
+
+        **Page classification.** When `config` sets neither `split_classifications` nor `page_filter`, pages classified as test requisition forms (lab or diagnostic order forms) are dropped before extraction and reported in `page_classifications`. Supplying either setting replaces this default.
 
         **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
 
@@ -873,15 +898,16 @@ class AsyncLang2FhirClient:
             Optional FHIR provider name for provider-specific profiles
 
         primary_patient : typing.Optional[PrimaryPatient]
+            Context for the patient the document is primarily about. When the document does not name its patient, the bundle's Patient is built from these fields. When it does, the identifier is added to that Patient unless its name, birth date, or gender contradicts these fields.
 
         patient_reference : typing.Optional[PatientReference]
             Deprecated compatibility alias for primary_patient.identifier. Cannot be combined with primary_patient.
 
         implementation_guide : typing.Optional[str]
-            Custom Implementation Guide name. When specified, profiles from this IG are included alongside the default profiles during resource detection. Default profiles are always the base layer; custom IG profiles are additive.
+            Implementation Guide to generate resources under. `us_core` (the default) and `phenoml_hpo` select a built-in guide. Any other value is a custom Implementation Guide name: its profiles are included alongside the US Core profiles, which are always the base layer. A custom name that matches no uploaded Implementation Guide returns 404.
 
         detection_effort : typing.Optional[DocumentMultiRequestDetectionEffort]
-            Deprecated; use the default 'standard' value. This field will be removed in a future release. 'standard' runs detection once; 'deep' runs detection multiple times for higher recall.
+            Deprecated and ignored: both values produce the same result. This field will be removed in a future release.
 
         validation_method : typing.Optional[DocumentMultiRequestValidationMethod]
             FHIR validation method to apply to the generated bundle. 'none' skips validation (default). 'check' runs the bundle through a FHIR structure validator and includes the results in the response. 'fix' runs validation and attempts to auto-correct errors using an LLM (up to 3 validation passes). The response includes results from each pass. Warning: 'fix' can significantly increase latency due to multiple LLM and validation round-trips.

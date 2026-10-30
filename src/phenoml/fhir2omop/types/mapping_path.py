@@ -35,7 +35,17 @@ class MappingPath(UniversalBaseModel):
 
     cui: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Shared UMLS concept identifier for a bridge path, when supplied.
+    Shared UMLS concept identifier for UMLS_BRIDGE, UMLS_STRING, or NUCC_LABEL, when supplied.
+    """
+
+    sab: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    UMLS sibling source abbreviation, such as NUCCHCPT for NUCC routes.
+    """
+
+    matched_text: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Actual vocabulary string matched by a specialty text layer. For NUCC_LABEL this is the full original preferred term, including its grouping prefix; source_text retains the supplied text.
     """
 
     if IS_PYDANTIC_V2:
