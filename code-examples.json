@@ -2,8 +2,8 @@
   "metadata": {
     "language": "python",
     "packageName": "phenoml",
-    "sdkVersion": "18.3.0",
-    "specCommit": "354de55c817a801b5a43654f28396a05d739275a",
+    "sdkVersion": "18.4.0",
+    "specCommit": "bb14930195953c641d1d8ffdd26800cb3c2e7c2d",
     "generatorName": "fernapi/fern-python-sdk"
   },
   "renderRules": {
@@ -3057,6 +3057,8 @@
                 "patient",
                 "phenoml-hpo-condition",
                 "phenoml-hpo-phenotypic-observation",
+                "phenoml-hpo-head-circumference-tape-measure",
+                "phenoml-hpo-head-circumference-percentile",
                 "procedure",
                 "questionnaire",
                 "questionnaireresponse",
@@ -3208,6 +3210,12 @@
               "jsonKey": "resource_review",
               "fieldTemplate": "resource_review={{value}}",
               "kind": "object",
+              "required": false
+            },
+            {
+              "jsonKey": "small_note",
+              "fieldTemplate": "small_note={{value}}",
+              "kind": "boolean",
               "required": false
             }
           ]
