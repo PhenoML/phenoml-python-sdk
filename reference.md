@@ -3606,6 +3606,10 @@ Executes a FHIR Bundle transaction or batch operation on the specified provider.
 
 The request body should contain a valid FHIR Bundle resource with transaction or batch type.
 
+On shared instances, only the default sandbox provider is accessible. The Bundle must contain an `entry` array, and each entry must have a `request.method` of `POST` and a relative resource-type `request.url`, such as `Patient` or `Observation`. URLs must contain only a resource type starting with an uppercase letter followed by letters or digits; absolute URLs, query strings, resource IDs, custom operation paths, and nested bundle execution are not supported. Entry resources and references are forwarded unchanged.
+
+On shared instances, invalid JSON, an invalid Bundle envelope, missing request fields, or duplicate property names in the Bundle, entry, or request objects return `400`. Unsupported entry methods or URLs return `403`, and a non-default provider returns `404`. If any entry is rejected, the entire Bundle is rejected without executing any entries. Dedicated instances support the upstream server's transaction and batch operations without these create-only restrictions.
+
 The request is proxied to the configured FHIR server with appropriate authentication headers.
 </dd>
 </dl>
