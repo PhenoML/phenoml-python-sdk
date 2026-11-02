@@ -9,12 +9,12 @@ from .resource_review_target import ResourceReviewTarget
 
 class ResourceReview(UniversalBaseModel):
     """
-    Opt-in faithfulness audit (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. An unsupported individual coding is removed when another coding remains in its concept. Resources with an unsupported structural field, a profile-required coding, or no coding remaining in an affected concept, are pulled out of the returned bundle and reported under resource_review in the response. Encounters, and diagnostic reports built from the source's report dates, are never pulled out, because other resources in the bundle reference them: an unsupported field is removed from them when their profile does not require it, and kept and reported when it does.
+    Faithfulness audit of the generated resources (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). When resource_review is omitted, the audit runs with these default targets: Encounter checks dates; Procedure and DiagnosticReport check dates and codes; Observation, Condition, and MedicationRequest check codes. Supplying resource_review replaces the defaults with the listed targets; an empty targets list turns the audit off. For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. An unsupported individual coding is removed when another coding remains in its concept. Resources with an unsupported structural field, a profile-required coding, or no coding remaining in an affected concept, are pulled out of the returned bundle and reported under resource_review in the response. Encounters, and diagnostic reports built from the source's report dates, are never pulled out, because other resources in the bundle reference them: an unsupported field is removed from them when their profile does not require it, and kept and reported when it does.
     """
 
     targets: typing.List[ResourceReviewTarget] = pydantic.Field()
     """
-    The resource types to audit and which date or clinical code field kinds to check.
+    The resource types to audit and which date or clinical code field kinds to check. An empty list turns the audit off.
     """
 
     if IS_PYDANTIC_V2:
