@@ -41,7 +41,7 @@ class SemanticMappingResult(UniversalBaseModel):
     `status` is UNMAPPED; omitted when `status` is MAPPED.
     
     - `MISSING_DESCRIPTION`: no usable source text or coding display was supplied.
-    - `NO_VALID_SUGGESTION`: no candidate was accepted as having the same clinical meaning as the source description.
+    - `NO_VALID_SUGGESTION`: semantic validation completed without accepting a candidate as having the same clinical meaning as the source description.
     - `AMBIGUOUS`: a unique standard concept could not be selected from the possible matches.
     - `INVALID_TARGET`: the suggested code is not an active standard OMOP concept valid for the destination field.
     
