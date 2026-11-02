@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "bb14930195953c641d1d8ffdd26800cb3c2e7c2d"
+    "version": "dd6fe24408482ca00734eff618653e041adebe23"
   },
   "x-services": [
     {
@@ -3955,7 +3955,7 @@
     "/fhir-provider/{fhir_provider_id}/fhir": {
       "post": {
         "summary": "Execute FHIR bundle operation",
-        "description": "Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.\n\nThe request body should contain a valid FHIR Bundle resource with transaction or batch type.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
+        "description": "Executes a FHIR Bundle transaction or batch operation on the specified provider. This allows multiple FHIR resources to be processed in a single request.\n\nThe request body should contain a valid FHIR Bundle resource with transaction or batch type.\n\nOn shared instances, only the default sandbox provider is accessible. The Bundle must contain an `entry` array, and each entry must have a `request.method` of `POST` and a relative resource-type `request.url`, such as `Patient` or `Observation`. URLs must contain only a resource type starting with an uppercase letter followed by letters or digits; absolute URLs, query strings, resource IDs, custom operation paths, and nested bundle execution are not supported. Entry resources and references are forwarded unchanged.\n\nOn shared instances, invalid JSON, an invalid Bundle envelope, missing request fields, or duplicate property names in the Bundle, entry, or request objects return `400`. Unsupported entry methods or URLs return `403`, and a non-default provider returns `404`. If any entry is rejected, the entire Bundle is rejected without executing any entries. Dedicated instances support the upstream server's transaction and batch operations without these create-only restrictions.\n\nThe request is proxied to the configured FHIR server with appropriate authentication headers.\n",
         "operationId": "fhir_executeBundle",
         "parameters": [
           {
@@ -14612,16 +14612,15 @@
       },
       "lang2fhir_ResourceReview": {
         "type": "object",
-        "description": "Opt-in faithfulness audit (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. An unsupported individual coding is removed when another coding remains in its concept. Resources with an unsupported structural field, a profile-required coding, or no coding remaining in an affected concept, are pulled out of the returned bundle and reported under resource_review in the response. Encounters, and diagnostic reports built from the source's report dates, are never pulled out, because other resources in the bundle reference them: an unsupported field is removed from them when their profile does not require it, and kept and reported when it does.\n",
+        "description": "Faithfulness audit of the generated resources (honored by /lang2fhir/create/multi and /lang2fhir/document/multi). When resource_review is omitted, the audit runs with these default targets: Encounter checks dates; Procedure and DiagnosticReport check dates and codes; Observation, Condition, and MedicationRequest check codes. Supplying resource_review replaces the defaults with the listed targets; an empty targets list turns the audit off. For each selected resource type an LLM checks whether selected dates and clinical code concepts are actually supported by the full source document. An unsupported individual coding is removed when another coding remains in its concept. Resources with an unsupported structural field, a profile-required coding, or no coding remaining in an affected concept, are pulled out of the returned bundle and reported under resource_review in the response. Encounters, and diagnostic reports built from the source's report dates, are never pulled out, because other resources in the bundle reference them: an unsupported field is removed from them when their profile does not require it, and kept and reported when it does.\n",
         "required": [
           "targets"
         ],
         "properties": {
           "targets": {
             "type": "array",
-            "minItems": 1,
             "maxItems": 25,
-            "description": "The resource types to audit and which date or clinical code field kinds to check.",
+            "description": "The resource types to audit and which date or clinical code field kinds to check. An empty list turns the audit off.\n",
             "items": {
               "$ref": "#/components/schemas/lang2fhir_ResourceReviewTarget"
             }
@@ -14658,7 +14657,7 @@
       },
       "lang2fhir_ResourceReviewResult": {
         "type": "object",
-        "description": "Present when resource_review was requested and at least one resource was quarantined, safely remediated, or kept with an unsupported required field. The returned bundle is authoritative and contains the post-review representation of every retained resource.\n",
+        "description": "Present when the resource review ran and at least one resource was quarantined, safely remediated, or kept with an unsupported required field. The returned bundle is authoritative and contains the post-review representation of every retained resource.\n",
         "properties": {
           "flagged": {
             "type": "array",
