@@ -1,3 +1,6 @@
+## [18.5.0] - 2026-11-02
+New backward-compatible capabilities added: DeviceUseStatement-to-device_exposure mapping, MedicationDispense-to-drug_exposure mapping, contextual AllergyIntolerance finding policy, PractitionerRole specialty resolution, unknown-status retention for MedicationStatement/Observation/Procedure, UCUM unit conversion in quantity_transformations, and new HPO profiles.
+
 ## [18.4.0] - 2026-10-30
 ### Added
 - **`small_note` parameter** — new optional boolean on `client.lang2fhir.create_multi(...)` and `client.lang2fhir.document.create_multi(...)` that bills the request at the lower small-note rate; when `True`, `text` must be at most 15,360 bytes or the request is rejected with a 400 error.
