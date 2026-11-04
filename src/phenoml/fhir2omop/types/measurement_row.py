@@ -32,6 +32,11 @@ class MeasurementRow(UniversalBaseModel):
     range_low: typing.Optional[float] = None
     range_high: typing.Optional[float] = None
     visit_occurrence_id: typing.Optional[int] = None
+    visit_detail_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Explicit same-patient component link, supplied together with its overarching visit_occurrence_id.
+    """
+
     provider_id: typing.Optional[int] = None
     measurement_source_value: typing.Optional[str] = None
     measurement_source_concept_id: typing.Optional[int] = None

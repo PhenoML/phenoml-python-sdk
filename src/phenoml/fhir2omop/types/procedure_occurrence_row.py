@@ -24,6 +24,11 @@ class ProcedureOccurrenceRow(UniversalBaseModel):
     procedure_end_datetime: typing.Optional[str] = None
     procedure_type_concept_id: typing.Optional[int] = None
     visit_occurrence_id: typing.Optional[int] = None
+    visit_detail_id: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Explicit same-patient component link, supplied together with its overarching visit_occurrence_id.
+    """
+
     provider_id: typing.Optional[int] = None
     procedure_source_value: typing.Optional[str] = None
     procedure_source_concept_id: typing.Optional[int] = None

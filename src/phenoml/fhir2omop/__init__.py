@@ -81,7 +81,14 @@ if typing.TYPE_CHECKING:
         SpecimenSourceContext,
         SpecimenSourceContextStatus,
         Summary,
+        VisitComponentContext,
+        VisitComponentContextOmopTable,
+        VisitDetailRow,
         VisitOccurrenceRow,
+        VisitPairAssessment,
+        VisitPairAssessmentInvalidConceptRole,
+        VisitPairAssessmentReasonCode,
+        VisitPairAssessmentStatus,
     )
     from .errors import BadRequestError, InternalServerError, UnauthorizedError
 _dynamic_imports: typing.Dict[str, str] = {
@@ -162,7 +169,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SpecimenSourceContextStatus": ".types",
     "Summary": ".types",
     "UnauthorizedError": ".errors",
+    "VisitComponentContext": ".types",
+    "VisitComponentContextOmopTable": ".types",
+    "VisitDetailRow": ".types",
     "VisitOccurrenceRow": ".types",
+    "VisitPairAssessment": ".types",
+    "VisitPairAssessmentInvalidConceptRole": ".types",
+    "VisitPairAssessmentReasonCode": ".types",
+    "VisitPairAssessmentStatus": ".types",
 }
 
 
@@ -265,5 +279,12 @@ __all__ = [
     "SpecimenSourceContextStatus",
     "Summary",
     "UnauthorizedError",
+    "VisitComponentContext",
+    "VisitComponentContextOmopTable",
+    "VisitDetailRow",
     "VisitOccurrenceRow",
+    "VisitPairAssessment",
+    "VisitPairAssessmentInvalidConceptRole",
+    "VisitPairAssessmentReasonCode",
+    "VisitPairAssessmentStatus",
 ]
