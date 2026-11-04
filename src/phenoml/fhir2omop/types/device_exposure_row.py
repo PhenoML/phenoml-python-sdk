@@ -74,7 +74,7 @@ class DeviceExposureRow(UniversalBaseModel):
 
     visit_detail_id: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Unset; no visit-detail linkage is inferred.
+    Explicit same-patient component for routed rows, with its overarching visit_occurrence_id; absent for DeviceUseStatement.
     """
 
     device_source_value: typing.Optional[str] = pydantic.Field(default=None)

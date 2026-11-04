@@ -17,6 +17,7 @@ from .person_row import PersonRow
 from .procedure_occurrence_row import ProcedureOccurrenceRow
 from .provider_row import ProviderRow
 from .specimen_row import SpecimenRow
+from .visit_detail_row import VisitDetailRow
 from .visit_occurrence_row import VisitOccurrenceRow
 
 
@@ -43,6 +44,7 @@ class OmopTables(UniversalBaseModel):
     death: typing.Optional[typing.List[DeathRow]] = None
     observation_period: typing.Optional[typing.List[ObservationPeriodRow]] = None
     visit_occurrence: typing.Optional[typing.List[VisitOccurrenceRow]] = None
+    visit_detail: typing.Optional[typing.List[VisitDetailRow]] = None
     condition_occurrence: typing.Optional[typing.List[ConditionOccurrenceRow]] = None
     drug_exposure: typing.Optional[typing.List[DrugExposureRow]] = None
     procedure_occurrence: typing.Optional[typing.List[ProcedureOccurrenceRow]] = None

@@ -80,7 +80,14 @@ if typing.TYPE_CHECKING:
     from .specimen_source_context import SpecimenSourceContext
     from .specimen_source_context_status import SpecimenSourceContextStatus
     from .summary import Summary
+    from .visit_component_context import VisitComponentContext
+    from .visit_component_context_omop_table import VisitComponentContextOmopTable
+    from .visit_detail_row import VisitDetailRow
     from .visit_occurrence_row import VisitOccurrenceRow
+    from .visit_pair_assessment import VisitPairAssessment
+    from .visit_pair_assessment_invalid_concept_role import VisitPairAssessmentInvalidConceptRole
+    from .visit_pair_assessment_reason_code import VisitPairAssessmentReasonCode
+    from .visit_pair_assessment_status import VisitPairAssessmentStatus
 _dynamic_imports: typing.Dict[str, str] = {
     "AllergyCodingEvidence": ".allergy_coding_evidence",
     "AllergyCodingEvidenceMeaning": ".allergy_coding_evidence_meaning",
@@ -156,7 +163,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SpecimenSourceContext": ".specimen_source_context",
     "SpecimenSourceContextStatus": ".specimen_source_context_status",
     "Summary": ".summary",
+    "VisitComponentContext": ".visit_component_context",
+    "VisitComponentContextOmopTable": ".visit_component_context_omop_table",
+    "VisitDetailRow": ".visit_detail_row",
     "VisitOccurrenceRow": ".visit_occurrence_row",
+    "VisitPairAssessment": ".visit_pair_assessment",
+    "VisitPairAssessmentInvalidConceptRole": ".visit_pair_assessment_invalid_concept_role",
+    "VisitPairAssessmentReasonCode": ".visit_pair_assessment_reason_code",
+    "VisitPairAssessmentStatus": ".visit_pair_assessment_status",
 }
 
 
@@ -256,5 +270,12 @@ __all__ = [
     "SpecimenSourceContext",
     "SpecimenSourceContextStatus",
     "Summary",
+    "VisitComponentContext",
+    "VisitComponentContextOmopTable",
+    "VisitDetailRow",
     "VisitOccurrenceRow",
+    "VisitPairAssessment",
+    "VisitPairAssessmentInvalidConceptRole",
+    "VisitPairAssessmentReasonCode",
+    "VisitPairAssessmentStatus",
 ]
