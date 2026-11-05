@@ -1,3 +1,15 @@
+## [18.6.0] - 2026-11-04
+### Added
+- **`VisitDetailRow`** — new OMOP type representing a component `Encounter` linked to its same-patient parent visit, populated in the new `OmopTables.visit_detail` list field.
+- **`VisitComponentContext` and `VisitComponentContextOmopTable`** — new audit types reporting which OMOP table received each child `Encounter` row and its request-local row ID.
+- **`VisitPairAssessment`, `VisitPairAssessmentStatus`, `VisitPairAssessmentReasonCode`, and `VisitPairAssessmentInvalidConceptRole`** — new audit types exposing the CDM same-concept/descendant compatibility assessment for each parent–detail visit pair.
+- **`visit_detail_id`** — new optional field on `ConditionOccurrenceRow`, `DrugExposureRow`, `MeasurementRow`, `ObservationRow`, `ProcedureOccurrenceRow`, and `DeviceExposureRow` linking each clinical row to its component visit when a child `Encounter` is present.
+- **`CreateOmopResponse.visit_component_contexts`** — new optional field returning vocabulary compatibility evidence for each assessed `Encounter.partOf` component candidate.
+
+### Changed
+- **`ReferenceDiagnostic` status semantics** — `CONFLICTING` now also covers non-contained but overlapping periods that retain grouping; `UNSUPPORTED` now also covers `UNKNOWN` vocabulary compatibility outcomes for explicit `Encounter` components.
+- **`ResourceReview` audit** — now runs by default when `resource_review` is omitted, with targets covering `Encounter`, `Procedure`, `DiagnosticReport`, `Observation`, `Condition`, and `MedicationRequest`; an explicit empty `targets` list disables the audit.
+
 ## [18.5.0] - 2026-11-02
 New backward-compatible capabilities added: DeviceUseStatement-to-device_exposure mapping, MedicationDispense-to-drug_exposure mapping, contextual AllergyIntolerance finding policy, PractitionerRole specialty resolution, unknown-status retention for MedicationStatement/Observation/Procedure, UCUM unit conversion in quantity_transformations, and new HPO profiles.
 
