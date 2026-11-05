@@ -105,8 +105,8 @@ class CreateOmopResponse(UniversalBaseModel):
 
     provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
     """
-    Additive FHIR provenance for every supplied PractitionerRole. Each
-    context identifies the canonical or role-fallback provider row and
+    FHIR provenance for every PractitionerRole linked to an emitted provider. Each
+    context identifies the canonical provider row and
     preserves source role facts that OMOP's singular provider columns
     cannot represent together.
     """
@@ -124,6 +124,8 @@ class CreateOmopResponse(UniversalBaseModel):
     DeviceUseStatement also requires an explicit resolvable Patient subject;
     missing Device details or timing retain partial exposure rows.
     Unsupported resource types are ignored and do not appear here.
+    Provider sources identified as organizations and roles without a
+    confirmed individual NPI or a usable Practitioner are also reported.
     Eligibility exclusions use stable, resource-specific `reason` codes;
     other shaping failures retain an explanatory reason string.
     """
@@ -158,6 +160,8 @@ class CreateOmopResponse(UniversalBaseModel):
     member individually supplied a conflicting value.
     Multiple distinct NPIs on one Practitioner are also diagnosed at
     `identifier` with `omop_table: provider` and the retained row's `omop_id`.
+    An unconfirmed NPI omitted from a retained Practitioner row is
+    explained by an `UNRESOLVED` diagnostic at `identifier`.
     Conflicting Encounter classifications are also reported with outcome
     `CONFLICTING` and no `reference`: path `class/type` means a mapped
     type disagrees with the selected class, which still determines the

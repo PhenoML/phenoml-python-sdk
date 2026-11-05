@@ -3947,15 +3947,24 @@ concepts in `provider.gender_concept_id`; `other`, `unknown`, and absent
 gender remain unmapped. `Address.country` is resolved to `location.country_concept_id`,
 and CMS Place of Service codings in `Location.type` are resolved to
 `care_site.place_of_service_concept_id`.
-Within one request, Practitioners with the same single distinct supplied
-NPI value merge into one provider row only when all supplied mapped identity
-attributes in the entire NPI group agree. The NPI system may be
+Within one request, Practitioners and role-only providers with the same
+single distinct confirmed individual NPI merge into one provider row only when
+all supplied mapped identity attributes in the entire NPI group agree. The NPI system may be
 `http://hl7.org/fhir/sid/us-npi` (preferred in FHIR R4),
 `urn:oid:2.16.840.1.113883.4.6`, or bare `2.16.840.1.113883.4.6`;
 these forms are equivalent for matching. OID forms are accepted for compatibility.
 The same matching rule applies to Practitioners contained in valid role
-references. NPI values are compared exactly as supplied, without format
-or checksum validation. Blank values and unknown markers `UNK` and
+references. Only NPIs classified as individuals (Type 1) are used for provider
+identity. Classification trims whitespace and checks ten digits and the NPI
+check digit; source values and merge comparisons remain exact as supplied.
+Top-level Practitioners and role-only sources identified by an organization
+NPI (Type 2) are omitted from provider
+output and reported in `dropped` with `provider_npi_is_organization`.
+An unconfirmed or invalid NPI on a Practitioner leaves its source-scoped
+provider row without `npi`, with an `UNRESOLVED` diagnostic at `identifier`.
+No live public registry request is made. Classification failures return
+`500`; known individual NPIs remain usable for historical care even when
+deactivated. Blank values and unknown markers `UNK` and
 `UNKNOWN` are treated as missing and do not populate `npi` or participate
 in matching. Marker detection ignores case and surrounding whitespace;
 all other values are preserved without trimming. Other identifier systems and names
@@ -3972,14 +3981,14 @@ conflicting value is selected. Each affected row has `CONFLICTING`
 diagnostics at `name`, `gender`, `identifier`, or `birthDate`, linked by
 `omop_table: provider` and `omop_id`. All source gender mappings link to
 their retained or merged provider row.
-Repeated copies of one NPI on a resource are allowed. A resource with
+Repeated copies of one NPI on a resource are allowed. A Practitioner with
 multiple distinct NPIs stays separate, leaves `npi` unset, preserves its
 source-resource identity in `provider_source_value`, and reports a
 `CONFLICTING` diagnostic at `identifier` linked by
 `omop_table: provider` and `omop_id`.
 Row IDs are per response. The API does not merge across requests. For a
-Practitioner with one NPI, `provider_source_value` is that NPI, even when
-its group conflicts. Consumers can use it to deduplicate compatible
+provider with one confirmed individual NPI, `provider_source_value` is that NPI,
+even when its group conflicts. Consumers can use it to deduplicate compatible
 providers across requests, but must preserve rows flagged by identity
 conflict diagnostics and check compatibility across responses. Without
 one unambiguous NPI, source-resource identity is preserved without a
@@ -3988,22 +3997,37 @@ A `PractitionerRole` that identifies one supplied `Practitioner` aliases
 that canonical provider: by a top-level structural reference, a
 parent-contained `#id` reference, or an `identifier.system` and
 `identifier.value` match against a top-level Practitioner. Identifier
-matching uses the equivalent NPI systems and missing-value rules above;
+matching uses the equivalent NPI systems and requires a confirmed individual NPI;
 all other systems and all supplied identifiers match exactly. No remote
-identifier lookup is performed. When `Reference.type` is present it must
+Practitioner resource is fetched. When `Reference.type` is present it must
 be `Practitioner`; duplicate contained IDs and identifier matches to
-different canonical providers are ambiguous. An explicit reference that
-is unresolved, ambiguous, or unsupported retains a role-fallback provider
-row and is returned in `diagnostics`. `provider_role_contexts` preserves role-specific
+different canonical providers are ambiguous. Unresolved literal references,
+unusable identifiers, and ambiguous or unsupported references are reported
+in `diagnostics`.
+`provider_role_contexts` preserves role-specific
 specialty and care-site context that a canonical OMOP provider row cannot
 represent together.
 
-A role whose practitioner reference has only a blank or unknown NPI
-identifier follows the missing-identifier behavior: its fallback row has
-an `UNSUPPORTED` diagnostic explaining that a usable identifier or literal
-reference is required. An unambiguous literal reference still links to
-its Practitioner when the NPI is missing or unknown. Original supplied
-unknown markers remain in the role's `practitioner_identifier` metadata.
+Without a resolvable supplied Practitioner, a role must have one confirmed
+individual NPI in `PractitionerRole.identifier` or
+`PractitionerRole.practitioner.identifier` to emit a provider. The latter
+is a logical reference and does not require a corresponding Practitioner
+resource or produce a missing-Practitioner diagnostic when its NPI is usable.
+NPIs supplied through both fields must agree exactly. The role uses
+the same NPI grouping rules as Practitioners and can merge with compatible
+Practitioners or other roles. Names, gender, and birth information are not
+invented; the role supplies its NPI, specialties, and care-site references.
+Existing `provider_role_contexts` preserve each emitted role's facts when
+multiple roles share one provider. A resolved Practitioner's identity remains
+authoritative.
+Roles without that individual identity are reported in `dropped` with
+`provider_role_requires_individual_npi`, or `provider_role_conflicting_npis`
+for multiple distinct NPIs across either field. A role-only organization
+NPI is reported with `provider_npi_is_organization`.
+Roles whose resolved Practitioner is an
+organization are omitted with `provider_practitioner_is_not_individual`.
+Clinical records are still returned; links to omitted providers remain unset,
+with `UNRESOLVED` diagnostics pointing to the provider omission in `dropped`.
 
 Each `PractitionerRole.specialty` entry resolves independently using its
 supplied codings and explicit text from that entry. NUCC codings resolve
