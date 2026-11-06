@@ -9,12 +9,9 @@ from .mapping_path_mapping_status import MappingPathMappingStatus
 
 class MappingPath(UniversalBaseModel):
     """
-    One mapping path to the selected concept. Its source is the
-    input code's OMOP concept on a direct path, a sibling concept on a UMLS
-    bridge, or a concept from an explicit mapping rule. Path source IDs
-    describe provenance and must not replace the original input's concept
-    ID in the corresponding OMOP source-concept column, where the table
-    defines one.
+    Provenance path to the selected concept, starting at an input, UMLS sibling,
+    or policy concept. Its source ID can differ from the original input's OMOP
+    identity and must not replace that input's source-concept column.
     """
 
     mapping_status: MappingPathMappingStatus = pydantic.Field()

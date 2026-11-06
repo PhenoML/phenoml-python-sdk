@@ -15,17 +15,13 @@ from .specialty_resolution import SpecialtyResolution
 
 class MappingResolution(UniversalBaseModel):
     """
-    Optional field-level mapping outcome and provenance. When a field has
-    several source-coding entries, they share this outcome; paths describe
-    the selected concept rather than separate mappings of every alternate
-    coding. Present for semantic mapping attempts. Omitted for fields
-    retained without concept resolution, including text-only collection
-    sites, text-only units, units with missing coding, unsupported unit
-    systems, and result values whose output table has no value column.
-    Free-text diagnostics and unselected candidates are not returned.
-    Allergy source evidence can report complete standard target IDs to
-    explain source interpretation and ambiguity; these are not independently
-    selected substance values.
+    Field-level outcome and provenance shared by that field's coding entries.
+    Paths describe the selected concept, not independent mappings of alternates.
+    Present for semantic attempts; omitted for source information retained
+    without resolution, including text-only sites, units lacking supported
+    coding, and result values retained without a corresponding row column.
+    Allergy evidence can retain source targets that were not selected as
+    substance values.
     """
 
     semantic_mapping: typing.Optional[SemanticMappingResult] = None
@@ -61,7 +57,12 @@ class MappingResolution(UniversalBaseModel):
 
     via: typing.Optional[MappingResolutionVia] = pydantic.Field(default=None)
     """
-    How the selected concept was reached. DIRECT may use an OMOP Maps to relationship; UMLS_BRIDGE identifies resolution through a shared UMLS concept; CONTEXTUAL identifies an explicit transformation of a substance-coded allergy/intolerance statement using its FHIR context. Specialty text uses CONCEPT_NAME, CONCEPT_SYNONYM, UMLS_STRING, then NUCC_LABEL in that order. NUCC_LABEL removes only the grouping prefix from a NUCC preferred term while retaining the full classification and specialization. Omitted when unavailable or no concept was selected.
+    How the selected concept was reached: DIRECT uses vocabulary identity or
+    Maps to; UMLS_BRIDGE uses a shared UMLS concept; CONTEXTUAL uses allergy
+    source context. Specialty text routes identify a concept name (CONCEPT_NAME),
+    English synonym (CONCEPT_SYNONYM), English UMLS string (UMLS_STRING), or
+    NUCC preferred label (NUCC_LABEL). Omitted when unavailable or no concept
+    was selected; paths retain matching evidence.
     """
 
     paths: typing.Optional[typing.List[MappingPath]] = pydantic.Field(default=None)

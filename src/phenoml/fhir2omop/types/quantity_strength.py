@@ -10,7 +10,10 @@ from .quantity_unit import QuantityUnit
 
 class QuantityStrength(UniversalBaseModel):
     """
-    Single-ingredient vocabulary strength evidence. Amount is ingredient per fixed unit; numerator/denominator describe a concentration. Raw missing values remain absent and are never overwritten by defaults. denominator_basis separately preserves terminology's interpretation of the denominator. No box-size or refill arithmetic is performed.
+    Single-ingredient strength evidence: amount is ingredient per fixed unit;
+    numerator/denominator describe concentration. Missing raw values remain
+    absent without defaults. denominator_basis records the interpretation of
+    the denominator. Box-size/refill arithmetic is not applied.
     """
 
     ingredient_concept_id: int

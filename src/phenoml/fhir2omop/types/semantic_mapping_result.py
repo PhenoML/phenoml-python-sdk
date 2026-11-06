@@ -10,19 +10,11 @@ from .semantic_mapping_result_status import SemanticMappingResultStatus
 
 class SemanticMappingResult(UniversalBaseModel):
     """
-    Result of semantic mapping for a supported concept field. Present when
-    semantic mapping was attempted; omitted otherwise. The containing
-    MappingEntry identifies the source and output field. Use its `omop_table`
-    to select a table in `tables` and its
-    `omop_id` to find the row by that table's primary key; `omop_field` identifies
-    the concept column. For example, `omop_table: condition_occurrence` and
-    `omop_id: 7` refer to the row with `condition_occurrence_id: 7` in
-    `tables.condition_occurrence`. Multiple source codings can produce entries
-    for the same output field; group by `omop_table`, `omop_id`, and `omop_field`
-    to process each field once.
-
-    Original source coding and source concept IDs are preserved;
-    text-only inputs retain their description without an invented source coding.
+    Semantic-mapping outcome for a supported concept field; present when
+    inference was attempted. The containing MappingEntry supplies row/field
+    links. Multiple coding entries can share one field outcome; group by
+    omop_table, omop_id, and omop_field when processing it. Original source
+    coding is preserved; text-only inputs do not invent coding.
     """
 
     status: SemanticMappingResultStatus = pydantic.Field()
