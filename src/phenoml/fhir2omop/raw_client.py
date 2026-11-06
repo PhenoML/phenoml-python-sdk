@@ -550,18 +550,12 @@ class RawFhir2OmopClient:
         informationSource values on DeviceUseStatement are retained only in
         device_exposure_contexts.
 
-        Device exposure quantity is reported as follows:
+        Device exposure quantity defaults to 1 when quantity evidence is absent.
+        Clinical quantities, doses, rates, and numeric Observation results,
+        including numeric valueString, do not establish device counts and leave
+        quantity omitted. device_exposure_contexts retains the original evidence;
+        quantity_basis and diagnostics explain the result.
 
-        - When the source has no quantity, dose, rate, or numeric Observation
-          result field, quantity is 1 and device_exposure_contexts.quantity_basis
-          is default_absent_count.
-        - When such a field is supplied, including a null or malformed value,
-          quantity is omitted and quantity_basis is unsupported_supplied_evidence.
-          The original values remain in device_exposure_contexts.evidence, and
-          an UNSUPPORTED diagnostic identifies each supplied field.
-
-        For example, an Observation with valueQuantity.value of 2 returned as a
-        device exposure has no quantity; the value 2 remains in its source context.
         timingTiming.repeat.count remains in source context and does not set
         quantity. unit_concept_id and unit_source_concept_id are always null.
 
@@ -648,6 +642,9 @@ class RawFhir2OmopClient:
         populate separate converted values. A
         numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
         measurement's `operator_concept_id`.
+        valueQuantity.value and valueInteger accept JSON numbers. Finite numeric
+        valueString results are interpreted equivalently, including optional
+        comparators, while preserving the original text in value_source_value.
 
         For Observations returned as `measurement` or `observation` rows,
         Quantity units resolve independently against the table's
@@ -1726,18 +1723,12 @@ class AsyncRawFhir2OmopClient:
         informationSource values on DeviceUseStatement are retained only in
         device_exposure_contexts.
 
-        Device exposure quantity is reported as follows:
+        Device exposure quantity defaults to 1 when quantity evidence is absent.
+        Clinical quantities, doses, rates, and numeric Observation results,
+        including numeric valueString, do not establish device counts and leave
+        quantity omitted. device_exposure_contexts retains the original evidence;
+        quantity_basis and diagnostics explain the result.
 
-        - When the source has no quantity, dose, rate, or numeric Observation
-          result field, quantity is 1 and device_exposure_contexts.quantity_basis
-          is default_absent_count.
-        - When such a field is supplied, including a null or malformed value,
-          quantity is omitted and quantity_basis is unsupported_supplied_evidence.
-          The original values remain in device_exposure_contexts.evidence, and
-          an UNSUPPORTED diagnostic identifies each supplied field.
-
-        For example, an Observation with valueQuantity.value of 2 returned as a
-        device exposure has no quantity; the value 2 remains in its source context.
         timingTiming.repeat.count remains in source context and does not set
         quantity. unit_concept_id and unit_source_concept_id are always null.
 
@@ -1824,6 +1815,9 @@ class AsyncRawFhir2OmopClient:
         populate separate converted values. A
         numeric comparator (`<`, `<=`, `>`, `>=`) is represented only by a
         measurement's `operator_concept_id`.
+        valueQuantity.value and valueInteger accept JSON numbers. Finite numeric
+        valueString results are interpreted equivalently, including optional
+        comparators, while preserving the original text in value_source_value.
 
         For Observations returned as `measurement` or `observation` rows,
         Quantity units resolve independently against the table's
