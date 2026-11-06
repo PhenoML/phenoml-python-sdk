@@ -46,7 +46,11 @@ class PersonRow(UniversalBaseModel):
     location_id: typing.Optional[int] = None
     provider_id: typing.Optional[int] = None
     care_site_id: typing.Optional[int] = None
-    person_source_value: typing.Optional[str] = None
+    person_source_value: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Patient.id, or the first non-empty Patient.identifier.value when id is absent. Omitted when neither is available.
+    """
+
     gender_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
     The selected sex-at-birth source code: the US Core birth sex `valueCode`, or Patient `gender` when no birth sex is supplied. Conflicting birth sex values are joined with `|`; empty when the birth sex has no `valueCode`.
