@@ -11,7 +11,7 @@ class ProviderRow(UniversalBaseModel):
     provider_name: typing.Optional[str] = None
     npi: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Single distinct source NPI value, preserved without format or checksum validation, from an identifier with system `http://hl7.org/fhir/sid/us-npi`, `urn:oid:2.16.840.1.113883.4.6`, or `2.16.840.1.113883.4.6`. Blank values and `UNK`/`UNKNOWN` markers (case-insensitive, ignoring surrounding whitespace) are treated as missing. Omitted when no usable NPI value exists or multiple distinct values are supplied.
+    Single distinct confirmed individual NPI from Practitioner.identifier, or PractitionerRole.identifier when no supplied Practitioner resolves. Recognized systems are http://hl7.org/fhir/sid/us-npi, urn:oid:2.16.840.1.113883.4.6, and 2.16.840.1.113883.4.6. Classification trims whitespace and validates the ten-digit format and NPI check digit. This field preserves the original source value. Blank and UNK/UNKNOWN markers are missing. Organization, invalid, unconfirmed, and conflicting NPIs do not populate this field.
     """
 
     dea: typing.Optional[str] = None
@@ -33,16 +33,16 @@ class ProviderRow(UniversalBaseModel):
 
     provider_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The single distinct source NPI, when present. Compatible providers
+    The single distinct confirmed individual NPI, when present, including for role-only providers. Compatible providers
     can use this value as a cross-request deduplication key; row IDs are
     per response, and the API does not merge across requests. Conflicting
     NPI groups retain separate rows sharing this value. Preserve rows
     flagged by identity diagnostics using `omop_table: provider` and
     `omop_id`, and check identity compatibility across responses before
     deduplicating.
-    Without one unambiguous NPI, this is the source identity of the
-    Practitioner or fallback role.
-    Missing NPI values and unknown markers are excluded when selecting
+    Without one unambiguous individual NPI, this is the source identity
+    of the Practitioner. Role-only providers require a confirmed NPI.
+    Missing NPI values, unknown markers, and unconfirmed NPIs are excluded when selecting
     that source identity. When no source identity is available, an
     explicitly marked response-local provider ordinal such as
     `@provider-index:1` supplies a local scope.
