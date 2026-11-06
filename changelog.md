@@ -1,3 +1,17 @@
+## [19.0.0] - 2026-11-06
+### Breaking Changes
+- **`PageFilter`** — removed from `phenoml.lang2fhir`; replace all `from phenoml.lang2fhir import PageFilter` imports and remove any use of its `context` field.
+- **`DocumentConfig.page_filter`** — field removed; migrate callers to `DocumentConfig.split_classifications` instead.
+- **`DocumentMultiResponse.page_classifications`** — no longer returned by default; guard all reads with a presence check and set `config.split_classifications` to receive it.
+- **Default page classification behavior** — the automatic test-requisition-form filter is removed; all pages with extracted text are now included in extraction by default; audit pipelines that relied on implicit page filtering.
+
+### Changed
+- **`DocumentConfig.split_classifications`** — now accepts up to 20 entries with stricter validation: each `id` must be non-blank, unique, and ≤ 64 characters; each `description` must be non-blank and ≤ 500 characters; `__ungrouped__` remains reserved.
+- **`CreateMultiResponseResourcesItem.group`** — when source pages span multiple groups, the group covering the most source pages wins, with ties broken by earliest source page.
+- **`client.fhir2omop.create(...)` NPI handling** — only confirmed individual (Type 1) NPIs are used for provider identity; organization (Type 2) NPIs are omitted from output and reported in `dropped` with `provider_npi_is_organization`.
+- **`ProviderRow.npi` and `ProviderRow.provider_source_value`** — unconfirmed, invalid, or organization NPIs leave `npi` absent and produce an `UNRESOLVED` diagnostic; role-only providers now use their confirmed individual NPI as the deduplication key.
+- **`CreateOmopResponse.dropped` and `CreateOmopResponse.diagnostics`** — expanded with new provider omission reasons (`provider_role_requires_individual_npi`, `provider_role_conflicting_npis`, `provider_npi_is_organization`, `provider_practitioner_is_not_individual`) and `UNRESOLVED` diagnostics for unconfirmed NPIs.
+
 ## [18.6.1] - 2026-11-06
 ### Changed
 - **`client.fhir2omop.create(...)`** — documentation now explains confirmed individual (Type 1) NPI validation, provider merging, role-only provider emission, and omissions for organization or conflicting NPIs.
