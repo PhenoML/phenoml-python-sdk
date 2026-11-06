@@ -9,7 +9,10 @@ from .reference_diagnostic_outcome import ReferenceDiagnosticOutcome
 
 class ReferenceDiagnostic(UniversalBaseModel):
     """
-    Explains why a source value or reference could not be used. When an affected OMOP row is emitted, omop_table and omop_id identify that row within this response, regardless of diagnostic outcome. They identify the affected output row, not a missing or rejected reference target. Multiple source resources can link to the same row. Both fields are omitted when there is no affected output row, including when the source resource is dropped. These IDs are response-local and are not stable across requests.
+    Explains why source data or a reference could not be used. omop_table and
+    omop_id identify the affected emitted row, not a rejected target; both are
+    omitted when no affected row is emitted. Multiple source resources can link
+    to one row. IDs are local to this response.
     """
 
     resource_type: typing.Optional[str] = None
@@ -26,7 +29,12 @@ class ReferenceDiagnostic(UniversalBaseModel):
 
     path: typing.Optional[str] = pydantic.Field(default=None)
     """
-    FHIR element path on the source resource, or slash-separated related paths for a joint rule such as whenHandedOver/daysSupply.
+    Source field or diagnostic label. Demographic labels include
+    `extension:birthsex` and `extension:ethnicity`; provider identity labels
+    are `name`, `gender`, `birthDate`, and `identifier`. For Encounters,
+    `class/type` identifies class/type disagreement and `type` identifies
+    conflicting type classifications. Joint rules can use slash-separated
+    paths such as `whenHandedOver/daysSupply`.
     """
 
     reference: typing.Optional[str] = pydantic.Field(default=None)
@@ -36,33 +44,30 @@ class ReferenceDiagnostic(UniversalBaseModel):
 
     outcome: typing.Optional[ReferenceDiagnosticOutcome] = pydantic.Field(default=None)
     """
-    UNRESOLVED: a source value needed to populate a field is missing,
-    such as specimen material or collection start, or a supported
-    reference cannot resolve to a resource or emitted target supplied
-    in this request.
-    AMBIGUOUS: a reference or identifier matches multiple possible
-    targets. Identifier-only `PractitionerRole.practitioner` references
-    are unambiguous when all matches map to one canonical provider.
-    Literal references matching multiple source resources remain
-    ambiguous even if those Practitioners merge into one provider.
-    CONFLICTING: supplied values or relationships conflict or require
-    review under the mapping policy, such as differing mapped provider identity
-    attributes, multiple distinct NPIs on one Practitioner, conflicting
-    Patient demographic extensions, or an Encounter belonging to a
-    different patient. For explicit Encounter components, overlapping but
-    non-contained periods may retain grouping; reason explains the
-    retained output and limitation. An `INCOMPATIBLE` parent/detail
-    classification outcome retains the child as a standalone visit.
-    UNSUPPORTED: a supplied reference form, resource type, or value
-    shape is outside the supported mapping policy, or an explicit Encounter
-    component has an `UNKNOWN` vocabulary compatibility outcome. Such a
-    component retains partial grouping; the reason states the limitation
-    and retained output.
+    - UNRESOLVED: required source data is missing, or a supported reference cannot
+      resolve to a supplied resource or emitted target.
+    - AMBIGUOUS: a reference or identifier does not identify a unique target.
+    - CONFLICTING: source values or relationships disagree or require review
+      under the mapping policy.
+    - UNSUPPORTED: a source form/type or relationship cannot be fully represented
+      or assessed under the supported policy.
+    
+    reason explains the effect on the row or link. An outcome alone does not
+    imply that the resource was dropped; partial rows or grouping can be retained.
     """
 
     reason: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Explanation of the condition and, when applicable, its effect on mapping.
+    Explanation of the condition and its effect on mapping. Resource-specific
+    reason codes can be followed by `; ` and explanatory text; match these
+    codes as prefixes rather than whole strings. Collection timing uses
+    specimen_collection_date_missing, specimen_collection_date_partial,
+    specimen_collection_date_unusable, or specimen_collection_multiple_forms.
+    Dispensing timing uses medication_dispense_handover_missing,
+    medication_dispense_handover_partial, or medication_dispense_handover_unusable.
+    medication_dispense_handover_before_preparation identifies conflicting
+    handover/preparation timing;
+    medication_dispense_end_date_absent identifies an unset exposure end.
     """
 
     if IS_PYDANTIC_V2:
