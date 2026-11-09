@@ -1,3 +1,22 @@
+## [19.0.0] - 2026-11-09
+### Breaking Changes
+- **`PageFilter`** — removed from `phenoml.lang2fhir` and `phenoml.lang2fhir.types`; remove all imports and usages of `PageFilter`.
+- **`DocumentConfig.page_filter`** — deprecated field removed; migrate to `config.split_classifications` with a `drop` classification describing the pages to exclude.
+
+### Added
+- **`client.fhir2omop_batch`** — new sub-client (sync and async: `Fhir2OmopBatchClient` / `AsyncFhir2OmopBatchClient`) on `PhenomlClient` and `AsyncPhenomlClient` for submitting and managing asynchronous FHIR-to-OMOP batch conversion jobs.
+- **`BatchJob`, `BatchJobStatus`, `BatchCounts`, `BatchError`, `BatchItemStatus`, and `BatchItemStatusStatus`** — new types representing batch job lifecycle state and per-item outcomes, available from `phenoml.fhir2omop_batch`.
+- **`JobDetailResponse`, `JobListResponse`, `ResultsPageResponse`, and `UploadItemResponse`** — new response types for batch job detail, listing, result pagination, and item upload acknowledgement.
+- **Role-only provider emission** — a `PractitionerRole` without a resolvable `Practitioner` can now emit a `provider` row using a confirmed individual (Type 1) NPI from its identifiers.
+- **Typed batch error exceptions** — new exception classes (`ConflictError`, `ContentTooLargeError`, `ClientClosedRequestError`, `InternalServerError`, `NotFoundError`, `UnauthorizedError`) raised by the `fhir2omop_batch` client for specific HTTP error conditions.
+
+### Changed
+- **`client.fhir2omop.create(...)`** — the `fhir_resources` parameter now enforces a 1,000-item per-field vocabulary resolution limit; requests exceeding this limit are rejected with HTTP 400.
+- **`ProviderRow.npi`** — now populated only from confirmed individual (Type 1) NPIs; organization, invalid, and unconfirmed NPIs no longer populate this field.
+- **`CreateOmopResponse.dropped` and `CreateOmopResponse.diagnostics`** — expanded to report organization NPIs, roles without a confirmed individual NPI, and unconfirmed NPI diagnostics on retained provider rows.
+- **`DocumentConfig.split_classifications`** — now documented with a maximum of 20 classifications, id/description length limits, the `__ungrouped__` reserved id, and unclassified-page behavior.
+- **`DocumentMultiResponse.page_classifications`** and **`CreateMultiResponseResourcesItem.group`** — clarified return conditions and tie-breaking logic for multi-page resource grouping.
+
 ## [18.6.1] - 2026-11-06
 ### Changed
 - **`client.fhir2omop.create(...)`** — documentation now explains confirmed individual (Type 1) NPI validation, provider merging, role-only provider emission, and omissions for organization or conflicting NPIs.

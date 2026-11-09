@@ -18,17 +18,17 @@ class PageClassification(UniversalBaseModel):
 
     include: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Whether the page was kept (true) or dropped (false) from FHIR extraction.
+    Whether the page was kept (true) or dropped (false) from FHIR extraction. Pages that could not be classified are kept.
     """
 
     classification_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Split classification id assigned to the page. Omitted or empty for the ungrouped/default bucket.
+    Split classification id assigned to the page. Omitted for ungrouped pages, including pages that could not be classified.
     """
 
     reason: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Short LLM-generated explanation of the decision.
+    Short LLM-generated explanation of the decision. When the page could not be classified, says that the classifier was unavailable.
     """
 
     if IS_PYDANTIC_V2:
