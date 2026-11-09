@@ -29,7 +29,10 @@ class SpecimenRow(UniversalBaseModel):
 
     specimen_date: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Collection date from collectedDateTime or collectedPeriod.start when day precision exists. Omitted for missing, partial, invalid, or conflicting timing, with a linked diagnostic. Required by CDM 5.4 for loading, but not required for partial API output; downstream loaders own completion.
+    Collection date from collectedDateTime or collectedPeriod.start at day
+    precision. Missing, partial, invalid, or conflicting timing leaves it absent
+    with a linked diagnostic; callers must handle required-date completion for
+    CDM loading.
     """
 
     specimen_datetime: typing.Optional[str] = pydantic.Field(default=None)

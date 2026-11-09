@@ -19,6 +19,7 @@ if typing.TYPE_CHECKING:
     from .construe.client import AsyncConstrueClient, ConstrueClient
     from .fhir.client import AsyncFhirClient, FhirClient
     from .fhir2omop.client import AsyncFhir2OmopClient, Fhir2OmopClient
+    from .fhir2omop_batch.client import AsyncFhir2OmopBatchClient, Fhir2OmopBatchClient
     from .fhir_provider.client import AsyncFhirProviderClient, FhirProviderClient
     from .implementation_guides.client import AsyncImplementationGuidesClient, ImplementationGuidesClient
     from .lang2fhir.client import AsyncLang2FhirClient, Lang2FhirClient
@@ -221,6 +222,7 @@ class PhenomlClient:
         self._construe: typing.Optional[ConstrueClient] = None
         self._fhir: typing.Optional[FhirClient] = None
         self._fhir2omop: typing.Optional[Fhir2OmopClient] = None
+        self._fhir2omop_batch: typing.Optional[Fhir2OmopBatchClient] = None
         self._fhir_provider: typing.Optional[FhirProviderClient] = None
         self._implementation_guides: typing.Optional[ImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[Lang2FhirClient] = None
@@ -278,6 +280,14 @@ class PhenomlClient:
 
             self._fhir2omop = Fhir2OmopClient(client_wrapper=self._client_wrapper)
         return self._fhir2omop
+
+    @property
+    def fhir2omop_batch(self):
+        if self._fhir2omop_batch is None:
+            from .fhir2omop_batch.client import Fhir2OmopBatchClient  # noqa: E402
+
+            self._fhir2omop_batch = Fhir2OmopBatchClient(client_wrapper=self._client_wrapper)
+        return self._fhir2omop_batch
 
     @property
     def fhir_provider(self):
@@ -580,6 +590,7 @@ class AsyncPhenomlClient:
         self._construe: typing.Optional[AsyncConstrueClient] = None
         self._fhir: typing.Optional[AsyncFhirClient] = None
         self._fhir2omop: typing.Optional[AsyncFhir2OmopClient] = None
+        self._fhir2omop_batch: typing.Optional[AsyncFhir2OmopBatchClient] = None
         self._fhir_provider: typing.Optional[AsyncFhirProviderClient] = None
         self._implementation_guides: typing.Optional[AsyncImplementationGuidesClient] = None
         self._lang2fhir: typing.Optional[AsyncLang2FhirClient] = None
@@ -637,6 +648,14 @@ class AsyncPhenomlClient:
 
             self._fhir2omop = AsyncFhir2OmopClient(client_wrapper=self._client_wrapper)
         return self._fhir2omop
+
+    @property
+    def fhir2omop_batch(self):
+        if self._fhir2omop_batch is None:
+            from .fhir2omop_batch.client import AsyncFhir2OmopBatchClient  # noqa: E402
+
+            self._fhir2omop_batch = AsyncFhir2OmopBatchClient(client_wrapper=self._client_wrapper)
+        return self._fhir2omop_batch
 
     @property
     def fhir_provider(self):

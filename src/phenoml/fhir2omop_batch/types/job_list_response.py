@@ -4,16 +4,23 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .batch_job import BatchJob
 
 
-class PageFilter(UniversalBaseModel):
+class JobListResponse(UniversalBaseModel):
     """
-    Configures per-page pre-extraction filtering. When set, each page of text extracted from the document is classified by an LLM, and pages classified as irrelevant to the supplied context are dropped before FHIR extraction.
+    A page of job records, without per-job counts.
     """
 
-    context: str = pydantic.Field()
+    jobs: typing.List[BatchJob]
+    next_cursor: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Natural-language description of what IS relevant to the extraction goal. Pages that do not match are dropped from downstream FHIR extraction.
+    Cursor for the next page, when has_more is true.
+    """
+
+    has_more: bool = pydantic.Field()
+    """
+    Whether more jobs remain beyond this page.
     """
 
     if IS_PYDANTIC_V2:
