@@ -8,6 +8,7 @@ from importlib import import_module
 if typing.TYPE_CHECKING:
     from .bad_request_error import BadRequestError
     from .client_closed_request_error import ClientClosedRequestError
+    from .content_too_large_error import ContentTooLargeError
     from .forbidden_error import ForbiddenError
     from .gateway_timeout_error import GatewayTimeoutError
     from .internal_server_error import InternalServerError
@@ -17,6 +18,7 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".bad_request_error",
     "ClientClosedRequestError": ".client_closed_request_error",
+    "ContentTooLargeError": ".content_too_large_error",
     "ForbiddenError": ".forbidden_error",
     "GatewayTimeoutError": ".gateway_timeout_error",
     "InternalServerError": ".internal_server_error",
@@ -50,6 +52,7 @@ def __dir__():
 __all__ = [
     "BadRequestError",
     "ClientClosedRequestError",
+    "ContentTooLargeError",
     "ForbiddenError",
     "GatewayTimeoutError",
     "InternalServerError",

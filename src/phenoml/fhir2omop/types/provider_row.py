@@ -11,7 +11,14 @@ class ProviderRow(UniversalBaseModel):
     provider_name: typing.Optional[str] = None
     npi: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Single distinct confirmed individual NPI from Practitioner.identifier, or PractitionerRole.identifier when no supplied Practitioner resolves. Recognized systems are http://hl7.org/fhir/sid/us-npi, urn:oid:2.16.840.1.113883.4.6, and 2.16.840.1.113883.4.6. Classification trims whitespace and validates the ten-digit format and NPI check digit. This field preserves the original source value. Blank and UNK/UNKNOWN markers are missing. Organization, invalid, unconfirmed, and conflicting NPIs do not populate this field.
+    Single distinct confirmed individual NPI from Practitioner.identifier or,
+    for a role-only provider, PractitionerRole.identifier or practitioner.identifier.
+    Recognized systems are http://hl7.org/fhir/sid/us-npi,
+    urn:oid:2.16.840.1.113883.4.6, and 2.16.840.1.113883.4.6.
+    Classification trims whitespace and validates ten digits and the NPI check
+    digit; this field preserves the original value. Blank and UNK/UNKNOWN markers
+    are missing, ignoring case and surrounding whitespace. Organization, invalid,
+    unconfirmed, and conflicting NPIs do not populate this field.
     """
 
     dea: typing.Optional[str] = None
@@ -33,27 +40,17 @@ class ProviderRow(UniversalBaseModel):
 
     provider_source_value: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The single distinct confirmed individual NPI, when present, including for role-only providers. Compatible providers
-    can use this value as a cross-request deduplication key; row IDs are
-    per response, and the API does not merge across requests. Conflicting
-    NPI groups retain separate rows sharing this value. Preserve rows
-    flagged by identity diagnostics using `omop_table: provider` and
-    `omop_id`, and check identity compatibility across responses before
-    deduplicating.
-    Without one unambiguous individual NPI, this is the source identity
-    of the Practitioner. Role-only providers require a confirmed NPI.
-    Missing NPI values, unknown markers, and unconfirmed NPIs are excluded when selecting
-    that source identity. When no source identity is available, an
-    explicitly marked response-local provider ordinal such as
-    `@provider-index:1` supplies a local scope.
-    Multiple distinct NPIs leave `npi` unset and use the resource ID,
-    full URL, or an explicitly marked response-local provider ordinal
-    such as `@provider-index:1` when neither is supplied.
-    A Practitioner contained by a PractitionerRole without one unambiguous
-    NPI is scoped as `PractitionerRole/<role-source-value>#<contained-id>`
-    so identical local contained IDs do not collide; an id-less parent
-    uses an explicitly marked response-local role ordinal such as
-    `@role-index:1`.
+    The single confirmed individual NPI, including for role-only providers and
+    when conflicting identity attributes keep an NPI group in separate rows.
+    Check identity diagnostics and compatibility before deduplicating across responses.
+    
+    Without an unambiguous individual NPI, the Practitioner's source identity is
+    used, excluding missing markers and unconfirmed NPIs. Role-only providers
+    require a confirmed NPI. Without a source identity, `@provider-index:N`
+    marks a response-local provider ordinal. Contained Practitioners use
+    `PractitionerRole/<role-scope>#<contained-id>`; a role without a source
+    identity uses `@role-index:N` as its response-local scope. These fallbacks
+    are not global identity guarantees; row IDs and merging are request-local.
     """
 
     specialty_source_value: typing.Optional[str] = pydantic.Field(default=None)

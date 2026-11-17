@@ -2,6 +2,7 @@
 
 import typing
 
+from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from .raw_client import AsyncRawLang2FhirClient, RawLang2FhirClient
@@ -386,9 +387,20 @@ class Lang2FhirClient:
 
         **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the document is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
 
-        **Page classification.** When `config` sets neither `split_classifications` nor `page_filter`, pages classified as test requisition forms (lab or diagnostic order forms) are dropped before extraction and reported in `page_classifications`. Supplying either setting replaces this default.
+        **Page classification (optional).** By default, every page with extracted text is used for extraction, and the response omits `page_classifications`. To classify pages so they can be grouped or dropped before extraction, set `config.split_classifications`. An empty list is the same as omitting it.
 
-        **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
+        `split_classifications` is a list of up to 20 classifications that you define; there is no fixed taxonomy. Each classification has:
+        - `id`: your label for the classification. Ids must be non-blank, unique, up to 64 characters, and must not be the reserved value `__ungrouped__`.
+        - `description`: a non-blank description, up to 500 characters, of the pages that belong to the classification. Each page's text is compared against these descriptions, so describe what sets those pages apart from the rest of the document.
+        - `operation`: `group` keeps matching pages and labels the resources extracted from them; `drop` removes matching pages before extraction.
+
+        Each page is classified on its own text and assigned at most one classification. A page that does not clearly match any classification is left ungrouped. Ungrouped pages are kept, but resources extracted only from ungrouped pages are not labeled. A page that cannot be classified, for example because classification failed temporarily, is also kept and left ungrouped.
+
+        A resource's label comes from its `resources[].sourcePages`. When those pages include `group` pages, the resource carries the classification `id` in `resources[].group` and as a `meta.tag` with `system: "https://phenoml.com/fhir/split-classification"`. When its source pages span more than one group, it takes the group that covers the most of them; ties go to the group with the earliest source page. Resources without `sourcePages` are not labeled.
+
+        The response's `page_classifications` reports the decision for every page, kept or dropped. When every page is dropped, the response has `success: false`, a `message`, and `page_classifications`, with `bundle` and `resources` set to null.
+
+        For example, the `clinical` and `admin` classifications in the request example keep and label clinical pages and drop administrative pages. To skip lab or diagnostic order forms, add a `drop` classification that describes them.
 
         Parameters
         ----------
@@ -473,6 +485,58 @@ class Lang2FhirClient:
             request_options=request_options,
         )
         return _response.data
+
+    def deidentify(
+        self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
+        """
+        **Alpha — under development, use at your own risk.** De-identification is
+        under active development and has not been validated. Request parameters,
+        response shape, and results may change between releases. Do not rely on it
+        as your sole means of de-identification or for production workloads.
+
+        Available on dedicated instances only.
+
+        Redaction follows the HIPAA Privacy Rule's Safe Harbor method
+        (45 CFR 164.514(b)(2)) and targets the identifiers it lists. The output is
+        not certified as de-identified under HIPAA. Before treating a document as
+        de-identified, you remain responsible for reviewing it and for confirming
+        that no remaining information could identify the individual.
+
+        Finds protected health information (PHI) in a PDF, PNG, JPEG, or TIFF document and
+        returns a redacted copy with each identifier covered by a black box. Redacted
+        identifiers include names, dates, ages, addresses and other locations, ZIP codes,
+        organizations, phone numbers, email addresses, URLs, IP addresses, Social Security
+        numbers, medical record numbers, and other identifying numbers. Faces, signatures,
+        barcodes, and patient label stickers are also covered, as are the answer areas next
+        to identifying form labels such as Name, DOB, or MRN.
+
+        Detection favors catching every identifier over preserving surrounding content, so
+        some non-identifying text may also be covered. When a page can't be redacted
+        reliably, the whole page is blacked out.
+
+        Upload the document as the `file` part of a `multipart/form-data` request. The
+        response body is the redacted document as an image-only PDF (`application/pdf`)
+        with one page per input page and no text layer. The submitted document and the
+        redacted output are not stored.
+
+        The complete request body is limited to 32 MiB (33,554,432 bytes).
+
+        Parameters
+        ----------
+        file : core.File
+            See core.File for more documentation
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.Iterator[bytes]
+            The redacted document
+        """
+        with self._raw_client.deidentify(file=file, request_options=request_options) as r:
+            yield from r.data
 
 
 class AsyncLang2FhirClient:
@@ -877,9 +941,20 @@ class AsyncLang2FhirClient:
 
         **Patient identifier handling.** US Core requires `Patient.identifier` (a business identifier such as an MRN). Every Patient carries a synthetic identifier with `system: "urn:phenoml:lang2fhir-generated-id"` and a UUID `value`, so the bundle remains FHIR-valid and US Core conformant. A medical record number stated in the document is added with `system: "urn:phenoml:lang2fhir-document-mrn"`, and the `primary_patient` identifier is added as described above. Callers who need a tenant-specific namespace should rewrite these systems after extraction.
 
-        **Page classification.** When `config` sets neither `split_classifications` nor `page_filter`, pages classified as test requisition forms (lab or diagnostic order forms) are dropped before extraction and reported in `page_classifications`. Supplying either setting replaces this default.
+        **Page classification (optional).** By default, every page with extracted text is used for extraction, and the response omits `page_classifications`. To classify pages so they can be grouped or dropped before extraction, set `config.split_classifications`. An empty list is the same as omitting it.
 
-        **Split classifications (optional).** `config.split_classifications` is a caller-defined list, not a fixed taxonomy. Choose each classification `id` and write a natural-language `description` for the per-page classifier. For each page, the classifier assigns the best-matching classification or leaves the page ungrouped. Classifications with `operation: "group"` keep matching pages and label resources extracted from those pages; classifications with `operation: "drop"` remove matching pages before extraction. The `clinical` and `admin` ids in the example are illustrative, not a fixed set.
+        `split_classifications` is a list of up to 20 classifications that you define; there is no fixed taxonomy. Each classification has:
+        - `id`: your label for the classification. Ids must be non-blank, unique, up to 64 characters, and must not be the reserved value `__ungrouped__`.
+        - `description`: a non-blank description, up to 500 characters, of the pages that belong to the classification. Each page's text is compared against these descriptions, so describe what sets those pages apart from the rest of the document.
+        - `operation`: `group` keeps matching pages and labels the resources extracted from them; `drop` removes matching pages before extraction.
+
+        Each page is classified on its own text and assigned at most one classification. A page that does not clearly match any classification is left ungrouped. Ungrouped pages are kept, but resources extracted only from ungrouped pages are not labeled. A page that cannot be classified, for example because classification failed temporarily, is also kept and left ungrouped.
+
+        A resource's label comes from its `resources[].sourcePages`. When those pages include `group` pages, the resource carries the classification `id` in `resources[].group` and as a `meta.tag` with `system: "https://phenoml.com/fhir/split-classification"`. When its source pages span more than one group, it takes the group that covers the most of them; ties go to the group with the earliest source page. Resources without `sourcePages` are not labeled.
+
+        The response's `page_classifications` reports the decision for every page, kept or dropped. When every page is dropped, the response has `success: false`, a `message`, and `page_classifications`, with `bundle` and `resources` set to null.
+
+        For example, the `clinical` and `admin` classifications in the request example keep and label clinical pages and drop administrative pages. To skip lab or diagnostic order forms, add a `drop` classification that describes them.
 
         Parameters
         ----------
@@ -972,3 +1047,56 @@ class AsyncLang2FhirClient:
             request_options=request_options,
         )
         return _response.data
+
+    async def deidentify(
+        self, *, file: core.File, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
+        """
+        **Alpha — under development, use at your own risk.** De-identification is
+        under active development and has not been validated. Request parameters,
+        response shape, and results may change between releases. Do not rely on it
+        as your sole means of de-identification or for production workloads.
+
+        Available on dedicated instances only.
+
+        Redaction follows the HIPAA Privacy Rule's Safe Harbor method
+        (45 CFR 164.514(b)(2)) and targets the identifiers it lists. The output is
+        not certified as de-identified under HIPAA. Before treating a document as
+        de-identified, you remain responsible for reviewing it and for confirming
+        that no remaining information could identify the individual.
+
+        Finds protected health information (PHI) in a PDF, PNG, JPEG, or TIFF document and
+        returns a redacted copy with each identifier covered by a black box. Redacted
+        identifiers include names, dates, ages, addresses and other locations, ZIP codes,
+        organizations, phone numbers, email addresses, URLs, IP addresses, Social Security
+        numbers, medical record numbers, and other identifying numbers. Faces, signatures,
+        barcodes, and patient label stickers are also covered, as are the answer areas next
+        to identifying form labels such as Name, DOB, or MRN.
+
+        Detection favors catching every identifier over preserving surrounding content, so
+        some non-identifying text may also be covered. When a page can't be redacted
+        reliably, the whole page is blacked out.
+
+        Upload the document as the `file` part of a `multipart/form-data` request. The
+        response body is the redacted document as an image-only PDF (`application/pdf`)
+        with one page per input page and no text layer. The submitted document and the
+        redacted output are not stored.
+
+        The complete request body is limited to 32 MiB (33,554,432 bytes).
+
+        Parameters
+        ----------
+        file : core.File
+            See core.File for more documentation
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+
+        Returns
+        -------
+        typing.AsyncIterator[bytes]
+            The redacted document
+        """
+        async with self._raw_client.deidentify(file=file, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk

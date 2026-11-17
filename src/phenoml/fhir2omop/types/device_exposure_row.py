@@ -59,7 +59,7 @@ class DeviceExposureRow(UniversalBaseModel):
 
     quantity: typing.Optional[int] = pydantic.Field(default=None)
     """
-    1 when the source has no quantity, dose, rate, or numeric Observation result field; omitted when such a field is supplied, including null or malformed values. See device_exposure_contexts.quantity_basis.
+    Default 1 when quantity evidence is absent; otherwise omitted. See device_exposure_contexts.quantity_basis.
     """
 
     provider_id: typing.Optional[int] = pydantic.Field(default=None)

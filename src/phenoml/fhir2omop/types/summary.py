@@ -8,37 +8,23 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 class Summary(UniversalBaseModel):
     """
-    The request's data-quality headline: how resolution outcomes split, and
-    the share that was not already in a target standard vocabulary. Counts
-    include primary clinical concepts, whether coded or text-only; coded
-    Observation result values on `measurement` or `observation` rows;
-    reported allergy substance values;
-    supplied Quantity units on measurement, observation, or specimen rows;
-    supplied specimen material and sites; Encounter classification outcomes;
-    Address.country, CMS Place of Service, and recorded Practitioner gender;
-    distinct Provider specialty inputs per provider;
-    coded medication/immunization routes (including those reported only in
-    `mappings` when the output table is not `drug_exposure`); and Patient
-    demographic fields. Each outcome is counted once even when its source
-    carried several codings — unlike `mappings`, which has
-    one entry per coding. For example, a medication code and its selected
-    coded route on the same `drug_exposure` row are separate outcomes;
-    a coded Observation result on a measurement or observation row counts
-    separately from its primary concept, even when the result is unresolved;
-    each supplied Quantity unit on a measurement, observation, or specimen row also
-    counts once, including text-only units;
-    each supplied specimen site counts once, including text-only sites;
-    absent specimen material and sites do not count;
-    absent units do not count;
-    alternate route codings reported only in `mappings` do not alter
-    `summary`. A Patient demographic counts once per PERSON field, or per
-    race `observation` row, that received a non-null value; conflicting
-    values count once as unmapped. Null flavors, Patient `gender` `other` or
-    `unknown`, a Patient `gender` overridden by birth sex, and race
-    categories that did not determine the field are reported in `mappings`
-    only. Observation values retained only in `mappings` because the output
-    table is neither `measurement` nor `observation` do not add resolution
-    outcomes.
+    Resolution outcome counts and the share not already standard. Each evaluated
+    field contributes one outcome even when several codings produce mappings.
+
+    | Included outcomes | Counting unit |
+    | --- | --- |
+    | Primary clinical concepts, specimen material/sites, supplied Quantity units on Measurement/Observation/Specimen, coded Observation results on Measurement/Observation, allergy substance values, Encounter classifications, Address.country, CMS Place of Service, and recorded Practitioner gender | Each evaluated field |
+    | Coded medication/Immunization routes, including context on other destinations | Each source-selected route; report-only alternates do not add outcomes |
+    | Provider specialties | Each distinct input per provider |
+    | Patient demographics | Each selected Person field or emitted race Observation; conflicting values count once as unmapped |
+
+    Absent specimen material/sites and units do not count. Demographic null
+    flavors, Patient gender other/unknown or overridden by birth sex, and race
+    categories not determining a field are reported only in mappings.
+    Observation values retained without a corresponding row column, quantity
+    audits, and visit compatibility assessments do not add resolution outcomes.
+    Dropped resources do not count; indexed rows remain included in codes_*
+    and off_vocab_rate.
     """
 
     codes_already_standard: typing.Optional[int] = pydantic.Field(default=None)

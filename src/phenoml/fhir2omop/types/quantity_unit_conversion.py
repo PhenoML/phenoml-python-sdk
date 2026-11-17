@@ -9,7 +9,10 @@ from .quantity_unit import QuantityUnit
 
 class QuantityUnitConversion(UniversalBaseModel):
     """
-    Successful case-sensitive UCUM conversion within the documented supported unit groups, from the original source magnitude to a vocabulary-backed strength unit before applying the formulation policy. Present only when the unit code changes. May be present on an OMITTED outcome if a later policy check rejects the final result; result here is the intermediate converted amount, not the linked row's quantity.
+    Successful case-sensitive UCUM conversion of the source magnitude into a
+    supported strength unit. Present only when the unit code changes. The result
+    is an intermediate value, not the linked row's quantity, and can remain
+    present when a later policy check omits that quantity.
     """
 
     source_code: str = pydantic.Field()

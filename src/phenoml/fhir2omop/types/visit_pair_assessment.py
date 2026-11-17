@@ -11,7 +11,10 @@ from .visit_pair_assessment_status import VisitPairAssessmentStatus
 
 class VisitPairAssessment(UniversalBaseModel):
     """
-    Compatibility with the CDM same-concept/descendant classification convention, assessed before any standalone fallback. This does not judge the clinical truth of the source relationship. Both concepts must be active standard Visit-domain concepts for a compatible result.
+    Compatibility of the selected parent/detail Visit concepts under the CDM
+    same-concept/descendant convention. Compatible concepts must be active and
+    standard in the Visit domain. An assessment describes classification
+    compatibility, not the clinical truth of the source partOf relationship.
     """
 
     parent_concept_id: int = pydantic.Field()
@@ -27,18 +30,18 @@ class VisitPairAssessment(UniversalBaseModel):
     status: VisitPairAssessmentStatus
     reason_code: VisitPairAssessmentReasonCode = pydantic.Field()
     """
-    SAME_CONCEPT and DESCENDANT are compatible outcomes.
-    NOT_DESCENDANT is incompatible: both concepts are usable with closure
-    coverage, but no parent-as-ancestor/detail-as-descendant row exists.
-    The remaining reasons are unknown outcomes: a concept is unresolved,
-    absent, inactive, nonstandard or outside the Visit domain, or ancestry
-    evidence is insufficient. Missing database/service evidence due to a
-    request failure is an error, not an unknown result.
+    SAME_CONCEPT and DESCENDANT are compatible outcomes. NOT_DESCENDANT means
+    the usable concepts lack the required parent-ancestor/detail-descendant
+    relationship. Other reasons are unknown outcomes: an unresolved or unusable
+    concept, or insufficient ancestry evidence. Assessment unavailability or
+    malformed results fail the request with HTTP 500 rather than returning
+    an UNKNOWN result.
     """
 
     invalid_concept_role: typing.Optional[VisitPairAssessmentInvalidConceptRole] = pydantic.Field(default=None)
     """
-    Present for unknown concept-validation outcomes; parent is checked first. Absent for ANCESTRY_UNAVAILABLE and compatible/incompatible outcomes.
+    Identifies the unusable concept for UNKNOWN concept-validation outcomes.
+    Absent for ANCESTRY_UNAVAILABLE and compatible/incompatible outcomes.
     """
 
     min_levels_of_separation: typing.Optional[int] = pydantic.Field(default=None)
