@@ -1,3 +1,21 @@
+## [19.0.0] - 2026-11-17
+### Breaking Changes
+- **`PageFilter`** — removed from `phenoml.lang2fhir.types` entirely; remove all `import PageFilter` statements and replace any `DocumentConfig.page_filter` usage with `DocumentConfig.split_classifications`.
+- **`DocumentConfig.page_filter`** — field removed; migrate to `DocumentConfig.split_classifications` to control per-page filtering.
+
+### Added
+- **`Lang2FhirClient.deidentify()` / `AsyncLang2FhirClient.deidentify()`** — new alpha streaming method that uploads a PDF, PNG, JPEG, or TIFF document and returns a redacted copy with PHI covered by black boxes per HIPAA Safe Harbor (45 CFR 164.514(b)(2)); available on dedicated instances only.
+- **`client.fhir2omop_batch`** — new `Fhir2OmopBatchClient` / `AsyncFhir2OmopBatchClient` sub-client on `PhenomlClient` and `AsyncPhenomlClient` for submitting, managing, and retrieving results of asynchronous FHIR-to-OMOP batch conversion jobs.
+- **`phenoml.fhir2omop_batch`** — new subpackage exporting batch job types (`BatchJob`, `BatchJobStatus`, `BatchCounts`, `BatchError`, `BatchItemStatus`), response types (`JobDetailResponse`, `JobListResponse`, `ResultsPageResponse`, `UploadItemResponse`), and typed error classes (`ContentTooLargeError`, `NotFoundError`, `UnauthorizedError`, and others).
+- **`ContentTooLargeError`** — new HTTP 413 exception class raised in both `lang2fhir.errors` and `fhir2omop_batch.errors` when a request payload exceeds the server's size limit.
+- **Role-only provider emission** — `PractitionerRole` resources can now emit a provider row using a confirmed individual (Type 1) NPI from `PractitionerRole.identifier` even when no corresponding `Practitioner` resource is supplied.
+
+### Changed
+- **`Lang2FhirClient.create()` / `AsyncLang2FhirClient.create()` page classification** — default behavior no longer drops test requisition forms; all pages with extracted text are used unless `config.split_classifications` is explicitly set.
+- **`DocumentMultiResponse.page_classifications`** — now returned only when `config.split_classifications` is set and non-empty, rather than on every request.
+- **`ProviderRow.npi`** — now populated only from confirmed individual (Type 1) NPIs; organization NPIs, unconfirmed NPIs, and invalid values are excluded.
+- **`CreateOmopResponse.dropped` / `.diagnostics`** — expanded to report organization-NPI providers, roles without a confirmed individual NPI, and `UNRESOLVED` diagnostics for unconfirmable Practitioner NPIs.
+
 ## [18.6.1] - 2026-11-06
 ### Changed
 - **`client.fhir2omop.create(...)`** — documentation now explains confirmed individual (Type 1) NPI validation, provider merging, role-only provider emission, and omissions for organization or conflicting NPIs.
