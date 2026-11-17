@@ -29,7 +29,6 @@ if typing.TYPE_CHECKING:
     from .document_multi_response import DocumentMultiResponse
     from .fhir_resource import FhirResource
     from .page_classification import PageClassification
-    from .page_filter import PageFilter
     from .patient_reference import PatientReference
     from .primary_patient import PrimaryPatient
     from .primary_patient_gender import PrimaryPatientGender
@@ -69,7 +68,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DocumentMultiResponse": ".document_multi_response",
     "FhirResource": ".fhir_resource",
     "PageClassification": ".page_classification",
-    "PageFilter": ".page_filter",
     "PatientReference": ".patient_reference",
     "PrimaryPatient": ".primary_patient",
     "PrimaryPatientGender": ".primary_patient_gender",
@@ -133,7 +131,6 @@ __all__ = [
     "DocumentMultiResponse",
     "FhirResource",
     "PageClassification",
-    "PageFilter",
     "PatientReference",
     "PrimaryPatient",
     "PrimaryPatientGender",

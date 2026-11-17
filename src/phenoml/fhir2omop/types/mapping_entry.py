@@ -10,7 +10,11 @@ from .mapping_resolution import MappingResolution
 
 class MappingEntry(UniversalBaseModel):
     """
-    How one source coding or supplied source text resolved to an OMOP standard concept, or was retained as source information. `omop_table` and `omop_id` link it to the output row; `omop_field` identifies the populated concept field, when applicable. Coded result values and supplied Quantity units have separate entries linked to their clinical row. Unit entries preserve the original Quantity.system/code and Quantity.unit in source_system/source_code/source_name, including OID spellings. A coded medication route is a separate entry linked to the same output row as its medication or vaccine coding. Routes on rows outside `drug_exposure`, and Observation values on rows outside `measurement` / `observation`, omit `omop_field`. `selected` identifies the coding rendered in the associated row's `*_source_value`; it is false for alternate codings, text-only rows, and entries without a corresponding row column.
+    Outcome for one source coding or supplied text, including source information
+    retained without resolution. omop_table and omop_id identify the emitted row;
+    omop_field identifies its populated concept column when applicable. A field
+    can have multiple coding entries sharing one resolution outcome. selected
+    identifies the source coding used in the linked row's source-value column.
     """
 
     resource_type: typing.Optional[str] = None
@@ -48,44 +52,34 @@ class MappingEntry(UniversalBaseModel):
     target_name: typing.Optional[str] = None
     mapping_status: typing.Optional[MappingEntryMappingStatus] = pydantic.Field(default=None)
     """
-    ALREADY_STANDARD (source coding is already a standard OMOP concept),
-    MAPPED (source coding or descriptive source text was mapped to a standard
-    concept), UNCHECKED (a suggested code has not been validated against
-    the OMOP vocabulary, so `concept_id` is `0`), or UNMAPPED
-    (no target concept selected, including missing mappings,
-    target-domain mismatches and ambiguity, or source information
-    retained without concept resolution as explained in `note`). For
-    specialties, this describes the entry-level result selected from
-    supported codings or explicit text. A local coding can remain
-    unsupported even when the entry resolves; its independent outcome
-    remains in resolution.specialty_resolution.coding_results.
+    ALREADY_STANDARD: the source coding is already an OMOP standard concept.
+    MAPPED: coding or descriptive text resolved to a standard concept.
+    UNCHECKED: a suggestion is unvalidated and concept ID remains 0.
+    UNMAPPED: no valid target was selected, or information was retained without
+    resolution as explained in note.
+    
+    Specialty entries report the selected field-level outcome; independent
+    coding support remains in resolution.specialty_resolution.coding_results.
     """
 
     selected: bool = pydantic.Field()
     """
-    Whether this source coding was selected for the linked row's `*_source_value` field. Always present; false for alternate codings, text-only rows, and entries without a corresponding row column. For a Patient demographic, it marks the code that determined the PERSON field or race `observation` row, even when that code has no concept; it is false for race and ethnicity null flavors, conflicting values, a Patient `gender` overridden by birth sex, and race categories that did not determine the field.
+    Whether this coding supplies the row's source value; always present. False
+    for alternate codings, text-only rows, specialties, and entries without a
+    corresponding column. For demographics, marks the code determining the
+    Person field or race Observation, even without a resolved concept.
+    Race/ethnicity null flavors, conflicting inputs, overridden Patient gender,
+    and race categories not determining the field are unselected.
     """
 
     resolution: typing.Optional[MappingResolution] = None
     note: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Additional context for the entry, including the output table,
-    populated fields, source information without a corresponding row
-    column, and `DOMAIN_MISMATCH` outcomes. A coded route is noted as
-    `FHIR route`. Patient demographic entries name their source and, when
-    not applied, why:
-    - `US Core birth sex`; `US Core birth sex; null flavor`;
-      `US Core birth sex; outside value set`;
-      `US Core birth sex; conflicting values`
-    - `FHIR administrative gender; assumed sex at birth`;
-      `FHIR administrative gender; not a sex-at-birth value`;
-      `FHIR administrative gender; not used, birth sex supplied`
-    - `US Core race OMB category`;
-      `US Core race OMB category; more than one race` (linked to its
-      `observation` race row); `US Core race; null flavor`
-    - `US Core ethnicity OMB category`;
-      `US Core ethnicity OMB category; conflicting categories`;
-      `US Core ethnicity; null flavor`
+    Explanatory context for source interpretation, table placement, unmapped
+    outcomes, and values retained without a corresponding row column.
+    Demographic notes identify the source and why a supplied value was not used.
+    Notes are human-readable text, not stable identifiers; use selected,
+    mapping_status, and resolution fields for programmatic decisions.
     """
 
     if IS_PYDANTIC_V2:

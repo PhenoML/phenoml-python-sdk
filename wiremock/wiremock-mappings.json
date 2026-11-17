@@ -8463,6 +8463,2568 @@
       }
     },
     {
+      "id": "6ee0e28c-6cec-4282-a23c-714b2da8d465",
+      "name": "List batch jobs - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"jobs\": [\n    {\n      \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n      \"request_id\": \"omop-cohort-2026-11-02-001\",\n      \"status\": \"pending\",\n      \"finalized\": false,\n      \"total_items\": 12,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"completed_at\": \"2024-01-15T09:30:00Z\",\n      \"expires_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6ee0e28c-6cec-4282-a23c-714b2da8d465",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "9a8a22b1-5ec9-4494-bf5d-ccbb04e84c31",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.0"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"jobs\": [\n    {\n      \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n      \"request_id\": \"omop-cohort-2026-11-02-001\",\n      \"status\": \"pending\",\n      \"finalized\": false,\n      \"total_items\": 12,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"created_at\": \"2024-01-15T09:30:00Z\",\n      \"updated_at\": \"2024-01-15T09:30:00Z\",\n      \"completed_at\": \"2024-01-15T09:30:00Z\",\n      \"expires_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "9a8a22b1-5ec9-4494-bf5d-ccbb04e84c31",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "5852bab6-9ef7-4470-87ea-63d6323d0a1b",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.1"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5852bab6-9ef7-4470-87ea-63d6323d0a1b",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "e08b2d8f-392d-41ee-89f5-71f75ab43746",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.2"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e08b2d8f-392d-41ee-89f5-71f75ab43746",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "07d7d63d-b8de-4302-85a5-f785e1db4a80",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.3"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "07d7d63d-b8de-4302-85a5-f785e1db4a80",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "653408fb-90c1-4f24-a636-17a21481f393",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.4"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "653408fb-90c1-4f24-a636-17a21481f393",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "f1cd2785-4eb3-4124-b511-490c528e7e59",
+      "name": "List batch jobs - default - fhir2omop_batch.list_.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.list_.5"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f1cd2785-4eb3-4124-b511-490c528e7e59",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      },
+      "postServeActions": []
+    },
+    {
+      "id": "c3e3ee85-fc07-42b0-8d88-975579c3b95f",
+      "name": "Create a batch job - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "c3e3ee85-fc07-42b0-8d88-975579c3b95f",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "cc6bad07-f829-401b-8857-77232f471063",
+      "name": "Create a batch job - default - fhir2omop_batch.create.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.0"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cc6bad07-f829-401b-8857-77232f471063",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "cb9ea2f8-a361-4b77-8676-30d7c26242be",
+      "name": "Create a batch job - default - fhir2omop_batch.create.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.1"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "cb9ea2f8-a361-4b77-8676-30d7c26242be",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0c543ce7-e787-4daa-98bc-1c658dfa61ac",
+      "name": "Create a batch job - default - fhir2omop_batch.create.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.2"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0c543ce7-e787-4daa-98bc-1c658dfa61ac",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ace97da9-f3fc-4d9e-9e0c-0a086aabe8aa",
+      "name": "Create a batch job - default - fhir2omop_batch.create.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.3"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ace97da9-f3fc-4d9e-9e0c-0a086aabe8aa",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "87df4e14-6c1e-4169-96c3-29343bc775c9",
+      "name": "Create a batch job - default - fhir2omop_batch.create.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.4"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "87df4e14-6c1e-4169-96c3-29343bc775c9",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8bba186f-e3a3-473c-b560-563b85ad08bc",
+      "name": "Create a batch job - default - fhir2omop_batch.create.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.create.5"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8bba186f-e3a3-473c-b560-563b85ad08bc",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fc37d0fc-2855-4571-8807-76c6353918f5",
+      "name": "Upload one batch item - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\",\n  \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n  \"id\": \"patient-000123\",\n  \"deduplicated\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fc37d0fc-2855-4571-8807-76c6353918f5",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2d611639-4083-44d1-a96e-314fe09b6cbe",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\",\n  \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n  \"id\": \"patient-000123\",\n  \"deduplicated\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2d611639-4083-44d1-a96e-314fe09b6cbe",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "eeb5d4fa-7a80-4b52-bf22-b00f68ad4aa5",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "eeb5d4fa-7a80-4b52-bf22-b00f68ad4aa5",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "44f7722b-3e79-4040-81f6-88c010c8657f",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "44f7722b-3e79-4040-81f6-88c010c8657f",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a7e4226a-652f-4b6e-99c3-72af4c79644b",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a7e4226a-652f-4b6e-99c3-72af4c79644b",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "13589640-bbee-4514-b1a6-fa31d798e3a2",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 409,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "13589640-bbee-4514-b1a6-fa31d798e3a2",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "096e4745-b37f-49cb-ad1a-8f861aaebabb",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 413,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "096e4745-b37f-49cb-ad1a-8f861aaebabb",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "084f4c90-df03-4ec2-82c8-ad94afcb1c20",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "084f4c90-df03-4ec2-82c8-ad94afcb1c20",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f4fb38c5-6d52-4286-ac1f-53c64495b3ea",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.7",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.7"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f4fb38c5-6d52-4286-ac1f-53c64495b3ea",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8039e188-7339-4393-a47c-e88feb37222f",
+      "name": "Upload one batch item - default - fhir2omop_batch.upload_item.8",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/items",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.upload_item.8"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8039e188-7339-4393-a47c-e88feb37222f",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ac756cf3-2dd9-41ad-81af-6a8191704d30",
+      "name": "Finalize a batch job - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ac756cf3-2dd9-41ad-81af-6a8191704d30",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "b81bbb14-3dcf-4e57-b78c-b3430c279e99",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 202,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "b81bbb14-3dcf-4e57-b78c-b3430c279e99",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7b958f52-f077-4e8b-acf9-afe120da1c59",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7b958f52-f077-4e8b-acf9-afe120da1c59",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f62e4fc8-9b25-411d-b216-ed2efd8536fc",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f62e4fc8-9b25-411d-b216-ed2efd8536fc",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6b7d232a-efff-4d87-8f1b-949ecf875ef5",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6b7d232a-efff-4d87-8f1b-949ecf875ef5",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "27e44b47-4cfc-418d-9a0f-73111684a9e1",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 409,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "27e44b47-4cfc-418d-9a0f-73111684a9e1",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "acc873bb-bfd3-4171-8696-267460ea2c9e",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "acc873bb-bfd3-4171-8696-267460ea2c9e",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "6bca0727-1bb4-403b-8d8e-e78fe7280d1c",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "6bca0727-1bb4-403b-8d8e-e78fe7280d1c",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "a2ca6713-27b3-43d9-ba4d-18dbd69cdb8b",
+      "name": "Finalize a batch job - default - fhir2omop_batch.finalize.7",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/finalize",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.finalize.7"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "a2ca6713-27b3-43d9-ba4d-18dbd69cdb8b",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "f4be5653-6b6b-406e-ba89-55e402d04327",
+      "name": "Cancel a batch job - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "f4be5653-6b6b-406e-ba89-55e402d04327",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "72e741e0-3ca8-4754-be0f-de3f798cfa5c",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "72e741e0-3ca8-4754-be0f-de3f798cfa5c",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "5c1ec9a9-bbed-4021-a388-2d99c82383c0",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "5c1ec9a9-bbed-4021-a388-2d99c82383c0",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "825384b6-2c37-4c18-93c8-28dd5be19805",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "825384b6-2c37-4c18-93c8-28dd5be19805",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8e83202d-644b-41cb-a8ab-e19feb5afc33",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 409,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8e83202d-644b-41cb-a8ab-e19feb5afc33",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7fa63356-605c-44b5-884e-4fb19e9c908a",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7fa63356-605c-44b5-884e-4fb19e9c908a",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e51fc9b2-9af4-4950-a923-1343ce19eb71",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e51fc9b2-9af4-4950-a923-1343ce19eb71",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "26c42da1-94f9-4215-81db-66ca15c83929",
+      "name": "Cancel a batch job - default - fhir2omop_batch.cancel.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/cancel",
+        "method": "POST",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.cancel.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "26c42da1-94f9-4215-81db-66ca15c83929",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "267e71a0-5fe2-4744-ba7d-02999ddefe5a",
+      "name": "Get a batch job - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\",\n  \"counts\": {\n    \"total\": 12,\n    \"pending\": 3,\n    \"processing\": 2,\n    \"succeeded\": 6,\n    \"failed\": 1\n  },\n  \"items\": [\n    {\n      \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n      \"id\": \"patient-000123\",\n      \"status\": \"pending\",\n      \"attempts\": 1,\n      \"result_size\": 20482,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"completed_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "267e71a0-5fe2-4744-ba7d-02999ddefe5a",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ee219244-6f76-44ba-8703-6c7489bc8aae",
+      "name": "Get a batch job - default - fhir2omop_batch.get.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"job_id\": \"f2o_batch_6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d\",\n  \"request_id\": \"omop-cohort-2026-11-02-001\",\n  \"status\": \"pending\",\n  \"finalized\": false,\n  \"total_items\": 12,\n  \"error\": {\n    \"kind\": \"invalid_input\",\n    \"message\": \"no Patient resource found; OMOP requires at least one person\"\n  },\n  \"created_at\": \"2024-01-15T09:30:00Z\",\n  \"updated_at\": \"2024-01-15T09:30:00Z\",\n  \"completed_at\": \"2024-01-15T09:30:00Z\",\n  \"expires_at\": \"2024-01-15T09:30:00Z\",\n  \"counts\": {\n    \"total\": 12,\n    \"pending\": 3,\n    \"processing\": 2,\n    \"succeeded\": 6,\n    \"failed\": 1\n  },\n  \"items\": [\n    {\n      \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n      \"id\": \"patient-000123\",\n      \"status\": \"pending\",\n      \"attempts\": 1,\n      \"result_size\": 20482,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"completed_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ee219244-6f76-44ba-8703-6c7489bc8aae",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "01975c17-96ea-499c-8499-46576a512b92",
+      "name": "Get a batch job - default - fhir2omop_batch.get.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "01975c17-96ea-499c-8499-46576a512b92",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "935007a3-f772-44e4-8aea-f04d36fd39b9",
+      "name": "Get a batch job - default - fhir2omop_batch.get.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "935007a3-f772-44e4-8aea-f04d36fd39b9",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "8f0b66bf-4ede-42ce-b968-226a73c4c1a5",
+      "name": "Get a batch job - default - fhir2omop_batch.get.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "8f0b66bf-4ede-42ce-b968-226a73c4c1a5",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "e974e40e-ecdd-4dd3-b227-d1047f987e73",
+      "name": "Get a batch job - default - fhir2omop_batch.get.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "e974e40e-ecdd-4dd3-b227-d1047f987e73",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d2e2b5bc-0584-412f-b08d-b62cc2772916",
+      "name": "Get a batch job - default - fhir2omop_batch.get.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d2e2b5bc-0584-412f-b08d-b62cc2772916",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fcd8f66c-9fd3-4ff8-ac93-f65701f8c16d",
+      "name": "Get a batch job - default - fhir2omop_batch.get.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fcd8f66c-9fd3-4ff8-ac93-f65701f8c16d",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "06ce7d4a-cd2c-4c53-871a-a0f24a82a471",
+      "name": "List a batch job's results - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"results\": [\n    {\n      \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n      \"id\": \"patient-000123\",\n      \"status\": \"pending\",\n      \"attempts\": 1,\n      \"result_size\": 20482,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"completed_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "06ce7d4a-cd2c-4c53-871a-a0f24a82a471",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "50cbaf88-8d6d-4566-9a87-ea4864be0745",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        },
+        "queryParameters": {
+          "cursor": {
+            "equalTo": "cursor"
+          },
+          "limit": {
+            "equalTo": "1"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"results\": [\n    {\n      \"item_id\": \"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\",\n      \"id\": \"patient-000123\",\n      \"status\": \"pending\",\n      \"attempts\": 1,\n      \"result_size\": 20482,\n      \"error\": {\n        \"kind\": \"invalid_input\",\n        \"message\": \"no Patient resource found; OMOP requires at least one person\"\n      },\n      \"completed_at\": \"2024-01-15T09:30:00Z\"\n    }\n  ],\n  \"next_cursor\": \"next_cursor\",\n  \"has_more\": false\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "50cbaf88-8d6d-4566-9a87-ea4864be0745",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ea8fbfa9-0e6b-471d-bc23-5d59538abe22",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ea8fbfa9-0e6b-471d-bc23-5d59538abe22",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "219142e5-ef91-4ad3-8e62-3d4f616a8c6a",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "219142e5-ef91-4ad3-8e62-3d4f616a8c6a",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "2150eed0-a39f-4a3b-befb-a0eff813bf44",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "2150eed0-a39f-4a3b-befb-a0eff813bf44",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "fe54e70c-eab1-48d4-badf-0c3734eff779",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "fe54e70c-eab1-48d4-badf-0c3734eff779",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "1e3ffd10-7885-47cb-814e-fe060b05646d",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "1e3ffd10-7885-47cb-814e-fe060b05646d",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "d4e2d176-ae11-4696-b7a2-6aea97467d4e",
+      "name": "List a batch job's results - default - fhir2omop_batch.get_results.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_results.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "d4e2d176-ae11-4696-b7a2-6aea97467d4e",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4b3547de-4e71-45fe-bed6-afc989223309",
+      "name": "Get one batch item's result - default",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4b3547de-4e71-45fe-bed6-afc989223309",
+      "persistent": true,
+      "priority": 3,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "3d1b23a9-8ad8-4f50-8d6f-dfa2c05a090f",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.0",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.0"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "3d1b23a9-8ad8-4f50-8d6f-dfa2c05a090f",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "0fdf5224-eb40-4512-979a-fa40cc2eaaef",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.1",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.1"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 400,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "0fdf5224-eb40-4512-979a-fa40cc2eaaef",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "227cd6dc-8114-4762-b996-b9b00778c891",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.2",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.2"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "227cd6dc-8114-4762-b996-b9b00778c891",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "7512691c-27ed-4260-ae97-becf7d177eda",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.3",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.3"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "7512691c-27ed-4260-ae97-becf7d177eda",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "478e1e83-1329-485c-878b-19b58ba04ac8",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.4",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.4"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 409,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "478e1e83-1329-485c-878b-19b58ba04ac8",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "ced652dc-dee2-422c-942f-df971b82f524",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.5",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.5"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 499,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "ced652dc-dee2-422c-942f-df971b82f524",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "4c876a86-7b22-4b97-aa83-f53ffd7678ac",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.6",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.6"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 500,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "4c876a86-7b22-4b97-aa83-f53ffd7678ac",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
+      "id": "47042cbb-4253-427c-9f2b-58e0d7c77d95",
+      "name": "Get one batch item's result - default - fhir2omop_batch.get_result.7",
+      "request": {
+        "urlPathTemplate": "/fhir2omop/batch/{job_id}/results/{item_id}",
+        "method": "GET",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .+"
+          },
+          "X-Test-Id": {
+            "equalTo": "fhir2omop_batch.get_result.7"
+          }
+        },
+        "pathParameters": {
+          "job_id": {
+            "equalTo": "job_id"
+          },
+          "item_id": {
+            "equalTo": "item_id"
+          }
+        }
+      },
+      "response": {
+        "status": 504,
+        "body": "{\n  \"key\": \"value\"\n}",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      },
+      "uuid": "47042cbb-4253-427c-9f2b-58e0d7c77d95",
+      "persistent": true,
+      "priority": 1,
+      "metadata": {
+        "mocklab": {
+          "created": {
+            "at": "2020-01-01T00:00:00.000Z",
+            "via": "SYSTEM"
+          }
+        }
+      }
+    },
+    {
       "id": "d740fc8b-977f-4426-ba4c-ba10a16c37e4",
       "name": "Create FHIR provider - default",
       "request": {
@@ -22813,6 +25375,6 @@
     }
   ],
   "meta": {
-    "total": 611
+    "total": 677
   }
 }

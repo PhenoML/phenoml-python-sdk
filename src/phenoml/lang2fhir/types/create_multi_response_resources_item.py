@@ -43,7 +43,7 @@ class CreateMultiResponseResourcesItem(UniversalBaseModel):
 
     group: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Split classification id assigned to this resource by the /lang2fhir/document/multi endpoint. Omitted when the resource came only from ungrouped pages or raw-text create/multi.
+    Split classification id assigned to this resource by the /lang2fhir/document/multi endpoint. When the resource came from pages in more than one group, this is the group covering the most of its source pages, with ties going to the group with the earliest source page. Omitted when the resource came only from ungrouped pages, when its sourcePages is omitted, or for raw-text create/multi.
     """
 
     source_pages: typing_extensions.Annotated[

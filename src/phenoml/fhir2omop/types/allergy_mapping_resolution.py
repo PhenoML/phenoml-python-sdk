@@ -15,16 +15,12 @@ from .coding import Coding
 
 class AllergyMappingResolution(UniversalBaseModel):
     """
-    Allergy finding policy and source evidence, shared by that field's
-    coding entries. Its status/reason describe contextual interpretation.
-    When contextual coverage is unavailable and existing domain-based
-    mapping is used, the enclosing resolution describes that mapping while
-    this object retains the contextual no-match. Evidence refers to original
-    codings explicitly, independent of the order of mapping entries.
-    Source clinical status and verification status are retained as codings;
-    no absent mechanism, certainty, or activity is implied. The incomplete
-    flag describes source interpretation coverage, not whether both OMOP
-    fields resolved. Check each field's mapping separately.
+    Contextual finding policy and original coding interpretation, shared by the
+    field's mappings. When domain-based placement supplies a result outside
+    contextual coverage, this object retains the contextual no-match while the
+    enclosing resolution describes placement. Missing mechanism, certainty, or
+    activity is not inferred from source statuses. incomplete describes source-interpretation
+    coverage; inspect finding and substance mappings independently for resolution.
     """
 
     method: AllergyMappingResolutionMethod = pydantic.Field()

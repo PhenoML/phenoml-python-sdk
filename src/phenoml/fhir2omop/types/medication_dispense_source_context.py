@@ -9,7 +9,9 @@ from .medication_dispense_source_context_omop_table import MedicationDispenseSou
 
 class MedicationDispenseSourceContext(UniversalBaseModel):
     """
-    Original dispensing context associated with one emitted clinical row. Response-local table/id links identify the actual destination, including a vocabulary-selected destination outside drug_exposure. This preserves source values and does not infer a duration, prescription, administration, or adherence.
+    Original dispensing context linked to an emitted clinical row by its actual
+    table and request-local ID, including destinations outside drug_exposure.
+    Preserved source values do not establish exposure duration or medication use.
     """
 
     resource_id: typing.Optional[str] = pydantic.Field(default=None)

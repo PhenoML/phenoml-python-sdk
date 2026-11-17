@@ -14,17 +14,17 @@ class SplitClassification(UniversalBaseModel):
 
     id: str = pydantic.Field()
     """
-    Unique classification id. The reserved id "__ungrouped__" is not allowed.
+    Unique, non-blank classification id. Returned as page_classifications[].classification_id and, for group classifications, as resources[].group and the FHIR meta.tag code. The reserved id "__ungrouped__" is not allowed.
     """
 
     description: str = pydantic.Field()
     """
-    Natural-language description of pages that belong to this classification.
+    Non-blank natural-language description of the pages that belong to this classification. Each page's text is compared against these descriptions, so describe what distinguishes these pages from the rest of the document.
     """
 
     operation: SplitClassificationOperation = pydantic.Field()
     """
-    Operation applied to pages assigned this classification.
+    Operation applied to pages assigned this classification. group keeps the pages and labels resources extracted from them with this id. drop removes the pages before extraction.
     """
 
     if IS_PYDANTIC_V2:
