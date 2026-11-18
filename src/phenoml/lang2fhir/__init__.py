@@ -26,7 +26,6 @@ if typing.TYPE_CHECKING:
         DocumentMultiResponse,
         FhirResource,
         PageClassification,
-        PageFilter,
         PatientReference,
         PrimaryPatient,
         PrimaryPatientGender,
@@ -50,6 +49,7 @@ if typing.TYPE_CHECKING:
     from .errors import (
         BadRequestError,
         ClientClosedRequestError,
+        ContentTooLargeError,
         ForbiddenError,
         GatewayTimeoutError,
         InternalServerError,
@@ -60,6 +60,7 @@ if typing.TYPE_CHECKING:
 _dynamic_imports: typing.Dict[str, str] = {
     "BadRequestError": ".errors",
     "ClientClosedRequestError": ".errors",
+    "ContentTooLargeError": ".errors",
     "CreateMultiRequestDetectionEffort": ".types",
     "CreateMultiRequestValidationMethod": ".types",
     "CreateMultiResponse": ".types",
@@ -83,7 +84,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "InternalServerError": ".errors",
     "NotFoundError": ".errors",
     "PageClassification": ".types",
-    "PageFilter": ".types",
     "PatientReference": ".types",
     "PrimaryPatient": ".types",
     "PrimaryPatientGender": ".types",
@@ -132,6 +132,7 @@ def __dir__():
 __all__ = [
     "BadRequestError",
     "ClientClosedRequestError",
+    "ContentTooLargeError",
     "CreateMultiRequestDetectionEffort",
     "CreateMultiRequestValidationMethod",
     "CreateMultiResponse",
@@ -155,7 +156,6 @@ __all__ = [
     "InternalServerError",
     "NotFoundError",
     "PageClassification",
-    "PageFilter",
     "PatientReference",
     "PrimaryPatient",
     "PrimaryPatientGender",

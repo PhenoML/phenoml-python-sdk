@@ -24,7 +24,7 @@ class DeviceExposureContext(UniversalBaseModel):
 
     quantity_basis: DeviceExposureContextQuantityBasis = pydantic.Field()
     """
-    Applies to every linked exposure. default_absent_count accompanies quantity 1 when the source has no quantity, dose, rate, or numeric Observation result field. unsupported_supplied_evidence accompanies an omitted quantity and UNSUPPORTED diagnostics when such a field is supplied, including null or malformed values.
+    Applies to every linked exposure. default_absent_count identifies the default quantity of 1. unsupported_supplied_evidence identifies omitted quantity due to supplied clinical quantity evidence, including null or malformed numeric fields. UNSUPPORTED diagnostics identify the source paths.
     """
 
     evidence: typing.Optional[typing.List[DeviceExposureEvidence]] = pydantic.Field(default=None)

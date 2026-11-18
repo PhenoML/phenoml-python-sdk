@@ -9,11 +9,18 @@ from .quantity_denominator_basis_kind import QuantityDenominatorBasisKind
 
 class QuantityDenominatorBasis(UniversalBaseModel):
     """
-    Terminology interpretation of the raw vocabulary denominator, preserved even when conversion is omitted. PER_UNIT supplies value 1 for a normalized concentration; QUANTIFIED_TOTAL supplies the explicit product total; NOT_APPLICABLE and UNKNOWN have no value. Only PER_UNIT supports the clinical-injection volume policy. Omitted when terminology supplies no basis.
+    Interpretation of the vocabulary denominator, retained for audit even when
+    conversion is omitted. PER_UNIT denotes a normalized per-unit concentration;
+    QUANTIFIED_TOTAL supplies an explicit product total. NOT_APPLICABLE and
+    UNKNOWN supply no basis value. Only PER_UNIT supports injection volume
+    conversion. Omitted when no basis is supplied.
     """
 
     kind: QuantityDenominatorBasisKind
-    value: typing.Optional[float] = None
+    value: typing.Optional[float] = pydantic.Field(default=None)
+    """
+    Original numeric denominator-basis value, including zero or negative values retained for audit. Successful volume-to-ingredient conversion requires kind PER_UNIT and value 1.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

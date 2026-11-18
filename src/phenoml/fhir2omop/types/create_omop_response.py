@@ -24,149 +24,105 @@ class CreateOmopResponse(UniversalBaseModel):
     tables: typing.Optional[OmopTables] = None
     visit_component_contexts: typing.Optional[typing.List[VisitComponentContext]] = pydantic.Field(default=None)
     """
-    Vocabulary compatibility evidence for supported explicit Encounter component candidates, linked to their final detail or standalone visit. Assessments do not add to the concept resolution counts in summary. Omitted when no structurally supported component is assessed.
+    Compatibility assessments for explicit Encounter components, linked to the
+    final detail or standalone visit. Omitted when no component is assessed;
+    assessments do not contribute to terminology counts in summary.
     """
 
     quantity_transformations: typing.Optional[typing.List[QuantityTransformation]] = pydantic.Field(default=None)
     """
-    Audits supplied direct quantities on emitted drug_exposure rows, including derivations and omissions. Resources returned in other clinical tables have no quantity entry. Omitted when no applicable quantity was supplied on a drug_exposure row. Entries use the response's vocabulary release and do not affect terminology mapping counts in summary. The examples use illustrative concept IDs; actual IDs and evidence belong to vocab_version.
+    Audits supplied direct quantities on emitted drug_exposure rows, including
+    derivations and omissions. Omitted when no applicable quantity was supplied.
+    Uses the response vocabulary release and does not affect terminology counts
+    in summary. Example concept IDs are illustrative.
     """
 
     rows_for_review: typing.Optional[typing.List[RowForReview]] = pydantic.Field(default=None)
     """
-    Index of otherwise shapeable clinical rows with uncertain source status
-    and/or primary concept ID 0. Each entry identifies an existing row in
-    tables; row payloads are neither moved nor duplicated. Omitted when empty.
-    Condition unconfirmed/provisional/differential or unreadable supplied
-    verificationStatus and Encounter unknown/missing/unreadable status are
-    indexed. Explicit unknown status on MedicationStatement, Observation,
-    and Procedure is also indexed; missing or unreadable status on these
-    three types remains dropped. Absent Condition verificationStatus keeps
-    its existing policy.
-    Refuted/entered-in-error Conditions and planned/cancelled/entered-in-error
-    Encounters remain dropped; all patient-reference checks still apply.
-    Other eligible clinical rows with primary concept 0 are indexed,
-    including text-only clinical concepts without a standard match and
-    unresolved Visit classifications.
-    Unresolved units, routes, result values, or alternate codings alone
+    Index of clinical rows with uncertain source status and/or primary concept 0,
+    following the endpoint's eligibility policy. Each entry identifies an existing
+    row in tables; payloads are not moved or duplicated. Omitted when empty.
+    Unresolved secondary units, routes, result values, or alternate codings alone
     do not index a mapped row. Administrative/demographic, Specimen, and Death
-    rows are not indexed. No missing status, date, or concept is invented.
-    Consumers must filter by this index to exclude uncertain or unresolved
-    rows: tables contains all shaped rows, including uncertain events that
-    were previously excluded. Existing concept-0 rows keep their placement.
-    Validated visit references remain on the rows. After filtering, include
-    referenced visits or clear optional visit_occurrence_id values pointing
-    to excluded visits in the load copy. Apply the same rule to optional
-    visit_detail_id links. Each selected detail requires its parent visit;
-    retain that parent or exclude the detail rather than clearing its
-    required visit_occurrence_id. For example, to include indexed
-    condition 3 and visit 2, keep their existing rows and IDs in tables;
-    if only condition 3 is selected, clear its reference to excluded visit 2.
-    Returned observation periods use unindexed clinical rows plus Specimen and Death;
-    indexed dates never expand them. Recompute periods for a selected load
-    if needed. Indexed rows may still lack CDM-required fields.
+    rows are not indexed.
+    
+    Consumers select or filter the linked table rows. If a selected row points
+    to a visit or detail marked for exclusion, either keep that target or clear
+    the row's optional visit_occurrence_id / visit_detail_id links in the load
+    copy. Each included detail requires its parent visit; keep that parent or
+    exclude the detail. Returned observation periods exclude indexed dates;
+    recompute them for a selected load if needed. Indexed rows may still lack
+    CDM-required fields.
     """
 
     mappings: typing.Optional[typing.List[MappingEntry]] = pydantic.Field(default=None)
     """
-    One entry per supported source coding from a resource that shaped a
-    row, plus entries for text-only primary resources and supplied
-    Quantity units or specimen sites without coding, describing each
-    resolution or source-preservation outcome and linking it to its row.
-    A coded route or Observation valueCodeableConcept is a separate
-    entry linked to the output row. Observation values returned outside
-    `measurement` / `observation` are preserved here without concept
-    resolution or a corresponding row column.
-    For Observations returned as measurement or observation rows, each
-    supplied Quantity unit has a separate entry linked to that row;
-    absent units have no entry.
-    Each supplied specimen unit or site also has a separate entry;
-    text-only sites are `UNMAPPED` without a `resolution` object.
-    A Patient demographic code links to its person row, or to its
-    `observation` race row when the person has more than one race.
+    Source-coding and text outcomes linked to emitted rows. Primary concepts,
+    coded routes/results, supplied Quantity units, and specimen sites have
+    separate entries; absent units/sites have none. Text-only sites and units
+    can have unmapped outcomes without vocabulary resolution.
+    
+    Values or routes retained outside a compatible destination column omit
+    omop_field and have selected: false. Demographic entries link to their
+    Person field or emitted race Observation. See MappingEntry for selection
+    and provenance semantics, and Summary for field-level counting.
     """
 
     device_exposure_contexts: typing.Optional[typing.List[DeviceExposureContext]] = pydantic.Field(default=None)
     """
-    One entry per source record that produced device exposures. Each entry groups the derived row links and returns their shared timing, device evidence, and quantity explanation once. Original source values may contain clinical data.
+    One context per source record producing device exposures, with links to all
+    derived rows and their shared timing, device evidence, and quantity basis.
+    Preserved source values may contain clinical data.
     """
 
     specimen_source_contexts: typing.Optional[typing.List[SpecimenSourceContext]] = pydantic.Field(default=None)
     """
-    Source identities, availability status, and collection timing for emitted specimens, linked by request-local specimen_id. Preserves valued identifier system/value pairs, accession identity, resource id/fullUrl, the chosen source-ID path, and supplied collection/received timing with original precision and offsets.
+    Identity, availability, and collection timing for emitted specimens, linked
+    by specimen_id. Retains original timing precision/offsets and source
+    identifiers; source_id_path identifies the selected specimen source ID.
     """
 
     medication_dispense_source_contexts: typing.Optional[typing.List[MedicationDispenseSourceContext]] = pydantic.Field(
         default=None
     )
     """
-    Supplied dispensing status, timing, instructions, and references linked to each emitted dispensing row, including rows placed in another clinical table. Omitted when there are no emitted dispenses. This response metadata is independent of rows_for_review and does not establish administration or adherence.
+    Supplied dispensing context linked to each emitted dispense's actual output
+    table and row. Omitted when no dispense is emitted. This provenance does not
+    establish administration or adherence.
     """
 
     provider_role_contexts: typing.Optional[typing.List[ProviderRoleContext]] = pydantic.Field(default=None)
     """
-    FHIR provenance for every PractitionerRole linked to an emitted provider. Each
-    context identifies the canonical provider row and
-    preserves source role facts that OMOP's singular provider columns
-    cannot represent together.
+    Source context for every PractitionerRole linked to an emitted provider.
+    Preserves role-specific facts that the provider's singular specialty and
+    care-site columns cannot represent together.
     """
 
     dropped: typing.Optional[typing.List[DroppedResource]] = pydantic.Field(default=None)
     """
-    Supported resource instances that could not be shaped into an OMOP
-    row because the subject/patient, clinical code or text, or medication
-    data was missing or unusable, including an explicit subject/patient
-    reference that was unresolved, ambiguous, or unsupported, or because
-    their clinical-event eligibility status excluded them. A resource that
-    lacks only a date or another CDM-required field is usually returned
-    as a partial row. Specimen requires an explicit resolvable Patient
-    subject but retains missing dates/material with linked diagnostics.
-    DeviceUseStatement also requires an explicit resolvable Patient subject;
-    missing Device details or timing retain partial exposure rows.
-    Unsupported resource types are ignored and do not appear here.
-    Provider sources identified as organizations and roles without a
-    confirmed individual NPI or a usable Practitioner are also reported.
-    Eligibility exclusions use stable, resource-specific `reason` codes;
-    other shaping failures retain an explanatory reason string.
+    Supported resources that cannot produce a row because of clinical eligibility
+    or unusable patient, code/text, or medication evidence. Provider organizations
+    and roles without a confirmed individual NPI or usable Practitioner are also
+    reported. Unsupported resource types are ignored. Missing dates or other
+    CDM-required fields usually retain partial rows; see resource-specific policies
+    for required evidence.
+    
+    Eligibility exclusions use stable resource-specific reason codes; other
+    shaping failures use explanatory reason text.
     """
 
     diagnostics: typing.Optional[typing.List[ReferenceDiagnostic]] = pydantic.Field(default=None)
     """
-    Explanations for explicit references that could not safely produce
-    an OMOP link or canonicalize a `PractitionerRole` provider identity, or explicit
-    subject/patient references that caused a clinical row to be dropped.
-    Specimen missing/unusable collection dates, material, subject, status,
-    and invalid optional quantity are also explained here. Device-use status,
-    attribution, missing detail, timing omissions/conflicts, UDI ambiguity,
-    and unsupported device counts are also reported with row links when
-    a row is retained. A shared issue can link to multiple event rows.
-    MedicationDispense missing/unusable handover, absent exposure end,
-    unsupported supplied daysSupply, conflicting routes, and unsafe
-    medication or authorizing-prescription references are also reported.
-    Missing optional references are normal and do not produce a diagnostic.
-    References resolve only against resources supplied in this request.
-    Outcomes distinguish unresolved, ambiguous, conflicting, and unsupported
-    conditions as defined in `ReferenceDiagnostic.outcome`. Patient
-    demographic extensions that conflict, or a birth sex without
-    `valueCode`, are also reported here; their `path` is
-    `extension:birthsex` or `extension:ethnicity` and they have no
-    `reference`. Practitioner identity conflicts that prevent merging also
-    have no `reference`: their paths are `name`, `gender`, `birthDate`, or
-    `identifier`, their outcome is `CONFLICTING`, and `omop_table: provider`
-    together with `omop_id` identifies the affected row. For a conflicting
-    NPI group, every member is flagged, including members missing the conflicting attribute.
-    The reason identifies the differing mapped attribute and explains why
-    the entire group remains separate, rather than asserting that each
-    member individually supplied a conflicting value.
-    Multiple distinct NPIs on one Practitioner are also diagnosed at
-    `identifier` with `omop_table: provider` and the retained row's `omop_id`.
-    An unconfirmed NPI omitted from a retained Practitioner row is
-    explained by an `UNRESOLVED` diagnostic at `identifier`.
-    Conflicting Encounter classifications are also reported with outcome
-    `CONFLICTING` and no `reference`: path `class/type` means a mapped
-    type disagrees with the selected class, which still determines the
-    Visit; path `type` means separate type classifications disagree and
-    no type can supply a Visit when class is missing or unmapped.
+    Explains missing or unusable source data, unresolved links, and conflicting
+    or unsupported values. When an affected row is emitted, omop_table and
+    omop_id identify it; otherwise both are omitted. Shared issues may link to
+    several rows. Diagnostics can accompany retained rows or dropped resources.
+    
+    outcome classifies the issue, path identifies the source field, and reason
+    provides context. Missing optional references do not produce diagnostics.
+    References resolve only against resources supplied in this request. An invalid
+    or unconfirmed NPI omitted from a retained Practitioner has an UNRESOLVED
+    diagnostic at identifier.
     """
 
     vocab_version: typing.Optional[str] = pydantic.Field(default=None)
