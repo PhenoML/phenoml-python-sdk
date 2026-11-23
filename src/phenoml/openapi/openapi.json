@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Phenoml API",
-    "version": "af0d4a285752b99d127f09bd9da59386e7f8a093"
+    "version": "f0e07a5c3fce8f1919b539ee2850f03b7c17901b"
   },
   "x-services": [
     {
@@ -14897,8 +14897,8 @@
           "detect_retries": {
             "type": "integer",
             "format": "int64",
-            "description": "How many times concept detection was re-run for the item because a\npass returned no concepts. Present only on a succeeded item whose\ndetection re-ran at least once; omitted otherwise.\n",
-            "example": 1
+            "deprecated": true,
+            "description": "Omitted for new batch items. If present, this is the number of\nadditional concept detection passes after an empty result.\n"
           },
           "result_size": {
             "type": "integer",
