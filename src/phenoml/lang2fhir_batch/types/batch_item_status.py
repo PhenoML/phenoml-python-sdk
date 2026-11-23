@@ -37,9 +37,8 @@ class BatchItemStatus(UniversalBaseModel):
 
     detect_retries: typing.Optional[int] = pydantic.Field(default=None)
     """
-    How many times concept detection was re-run for the item because a
-    pass returned no concepts. Present only on a succeeded item whose
-    detection re-ran at least once; omitted otherwise.
+    Omitted for new batch items. If present, this is the number of
+    additional concept detection passes after an empty result.
     """
 
     result_size: typing.Optional[int] = pydantic.Field(default=None)
