@@ -1,3 +1,16 @@
+## [20.0.0] - 2026-11-23
+### Breaking Changes
+- **`phenoml.lang2fhir.DocumentConfig.page_filter`** and **`phenoml.lang2fhir.types.PageFilter`** — these deprecated symbols are removed from the schema; migrate to `split_classifications` with a `drop` entry describing the pages to exclude.
+
+### Added
+- **`client.fhir2omop_batch`** — new background FHIR-to-OMOP batch API with `create()`, `upload_item()`, `finalize()`, `cancel()`, `get()`, `list()`, `get_results()`, and `get_result()` for submitting and retrieving large-scale conversion jobs on dedicated instances.
+- **`phenoml.fhir2omop_batch.BatchJob`**, **`BatchCounts`**, **`BatchItemStatus`**, and **`BatchError`** — new types representing job lifecycle, per-status item tallies, individual item outcomes, and structured failure details.
+- **`client.lang2fhir.deidentify()`** — alpha endpoint that accepts a PDF, PNG, JPEG, or TIFF and streams a redacted image-only PDF; available on dedicated instances only.
+
+### Changed
+- **`phenoml.lang2fhir.DocumentConfig.split_classifications`** — default behavior now keeps every page with extracted text when `split_classifications` is omitted or empty; the previous default test-requisition-form filter is no longer applied automatically.
+- **`phenoml.fhir2omop.QuantityDenominatorBasis.value`** — now permits zero and negative denominator values retained for audit; previously constrained to positive numbers only.
+
 ## [19.0.0] - 2026-11-18
 ### Breaking Changes
 - **`phenoml.lang2fhir.DocumentConfig.page_filter`** and **`phenoml.lang2fhir.types.PageFilter`** — remove the deprecated field and type references, and define the pages to exclude with `drop` entries in `phenoml.lang2fhir.DocumentConfig.split_classifications`.
