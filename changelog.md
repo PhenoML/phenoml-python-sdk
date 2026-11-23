@@ -1,3 +1,7 @@
+## [19.0.1] - 2026-11-23
+### Changed
+- **`phenoml.lang2fhir_batch.BatchItemStatus.detect_retries`** — deprecated and omitted for new Lang2FHIR batch items, but still returned for older items that recorded detection retries.
+
 ## [19.0.0] - 2026-11-18
 ### Breaking Changes
 - **`phenoml.lang2fhir.DocumentConfig.page_filter`** and **`phenoml.lang2fhir.types.PageFilter`** — remove the deprecated field and type references, and define the pages to exclude with `drop` entries in `phenoml.lang2fhir.DocumentConfig.split_classifications`.
