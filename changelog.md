@@ -1,3 +1,12 @@
+## [20.0.0] - 2026-11-24
+### Breaking Changes
+- **`client.agent`** — the entire agent client, all sub-clients (`chat`, `prompts`), raw clients, types, and error classes have been removed; remove all imports from `phenoml.agent` and replace any calls to `client.agent.*` with an alternative.
+- **`client.cohort`** — the entire cohort client, types (`CohortResponse`, `SearchConcept`), and error classes have been removed; remove all imports from `phenoml.cohort` and migrate cohort analysis to an alternative endpoint.
+- **`client.tools`** — the entire tools client, MCP server/tool sub-clients, raw clients, types, and error classes have been removed; remove all imports from `phenoml.tools` and replace calls to `create_fhir_resource()`, `search_fhir_resources()`, `analyze_cohort()`, and `mcp_servers`/`mcp_tools` methods.
+- **`client.voice`** — the entire voice client, raw clients, types (`TranscribeResponse`), and error classes have been removed; remove all imports from `phenoml.voice` and replace calls to `client.voice.voice.transcribe()`.
+- **`client.workflows`** — the entire workflows client, raw clients, all 24+ exported types, and error classes have been removed; remove all imports from `phenoml.workflows` and replace calls to `client.workflows.*`.
+- **`client.lang2fhir.search()`** — removed from both sync and async clients along with `SearchResponse` and `SearchResponseResourceType`; remove calls to this method and migrate to an alternative FHIR search approach.
+
 ## [19.0.1] - 2026-11-23
 ### Changed
 - **`phenoml.lang2fhir_batch.BatchItemStatus.detect_retries`** — deprecated and omitted for new Lang2FHIR batch items, but still returned for older items that recorded detection retries.
