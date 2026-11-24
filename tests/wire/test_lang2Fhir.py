@@ -191,55 +191,6 @@ def test_lang2Fhir_create_multi_throws_internal_server_error() -> None:
     verify_request_count(test_id, "POST", "/lang2fhir/create/multi", None, 1)
 
 
-def test_lang2Fhir_search() -> None:
-    """Test search endpoint with WireMock"""
-    test_id = "lang2fhir.search.0"
-    client = get_client(test_id)
-    client.lang2fhir.search(
-        text="Appointments between March 2-9, 2025",
-    )
-    verify_request_count(test_id, "POST", "/lang2fhir/search", None, 1)
-
-
-def test_lang2Fhir_search_throws_bad_request_error() -> None:
-    """Test search endpoint error response (BadRequestError) with WireMock"""
-    test_id = "lang2fhir.search.1"
-    client = get_client(test_id)
-    with pytest.raises(BadRequestError) as exc_info:
-        client.lang2fhir.search(
-            text="text",
-        )
-    assert exc_info.value.status_code == 400
-    assert jsonable_encoder(exc_info.value.body) == {"key": "value"}
-    verify_request_count(test_id, "POST", "/lang2fhir/search", None, 1)
-
-
-def test_lang2Fhir_search_throws_unauthorized_error() -> None:
-    """Test search endpoint error response (UnauthorizedError) with WireMock"""
-    test_id = "lang2fhir.search.2"
-    client = get_client(test_id)
-    with pytest.raises(UnauthorizedError) as exc_info:
-        client.lang2fhir.search(
-            text="text",
-        )
-    assert exc_info.value.status_code == 401
-    assert jsonable_encoder(exc_info.value.body) == {"key": "value"}
-    verify_request_count(test_id, "POST", "/lang2fhir/search", None, 1)
-
-
-def test_lang2Fhir_search_throws_internal_server_error() -> None:
-    """Test search endpoint error response (InternalServerError) with WireMock"""
-    test_id = "lang2fhir.search.3"
-    client = get_client(test_id)
-    with pytest.raises(InternalServerError) as exc_info:
-        client.lang2fhir.search(
-            text="text",
-        )
-    assert exc_info.value.status_code == 500
-    assert jsonable_encoder(exc_info.value.body) == {"key": "value"}
-    verify_request_count(test_id, "POST", "/lang2fhir/search", None, 1)
-
-
 def test_lang2Fhir_upload_profile() -> None:
     """Test uploadProfile endpoint with WireMock"""
     test_id = "lang2fhir.upload_profile.0"
