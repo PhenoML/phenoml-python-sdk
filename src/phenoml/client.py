@@ -13,9 +13,7 @@ from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvid
 from .environment import PhenomlClientEnvironment
 
 if typing.TYPE_CHECKING:
-    from .agent.client import AgentClient, AsyncAgentClient
     from .authtoken.client import AsyncAuthtokenClient, AuthtokenClient
-    from .cohort.client import AsyncCohortClient, CohortClient
     from .construe.client import AsyncConstrueClient, ConstrueClient
     from .fhir.client import AsyncFhirClient, FhirClient
     from .fhir2omop.client import AsyncFhir2OmopClient, Fhir2OmopClient
@@ -26,9 +24,6 @@ if typing.TYPE_CHECKING:
     from .lang2fhir_batch.client import AsyncLang2FhirBatchClient, Lang2FhirBatchClient
     from .profiles.client import AsyncProfilesClient, ProfilesClient
     from .summary.client import AsyncSummaryClient, SummaryClient
-    from .tools.client import AsyncToolsClient, ToolsClient
-    from .voice.client import AsyncVoiceClient, VoiceClient
-    from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
 
 class PhenomlClient:
@@ -216,9 +211,7 @@ class PhenomlClient:
             raise ApiError(
                 body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
             )
-        self._agent: typing.Optional[AgentClient] = None
         self._authtoken: typing.Optional[AuthtokenClient] = None
-        self._cohort: typing.Optional[CohortClient] = None
         self._construe: typing.Optional[ConstrueClient] = None
         self._fhir: typing.Optional[FhirClient] = None
         self._fhir2omop: typing.Optional[Fhir2OmopClient] = None
@@ -229,17 +222,6 @@ class PhenomlClient:
         self._lang2fhir_batch: typing.Optional[Lang2FhirBatchClient] = None
         self._profiles: typing.Optional[ProfilesClient] = None
         self._summary: typing.Optional[SummaryClient] = None
-        self._tools: typing.Optional[ToolsClient] = None
-        self._voice: typing.Optional[VoiceClient] = None
-        self._workflows: typing.Optional[WorkflowsClient] = None
-
-    @property
-    def agent(self):
-        if self._agent is None:
-            from .agent.client import AgentClient  # noqa: E402
-
-            self._agent = AgentClient(client_wrapper=self._client_wrapper)
-        return self._agent
 
     @property
     def authtoken(self):
@@ -248,14 +230,6 @@ class PhenomlClient:
 
             self._authtoken = AuthtokenClient(client_wrapper=self._client_wrapper)
         return self._authtoken
-
-    @property
-    def cohort(self):
-        if self._cohort is None:
-            from .cohort.client import CohortClient  # noqa: E402
-
-            self._cohort = CohortClient(client_wrapper=self._client_wrapper)
-        return self._cohort
 
     @property
     def construe(self):
@@ -336,30 +310,6 @@ class PhenomlClient:
 
             self._summary = SummaryClient(client_wrapper=self._client_wrapper)
         return self._summary
-
-    @property
-    def tools(self):
-        if self._tools is None:
-            from .tools.client import ToolsClient  # noqa: E402
-
-            self._tools = ToolsClient(client_wrapper=self._client_wrapper)
-        return self._tools
-
-    @property
-    def voice(self):
-        if self._voice is None:
-            from .voice.client import VoiceClient  # noqa: E402
-
-            self._voice = VoiceClient(client_wrapper=self._client_wrapper)
-        return self._voice
-
-    @property
-    def workflows(self):
-        if self._workflows is None:
-            from .workflows.client import WorkflowsClient  # noqa: E402
-
-            self._workflows = WorkflowsClient(client_wrapper=self._client_wrapper)
-        return self._workflows
 
 
 def _make_default_async_client(
@@ -584,9 +534,7 @@ class AsyncPhenomlClient:
             raise ApiError(
                 body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
             )
-        self._agent: typing.Optional[AsyncAgentClient] = None
         self._authtoken: typing.Optional[AsyncAuthtokenClient] = None
-        self._cohort: typing.Optional[AsyncCohortClient] = None
         self._construe: typing.Optional[AsyncConstrueClient] = None
         self._fhir: typing.Optional[AsyncFhirClient] = None
         self._fhir2omop: typing.Optional[AsyncFhir2OmopClient] = None
@@ -597,17 +545,6 @@ class AsyncPhenomlClient:
         self._lang2fhir_batch: typing.Optional[AsyncLang2FhirBatchClient] = None
         self._profiles: typing.Optional[AsyncProfilesClient] = None
         self._summary: typing.Optional[AsyncSummaryClient] = None
-        self._tools: typing.Optional[AsyncToolsClient] = None
-        self._voice: typing.Optional[AsyncVoiceClient] = None
-        self._workflows: typing.Optional[AsyncWorkflowsClient] = None
-
-    @property
-    def agent(self):
-        if self._agent is None:
-            from .agent.client import AsyncAgentClient  # noqa: E402
-
-            self._agent = AsyncAgentClient(client_wrapper=self._client_wrapper)
-        return self._agent
 
     @property
     def authtoken(self):
@@ -616,14 +553,6 @@ class AsyncPhenomlClient:
 
             self._authtoken = AsyncAuthtokenClient(client_wrapper=self._client_wrapper)
         return self._authtoken
-
-    @property
-    def cohort(self):
-        if self._cohort is None:
-            from .cohort.client import AsyncCohortClient  # noqa: E402
-
-            self._cohort = AsyncCohortClient(client_wrapper=self._client_wrapper)
-        return self._cohort
 
     @property
     def construe(self):
@@ -704,30 +633,6 @@ class AsyncPhenomlClient:
 
             self._summary = AsyncSummaryClient(client_wrapper=self._client_wrapper)
         return self._summary
-
-    @property
-    def tools(self):
-        if self._tools is None:
-            from .tools.client import AsyncToolsClient  # noqa: E402
-
-            self._tools = AsyncToolsClient(client_wrapper=self._client_wrapper)
-        return self._tools
-
-    @property
-    def voice(self):
-        if self._voice is None:
-            from .voice.client import AsyncVoiceClient  # noqa: E402
-
-            self._voice = AsyncVoiceClient(client_wrapper=self._client_wrapper)
-        return self._voice
-
-    @property
-    def workflows(self):
-        if self._workflows is None:
-            from .workflows.client import AsyncWorkflowsClient  # noqa: E402
-
-            self._workflows = AsyncWorkflowsClient(client_wrapper=self._client_wrapper)
-        return self._workflows
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: PhenomlClientEnvironment) -> str:

@@ -18,7 +18,6 @@ from .types.fhir_resource import FhirResource
 from .types.patient_reference import PatientReference
 from .types.primary_patient import PrimaryPatient
 from .types.resource_review import ResourceReview
-from .types.search_response import SearchResponse
 from .types.upload_profile_response import UploadProfileResponse
 
 # this is used as the default value for optional parameters
@@ -184,53 +183,6 @@ class Lang2FhirClient:
             small_note=small_note,
             request_options=request_options,
         )
-        return _response.data
-
-    def search(self, *, text: str, request_options: typing.Optional[RequestOptions] = None) -> SearchResponse:
-        """
-        Converts natural language text into FHIR search parameters.
-        Automatically identifies the appropriate FHIR resource type and generates valid search query parameters.
-
-        Supported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,
-        Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,
-        Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
-        PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
-        Schedule, ServiceRequest, Slot, and Specimen.
-
-        Parameters
-        ----------
-        text : str
-            Natural language text to convert into FHIR search parameters.
-            The system will automatically identify the appropriate resource type and generate valid search parameters.
-
-            Examples:
-            - "Appointments between March 2-9, 2025" → Appointment search with date range
-            - "Patients with diabetes" → Condition search with code parameter
-            - "Active medication requests for metformin" → MedicationRequest search
-            - "Lab results for creatinine" → DiagnosticReport search
-            - "Dr. Smith's schedule" → Practitioner or Schedule search
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SearchResponse
-            Successfully generated FHIR search parameters
-
-        Examples
-        --------
-        from phenoml import PhenomlClient
-
-        client = PhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.lang2fhir.search(
-            text="Appointments between March 2-9, 2025",
-        )
-        """
-        _response = self._raw_client.search(text=text, request_options=request_options)
         return _response.data
 
     def upload_profile(
@@ -714,61 +666,6 @@ class AsyncLang2FhirClient:
             small_note=small_note,
             request_options=request_options,
         )
-        return _response.data
-
-    async def search(self, *, text: str, request_options: typing.Optional[RequestOptions] = None) -> SearchResponse:
-        """
-        Converts natural language text into FHIR search parameters.
-        Automatically identifies the appropriate FHIR resource type and generates valid search query parameters.
-
-        Supported resource types include: AllergyIntolerance, Appointment, CarePlan, CareTeam, Condition,
-        Coverage, Device, DiagnosticReport, DocumentReference, Encounter, Goal, Immunization, Location,
-        Medication, MedicationRequest, Observation, Organization, Patient, PlanDefinition, Practitioner,
-        PractitionerRole, Procedure, Provenance, Questionnaire, QuestionnaireResponse, RelatedPerson,
-        Schedule, ServiceRequest, Slot, and Specimen.
-
-        Parameters
-        ----------
-        text : str
-            Natural language text to convert into FHIR search parameters.
-            The system will automatically identify the appropriate resource type and generate valid search parameters.
-
-            Examples:
-            - "Appointments between March 2-9, 2025" → Appointment search with date range
-            - "Patients with diabetes" → Condition search with code parameter
-            - "Active medication requests for metformin" → MedicationRequest search
-            - "Lab results for creatinine" → DiagnosticReport search
-            - "Dr. Smith's schedule" → Practitioner or Schedule search
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SearchResponse
-            Successfully generated FHIR search parameters
-
-        Examples
-        --------
-        import asyncio
-
-        from phenoml import AsyncPhenomlClient
-
-        client = AsyncPhenomlClient(
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.lang2fhir.search(
-                text="Appointments between March 2-9, 2025",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.search(text=text, request_options=request_options)
         return _response.data
 
     async def upload_profile(

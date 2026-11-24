@@ -44,17 +44,9 @@ client = PhenomlClient(
     client_secret="<clientSecret>",
 )
 
-client.agent.create(
-    name="Medical Assistant",
-    description="An AI assistant for medical information processing",
-    prompts=[
-        "prompt_123"
-    ],
-    tags=[
-        "medical",
-        "fhir"
-    ],
-    provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+client.authtoken.get_token(
+    client_id="your_client_id",
+    client_secret="your_client_secret",
 )
 ```
 
@@ -87,17 +79,9 @@ client = AsyncPhenomlClient(
 
 
 async def main() -> None:
-    await client.agent.create(
-        name="Medical Assistant",
-        description="An AI assistant for medical information processing",
-        prompts=[
-            "prompt_123"
-        ],
-        tags=[
-            "medical",
-            "fhir"
-        ],
-        provider="7002b0b4-8d09-445a-bf65-0fafdaf26c35",
+    await client.authtoken.get_token(
+        client_id="your_client_id",
+        client_secret="your_client_secret",
     )
 
 
@@ -113,7 +97,7 @@ will be thrown.
 from phenoml.core.api_error import ApiError
 
 try:
-    client.agent.create(...)
+    client.authtoken.get_token(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -172,7 +156,7 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 from phenoml import PhenomlClient
 
 client = PhenomlClient(...)
-response = client.agent.with_raw_response.create(...)
+response = client.authtoken.with_raw_response.get_token(...)
 print(response.headers)  # access the response headers
 print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
@@ -203,7 +187,7 @@ Which status codes are retried depends on the `retryStatusCodes` generator confi
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.agent.create(..., request_options={
+client.authtoken.get_token(..., request_options={
     "max_retries": 1
 })
 ```
@@ -218,7 +202,7 @@ from phenoml import PhenomlClient
 client = PhenomlClient(..., timeout=20.0)
 
 # Override timeout for a specific method
-client.agent.create(..., request_options={
+client.authtoken.get_token(..., request_options={
     "timeout": 1
 })
 ```

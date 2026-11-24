@@ -7,9 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from . import (
-        agent,
         authtoken,
-        cohort,
         construe,
         fhir,
         fhir2omop,
@@ -20,9 +18,6 @@ if typing.TYPE_CHECKING:
         lang2fhir_batch,
         profiles,
         summary,
-        tools,
-        voice,
-        workflows,
     )
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .client import AsyncPhenomlClient, PhenomlClient
@@ -35,9 +30,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PhenomlClient": ".client",
     "PhenomlClientEnvironment": ".environment",
     "__version__": ".version",
-    "agent": ".agent",
     "authtoken": ".authtoken",
-    "cohort": ".cohort",
     "construe": ".construe",
     "fhir": ".fhir",
     "fhir2omop": ".fhir2omop",
@@ -48,9 +41,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "lang2fhir_batch": ".lang2fhir_batch",
     "profiles": ".profiles",
     "summary": ".summary",
-    "tools": ".tools",
-    "voice": ".voice",
-    "workflows": ".workflows",
 }
 
 
@@ -82,9 +72,7 @@ __all__ = [
     "PhenomlClient",
     "PhenomlClientEnvironment",
     "__version__",
-    "agent",
     "authtoken",
-    "cohort",
     "construe",
     "fhir",
     "fhir2omop",
@@ -95,7 +83,4 @@ __all__ = [
     "lang2fhir_batch",
     "profiles",
     "summary",
-    "tools",
-    "voice",
-    "workflows",
 ]
